@@ -2,6 +2,7 @@ package com.unascribed.yttr;
 
 import java.util.function.Supplier;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
@@ -28,10 +30,15 @@ public enum RifleMode {
 				((EntityHitResult) hit).getEntity().damage(new EntityDamageSource("yttr.rifle", user), damage);
 			}
 			if (hit instanceof BlockHitResult) {
-				BlockEntity be = user.world.getBlockEntity(((BlockHitResult) hit).getBlockPos());
-				if (be instanceof PowerMeterBlockEntity) {
-					((PowerMeterBlockEntity)be).sendReadout((int)(power*500));
-					
+				BlockHitResult bhr = (BlockHitResult)hit;
+				BlockState bs = user.world.getBlockState(bhr.getBlockPos());
+				if (bs.getBlock() == Yttr.POWER_METER) {
+					if (bhr.getSide() == Direction.UP || bhr.getSide() == bs.get(PowerMeterBlock.FACING)) {
+						BlockEntity be = user.world.getBlockEntity(bhr.getBlockPos());
+						if (be instanceof PowerMeterBlockEntity) {
+							((PowerMeterBlockEntity)be).sendReadout((int)(power*500));
+						}
+					}
 				}
 			}
 			if (power > 1.2f) {
