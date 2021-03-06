@@ -85,7 +85,7 @@ public class YttrClient implements ClientModInitializer {
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if (sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE.getId()) && sound instanceof EntityTrackingSoundInstance) {
-					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
+					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).getEntity(), sound);
 				}
 			});
 		});

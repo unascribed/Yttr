@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 @Mixin(Entity.class)
 public interface AccessorEntity {
 
-	@Invoker("getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;")
-	Vec3d yttr$callGetRotationVector(float pitch, float yaw);
+	@Invoker("getRotationVector")
+	Vec3d invokeGetRotationVector(float pitch, float yaw);
 	
 }

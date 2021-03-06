@@ -263,7 +263,7 @@ public class RifleItem extends Item {
 		Arm arm = entity instanceof LivingEntity ? ((LivingEntity)entity).getMainArm() : Arm.RIGHT;
 		Vec3d eyes = entity.getCameraPosVec(0);
 		Vec3d look = entity.getRotationVec(0);
-		Vec3d right = ((AccessorEntity)entity).yttr$callGetRotationVector(0, entity.getYaw(0)+90);
+		Vec3d right = ((AccessorEntity)entity).invokeGetRotationVector(0, entity.getYaw(0)+90);
 		Vec3d down = look.crossProduct(right);
 		if (arm == Arm.LEFT) right = right.multiply(-1);
 		if (firstPerson) {

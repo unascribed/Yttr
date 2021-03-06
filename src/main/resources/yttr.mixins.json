@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.unascribed.yttr.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "yttr.refmap.json",
+  "refmap": "yttr-refmap.json",
   "mixins": [
   	"AccessorEntity"
   ],

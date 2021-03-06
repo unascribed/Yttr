@@ -21,7 +21,7 @@ public class MixinMinecraftClient {
 	@Shadow
 	public ClientPlayerEntity player;
 	
-	@Inject(at=@At("HEAD"), method="doAttack()V")
+	@Inject(at=@At("HEAD"), method="doAttack")
 	private void doAttack(CallbackInfo ci) {
 		if (player != null && player.getMainHandStack().getItem() == Yttr.RIFLE) {
 			player.networkHandler.sendPacket(ClientPlayNetworking.createC2SPacket(new Identifier("yttr", "rifle_mode"), new PacketByteBuf(Unpooled.buffer())));

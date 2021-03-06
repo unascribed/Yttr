@@ -21,7 +21,7 @@ public class MixinClientPlayNetworkHandler {
 	@Shadow
 	private ClientWorld world;
 	
-	@Inject(at=@At("HEAD"), method="onPlaySoundFromEntity(Lnet/minecraft/network/packet/s2c/play/PlaySoundFromEntityS2CPacket;)V", cancellable=true)
+	@Inject(at=@At("HEAD"), method="onPlaySoundFromEntity", cancellable=true)
 	public void onPlaySoundFromEntity(PlaySoundFromEntityS2CPacket pkt, CallbackInfo ci) {
 		if (pkt.getSound() == Yttr.RIFLE_CHARGE_CANCEL) {
 			SoundInstance si = YttrClient.rifleChargeSounds.remove(world.getEntityById(pkt.getEntityId()));

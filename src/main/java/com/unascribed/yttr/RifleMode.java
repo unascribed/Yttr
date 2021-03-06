@@ -126,7 +126,7 @@ public enum RifleMode {
 	}
 	
 	public boolean canFire(LivingEntity user, ItemStack stack, float power) {
-		return power >= 0.1f;
+		return power > 0;
 	}
 	
 	public abstract void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit);

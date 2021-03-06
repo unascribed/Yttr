@@ -14,8 +14,7 @@ import net.minecraft.util.Hand;
 @Mixin(PlayerEntityRenderer.class)
 public class MixinPlayerEntityRenderer {
 
-	@Inject(at=@At("HEAD"), method="getArmPose(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose",
-			cancellable=true)
+	@Inject(at=@At("HEAD"), method="getArmPose", cancellable=true)
 	private static void getArmPose(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<ArmPose> ci) {
 		if (player.getStackInHand(hand).getItem() == Yttr.RIFLE) {
 			ci.setReturnValue(ArmPose.BOW_AND_ARROW);
