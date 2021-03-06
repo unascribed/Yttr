@@ -203,7 +203,7 @@ public class RifleItem extends Item {
 	}
 	
 	private float calculatePower(int i) {
-		// https://blob.jortage.com/blobs/b/e97/be9729a693b8600113d773e839c6ca234a2113f3fb846d9c88915d8df8c4104fcb62a3be35abf8cba1dd2950e66ca48597cc7384755f990e8324ce26f0dd1459
+		// https://blob.jortage.com/blobs/d/b5f/db5fc6177921437d567ff378e36d8d9519998d1bc0de8ea2003d25258994c38ed8e69685a8fbd723466a8c0a27beb61786c1c78633e7d335584f399e78a8e212
 		float power = 0;
 		if (i == 132 || i == 133) {
 			power = 1.3f;
