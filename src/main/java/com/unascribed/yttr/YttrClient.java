@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.Perspective;
@@ -62,6 +63,24 @@ public class YttrClient implements ClientModInitializer {
 			out.accept(CHAMBER_MODEL);
 			out.accept(CHAMBER_GLASS_MODEL);
 		});
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			RifleMode mode = Yttr.RIFLE.getMode(stack);
+			float ammo = (Yttr.RIFLE.getRemainingAmmo(stack)/(float)mode.shotsPerItem)*6;
+			int ammoI = (int)ammo;
+			if (ammoI < tintIndex) return 0x587070;
+			if (ammoI > tintIndex) return mode.color;
+			float a = 1-(ammo%1);
+			float rF = NativeImage.getBlue(mode.color)/255f;
+			float gF = NativeImage.getGreen(mode.color)/255f;
+			float bF = NativeImage.getRed(mode.color)/255f;
+			float rE = 0.34509805f;
+			float gE = 0.4392157f;
+			float bE = 0.4392157f;
+			float r = rF+((rE-rF)*a);
+			float g = gF+((gE-gF)*a);
+			float b = bF+((bE-bF)*a);
+			return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
+		}, Yttr.RIFLE);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {

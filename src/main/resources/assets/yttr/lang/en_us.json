@@ -13,6 +13,9 @@
 	"subtitles.yttr.rifle_fire": "Yttric Rifle fires",
 	"subtitles.yttr.rifle_fire_dud": "Yttric Rifle clicks",
 	"subtitles.yttr.rifle_overcharge": "Yttric Rifle backfires",
+	"subtitles.yttr.rifle_vent": "Yttric Rifle vents",
+	"subtitles.yttr.rifle_load": "Yttric Rifle loaded",
+	"subtitles.yttr.rifle_waste": "Yttric Rifle dumped",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

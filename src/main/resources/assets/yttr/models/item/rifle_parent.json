@@ -3,6 +3,7 @@
 	"textures": {
 		"base": "yttr:item/rifle",
 		"chamber": "minecraft:block/dirt",
+		"meter": "yttr:item/rifle_meter",
 		"particle": "yttr:item/rifle"
 	},
 	"display": {

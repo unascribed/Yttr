@@ -1,7 +1,6 @@
 package com.unascribed.yttr;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
 
 public class PowerMeterBlockEntity extends BlockEntity {
 
@@ -10,13 +9,6 @@ public class PowerMeterBlockEntity extends BlockEntity {
 	
 	public PowerMeterBlockEntity() {
 		super(Yttr.POWER_METER_ENTITY);
-	}
-	
-	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		CompoundTag tag = super.toInitialChunkDataTag();
-		tag.putShort("Readout", (short)readout);
-		return tag;
 	}
 	
 	@Override

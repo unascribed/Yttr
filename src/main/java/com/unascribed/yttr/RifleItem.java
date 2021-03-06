@@ -9,6 +9,7 @@ import com.google.common.base.Predicates;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -18,8 +19,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
@@ -47,15 +48,23 @@ public class RifleItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (hand == Hand.MAIN_HAND) {
-			int ammo = stack.hasTag() ? stack.getTag().getInt("RemainingAmmo") : 0;
+			int ammo = getRemainingAmmo(stack);
 			RifleMode mode = getMode(stack);
-			if (ammo <= 0 && !user.abilities.creativeMode) {
-				for (int i = 0; i < user.inventory.size(); i++) {
-					ItemStack is = user.inventory.getStack(i);
-					if (is.getItem() == mode.item.get().asItem()) {
-						is.decrement(1);
-						ammo = mode.shotsPerItem;
-						break;
+			if (ammo <= 0) {
+				if (user.abilities.creativeMode) {
+					ammo = mode.shotsPerItem;
+					
+				} else {
+					for (int i = 0; i < user.inventory.size(); i++) {
+						ItemStack is = user.inventory.getStack(i);
+						if (is.getItem() == mode.item.get().asItem()) {
+							is.decrement(1);
+							ammo = mode.shotsPerItem;
+							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
+							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
+							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
+							break;
+						}
 					}
 				}
 			}
@@ -64,12 +73,36 @@ public class RifleItem extends Item {
 				user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", mode.item.get().asItem().getName()), true);
 				return TypedActionResult.fail(stack);
 			}
-			stack.getTag().putInt("RemainingAmmo", ammo);
+			setRemainingAmmo(stack, ammo);
 			world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE, user.getSoundCategory(), 1, 1);
 			user.setCurrentHand(hand);
 			return TypedActionResult.success(stack, false);
 		}
 		return TypedActionResult.pass(stack);
+	}
+	
+	public void attack(PlayerEntity user) {
+		ItemStack stack = user.getMainHandStack();
+		RifleMode[] val = RifleMode.values();
+		RifleMode oldMode = getMode(stack);
+		RifleMode mode = val[(oldMode.ordinal()+1)%val.length];
+		if (setMode(stack, mode)) {
+			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
+			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
+			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 1.5f);
+			if (user.world instanceof ServerWorld) {
+				float r = NativeImage.getBlue(oldMode.color)/255f;
+				float g = NativeImage.getGreen(oldMode.color)/255f;
+				float b = NativeImage.getRed(oldMode.color)/255f;
+				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(r, g, b, 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
+			}
+		}
+		user.setStackInHand(Hand.MAIN_HAND, stack);
+		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
+		System.out.println("time,kw");
+		for (int i = 0; i <= 140; i++) {
+			System.out.println((i/20f)+","+(calculatePower(i)*500));
+		}
 	}
 	
 	@Override
@@ -84,11 +117,10 @@ public class RifleItem extends Item {
 		int useTicks = getMaxUseTime(stack)-remainingUseTicks;
 		float power = calculatePower(useTicks);
 		RifleMode mode = getMode(stack);
-		int ammo = stack.hasTag() ? stack.getTag().getInt("RemainingAmmo") : 0;
+		int ammo = getRemainingAmmo(stack);
 		if (useTicks > 30) {
 			ammo--;
-			if (!stack.hasTag()) stack.setTag(new CompoundTag());
-			stack.getTag().putInt("RemainingAmmo", ammo);
+			setRemainingAmmo(stack, ammo);
 		}
 		if (!mode.canFire(user, stack, power)) {
 			user.playSound(Yttr.RIFLE_FIRE_DUD, 1, 1);
@@ -150,13 +182,24 @@ public class RifleItem extends Item {
 		return Enums.getIfPresent(RifleMode.class, stack.hasTag() ? stack.getTag().getString("Mode") : RifleMode.DAMAGE.name()).or(RifleMode.DAMAGE);
 	}
 	
-	public void setMode(ItemStack stack, RifleMode mode) {
+	public boolean setMode(ItemStack stack, RifleMode mode) {
 		if (!stack.hasTag()) stack.setTag(new CompoundTag());
 		RifleMode cur = getMode(stack);
-		if (cur == mode) return;
+		if (cur == mode) return false;
 		stack.getTag().putString("Mode", mode.name());
 		stack.getTag().putBoolean("WasSelected", false);
-		stack.getTag().putInt("RemainingAmmo", 0);
+		int ammo = getRemainingAmmo(stack);
+		setRemainingAmmo(stack, 0);
+		return ammo > 0;
+	}
+	
+	public int getRemainingAmmo(ItemStack stack) {
+		return stack.hasTag() ? stack.getTag().getInt("RemainingAmmo") : 0;
+	}
+	
+	public void setRemainingAmmo(ItemStack stack, int ammo) {
+		if (!stack.hasTag()) stack.setTag(new CompoundTag());
+		stack.getTag().putInt("RemainingAmmo", ammo);
 	}
 	
 	private float calculatePower(int i) {
@@ -183,8 +226,10 @@ public class RifleItem extends Item {
 		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8);
 		user.setOnFireFor(3);
 		if (!stack.hasTag()) stack.setTag(new CompoundTag());
-		stack.getTag().putInt("RemainingAmmo", 0);
-		getMode(stack).handleBackfire(user, stack);
+		setRemainingAmmo(stack, 0);
+		if (!world.isClient) {
+			getMode(stack).handleBackfire(user, stack);
+		}
 		if (user instanceof PlayerEntity) {
 			((PlayerEntity) user).getItemCooldownManager().set(this, 160);
 		}
@@ -209,7 +254,7 @@ public class RifleItem extends Item {
 		}
 		if (entity.age % 4 == 0 && entity instanceof PlayerEntity) {
 			if (((PlayerEntity)entity).getItemCooldownManager().isCoolingDown(this)) {
-				entity.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, selected ? 1 : 0.5f, 0.75f);
+				entity.playSound(Yttr.RIFLE_VENT, selected ? 0.5f : 0.2f, 0.6f+RANDOM.nextFloat()/3);
 			}
 		}
 	}

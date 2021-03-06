@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
-	DAMAGE(Formatting.RED, 0xFF0000, () -> Items.REDSTONE, 8) {
+	DAMAGE(Formatting.RED, 0xFF0000, () -> Items.REDSTONE, 6) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit instanceof EntityHitResult) {
@@ -49,7 +49,7 @@ public enum RifleMode {
 			user.world.createExplosion(null, DamageSource.explosion(user), null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false, DestructionType.DESTROY);
 		}
 	},
-	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 4) {
+	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 3) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit.getType() == Type.MISS) return;

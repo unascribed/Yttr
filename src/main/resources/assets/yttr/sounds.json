@@ -17,5 +17,17 @@
 	"rifle_overcharge": {
 		"sounds": ["yttr:rifle_overcharge"],
 		"subtitle": "subtitles.yttr.rifle_overcharge"
+	},
+	"rifle_vent": {
+		"sounds": ["minecraft:random/fizz"],
+		"subtitle": "subtitles.yttr.rifle_vent"
+	},
+	"rifle_load": {
+		"sounds": ["minecraft:dig/sand2"],
+		"subtitle": "subtitles.yttr.rifle_load"
+	},
+	"rifle_waste": {
+		"sounds": ["minecraft:dig/sand4"],
+		"subtitle": "subtitles.yttr.rifle_waste"
 	}
 }

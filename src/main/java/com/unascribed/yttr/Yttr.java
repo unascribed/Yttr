@@ -18,7 +18,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -78,6 +77,9 @@ public class Yttr implements ModInitializer {
 	public static final SoundEvent RIFLE_FIRE = new SoundEvent(new Identifier("yttr", "rifle_fire"));
 	public static final SoundEvent RIFLE_FIRE_DUD = new SoundEvent(new Identifier("yttr", "rifle_fire_dud"));
 	public static final SoundEvent RIFLE_OVERCHARGE = new SoundEvent(new Identifier("yttr", "rifle_overcharge"));
+	public static final SoundEvent RIFLE_VENT = new SoundEvent(new Identifier("yttr", "rifle_vent"));
+	public static final SoundEvent RIFLE_LOAD = new SoundEvent(new Identifier("yttr", "rifle_load"));
+	public static final SoundEvent RIFLE_WASTE = new SoundEvent(new Identifier("yttr", "rifle_waste"));
 	
 	private static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
 			.configure(new OreFeatureConfig(
@@ -113,19 +115,17 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE.getId(), RIFLE_FIRE);
 		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE_DUD.getId(), RIFLE_FIRE_DUD);
 		Registry.register(Registry.SOUND_EVENT, RIFLE_OVERCHARGE.getId(), RIFLE_OVERCHARGE);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_VENT.getId(), RIFLE_VENT);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_LOAD.getId(), RIFLE_LOAD);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_WASTE.getId(), RIFLE_WASTE);
 		
 		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), net.minecraft.world.gen.GenerationStep.Feature.UNDERGROUND_ORES, gadoliniteOverworld);
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "rifle_mode"), (server, player, handler, buf, responseSender) -> {
-			if (player.getMainHandStack().getItem() == RIFLE) {
-				ItemStack stack = player.getMainHandStack();
-				RifleMode[] val = RifleMode.values();
-				RifleMode mode = val[(RIFLE.getMode(stack).ordinal()+1)%val.length];
-				RIFLE.setMode(stack, mode);
-				player.setStackInHand(Hand.MAIN_HAND, stack);
-				player.world.playSound(null, player.getPos().x, player.getPos().y, player.getPos().z, RIFLE_FIRE_DUD, player.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
+			if (player != null && player.getMainHandStack().getItem() == RIFLE) {
+				RIFLE.attack(player);
 			}
 		});
 	}
