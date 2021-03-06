@@ -7,11 +7,23 @@
 	"item.yttr.xl_iron_ingot": "Big Iron",
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
+	"block.yttr.power_meter": "Power Meter",
 	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_fire": "Yttric Rifle fires",
 	"subtitles.yttr.rifle_fire_dud": "Yttric Rifle clicks",
 	"subtitles.yttr.rifle_overcharge": "Yttric Rifle backfires",
 	
-	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine"
+	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
+	"death.attack.yttr.rifle": "%s was vaporized by %s",
+	"death.attack.yttr.rifle.item": "%s was vaporized by %s using %s",
+	
+	"yttr.rifle_mode.damage": "Beam",
+	"yttr.rifle_mode.teleport": "Teleport",
+	"yttr.rifle_mode.explode": "Explode",
+	"yttr.rifle_mode.fire": "Fire",
+	
+	"tip.yttr.rifle_mode": "Mode: %s",
+	"tip.yttr.rifle_no_ammo": "Out of %s"
+	
 }

@@ -10,7 +10,8 @@
   "client": [
   	"MixinClientPlayNetworkHandler",
   	"AccessorEntityTrackingSoundInstance",
-  	"MixinPlayerEntityRenderer"
+  	"MixinPlayerEntityRenderer",
+  	"MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

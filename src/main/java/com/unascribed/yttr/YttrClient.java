@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
 import com.unascribed.yttr.mixin.AccessorEntityTrackingSoundInstance;
 
 import com.google.common.collect.MapMaker;
@@ -11,6 +12,7 @@ import com.google.common.collect.MapMaker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -42,7 +44,6 @@ import net.minecraft.util.registry.Registry;
 
 public class YttrClient implements ClientModInitializer {
 	
-	private static final Identifier DIRT_SPRITE = new Identifier("minecraft", "block/dirt");
 	private static final Identifier CHAMBER_TEXTURE = new Identifier("yttr", "textures/item/rifle_chamber.png");
 	
 	private static final ModelIdentifier BASE_MODEL = new ModelIdentifier("yttr:rifle_base#inventory");
@@ -122,6 +123,7 @@ public class YttrClient implements ClientModInitializer {
 				}
 			});
 		});
+		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);
 	}
 	
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -247,7 +249,8 @@ public class YttrClient implements ClientModInitializer {
 							
 							@Override
 							public VertexConsumer color(int red, int green, int blue, int alpha) {
-								d.color(1f, 1f, 0f, 1f);
+								int c = Yttr.RIFLE.getMode(stack).color;
+								d.color(NativeImage.getBlue(c), NativeImage.getGreen(c), NativeImage.getRed(c), 255);
 								return this;
 							}
 						};

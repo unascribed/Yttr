@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "yttr:block/power_meter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/power_meter"
+    },
+    "facing=south": {
+      "model": "yttr:block/power_meter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "yttr:block/power_meter",
+      "y": 270
+    }
+  }
+}

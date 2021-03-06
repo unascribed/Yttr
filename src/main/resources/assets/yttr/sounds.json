@@ -8,7 +8,7 @@
 	},
 	"rifle_fire_dud": {
 		"sounds": ["yttr:rifle_fire_dud"],
-		"subtitle": "subtitles.yttr.rifle_charge"
+		"subtitle": "subtitles.yttr.rifle_fire_dud"
 	},
 	"rifle_fire": {
 		"sounds": ["yttr:rifle_fire"],
