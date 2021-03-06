@@ -9,7 +9,6 @@ import com.google.common.base.Predicates;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -70,7 +69,7 @@ public class RifleItem extends Item {
 			}
 			if (ammo <= 0) {
 				user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
-				user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", mode.item.get().asItem().getName()), true);
+				user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
 				return TypedActionResult.fail(stack);
 			}
 			setRemainingAmmo(stack, ammo);
@@ -91,9 +90,9 @@ public class RifleItem extends Item {
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 1.5f);
 			if (user.world instanceof ServerWorld) {
-				float r = NativeImage.getBlue(oldMode.color)/255f;
-				float g = NativeImage.getGreen(oldMode.color)/255f;
-				float b = NativeImage.getRed(oldMode.color)/255f;
+				float r = (oldMode.color >> 16 & 255)/255f;
+				float g = (oldMode.color >> 8 & 255)/255f;
+				float b = (oldMode.color >> 0 & 255)/255f;
 				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(r, g, b, 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
 			}
 		}

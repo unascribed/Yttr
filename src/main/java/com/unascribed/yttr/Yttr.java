@@ -110,14 +110,14 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:xl_iron_ingot", XL_IRON_INGOT);
 		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
 		
-		Registry.register(Registry.SOUND_EVENT, RIFLE_CHARGE.getId(), RIFLE_CHARGE);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_CHARGE_CANCEL.getId(), RIFLE_CHARGE_CANCEL);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE.getId(), RIFLE_FIRE);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE_DUD.getId(), RIFLE_FIRE_DUD);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_OVERCHARGE.getId(), RIFLE_OVERCHARGE);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_VENT.getId(), RIFLE_VENT);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_LOAD.getId(), RIFLE_LOAD);
-		Registry.register(Registry.SOUND_EVENT, RIFLE_WASTE.getId(), RIFLE_WASTE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_cancel", RIFLE_CHARGE_CANCEL);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_fire", RIFLE_FIRE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_fire_dud", RIFLE_FIRE_DUD);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_overcharge", RIFLE_OVERCHARGE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_vent", RIFLE_VENT);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_load", RIFLE_LOAD);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_waste", RIFLE_WASTE);
 		
 		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);
