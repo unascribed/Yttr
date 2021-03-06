@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "yttrium_ingot",
+  "ingredients": [
+    {
+      "item": "yttr:yttrium_block"
+    }
+  ],
+  "result": {
+    "item": "yttr:yttrium_ingot",
+    "count": 9
+  }
+}

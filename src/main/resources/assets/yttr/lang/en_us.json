@@ -1,0 +1,17 @@
+{
+	"itemGroup.yttr.main": "Yttr",
+	
+	"item.yttr.rifle": "Yttric Rifle",
+	"item.yttr.yttrium_ingot": "Yttrium Ingot",
+	"item.yttr.yttrium_nugget": "Yttrium Nugget",
+	"item.yttr.xl_iron_ingot": "Big Iron",
+	"block.yttr.gadolinite": "Gadolinite",
+	"block.yttr.yttrium_block": "Yttrium Block",
+	
+	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
+	"subtitles.yttr.rifle_fire": "Yttric Rifle fires",
+	"subtitles.yttr.rifle_fire_dud": "Yttric Rifle clicks",
+	"subtitles.yttr.rifle_overcharge": "Yttric Rifle backfires",
+	
+	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine"
+}

@@ -1,0 +1,3 @@
+accessWidener v1 named
+
+accessible method net/minecraft/client/particle/RedDustParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/particle/DustParticleEffect;Lnet/minecraft/client/particle/SpriteProvider;)V

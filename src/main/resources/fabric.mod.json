@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "yttr",
+  "version": "${version}",
+
+  "name": "Yttr",
+  "description": "Stuff",
+  "authors": [
+    "unascribed"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/yttr",
+    "sources": "https://github.com/unascribed/Yttr",
+    "issues": "https://github.com/unascribed/Yttr/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/yttr/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [ "com.unascribed.yttr.Yttr" ],
+    "client": [ "com.unascribed.yttr.YttrClient" ]
+  },
+  "mixins": ["yttr.mixins.json"],
+  "accessWidener": "yttr.accesswidener",
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+  }
+}

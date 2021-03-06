@@ -1,0 +1,47 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"base": "yttr:item/rifle",
+		"chamber": "minecraft:block/dirt",
+		"particle": "yttr:item/rifle"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, 0],
+			"translation": [-0.25, 3.25, -0.75],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 0, 0],
+			"translation": [-0.25, 3.25, -0.75],
+			"scale": [-0.7, 0.7, 0.7]
+		},
+		"firstperson_righthand": {
+			"rotation": [7.75, 0, 0],
+			"translation": [-1.25, 4.75, 2],
+			"scale": [0.45313, 0.45313, 0.45313]
+		},
+		"firstperson_lefthand": {
+			"rotation": [7.75, 0, 0],
+			"translation": [-1.25, 4.75, 2],
+			"scale": [0.45313, 0.45313, 0.45313]
+		},
+		"ground": {
+			"translation": [0, 2.5, -3.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"translation": [1.5, 0.5, 0],
+			"scale": [0.77539, 0.77539, 0.77539]
+		},
+		"head": {
+			"translation": [0, 0, -7.75],
+			"scale": [2.5293, 2.5293, 2.5293]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0],
+			"translation": [-2.25, 0, -3]
+		}
+	}
+}

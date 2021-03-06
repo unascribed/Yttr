@@ -1,0 +1,103 @@
+package com.unascribed.yttr;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+
+public class Yttr implements ModInitializer {
+	
+	public static ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "main"))
+			.icon(() -> new ItemStack(Registry.ITEM.get(new Identifier("yttr", "yttrium_ingot"))))
+		.build();
+	
+	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.STONE)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
+	public static final Block YTTRIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
+	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
+			.group(ITEM_GROUP)
+		);
+	public static final Item YTTRIUM_NUGGET = new Item(new Item.Settings()
+			.group(ITEM_GROUP)
+		);
+	public static final Item XL_IRON_INGOT = new Item(new Item.Settings()
+			.maxCount(16)
+			.group(ITEM_GROUP)
+		);
+	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
+			.maxCount(1)
+			.group(ITEM_GROUP)
+		);
+	
+	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
+	public static final SoundEvent RIFLE_CHARGE_CANCEL = new SoundEvent(new Identifier("yttr", "rifle_charge_cancel"));
+	public static final SoundEvent RIFLE_FIRE = new SoundEvent(new Identifier("yttr", "rifle_fire"));
+	public static final SoundEvent RIFLE_FIRE_DUD = new SoundEvent(new Identifier("yttr", "rifle_fire_dud"));
+	public static final SoundEvent RIFLE_OVERCHARGE = new SoundEvent(new Identifier("yttr", "rifle_overcharge"));
+	
+	private static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
+			.configure(new OreFeatureConfig(
+					OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
+					GADOLINITE.getDefaultState(),
+					9))
+			.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(
+					20,
+					0,
+					96)))
+			.spreadHorizontally()
+			.repeat(8);
+	
+	@Override
+	public void onInitialize() {
+		Registry.register(Registry.BLOCK, "yttr:gadolinite", GADOLINITE);
+		Registry.register(Registry.BLOCK, "yttr:yttrium_block", YTTRIUM_BLOCK);
+		
+		Registry.register(Registry.ITEM, "yttr:gadolinite", new BlockItem(GADOLINITE, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:yttrium_block", new BlockItem(YTTRIUM_BLOCK, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
+		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);
+		Registry.register(Registry.ITEM, "yttr:xl_iron_ingot", XL_IRON_INGOT);
+		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
+		
+		Registry.register(Registry.SOUND_EVENT, RIFLE_CHARGE.getId(), RIFLE_CHARGE);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_CHARGE_CANCEL.getId(), RIFLE_CHARGE_CANCEL);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE.getId(), RIFLE_FIRE);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_FIRE_DUD.getId(), RIFLE_FIRE_DUD);
+		Registry.register(Registry.SOUND_EVENT, RIFLE_OVERCHARGE.getId(), RIFLE_OVERCHARGE);
+		
+		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);
+		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), net.minecraft.world.gen.GenerationStep.Feature.UNDERGROUND_ORES, gadoliniteOverworld);
+	}
+	
+}

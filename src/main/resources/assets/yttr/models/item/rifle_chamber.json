@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "yttr:item/rifle_parent",
+	"ambientocclusion": false,
+	"texture_size": [3, 3],
+	"elements": [
+		{
+			"from": [4.25, 8.2995, 10.05344],
+			"to": [5.25, 10.7995, 12.55344],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [4.75, 9.5495, 11.30344]},
+			"faces": {
+				"north": {"uv": [0, 0, 5.33333, 16], "texture": "#chamber"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#chamber"},
+				"south": {"uv": [10.66667, 0, 16, 16], "texture": "#chamber"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#chamber"},
+				"up": {"uv": [0, 0, 16, 5.33333], "texture": "#chamber"},
+				"down": {"uv": [0, 10.66667, 16, 16], "rotation": 270, "texture": "#chamber"}
+			}
+		}
+	]
+}

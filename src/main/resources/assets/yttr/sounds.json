@@ -1,0 +1,21 @@
+{
+	"rifle_charge": {
+		"sounds": ["yttr:rifle_charge"],
+		"subtitle": "subtitles.yttr.rifle_charge"
+	},
+	"rifle_charge_cancel": {
+		"sounds": []
+	},
+	"rifle_fire_dud": {
+		"sounds": ["yttr:rifle_fire_dud"],
+		"subtitle": "subtitles.yttr.rifle_charge"
+	},
+	"rifle_fire": {
+		"sounds": ["yttr:rifle_fire"],
+		"subtitle": "subtitles.yttr.rifle_fire"
+	},
+	"rifle_overcharge": {
+		"sounds": ["yttr:rifle_overcharge"],
+		"subtitle": "subtitles.yttr.rifle_overcharge"
+	}
+}

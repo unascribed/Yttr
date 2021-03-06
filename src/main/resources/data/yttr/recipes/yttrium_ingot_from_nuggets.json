@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "yttrium_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "yttr:yttrium_nugget"
+    }
+  },
+  "result": {
+    "item": "yttr:yttrium_ingot"
+  }
+}

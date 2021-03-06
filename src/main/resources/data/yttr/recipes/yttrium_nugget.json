@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:yttrium_ingot"
+    }
+  ],
+  "result": {
+    "item": "yttr:yttrium_nugget",
+    "count": 9
+  }
+}
