@@ -99,10 +99,6 @@ public class RifleItem extends Item {
 		}
 		user.setStackInHand(Hand.MAIN_HAND, stack);
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
-		System.out.println("time,kw");
-		for (int i = 0; i <= 140; i++) {
-			System.out.println((i/20f)+","+(calculatePower(i)*500));
-		}
 	}
 	
 	@Override
