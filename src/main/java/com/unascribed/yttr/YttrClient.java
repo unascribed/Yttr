@@ -52,6 +52,8 @@ public class YttrClient implements ClientModInitializer {
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
+	private final UVObserver uvo = new UVObserver();
+	
 	@Override
 	public void onInitializeClient() {
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE, this::renderRifle);
@@ -71,6 +73,7 @@ public class YttrClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "beam"), (client, handler, buf, responseSender) -> {
 			int entityId = buf.readInt();
 			int color = buf.readInt();
+			// NativeImage assumes little-endian, but our colors are big-endian, so swap red/blue
 			float a = NativeImage.getAlpha(color)/255f;
 			float r = NativeImage.getBlue(color)/255f;
 			float g = NativeImage.getGreen(color)/255f;
@@ -146,114 +149,37 @@ public class YttrClient implements ClientModInitializer {
 		if (mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND) {
 			if (inUse) {
 				RenderLayer layer = RenderLayer.getEntityCutoutNoCull(CHAMBER_TEXTURE);
-				float[] minU = {2};
-				float[] minV = {2};
-				float[] maxU = {-1};
-				float[] maxV = {-1};
-				VertexConsumer dummy = new VertexConsumer() {
-					
-					@Override
-					public VertexConsumer vertex(double x, double y, double z) {
-						return this;
-					}
-					
+				uvo.reset();
+				for (BakedQuad quad : chamber.getQuads(null, null, ThreadLocalRandom.current())) {
+					uvo.quad(matrices.peek(), quad, 1, 1, 1, 1, 1);
+				}
+				float minU = uvo.getMinU();
+				float minV = uvo.getMinV();
+				float maxU = uvo.getMaxU();
+				float maxV = uvo.getMaxV();
+				int frame = mc.player.getItemUseTime() < 70 ? (int)((mc.player.getItemUseTime()/70f)*36) : 34+mc.player.getItemUseTime()%2;
+				mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, junk -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 					@Override
 					public VertexConsumer texture(float u, float v) {
-						minU[0] = Math.min(minU[0], u);
-						maxU[0] = Math.max(maxU[0], u);
-						minV[0] = Math.min(minV[0], v);
-						maxV[0] = Math.max(maxV[0], v);
-						return this;
-					}
-					
-					@Override
-					public VertexConsumer overlay(int u, int v) {
-						return this;
-					}
-					
-					@Override
-					public VertexConsumer normal(float x, float y, float z) {
-						return this;
-					}
-					
-					@Override
-					public void next() {
-					}
-					
-					@Override
-					public VertexConsumer light(int u, int v) {
-						return this;
+						if (u >= minU && u <= maxU) {
+							u = ((u-minU)/(maxU-minU));
+						} else {
+							System.out.println("U?? "+u+"; "+minU+"/"+maxU);
+							u = 0;
+						}
+						if (v >= minV && v <= maxV) {
+							v = ((frame*3)/108f)+(((v-minV)/(maxV-minV))*(3/108f));
+						} else {
+							System.out.println("V?? "+v+"; "+minV+"/"+maxV);
+							v = 0;
+						}
+						return super.texture(u, v);
 					}
 					
 					@Override
 					public VertexConsumer color(int red, int green, int blue, int alpha) {
-						return this;
-					}
-				};
-				for (BakedQuad quad : chamber.getQuads(null, null, ThreadLocalRandom.current())) {
-					dummy.quad(matrices.peek(), quad, 1, 1, 1, 1, 1);
-				}
-				int frame = mc.player.getItemUseTime() < 70 ? (int)((mc.player.getItemUseTime()/70f)*36) : 34+mc.player.getItemUseTime()%2;
-				mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, new VertexConsumerProvider() {
-					@Override
-					public VertexConsumer getBuffer(RenderLayer junk) {
-						VertexConsumer d = vertexConsumers.getBuffer(layer);
-						return new VertexConsumer() {
-							
-							@Override
-							public VertexConsumer vertex(double x, double y, double z) {
-								d.vertex(x, y, z);
-								return this;
-							}
-							
-							@Override
-							public VertexConsumer texture(float u, float v) {
-								if (u >= minU[0] && u <= maxU[0]) {
-									u = ((u-minU[0])/(maxU[0]-minU[0]));
-								} else {
-									System.out.println("U?? "+u+"; "+minU[0]+"/"+maxU[0]);
-									u = 0;
-								}
-								if (v >= minV[0] && v <= maxV[0]) {
-									v = ((frame*3)/108f)+(((v-minV[0])/(maxV[0]-minV[0]))*(3/108f));
-								} else {
-									System.out.println("V?? "+v+"; "+minV[0]+"/"+maxV[0]);
-									v = 0;
-								}
-								d.texture(u, v);
-								return this;
-							}
-							
-							@Override
-							public VertexConsumer overlay(int u, int v) {
-								d.overlay(u, v);
-								return this;
-							}
-							
-							@Override
-							public VertexConsumer normal(float x, float y, float z) {
-								d.normal(x, y, z);
-								return this;
-							}
-							
-							@Override
-							public void next() {
-								d.next();
-							}
-							
-							@Override
-							public VertexConsumer light(int u, int v) {
-								d.light(u, v);
-								return this;
-							}
-							
-							@Override
-							public VertexConsumer color(int red, int green, int blue, int alpha) {
-								int c = Yttr.RIFLE.getMode(stack).color;
-								d.color(NativeImage.getBlue(c), NativeImage.getGreen(c), NativeImage.getRed(c), 255);
-								return this;
-							}
-						};
+						int c = Yttr.RIFLE.getMode(stack).color;
+						return super.color(NativeImage.getBlue(c), NativeImage.getGreen(c), NativeImage.getRed(c), 255);
 					}
 				}, light, overlay, chamber);
 				if (vertexConsumers instanceof Immediate) ((Immediate)vertexConsumers).draw(layer);
