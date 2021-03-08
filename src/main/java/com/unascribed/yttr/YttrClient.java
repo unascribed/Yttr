@@ -151,8 +151,9 @@ public class YttrClient implements ClientModInitializer {
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.pop();
 		MinecraftClient mc = MinecraftClient.getInstance();
-		boolean inUse = mc.player != null && mc.player.isUsingItem();
-		int useTime = inUse ? mc.player.getItemUseTime() : 0;
+		boolean fp = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND;
+		boolean inUse = fp && mc.player != null && mc.player.isUsingItem();
+		int useTime = inUse ? Yttr.RIFLE.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft()) : 0;
 		if (useTime > 80) {
 			float a = (useTime-80)/40f;
 			a = a*a;
@@ -165,7 +166,7 @@ public class YttrClient implements ClientModInitializer {
 		BakedModel chamberGlass = mc.getBakedModelManager().getModel(CHAMBER_GLASS_MODEL);
 		boolean leftHanded = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.THIRD_PERSON_LEFT_HAND;
 		mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, base);
-		if (mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND) {
+		if (fp) {
 			if (inUse) {
 				RenderLayer layer = RenderLayer.getEntityCutoutNoCull(CHAMBER_TEXTURE);
 				uvo.reset();
@@ -176,7 +177,7 @@ public class YttrClient implements ClientModInitializer {
 				float minV = uvo.getMinV();
 				float maxU = uvo.getMaxU();
 				float maxV = uvo.getMaxV();
-				int frame = mc.player.getItemUseTime() < 70 ? (int)((mc.player.getItemUseTime()/70f)*36) : 34+mc.player.getItemUseTime()%2;
+				int frame = useTime < 70 ? (int)((useTime/70f)*36) : 34+(int)(mc.world.getTime()%2);
 				mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, junk -> new DelegatingVertexConsumer(vertexConsumers.getBuffer(layer)) {
 					@Override
 					public VertexConsumer texture(float u, float v) {

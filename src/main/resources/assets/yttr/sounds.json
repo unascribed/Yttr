@@ -3,6 +3,14 @@
 		"sounds": ["yttr:rifle_charge"],
 		"subtitle": "subtitles.yttr.rifle_charge"
 	},
+	"rifle_charge_continue": {
+		"sounds": ["yttr:silence"],
+		"subtitle": "subtitles.yttr.rifle_charge"
+	},
+	"rifle_charge_rattle": {
+		"sounds": ["yttr:silence"],
+		"subtitle": "subtitles.yttr.rifle_charge_rattle"
+	},
 	"rifle_charge_cancel": {
 		"sounds": []
 	},

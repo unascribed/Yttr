@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -73,6 +75,8 @@ public class Yttr implements ModInitializer {
 		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
+	public static final SoundEvent RIFLE_CHARGE_CONTINUE = new SoundEvent(new Identifier("yttr", "rifle_charge_continue"));
+	public static final SoundEvent RIFLE_CHARGE_RATTLE = new SoundEvent(new Identifier("yttr", "rifle_charge_rattle"));
 	public static final SoundEvent RIFLE_CHARGE_CANCEL = new SoundEvent(new Identifier("yttr", "rifle_charge_cancel"));
 	public static final SoundEvent RIFLE_FIRE = new SoundEvent(new Identifier("yttr", "rifle_fire"));
 	public static final SoundEvent RIFLE_FIRE_DUD = new SoundEvent(new Identifier("yttr", "rifle_fire_dud"));
@@ -93,6 +97,8 @@ public class Yttr implements ModInitializer {
 			.spreadHorizontally()
 			.repeat(8);
 	
+	public static final Tag<Block> FIRE_MODE_INSTABREAK = TagRegistry.block(new Identifier("yttr", "fire_mode_instabreak"));
+	
 	@Override
 	public void onInitialize() {
 		Registry.register(Registry.BLOCK, "yttr:gadolinite", GADOLINITE);
@@ -111,6 +117,8 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_continue", RIFLE_CHARGE_CONTINUE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_rattle", RIFLE_CHARGE_RATTLE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_cancel", RIFLE_CHARGE_CANCEL);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_fire", RIFLE_FIRE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_fire_dud", RIFLE_FIRE_DUD);

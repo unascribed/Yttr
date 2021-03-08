@@ -11,6 +11,7 @@ import com.unascribed.yttr.YttrClient;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.play.PlaySoundFromEntityS2CPacket;
@@ -28,6 +29,11 @@ public class MixinClientPlayNetworkHandler {
 			if (si != null) {
 				MinecraftClient.getInstance().getSoundManager().stop(si);
 			}
+			ci.cancel();
+		}
+		// vanilla playSoundFromEntity ignores pitch, so we do it ourselves
+		if (pkt.getSound().getId().getNamespace().equals("yttr")) {
+			MinecraftClient.getInstance().getSoundManager().play(new EntityTrackingSoundInstance(pkt.getSound(), pkt.getCategory(), pkt.getVolume(), pkt.getPitch(), world.getEntityById(pkt.getEntityId())));
 			ci.cancel();
 		}
 	}

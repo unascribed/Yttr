@@ -73,7 +73,8 @@ public class RifleItem extends Item {
 				return TypedActionResult.fail(stack);
 			}
 			setRemainingAmmo(stack, ammo);
-			world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE, user.getSoundCategory(), 1, 1);
+			user.playSound(Yttr.RIFLE_FIRE_DUD, 1, 1.75f);
+			world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE, user.getSoundCategory(), 1, mode.speed);
 			user.setCurrentHand(hand);
 			return TypedActionResult.success(stack, false);
 		}
@@ -82,6 +83,7 @@ public class RifleItem extends Item {
 	
 	public void attack(PlayerEntity user) {
 		ItemStack stack = user.getMainHandStack();
+		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
 		RifleMode[] val = RifleMode.values();
 		RifleMode oldMode = getMode(stack);
 		RifleMode mode = val[(oldMode.ordinal()+1)%val.length];
@@ -102,14 +104,14 @@ public class RifleItem extends Item {
 	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return 140;
+		return (int)(140/getMode(stack).speed);
 	}
 	
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
 		super.onStoppedUsing(stack, world, user, remainingUseTicks);
 		world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
-		int useTicks = getMaxUseTime(stack)-remainingUseTicks;
+		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
 		float power = calculatePower(useTicks);
 		RifleMode mode = getMode(stack);
 		int ammo = getRemainingAmmo(stack);
@@ -173,6 +175,11 @@ public class RifleItem extends Item {
 		}
 	}
 	
+	public int calcAdjustedUseTime(ItemStack stack, int remainingUseTicks) {
+		int max = getMaxUseTime(stack);
+		return (int)(((max-remainingUseTicks)/(float)max)*140);
+	}
+
 	public RifleMode getMode(ItemStack stack) {
 		return Enums.getIfPresent(RifleMode.class, stack.hasTag() ? stack.getTag().getString("Mode") : RifleMode.DAMAGE.name()).or(RifleMode.DAMAGE);
 	}
@@ -229,6 +236,17 @@ public class RifleItem extends Item {
 			((PlayerEntity) user).getItemCooldownManager().set(this, 160);
 		}
 		return stack;
+	}
+	
+	@Override
+	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
+		if (remainingUseTicks%5 == 0) {
+			user.playSound(Yttr.RIFLE_CHARGE_CONTINUE, 1, 1);
+			if (useTicks >= 100) {
+				user.playSound(Yttr.RIFLE_CHARGE_RATTLE, 1, 1);
+			}
+		}
 	}
 	
 	@Override
