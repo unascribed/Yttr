@@ -12,7 +12,7 @@
 		"subtitle": "subtitles.yttr.rifle_charge_rattle"
 	},
 	"rifle_charge_cancel": {
-		"sounds": []
+		"sounds": ["yttr:silence"]
 	},
 	"rifle_fire_dud": {
 		"sounds": ["yttr:rifle_fire_dud"],
@@ -37,5 +37,13 @@
 	"rifle_waste": {
 		"sounds": ["minecraft:dig/sand4"],
 		"subtitle": "subtitles.yttr.rifle_waste"
+	},
+	"void": {
+		"sounds": ["yttr:void"],
+		"subtitle": "subtitles.yttr.void"
+	},
+	"dissolve": {
+		"sounds": ["yttr:dissolve"],
+		"subtitle": "subtitles.yttr.dissolve"
 	}
 }

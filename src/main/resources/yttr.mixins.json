@@ -5,13 +5,15 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "yttr-refmap.json",
   "mixins": [
-  	"AccessorEntity"
+  	"AccessorEntity",
+  	"MixinEntity"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",
   	"AccessorEntityTrackingSoundInstance",
   	"MixinPlayerEntityRenderer",
-  	"MixinMinecraftClient"
+  	"MixinMinecraftClient",
+  	"MixinGameRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

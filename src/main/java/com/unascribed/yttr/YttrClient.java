@@ -3,18 +3,23 @@ package com.unascribed.yttr;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
+import com.unascribed.yttr.client.VoidBallParticle;
 import com.unascribed.yttr.mixin.AccessorEntityTrackingSoundInstance;
 
 import com.google.common.collect.MapMaker;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.Perspective;
@@ -32,20 +37,28 @@ import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.BlockRenderView;
 
 public class YttrClient implements ClientModInitializer {
 	
 	private static final Identifier CHAMBER_TEXTURE = new Identifier("yttr", "textures/item/rifle_chamber.png");
+	
+	private static final Identifier VOID_FLOW = new Identifier("yttr", "block/void_flow");
+	private static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
 	
 	private static final ModelIdentifier BASE_MODEL = new ModelIdentifier("yttr:rifle_base#inventory");
 	private static final ModelIdentifier CHAMBER_MODEL = new ModelIdentifier("yttr:rifle_chamber#inventory");
@@ -58,6 +71,10 @@ public class YttrClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE, this::renderRifle);
+		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
+			registry.register(VOID_FLOW);
+			registry.register(VOID_STILL);
+		});
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(BASE_MODEL);
 			out.accept(CHAMBER_MODEL);
@@ -81,6 +98,22 @@ public class YttrClient implements ClientModInitializer {
 			float b = bF+((bE-bF)*a);
 			return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
 		}, Yttr.RIFLE);
+		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
+			@Override
+			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				MinecraftClient mc = MinecraftClient.getInstance();
+				return new Sprite[] {
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_STILL),
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_FLOW)
+				};
+			}
+			@Override
+			public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				return 0xFFAAAAAA;
+			}
+		};
+		FluidRenderHandlerRegistry.INSTANCE.register(Yttr.VOID, voidRenderHandler);
+		FluidRenderHandlerRegistry.INSTANCE.register(Yttr.FLOWING_VOID, voidRenderHandler);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
@@ -143,6 +176,15 @@ public class YttrClient implements ClientModInitializer {
 						
 					});
 				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "void_ball"), (client, handler, buf, responseSender) -> {
+			float x = buf.readFloat();
+			float y = buf.readFloat();
+			float z = buf.readFloat();
+			float r = buf.readFloat();
+			mc.send(() -> {
+				mc.particleManager.addParticle(new VoidBallParticle(mc.world, x, y, z, r));
 			});
 		});
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);

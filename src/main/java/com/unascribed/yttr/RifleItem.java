@@ -20,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
@@ -52,16 +53,30 @@ public class RifleItem extends Item {
 			if (ammo <= 0) {
 				if (user.abilities.creativeMode) {
 					ammo = mode.shotsPerItem;
-					
 				} else {
 					for (int i = 0; i < user.inventory.size(); i++) {
 						ItemStack is = user.inventory.getStack(i);
 						if (is.getItem() == mode.item.get().asItem()) {
-							is.decrement(1);
+							Item remainder = is.getItem().getRecipeRemainder();
+							if (remainder != null) {
+								if (is.getCount() == 1) {
+									user.inventory.setStack(i, new ItemStack(remainder));
+								} else {
+									is.decrement(1);
+									user.inventory.offerOrDrop(user.world, new ItemStack(remainder));
+								}
+							} else {
+								is.decrement(1);
+							}
 							ammo = mode.shotsPerItem;
-							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
-							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
-							user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
+							if (mode == RifleMode.VOID) {
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+							} else {
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
+							}
 							break;
 						}
 					}

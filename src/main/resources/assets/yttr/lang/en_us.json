@@ -5,9 +5,15 @@
 	"item.yttr.yttrium_ingot": "Yttrium Ingot",
 	"item.yttr.yttrium_nugget": "Yttrium Nugget",
 	"item.yttr.xl_iron_ingot": "Big Iron",
+	"item.yttr.void_bucket": "Void Bucket",
+	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
 	"block.yttr.power_meter": "Power Meter",
+	"block.yttr.void": "Void",
+	
+	"fluid.yttr.void": "Void",
+	"fluid.yttr.flowing_void": "Void",
 	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
@@ -17,15 +23,19 @@
 	"subtitles.yttr.rifle_vent": "Yttric Rifle vents",
 	"subtitles.yttr.rifle_load": "Yttric Rifle loaded",
 	"subtitles.yttr.rifle_waste": "Yttric Rifle dumped",
+	"subtitles.yttr.void": "Void launched",
+	"subtitles.yttr.dissolve": "Dissolving",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
 	"death.attack.yttr.rifle.item": "%s was vaporized by %s using %s",
+	"death.attack.yttr.solvent": "%s was dissolved",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
 	"yttr.rifle_mode.explode": "Explode",
 	"yttr.rifle_mode.fire": "Fire",
+	"yttr.rifle_mode.void": "Void",
 	
 	"tip.yttr.rifle_mode": "Mode: %s",
 	"tip.yttr.rifle_no_ammo": "Out of %s"
