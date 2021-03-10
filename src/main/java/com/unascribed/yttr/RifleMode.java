@@ -205,6 +205,8 @@ public enum RifleMode {
 		}
 	}
 	;
+	private static final RifleMode[] VALUES = values();
+	
 	public final Formatting chatColor;
 	public final int color;
 	public final Supplier<ItemConvertible> item;
@@ -225,5 +227,14 @@ public enum RifleMode {
 	
 	public abstract void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit);
 	public void handleBackfire(LivingEntity user, ItemStack stack) {}
+	
+	public RifleMode next() {
+		return VALUES[(ordinal()+1)%VALUES.length];
+	}
+	
+	public RifleMode prev() {
+		if (ordinal() == 0) return VALUES[VALUES.length-1];
+		return VALUES[ordinal()-1];
+	}
 	
 }

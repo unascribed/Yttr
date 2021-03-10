@@ -99,9 +99,8 @@ public class RifleItem extends Item {
 	public void attack(PlayerEntity user) {
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
-		RifleMode[] val = RifleMode.values();
 		RifleMode oldMode = getMode(stack);
-		RifleMode mode = val[(oldMode.ordinal()+1)%val.length];
+		RifleMode mode = user.isSneaking() ? oldMode.prev() : oldMode.next();
 		if (setMode(stack, mode)) {
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
