@@ -59,6 +59,7 @@ public class PowerMeterBlockEntityRenderer extends BlockEntityRenderer<PowerMete
 			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(ang));
 			matrices.translate(-0.5f, -0.5f, -0.5f);
 			matrices.translate(1/16f, 0.5f, 0.89825f);
+			matrices.translate(0, 0, -0.01f);
 			for (int i = readout.length()-1; i >= 0; i--) {
 				char c = readout.charAt(i);
 				float u = Character.digit(c, 10)/10f;
