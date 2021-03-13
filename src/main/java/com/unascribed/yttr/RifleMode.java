@@ -2,16 +2,11 @@ package com.unascribed.yttr;
 
 import java.util.function.Supplier;
 
-import com.google.common.base.Predicates;
-
-import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
@@ -19,20 +14,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
@@ -151,58 +139,16 @@ public enum RifleMode {
 	VOID(Formatting.BLACK, 0x000000, () -> Yttr.VOID_BUCKET, 1, 0.75f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
-			doVoid(user.world, hit.getPos(), (int)(8*power));
+			if (!(user instanceof PlayerEntity)) return;
+			VoidLogic.doVoid((PlayerEntity)user, user.world, hit.getPos(), Math.round(7*power)+1);
 		}
 		
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
-			doVoid(user.world, user.getPos(), 12);
+			if (!(user instanceof PlayerEntity)) return;
+			VoidLogic.doVoid((PlayerEntity)user, user.world, user.getPos(), 12);
 		}
-		private void doVoid(World world, Vec3d pos, int r) {
-			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-			buf.writeFloat((float)pos.x);
-			buf.writeFloat((float)pos.y);
-			buf.writeFloat((float)pos.z);
-			buf.writeFloat(r+1.5f);
-			Packet<?> pkt = ServerPlayNetworking.createS2CPacket(new Identifier("yttr", "void_ball"), buf);
-			for (PlayerEntity pe : world.getPlayers()) {
-				if (pe instanceof ServerPlayerEntity) {
-					((ServerPlayerEntity)pe).networkHandler.sendPacket(pkt);
-				}
-			}
-			world.playSound(null, pos.x, pos.y, pos.z, Yttr.VOID_SOUND, SoundCategory.PLAYERS, 4, 1);
-			BlockPos.Mutable bp = new BlockPos.Mutable();
-			for (int y = -r; y <= r; y++) {
-				for (int x = -r; x <= r; x++) {
-					for (int z = -r; z <= r; z++) {
-						bp.set(pos.x+x, pos.y+y, pos.z+z);
-						if (pos.squaredDistanceTo(bp.getX(), bp.getY(), bp.getZ()) < r*r) {
-							BlockState bs = world.getBlockState(bp);
-							if (bs.getHardness(world, bp) < 0) continue;
-							world.setBlockState(bp, Blocks.VOID_AIR.getDefaultState());
-						}
-					}
-				}
-			}
-			Box box = new Box(pos.x-r, pos.y-r, pos.z-r, pos.x+r, pos.y+r, pos.z+r);
-			for (Entity e : world.getEntitiesByClass(Entity.class, box, Predicates.alwaysTrue())) {
-				double d = pos.squaredDistanceTo(e.getPos());
-				if (d < r*r) {
-					float dmg = (float) ((r*r)-d);
-					e.damage(new SolventDamageSource(0), dmg);
-					if (e instanceof LivingEntity) {
-						LivingEntity le = (LivingEntity)e;
-						for (EquipmentSlot es : EquipmentSlot.values()) {
-							if (es.getType() == EquipmentSlot.Type.ARMOR) {
-								le.getEquippedStack(es).damage((int)dmg, le, (blah) -> {
-									le.sendEquipmentBreakStatus(es);
-								});
-							}
-						}
-					}
-				}
-			}
-		}
+		
 	}
 	;
 	private static final RifleMode[] VALUES = values();

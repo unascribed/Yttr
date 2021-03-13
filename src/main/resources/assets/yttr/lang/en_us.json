@@ -38,6 +38,13 @@
 	"yttr.rifle_mode.void": "Void",
 	
 	"tip.yttr.rifle_mode": "Mode: %s",
-	"tip.yttr.rifle_no_ammo": "Out of %s"
+	"tip.yttr.rifle_no_ammo": "Out of %s",
+	
+	"commands.yttr.void_undo.clean": "Deleted %s undo files",
+	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
+	"commands.yttr.void_undo.not_found": "No undo files could be found matching your request",
+	"commands.yttr.void_undo.no_world": "Couldn't find a dimension with ID %s",
+	"commands.yttr.void_undo.success": "Successfully restored %s blocks",
+	"commands.yttr.void_undo.success_multi": "Successfully restored %s blocks across %s voids"
 	
 }
