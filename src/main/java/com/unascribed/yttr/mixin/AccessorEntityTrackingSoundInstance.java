@@ -10,6 +10,6 @@ import net.minecraft.entity.Entity;
 public interface AccessorEntityTrackingSoundInstance {
 
 	@Accessor("entity")
-	Entity getEntity();
+	Entity yttr$getEntity();
 	
 }

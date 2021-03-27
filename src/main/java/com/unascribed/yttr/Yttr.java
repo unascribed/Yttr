@@ -14,7 +14,9 @@ import org.apache.logging.log4j.LogManager;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.datafixers.util.Pair;
+import com.unascribed.yttr.mixin.AccessorHorseBaseEntity;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -25,6 +27,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
@@ -39,7 +42,18 @@ import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.command.CommandException;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.EnderChestInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -138,6 +152,10 @@ public class Yttr implements ModInitializer {
 			.maxCount(1)
 			.group(ITEM_GROUP)
 		);
+	public static final SnareItem SNARE = new SnareItem(new Item.Settings()
+			.maxDamage(40960)
+			.group(ITEM_GROUP)
+		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
 	public static final SoundEvent RIFLE_CHARGE_CONTINUE = new SoundEvent(new Identifier("yttr", "rifle_charge_continue"));
@@ -166,6 +184,8 @@ public class Yttr implements ModInitializer {
 	
 	public static final Tag<Block> FIRE_MODE_INSTABREAK = TagRegistry.block(new Identifier("yttr", "fire_mode_instabreak"));
 	public static final Tag<Fluid> VOID_TAG = AccessorFluidTags.getRequiredTags().add("yttr:void");
+	public static final Tag<EntityType<?>> UNSNAREABLE_TAG = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
+	public static final Tag<EntityType<?>> BOSSES_TAG = TagRegistry.entityType(new Identifier("yttr", "bosses"));
 	
 	@Override
 	public void onInitialize() {
@@ -185,6 +205,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:xl_iron_ingot", XL_IRON_INGOT);
 		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
 		Registry.register(Registry.ITEM, "yttr:void_bucket", VOID_BUCKET);
+		Registry.register(Registry.ITEM, "yttr:snare", SNARE);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_continue", RIFLE_CHARGE_CONTINUE);
@@ -209,6 +230,84 @@ public class Yttr implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "rifle_mode"), (server, player, handler, buf, responseSender) -> {
 			if (player != null && player.getMainHandStack().getItem() == RIFLE) {
 				RIFLE.attack(player);
+			}
+		});
+		
+		ServerTickEvents.START_WORLD_TICK.register((world) -> {
+			for (BlockEntity be : world.blockEntities) {
+				if (be instanceof Inventory && world.random.nextInt(40) == 0) {
+					Inventory inv = (Inventory)be;
+					for (int i = 0; i < inv.size(); i++) {
+						ItemStack is = inv.getStack(i);
+						if (is.getItem() == SNARE) {
+							SNARE.blockInventoryTick(is, world, be.getPos(), i);
+							inv.setStack(i, is);
+						}
+					}
+				}
+			}
+			for (Entity e : world.getEntitiesByType(null, Predicates.alwaysTrue())) {
+				if (e instanceof PlayerEntity) {
+					EnderChestInventory inv = ((PlayerEntity) e).getEnderChestInventory();
+					for (int i = 0; i < inv.size(); i++) {
+						ItemStack is = inv.getStack(i);
+						if (is.getItem() == SNARE) {
+							SNARE.inventoryTick(is, world, e, i, false);
+							inv.setStack(i, is);
+						}
+					}
+					continue;
+				}
+				if (e instanceof ItemEntity) {
+					ItemStack is = ((ItemEntity) e).getStack();
+					if (is.getItem() == SNARE) {
+						SNARE.inventoryTick(is, world, e, 0, false);
+						if (is.isEmpty()) e.remove();
+					}
+					continue;
+				}
+				if (e instanceof ItemFrameEntity) {
+					ItemStack is = ((ItemFrameEntity) e).getHeldItemStack();
+					if (is.getItem() == SNARE) {
+						SNARE.inventoryTick(is, world, e, 0, false);
+						if (is.isEmpty()) {
+							((ItemFrameEntity) e).setHeldItemStack(ItemStack.EMPTY, true);
+						}
+					}
+					continue;
+				}
+				if (world.random.nextInt(40) == 0) {
+					Set<ItemStack> seen = Sets.newIdentityHashSet();
+					if (e instanceof HorseBaseEntity) {
+						SimpleInventory inv = ((AccessorHorseBaseEntity)e).yttr$getItems();
+						for (int i = 0; i < inv.size(); i++) {
+							ItemStack is = inv.getStack(i);
+							if (is.getItem() == SNARE && seen.add(is)) {
+								SNARE.inventoryTick(is, world, e, i, false);
+								inv.setStack(i, is);
+							}
+						}
+					}
+					if (e instanceof LivingEntity) {
+						for (EquipmentSlot slot : EquipmentSlot.values()) {
+							ItemStack is = ((LivingEntity) e).getEquippedStack(slot);
+							if (is.getItem() == SNARE && seen.add(is)) {
+								SNARE.inventoryTick(is, world, e, slot.getEntitySlotId(), false);
+								e.equipStack(slot, is);
+							}
+						}
+					}
+					if (e instanceof Inventory) {
+						Inventory inv = (Inventory)e;
+						for (int i = 0; i < inv.size(); i++) {
+							ItemStack is = inv.getStack(i);
+							if (is.getItem() == SNARE && seen.add(is)) {
+								SNARE.inventoryTick(is, world, e, i, false);
+								inv.setStack(i, is);
+							}
+						}
+					}
+				}
 			}
 		});
 		

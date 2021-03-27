@@ -41,8 +41,10 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -98,6 +100,25 @@ public class YttrClient implements ClientModInitializer {
 			float b = bF+((bE-bF)*a);
 			return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
 		}, Yttr.RIFLE);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			if (tintIndex == 0) return -1;
+			EntityType<?> type = Yttr.SNARE.getEntityType(stack);
+			if (type != null) {
+				SpawnEggItem spi = SpawnEggItem.forEntity(type);
+				int primary;
+				int secondary;
+				if (spi != null) {
+					primary = spi.getColor(0);
+					secondary = spi.getColor(1);
+				} else {
+					primary = type.hashCode();
+					secondary = ~primary;
+				}
+				return tintIndex == 1 ? primary : secondary;
+			} else {
+				return ((ThreadLocalRandom.current().nextInt(100)+155)<<16)|(ThreadLocalRandom.current().nextInt(64)<<8);
+			}
+		}, Yttr.SNARE);
 		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
 			@Override
 			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
@@ -118,7 +139,7 @@ public class YttrClient implements ClientModInitializer {
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if (sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE.getId()) && sound instanceof EntityTrackingSoundInstance) {
-					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).getEntity(), sound);
+					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
 				}
 			});
 		});

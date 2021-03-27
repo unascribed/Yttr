@@ -10,6 +10,6 @@ import net.minecraft.util.math.Vec3d;
 public interface AccessorEntity {
 
 	@Invoker("getRotationVector")
-	Vec3d invokeGetRotationVector(float pitch, float yaw);
+	Vec3d yttr$invokeGetRotationVector(float pitch, float yaw);
 	
 }

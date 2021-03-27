@@ -6,7 +6,8 @@
   "refmap": "yttr-refmap.json",
   "mixins": [
   	"AccessorEntity",
-  	"MixinEntity"
+  	"MixinEntity",
+  	"AccessorHorseBaseEntity"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",

@@ -6,6 +6,8 @@
 	"item.yttr.yttrium_nugget": "Yttrium Nugget",
 	"item.yttr.xl_iron_ingot": "Big Iron",
 	"item.yttr.void_bucket": "Void Bucket",
+	"item.yttr.snare": "Snare",
+	"item.yttr.snare.filled": "Snare (%s)",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
@@ -39,6 +41,10 @@
 	
 	"tip.yttr.rifle_mode": "Mode: %s",
 	"tip.yttr.rifle_no_ammo": "Out of %s",
+	
+	"tip.yttr.snare.stable": "Containment stable",
+	"tip.yttr.snare.unstable": "Containment failure in %s:%s",
+	"tip.yttr.snare.failed": "CONTAINMENT FAILURE",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
