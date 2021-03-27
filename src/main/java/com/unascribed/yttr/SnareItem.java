@@ -124,10 +124,10 @@ public class SnareItem extends Item {
 		if (dmg > 0) {
 			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), RANDOM, null)) {
 				stack.decrement(1);
-				entity.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0f, 0.75f);
-				entity.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0f, 0.95f);
-				entity.playSound(SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.7f, 1.75f);
-				entity.playSound(SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.5f, 1.3f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ITEM_PICKUP, entity.getSoundCategory(), 1.0f, 0.75f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ITEM_PICKUP, entity.getSoundCategory(), 1.0f, 0.95f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.7f, 1.75f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.5f, 1.3f);
 				release(world, stack, entity.getPos(), entity.getYaw(1));
 			} else {
 				stack.getTag().putLong("LastUpdate", world.getServer().getOverworld().getTime());
