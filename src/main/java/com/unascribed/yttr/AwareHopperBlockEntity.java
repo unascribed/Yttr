@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Tickable;
@@ -35,32 +36,56 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable {
 		boolean blind = isBlind();
 		this.prevZendermieYaw = zendermieYaw;
 		this.prevZendermiePitch = zendermiePitch;
-		if (world.isClient) {
-			if (!blind) {
-				Vec3d head = getHeadPos();
-				PlayerEntity player = this.world.getClosestPlayer(head.x, head.y, head.z, 4, false);
-				if (player != null) {
-					Vec3d delta = player.getCameraPosVec(1).subtract(head);
-					this.zendermieYaw = (float) Math.toDegrees(MathHelper.atan2(delta.z, delta.x));
-					this.zendermiePitch = (float) Math.toDegrees(MathHelper.atan2(-delta.y, Math.sqrt(delta.x*delta.x + delta.z*delta.z)));
-				} else {
-					if (zendermiePitch > 40) {
-						zendermiePitch = Math.max(zendermiePitch-5, 40);
-					} else if (zendermiePitch < 40) {
-						zendermiePitch = Math.min(zendermiePitch+5, 40);
-					}
+		if (!blind) {
+			Vec3d head = getHeadPos();
+			PlayerEntity player = world.getClosestPlayer(head.x, head.y, head.z, 4, false);
+			if (player != null) {
+				Vec3d delta = player.getCameraPosVec(1).subtract(head);
+				this.zendermieYaw = (float) Math.toDegrees(MathHelper.atan2(delta.z, delta.x));
+				this.zendermiePitch = (float) Math.toDegrees(MathHelper.atan2(-delta.y, Math.sqrt(delta.x*delta.x + delta.z*delta.z)));
+				markDirty();
+			} else {
+				if (zendermiePitch > 40) {
+					zendermiePitch = Math.max(zendermiePitch-5, 40);
+					markDirty();
+				} else if (zendermiePitch < 40) {
+					zendermiePitch = Math.min(zendermiePitch+5, 40);
+					markDirty();
 				}
 			}
-			if (world.random.nextInt(5) == 0) {
-				world.addParticle(ParticleTypes.PORTAL,
-						pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, (world.random.nextDouble() - 0.5) * 2, -world.random.nextDouble(), (world.random.nextDouble() - 0.5) * 2);
-			}
-		} else {
+		}
+		if (!world.isClient) {
 			if (world.random.nextInt(1000) < sayTicks++) {
 				sayTicks = -60;
 				world.playSound(null, pos, Yttr.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, blind ? 0.3f : 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
 			}
+		} else if (world.random.nextInt(5) == 0) {
+			world.addParticle(ParticleTypes.PORTAL,
+					pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, (world.random.nextDouble() - 0.5) * 2, -world.random.nextDouble(), (world.random.nextDouble() - 0.5) * 2);
 		}
+	}
+	
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag = super.toTag(tag);
+		tag.putFloat("Yaw", zendermieYaw);
+		tag.putFloat("Pitch", zendermiePitch);
+		return tag;
+	}
+	
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		zendermieYaw = prevZendermieYaw = tag.getFloat("Yaw");
+		zendermiePitch = prevZendermiePitch = tag.getFloat("Pitch");
+	}
+	
+	@Override
+	public CompoundTag toInitialChunkDataTag() {
+		CompoundTag tag = super.toInitialChunkDataTag();
+		tag.putFloat("Yaw", zendermieYaw);
+		tag.putFloat("Pitch", zendermiePitch);
+		return tag;
 	}
 
 	public boolean isBlind() {
