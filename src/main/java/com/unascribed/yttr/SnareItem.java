@@ -323,7 +323,9 @@ public class SnareItem extends Item {
 				release((entity instanceof PlayerEntity) ? (PlayerEntity)entity : null, world, stack, entity.getPos(), entity.getYaw(1), true);
 			}
 		}
-		stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		if (stack.hasTag() && stack.getTag().contains("Contents")) {
+			stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		}
 		if (entity instanceof PlayerEntity && selected) {
 			Text msg = getContainmentMessage(world, stack);
 			if (msg != null) {
@@ -345,7 +347,9 @@ public class SnareItem extends Item {
 				release(null, world, stack, Vec3d.ofBottomCenter(pos.up()), 0, true);
 			}
 		}
-		stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		if (stack.hasTag() && stack.getTag().contains("Contents")) {
+			stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
+		}
 	}
 	
 	private void handleAmbientSound(ItemStack stack, World world, Vec3d pos, boolean selected) {
