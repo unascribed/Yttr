@@ -183,9 +183,13 @@ public class Yttr implements ModInitializer {
 			.repeat(8);
 	
 	public static final Tag<Block> FIRE_MODE_INSTABREAK = TagRegistry.block(new Identifier("yttr", "fire_mode_instabreak"));
+	public static final Tag<Block> SNAREABLE_BLOCKS = TagRegistry.block(new Identifier("yttr", "snareable"));
+	public static final Tag<Block> UNSNAREABLE_BLOCKS = TagRegistry.block(new Identifier("yttr", "unsnareable"));
 	public static final Tag<Fluid> VOID_TAG = AccessorFluidTags.getRequiredTags().add("yttr:void");
-	public static final Tag<EntityType<?>> UNSNAREABLE_TAG = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
+	public static final Tag<EntityType<?>> UNSNAREABLE_ENTITY_TAG = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
+	public static final Tag<EntityType<?>> SNAREABLE_NONLIVING_TAG = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
 	public static final Tag<EntityType<?>> BOSSES_TAG = TagRegistry.entityType(new Identifier("yttr", "bosses"));
+	public static final Tag<Item> UNSNAREABLE_ITEM_TAG = TagRegistry.item(new Identifier("yttr", "unsnareable"));
 	
 	@Override
 	public void onInitialize() {

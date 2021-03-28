@@ -1,8 +1,12 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "yttr:item/snare",
-    "layer1": "yttr:item/snare_layer1",
-    "layer2": "yttr:item/snare_layer2"
-  }
+	"parent": "yttr:item/snare_base",
+	"textures": {
+		"layer0": "yttr:item/snare_empty"
+	},
+	"overrides": [
+		{
+			"predicate": { "yttr:filled": 1 },
+			"model": "yttr:item/snare_filled"
+		}
+	]
 }

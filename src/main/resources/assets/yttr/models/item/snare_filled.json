@@ -1,0 +1,8 @@
+{
+	"parent": "yttr:item/snare_base",
+	"textures": {
+		"layer0": "yttr:item/snare",
+		"layer1": "yttr:item/snare_layer1",
+		"layer2": "yttr:item/snare_layer2"
+	}
+}

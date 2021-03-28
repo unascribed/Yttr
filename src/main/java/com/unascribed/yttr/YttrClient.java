@@ -2,15 +2,27 @@ package com.unascribed.yttr;
 
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.DummyServerWorld;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
+import com.unascribed.yttr.client.TextureColorThief;
 import com.unascribed.yttr.client.VoidBallParticle;
+import com.unascribed.yttr.mixin.AccessorEntityRendererDispatcher;
 import com.unascribed.yttr.mixin.AccessorEntityTrackingSoundInstance;
 
+import com.google.common.base.Charsets;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
+import com.google.common.hash.Hashing;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -20,7 +32,10 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegi
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -31,6 +46,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
@@ -45,8 +61,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +74,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.World;
 
 public class YttrClient implements ClientModInitializer {
 	
@@ -69,6 +90,23 @@ public class YttrClient implements ClientModInitializer {
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
 	private final UVObserver uvo = new UVObserver();
+	
+	private static final Supplier<World> dummyWorld;
+	static {
+		Supplier<World> dummyWorldTemp;
+		try {
+			DummyServerWorld sw = UnsafeAllocator.create().newInstance(DummyServerWorld.class);
+			sw.init();
+			dummyWorldTemp = () -> sw;
+		} catch (Exception e) {
+			dummyWorldTemp = () -> MinecraftClient.getInstance().world;
+			LogManager.getLogger("Yttr").warn("Failed to construct dummy ServerWorld, using client world directly. Snare color determination may be wrong for some entities!", e);
+		}
+		dummyWorld = dummyWorldTemp;
+	}
+	private static final Cache<CompoundTag, Identifier> textureCache = CacheBuilder.newBuilder()
+			.expireAfterAccess(5, TimeUnit.SECONDS)
+			.build();
 	
 	@Override
 	public void onInitializeClient() {
@@ -104,15 +142,47 @@ public class YttrClient implements ClientModInitializer {
 			if (tintIndex == 0) return -1;
 			EntityType<?> type = Yttr.SNARE.getEntityType(stack);
 			if (type != null) {
-				SpawnEggItem spi = SpawnEggItem.forEntity(type);
 				int primary;
 				int secondary;
-				if (spi != null) {
-					primary = spi.getColor(0);
-					secondary = spi.getColor(1);
+				CompoundTag data = stack.getTag().getCompound("Contents");
+				if (!textureCache.asMap().containsKey(data)) {
+					if (type == EntityType.FALLING_BLOCK) {
+						BlockState bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
+						BakedModel bm = MinecraftClient.getInstance().getBlockRenderManager().getModel(bs);
+						Identifier id = bm.getSprite().getId();
+						textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
+					} else if (type == EntityType.ITEM) {
+						ItemStack item = ItemStack.fromTag(data.getCompound("Item"));
+						BakedModel bm = MinecraftClient.getInstance().getItemRenderer().getModels().getModel(item);
+						Identifier id = bm.getSprite().getId();
+						textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
+					} else {
+						EntityRenderer renderer = ((AccessorEntityRendererDispatcher)MinecraftClient.getInstance().getEntityRenderDispatcher()).yttr$getRenderers().get(type);
+						if (renderer == null) {
+							textureCache.put(data, TextureColorThief.MISSINGNO);
+						} else {
+							try {
+								textureCache.put(data, renderer.getTexture(Yttr.SNARE.createEntity(dummyWorld.get(), stack)));
+							} catch (Throwable e) {
+								LogManager.getLogger("Yttr").warn("Failed to determine color for entity", e);
+								textureCache.put(data, TextureColorThief.MISSINGNO);
+							}
+						}
+					}
+				}
+				Identifier tex = textureCache.getIfPresent(data);
+				if (tex != null && tex != TextureColorThief.MISSINGNO) {
+					primary = TextureColorThief.getPrimaryColor(tex);
+					secondary = TextureColorThief.getSecondaryColor(tex);
 				} else {
-					primary = type.hashCode();
-					secondary = ~primary;
+					SpawnEggItem spi = SpawnEggItem.forEntity(type);
+					if (spi != null) {
+						primary = spi.getColor(0);
+						secondary = spi.getColor(1);
+					} else {
+						primary = Hashing.murmur3_32().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
+						secondary = ~primary;
+					}
 				}
 				return tintIndex == 1 ? primary : secondary;
 			} else {
@@ -140,6 +210,18 @@ public class YttrClient implements ClientModInitializer {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if (sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE.getId()) && sound instanceof EntityTrackingSoundInstance) {
 					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
+				}
+			});
+			((ReloadableResourceManager)mc.getResourceManager()).registerListener(new SimpleSynchronousResourceReloadListener() {
+
+				@Override
+				public Identifier getFabricId() {
+					return new Identifier("yttr", "clear_thief_cache");
+				}
+
+				@Override
+				public void apply(ResourceManager manager) {
+					TextureColorThief.clearCache();
 				}
 			});
 		});
@@ -209,6 +291,9 @@ public class YttrClient implements ClientModInitializer {
 			});
 		});
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);
+		FabricModelPredicateProviderRegistry.register(Yttr.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
+			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
+		});
 	}
 	
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

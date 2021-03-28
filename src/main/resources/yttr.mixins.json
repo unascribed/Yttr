@@ -7,14 +7,17 @@
   "mixins": [
   	"AccessorEntity",
   	"MixinEntity",
-  	"AccessorHorseBaseEntity"
+  	"AccessorHorseBaseEntity",
+  	"AccessorMobEntity",
+  	"AccessorLivingEntity"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",
   	"AccessorEntityTrackingSoundInstance",
   	"MixinPlayerEntityRenderer",
   	"MixinMinecraftClient",
-  	"MixinGameRenderer"
+  	"MixinGameRenderer",
+  	"AccessorEntityRendererDispatcher"
   ],
   "injectors": {
     "defaultRequire": 1

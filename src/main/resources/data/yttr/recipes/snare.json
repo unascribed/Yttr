@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  Y",
+    " gY",
+    "YYR"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:ghast_tear"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "Y": {
+      "item": "yttr:yttrium_ingot"
+    }
+  },
+  "result": {
+    "item": "yttr:snare"
+  }
+}
