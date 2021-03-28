@@ -36,7 +36,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -110,33 +109,31 @@ public class SnareItem extends Item {
 						return user.getYaw(1);
 					}
 				};
-				if (world.getBlockState(target).canReplace(ctx)) {
-					if (fbe.getBlockState().canPlaceAt(world, target)) {
-						fbe.remove();
-						try {
-							BlockState placement = bs.getBlock().getPlacementState(ctx);
-							if (placement.getBlock() == bs.getBlock()) {
-								for (Property prop : bs.getProperties()) {
-									if (prop == Properties.ROTATION || placement.get(prop) instanceof Direction) {
-										bs = bs.with(prop, placement.get(prop));
-									}
+				if (world.getBlockState(target).canReplace(ctx) && fbe.getBlockState().canPlaceAt(world, target)) {
+					fbe.remove();
+					try {
+						BlockState placement = bs.getBlock().getPlacementState(ctx);
+						if (placement.getBlock() == bs.getBlock()) {
+							for (Property prop : bs.getProperties()) {
+								if (prop == Properties.ROTATION || placement.get(prop) instanceof Direction) {
+									bs = bs.with(prop, placement.get(prop));
 								}
 							}
-						} catch (Throwable t) {
-							LogManager.getLogger("Yttr").warn("Failed to update rotation for snare placement", t);
 						}
-						world.setBlockState(target, bs);
-						if (fbe.blockEntityData != null) {
-							BlockEntity be = world.getBlockEntity(target);
-							if (be != null) {
-								CompoundTag data = be.toTag(new CompoundTag());
-								CompoundTag incoming = fbe.blockEntityData.copy();
-								incoming.remove("x");
-								incoming.remove("y");
-								incoming.remove("z");
-								data.copyFrom(incoming);
-								be.fromTag(bs, data);
-							}
+					} catch (Throwable t) {
+						LogManager.getLogger("Yttr").warn("Failed to update rotation for snare placement", t);
+					}
+					world.setBlockState(target, bs);
+					if (fbe.blockEntityData != null) {
+						BlockEntity be = world.getBlockEntity(target);
+						if (be != null) {
+							CompoundTag data = be.toTag(new CompoundTag());
+							CompoundTag incoming = fbe.blockEntityData.copy();
+							incoming.remove("x");
+							incoming.remove("y");
+							incoming.remove("z");
+							data.copyFrom(incoming);
+							be.fromTag(bs, data);
 						}
 					}
 				} else {
@@ -150,14 +147,16 @@ public class SnareItem extends Item {
 			}
 			return TypedActionResult.success(stack, true);
 		} else {
+			BlockPos toDelete = null;
+			BlockState deleteState = null;
 			if (hit == null && hr.getType() != Type.MISS) {
 				BlockState bs = world.getBlockState(hr.getBlockPos());
 				BlockEntity be = world.getBlockEntity(hr.getBlockPos());
 				if ((be == null || bs.isIn(Yttr.SNAREABLE_BLOCKS)) && !bs.isIn(Yttr.UNSNAREABLE_BLOCKS)) {
 					if (bs.getHardness(world, hr.getBlockPos()) >= 0) {
-						world.removeBlockEntity(hr.getBlockPos());
+						toDelete = hr.getBlockPos();
 						boolean waterlogged = bs.getBlock() instanceof Waterloggable && bs.get(Properties.WATERLOGGED);
-						world.setBlockState(hr.getBlockPos(), waterlogged ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+						deleteState = waterlogged ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState();
 						if (waterlogged) bs = bs.with(Properties.WATERLOGGED, false);
 						FallingBlockEntity fbe = new FallingBlockEntity(world, hr.getBlockPos().getX()+0.5, hr.getBlockPos().getY(), hr.getBlockPos().getZ()+0.5, bs);
 						fbe.dropItem = true;
@@ -180,7 +179,12 @@ public class SnareItem extends Item {
 			if (hit.saveSelfToTag(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
 				if (tryingToCheatSnareTimer) return TypedActionResult.fail(stack);
-				if (user instanceof ServerPlayerEntity && stack.damage(400, RANDOM, (ServerPlayerEntity) user)) return TypedActionResult.fail(ItemStack.EMPTY);
+				stack.damage(400, user, (e) -> user.sendToolBreakStatus(hand));
+				if (stack.isEmpty()) return TypedActionResult.fail(ItemStack.EMPTY);
+				if (toDelete != null) {
+					world.removeBlockEntity(toDelete);
+					world.setBlockState(toDelete, deleteState);
+				}
 				stack.getTag().remove("AmbientSound");
 				stack.getTag().remove("AmbientSoundTimer");
 				stack.getTag().remove("AmbientSoundDelay");

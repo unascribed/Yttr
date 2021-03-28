@@ -4,6 +4,7 @@
 		"minecraft:piston_head",
 		"minecraft:sticky_piston",
 		"#minecraft:tall_flowers",
-		"minecraft:tall_grass"
+		"minecraft:tall_grass",
+		"#minecraft:doors"
 	]
 }

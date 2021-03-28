@@ -27,18 +27,14 @@
 		"minecraft:comparator",
 		"#minecraft:banners",
 		"#minecraft:shulker_boxes",
-		"#minecraft:beds",
-		"minecraft:conduit",
 		"minecraft:barrel",
 		"minecraft:smoker",
 		"minecraft:blast_furnace",
 		"minecraft:lectern",
 		"minecraft:bell",
-		"minecraft:jigsaw",
 		"minecraft:campfire",
 		"minecraft:soul_campfire",
-		"minecraft:bee_nest",
-		"minecraft:beehive",
+		"#minecraft:beehives",
 		"yttr:power_meter"
 	]
 }
