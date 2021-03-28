@@ -321,10 +321,9 @@ public class SnareItem extends Item {
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.7f, 1.75f);
 				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.5f, 1.3f);
 				release((entity instanceof PlayerEntity) ? (PlayerEntity)entity : null, world, stack, entity.getPos(), entity.getYaw(1), true);
-			} else {
-				stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
 			}
 		}
+		stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
 		if (entity instanceof PlayerEntity && selected) {
 			Text msg = getContainmentMessage(world, stack);
 			if (msg != null) {
@@ -344,10 +343,9 @@ public class SnareItem extends Item {
 				world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.7f, 1.75f);
 				world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1.3f);
 				release(null, world, stack, Vec3d.ofBottomCenter(pos.up()), 0, true);
-			} else {
-				stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
 			}
 		}
+		stack.getTag().putLong("LastUpdate", world.getServer().getTicks());
 	}
 	
 	private void handleAmbientSound(ItemStack stack, World world, Vec3d pos, boolean selected) {
