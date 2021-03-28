@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" Y ",
+		"YYy",
+		" y "
+	],
+	"key": {
+		"Y": {
+			"item": "yttr:yttrium_ingot"
+		},
+		"y": {
+			"item": "yttr:yttrium_nugget"
+		}
+	},
+	"result": {
+		"item": "yttr:shears"
+	}
+}

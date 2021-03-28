@@ -45,5 +45,17 @@
 	"dissolve": {
 		"sounds": ["yttr:dissolve"],
 		"subtitle": "subtitles.yttr.dissolve"
+	},
+	"craft_aware_hopper": {
+		"sounds": ["yttr:craft_aware_hopper"],
+		"subtitle": "subtitles.yttr.horrible_crafting"
+	},
+	"aware_hopper_ambient": {
+		"sounds": [
+			"yttr:aware_hopper_say1",
+			"yttr:aware_hopper_say2",
+			"yttr:aware_hopper_say3"
+		],
+		"subtitle": "subtitles.yttr.aware_hopper"
 	}
 }

@@ -4,3 +4,5 @@ accessible method net/minecraft/client/particle/RedDustParticle <init> (Lnet/min
 
 mutable field net/minecraft/world/World isClient Z
 mutable field net/minecraft/world/World random Ljava/util/Random;
+
+accessible class net/minecraft/recipe/Ingredient$Entry

@@ -9,7 +9,11 @@
   	"MixinEntity",
   	"AccessorHorseBaseEntity",
   	"AccessorMobEntity",
-  	"AccessorLivingEntity"
+  	"AccessorLivingEntity",
+  	"MixinIngredient",
+  	"MixinCraftingResultSlot",
+  	"MixinCraftingRecipeSerializers",
+  	"MixinRecipeManager"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",

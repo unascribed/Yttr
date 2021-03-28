@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +21,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.MoreFiles;
 import net.fabricmc.api.ModInitializer;
@@ -95,6 +97,8 @@ public class Yttr implements ModInitializer {
 	public static final VoidFluid.Flowing FLOWING_VOID = new VoidFluid.Flowing();
 	public static final VoidFluid.Still VOID = new VoidFluid.Still();
 	
+	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
+	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
 			.strength(4)
 			.requiresTool()
@@ -130,7 +134,15 @@ public class Yttr implements ModInitializer {
 			.strength(100)
 			.dropsNothing()
 		);
+	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
 	
+	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
@@ -156,6 +168,10 @@ public class Yttr implements ModInitializer {
 			.maxDamage(40960)
 			.group(ITEM_GROUP)
 		);
+	public static final ShearsItem SHEARS = new ShearsItem(new Item.Settings()
+			.maxDamage(512)
+			.group(ITEM_GROUP)
+		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
 	public static final SoundEvent RIFLE_CHARGE_CONTINUE = new SoundEvent(new Identifier("yttr", "rifle_charge_continue"));
@@ -169,6 +185,8 @@ public class Yttr implements ModInitializer {
 	public static final SoundEvent RIFLE_WASTE = new SoundEvent(new Identifier("yttr", "rifle_waste"));
 	public static final SoundEvent VOID_SOUND = new SoundEvent(new Identifier("yttr", "void"));
 	public static final SoundEvent DISSOLVE = new SoundEvent(new Identifier("yttr", "dissolve"));
+	public static final SoundEvent CRAFT_AWARE_HOPPER = new SoundEvent(new Identifier("yttr", "craft_aware_hopper"));
+	public static final SoundEvent AWARE_HOPPER_AMBIENT = new SoundEvent(new Identifier("yttr", "aware_hopper_ambient"));
 	
 	private static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
 			.configure(new OreFeatureConfig(
@@ -197,12 +215,15 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:yttrium_block", YTTRIUM_BLOCK);
 		Registry.register(Registry.BLOCK, "yttr:power_meter", POWER_METER);
 		Registry.register(Registry.BLOCK, "yttr:void", VOID_BLOCK);
+		Registry.register(Registry.BLOCK, "yttr:aware_hopper", AWARE_HOPPER);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
 		
 		Registry.register(Registry.ITEM, "yttr:gadolinite", new BlockItem(GADOLINITE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:yttrium_block", new BlockItem(YTTRIUM_BLOCK, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:power_meter", new BlockItem(POWER_METER, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:aware_hopper", new BlockItem(AWARE_HOPPER, new Item.Settings().group(ITEM_GROUP).maxCount(1)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);
@@ -210,6 +231,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
 		Registry.register(Registry.ITEM, "yttr:void_bucket", VOID_BUCKET);
 		Registry.register(Registry.ITEM, "yttr:snare", SNARE);
+		Registry.register(Registry.ITEM, "yttr:shears", SHEARS);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_continue", RIFLE_CHARGE_CONTINUE);
@@ -223,6 +245,8 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_waste", RIFLE_WASTE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:void", VOID_SOUND);
 		Registry.register(Registry.SOUND_EVENT, "yttr:dissolve", DISSOLVE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:craft_aware_hopper", CRAFT_AWARE_HOPPER);
+		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_ambient", AWARE_HOPPER_AMBIENT);
 		
 		Registry.register(Registry.FLUID, "yttr:void", VOID);
 		Registry.register(Registry.FLUID, "yttr:flowing_void", FLOWING_VOID);

@@ -8,11 +8,13 @@
 	"item.yttr.void_bucket": "Void Bucket",
 	"item.yttr.snare": "Snare",
 	"item.yttr.snare.filled": "Snare (%s)",
+	"item.yttr.shears": "Surgical Shears",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
 	"block.yttr.power_meter": "Power Meter",
 	"block.yttr.void": "Void",
+	"block.yttr.aware_hopper": "Aware Hopper",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
@@ -27,11 +29,15 @@
 	"subtitles.yttr.rifle_waste": "Yttric Rifle dumped",
 	"subtitles.yttr.void": "Void launched",
 	"subtitles.yttr.dissolve": "Dissolving",
+	"subtitles.yttr.horrible_crafting": "Player commits a terrible deed",
+	"subtitles.yttr.aware_hopper": "Aware hopper makes tortured noises",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
 	"death.attack.yttr.rifle.item": "%s was vaporized by %s using %s",
 	"death.attack.yttr.solvent": "%s was dissolved",
+	"death.attack.yttr.scissors": "%s ran with scissors",
+	"death.attack.yttr.scissors.item": "%s ran with %3$s",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",

@@ -1,0 +1,32 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ZSE",
+		"LCL",
+		" H "
+	],
+	"key": {
+		"Z": {
+			"yttr:entity": "minecraft:zombie"
+		},
+		"E": {
+			"yttr:entity": "minecraft:enderman"
+		},
+		"S": {
+			"item": "yttr:shears"
+		},
+		"C": {
+			"item": "minecraft:crafting_table"
+		},
+		"H": {
+			"item": "minecraft:hopper"
+		},
+		"L": {
+			"item": "minecraft:lapis_lazuli"
+		}
+	},
+	"yttr:sound": "yttr:craft_aware_hopper",
+	"result": {
+		"item": "yttr:aware_hopper"
+	}
+}

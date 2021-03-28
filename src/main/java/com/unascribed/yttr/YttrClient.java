@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.DummyServerWorld;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
 import com.unascribed.yttr.client.TextureColorThief;
@@ -291,6 +292,7 @@ public class YttrClient implements ClientModInitializer {
 			});
 		});
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(Yttr.AWARE_HOPPER_ENTITY, AwareHopperBlockEntityRenderer::new);
 		FabricModelPredicateProviderRegistry.register(Yttr.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});

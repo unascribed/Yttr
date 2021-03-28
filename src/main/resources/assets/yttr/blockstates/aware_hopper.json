@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "yttr:block/aware_hopper"
+    },
+    "facing=east": {
+      "model": "yttr:block/aware_hopper_side",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/aware_hopper_side"
+    },
+    "facing=south": {
+      "model": "yttr:block/aware_hopper_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "yttr:block/aware_hopper_side",
+      "y": 270
+    }
+  }
+}
