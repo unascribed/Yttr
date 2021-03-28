@@ -1,5 +1,9 @@
 package com.unascribed.yttr;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -10,6 +14,8 @@ import net.minecraft.block.entity.Hopper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -49,6 +55,7 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 
 	public AwareHopperBlock(Settings settings) {
 		super(settings);
+		setDefaultState(getDefaultState().with(BLIND, false));
 	}
 	
 	@Override
@@ -131,6 +138,22 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		Direction direction = ctx.getSide().getOpposite();
 		return getDefaultState().with(FACING, direction.getAxis() == Direction.Axis.Y ? Direction.DOWN : direction);
+	}
+	
+	@Override
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+		List<ItemStack> li = super.getDroppedStacks(state, builder);
+		if (state.get(BLIND)) {
+			li = Lists.newArrayList(li);
+			li.add(new ItemStack(Blocks.CARVED_PUMPKIN));
+		}
+		return li;
+	}
+	
+	@Override
+	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
+		super.afterBreak(world, player, pos, state, blockEntity, stack);
+		world.playSound(null, pos, Yttr.AWARE_HOPPER_BREAK, SoundCategory.BLOCKS, 1, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
 	}
 
 

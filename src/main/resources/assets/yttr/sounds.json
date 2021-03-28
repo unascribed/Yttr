@@ -57,5 +57,8 @@
 			"yttr:aware_hopper_say3"
 		],
 		"subtitle": "subtitles.yttr.aware_hopper"
+	},
+	"aware_hopper_break": {
+		"sounds": ["yttr:aware_hopper_break"]
 	}
 }

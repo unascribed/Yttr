@@ -58,7 +58,7 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable {
 		} else {
 			if (world.random.nextInt(1000) < sayTicks++) {
 				sayTicks = -60;
-				world.playSound(null, pos, Yttr.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, blind ? 0.3f : 0.7f, (world.random.nextFloat()-world.random.nextFloat()*0.2f) + 1);
+				world.playSound(null, pos, Yttr.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, blind ? 0.3f : 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
 			}
 		}
 	}
