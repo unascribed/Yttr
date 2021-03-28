@@ -149,7 +149,7 @@ public class SnareItem extends Item {
 		} else {
 			BlockPos toDelete = null;
 			BlockState deleteState = null;
-			if (hit == null && hr.getType() != Type.MISS) {
+			if (user.isSneaking() && hit == null && hr.getType() != Type.MISS) {
 				BlockState bs = world.getBlockState(hr.getBlockPos());
 				BlockEntity be = world.getBlockEntity(hr.getBlockPos());
 				if ((be == null || bs.isIn(Yttr.SNAREABLE_BLOCKS)) && !bs.isIn(Yttr.UNSNAREABLE_BLOCKS)) {
