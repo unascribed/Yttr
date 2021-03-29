@@ -2,7 +2,6 @@ package com.unascribed.yttr;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,6 +13,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -21,7 +24,6 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
@@ -53,20 +55,33 @@ public enum RifleMode {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2, power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
+			if (power > 1.1f && user.world.getRegistryKey().getValue().toString().equals("minecraft:overworld") && hit instanceof BlockHitResult) {
+				BlockHitResult bhr = (BlockHitResult)hit;
+				if (bhr.getBlockPos().getY() < 10 && user.world.getBlockState(bhr.getBlockPos()).isOf(Yttr.BEDROCK_SMASHER) && bhr.getSide() == Direction.UP) {
+					BlockPos down = bhr.getBlockPos().down();
+					if (user.world.getBlockState(down).isOf(Blocks.BEDROCK)) {
+						if (down.getY() == 0) {
+							user.world.setBlockState(down, Yttr.VOID_GEYSER.getDefaultState());
+							user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1, 0.5f);
+						} else {
+							user.world.setBlockState(down, Yttr.RUINED_BEDROCK.getDefaultState());
+							user.world.breakBlock(down.north(), true, user);
+							user.world.breakBlock(down.south(), true, user);
+						}
+						user.world.setBlockState(bhr.getBlockPos(), Blocks.AIR.getDefaultState());
+						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 2);
+						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 1.5f);
+						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.BLOCKS, 1, 0.5f);
+						if (user.world instanceof ServerWorld) {
+							((ServerWorld)user.world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
+						}
+					}
+				}
+			}
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
-			checkBedrock(user.world, user.getBlockPos().down());
-			checkBedrock(user.world, user.getBlockPos().up(2));
 			user.world.createExplosion(null, DamageSource.explosion(user), null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false, DestructionType.DESTROY);
-		}
-		void checkBedrock(World world, BlockPos pos) {
-			if (pos.getY() == 0 || pos.getY() == 127 || pos.getY() == 255) return;
-			BlockState bs = world.getBlockState(pos);
-			if (bs.getBlock() == Blocks.BEDROCK) {
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.syncWorldEvent(2001, pos, Block.getRawIdFromState(bs));
-			}
 		}
 	},
 	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 3, 1.5f) {

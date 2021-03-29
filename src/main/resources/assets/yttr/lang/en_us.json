@@ -10,6 +10,7 @@
 	"item.yttr.snare": "Snare",
 	"item.yttr.snare.filled": "Snare (%s)",
 	"item.yttr.shears": "Surgical Shears",
+	"item.yttr.bedrock_shard": "Bedrock Shard",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
@@ -18,6 +19,9 @@
 	"block.yttr.aware_hopper": "Aware Hopper",
 	"block.yttr.levitation_chamber": "Levitation Chamber",
 	"block.yttr.chute": "Chute",
+	"block.yttr.bedrock_smasher": "Bedrock Smasher",
+	"block.yttr.void_geyser": "Void Geyser",
+	"block.yttr.ruined_bedrock": "Ruined Bedrock",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

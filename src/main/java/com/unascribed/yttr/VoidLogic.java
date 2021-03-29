@@ -61,7 +61,7 @@ public class VoidLogic {
 			buf.writeFloat((float)_pos.x);
 			buf.writeFloat((float)_pos.y);
 			buf.writeFloat((float)_pos.z);
-			buf.writeFloat(r+1.5f);
+			buf.writeFloat(r+0.5f);
 			Packet<?> pkt = ServerPlayNetworking.createS2CPacket(new Identifier("yttr", "void_ball"), buf);
 			for (PlayerEntity pe : world.getPlayers()) {
 				if (pe instanceof ServerPlayerEntity) {

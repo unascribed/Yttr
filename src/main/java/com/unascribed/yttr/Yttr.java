@@ -41,6 +41,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.command.CommandException;
@@ -81,6 +82,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
@@ -159,11 +163,34 @@ public class Yttr implements ModInitializer {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
+	public static final VoidGeyserBlock VOID_GEYSER = new VoidGeyserBlock(FabricBlockSettings.of(Material.STONE)
+			.strength(-1, 9000000)
+			.dropsNothing()
+		);
+	public static final Block BEDROCK_SMASHER = new Block(FabricBlockSettings.of(Material.STONE)
+			.breakByTool(FabricToolTags.PICKAXES, 3)
+			.strength(35, 4000)
+		) {
+		private final VoxelShape SHAPE = VoxelShapes.union(
+				VoxelShapes.cuboid(6/16D, 0, 2/16D, 10/16D, 13/16D, 14/16D),
+				VoxelShapes.cuboid(0, 12.5/16D, 0, 1, 13.5/16D, 1)
+			);
+		@Override
+		public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+			return SHAPE;
+		}
+	};
+	public static final Block RUINED_BEDROCK = new Block(FabricBlockSettings.of(Material.STONE)
+			.breakByTool(FabricToolTags.PICKAXES, 3)
+			.strength(75, 9000000)
+			.nonOpaque()
+		);
 	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
 	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER_ENTITY = new BlockEntityType<>(LevitationChamberBlockEntity::new, ImmutableSet.of(LEVITATION_CHAMBER), null);
 	public static final BlockEntityType<ChuteBlockEntity> CHUTE_ENTITY = new BlockEntityType<>(ChuteBlockEntity::new, ImmutableSet.of(CHUTE), null);
+	public static final BlockEntityType<VoidGeyserBlockEntity> VOID_GEYSER_ENTITY = new BlockEntityType<>(VoidGeyserBlockEntity::new, ImmutableSet.of(VOID_GEYSER), null);
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
@@ -190,6 +217,9 @@ public class Yttr implements ModInitializer {
 		);
 	public static final ShearsItem SHEARS = new ShearsItem(new Item.Settings()
 			.maxDamage(512)
+			.group(ITEM_GROUP)
+		);
+	public static final Item BEDROCK_SHARD = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
 		);
 	
@@ -240,11 +270,15 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:aware_hopper", AWARE_HOPPER);
 		Registry.register(Registry.BLOCK, "yttr:levitation_chamber", LEVITATION_CHAMBER);
 		Registry.register(Registry.BLOCK, "yttr:chute", CHUTE);
+		Registry.register(Registry.BLOCK, "yttr:void_geyser", VOID_GEYSER);
+		Registry.register(Registry.BLOCK, "yttr:bedrock_smasher", BEDROCK_SMASHER);
+		Registry.register(Registry.BLOCK, "yttr:ruined_bedrock", RUINED_BEDROCK);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:levitation_chamber", LEVITATION_CHAMBER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:chute", CHUTE_ENTITY);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:void_geyser", VOID_GEYSER_ENTITY);
 		
 		Registry.register(Registry.ITEM, "yttr:gadolinite", new BlockItem(GADOLINITE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:yttrium_block", new BlockItem(YTTRIUM_BLOCK, new Item.Settings().group(ITEM_GROUP)));
@@ -252,6 +286,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:aware_hopper", new BlockItem(AWARE_HOPPER, new Item.Settings().group(ITEM_GROUP).maxCount(1)));
 		Registry.register(Registry.ITEM, "yttr:levitation_chamber", new LevitationChamberItem(LEVITATION_CHAMBER, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:chute", new BlockItem(CHUTE, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:bedrock_smasher", new BlockItem(BEDROCK_SMASHER, new Item.Settings().group(ITEM_GROUP)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);
@@ -260,6 +295,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:void_bucket", VOID_BUCKET);
 		Registry.register(Registry.ITEM, "yttr:snare", SNARE);
 		Registry.register(Registry.ITEM, "yttr:shears", SHEARS);
+		Registry.register(Registry.ITEM, "yttr:bedrock_shard", BEDROCK_SHARD);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_continue", RIFLE_CHARGE_CONTINUE);
