@@ -1,8 +1,11 @@
 package com.unascribed.yttr;
 
 import java.util.List;
+import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -42,22 +45,35 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	public static final DirectionProperty FACING = Properties.HOPPER_FACING;
 	public static final BooleanProperty BLIND = BooleanProperty.of("blind");
 
-	private static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0.0D, 7.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	private static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(4.0D, 4.0D, 4.0D, 12.0D, 7.0D, 12.0D);
-	private static final VoxelShape OUTSIDE_SHAPE = VoxelShapes.union(MIDDLE_SHAPE, TOP_SHAPE);
-	private static final VoxelShape DEFAULT_SHAPE = VoxelShapes.combineAndSimplify(OUTSIDE_SHAPE, Hopper.INSIDE_SHAPE, BooleanBiFunction.ONLY_FIRST);
+	private static final VoxelShape BASE_SHAPE = Stream.of(
+			createCuboidShape(0, 8, 0, 2, 16, 16),
+			createCuboidShape(2, 8, 0, 14, 13, 2),
+			createCuboidShape(14, 8, 0, 16, 16, 16),
+			createCuboidShape(2, 8, 14, 14, 13, 16),
+			createCuboidShape(3, 8, 3, 13, 10, 13),
+			createCuboidShape(4, 4, 4, 12, 7, 12),
+			createCuboidShape(0, 7, 0, 16, 8, 16)
+		).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
+	
+	private static final VoxelShape HEAD_SHAPE = createCuboidShape(4, 20, 4, 12, 32, 12);
+	private static final VoxelShape PUMPKIN_SHAPE = createCuboidShape(3, 22, 3, 13, 32, 13);
 
-	private static final VoxelShape DOWN_SHAPE = VoxelShapes.union(DEFAULT_SHAPE, Block.createCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 4.0D, 10.0D));
-	private static final VoxelShape EAST_SHAPE = VoxelShapes.union(DEFAULT_SHAPE, Block.createCuboidShape(12.0D, 4.0D, 6.0D, 16.0D, 8.0D, 10.0D));
-	private static final VoxelShape NORTH_SHAPE = VoxelShapes.union(DEFAULT_SHAPE, Block.createCuboidShape(6.0D, 4.0D, 0.0D, 10.0D, 8.0D, 4.0D));
-	private static final VoxelShape SOUTH_SHAPE = VoxelShapes.union(DEFAULT_SHAPE, Block.createCuboidShape(6.0D, 4.0D, 12.0D, 10.0D, 8.0D, 16.0D));
-	private static final VoxelShape WEST_SHAPE = VoxelShapes.union(DEFAULT_SHAPE, Block.createCuboidShape(0.0D, 4.0D, 6.0D, 4.0D, 8.0D, 10.0D));
+	private static final ImmutableMap<Direction, VoxelShape> BASE_SHAPES = ImmutableMap.<Direction, VoxelShape>builder()
+			.put(Direction.DOWN,  VoxelShapes.union(BASE_SHAPE, createCuboidShape(6, 0, 6, 10, 4, 10)))
+			.put(Direction.EAST,  VoxelShapes.union(BASE_SHAPE, createCuboidShape(12, 4, 6, 16, 8, 10)))
+			.put(Direction.NORTH,  VoxelShapes.union(BASE_SHAPE, createCuboidShape(6, 4, 0, 10, 8, 4)))
+			.put(Direction.SOUTH,  VoxelShapes.union(BASE_SHAPE, createCuboidShape(6, 4, 12, 10, 8, 16)))
+			.put(Direction.WEST, VoxelShapes.union(BASE_SHAPE, createCuboidShape(0, 4, 6, 4, 8, 10)))
+			.build();
+	
+	private static final ImmutableMap<Direction, VoxelShape> NORMAL_SHAPES = ImmutableMap.copyOf(Maps.transformValues(BASE_SHAPES, s -> VoxelShapes.union(s, HEAD_SHAPE)));
+	private static final ImmutableMap<Direction, VoxelShape> BLIND_SHAPES = ImmutableMap.copyOf(Maps.transformValues(BASE_SHAPES, s -> VoxelShapes.union(s, PUMPKIN_SHAPE)));
 
-	private static final VoxelShape DOWN_RAY_TRACE_SHAPE = Hopper.INSIDE_SHAPE;
-	private static final VoxelShape EAST_RAY_TRACE_SHAPE = VoxelShapes.union(Hopper.INSIDE_SHAPE, Block.createCuboidShape(12.0D, 8.0D, 6.0D, 16.0D, 10.0D, 10.0D));
-	private static final VoxelShape NORTH_RAY_TRACE_SHAPE = VoxelShapes.union(Hopper.INSIDE_SHAPE, Block.createCuboidShape(6.0D, 8.0D, 0.0D, 10.0D, 10.0D, 4.0D));
-	private static final VoxelShape SOUTH_RAY_TRACE_SHAPE = VoxelShapes.union(Hopper.INSIDE_SHAPE, Block.createCuboidShape(6.0D, 8.0D, 12.0D, 10.0D, 10.0D, 16.0D));
-	private static final VoxelShape WEST_RAY_TRACE_SHAPE = VoxelShapes.union(Hopper.INSIDE_SHAPE, Block.createCuboidShape(0.0D, 8.0D, 6.0D, 4.0D, 10.0D, 10.0D));
+	private static final VoxelShape DOWN_RAY_TRACE_SHAPE = VoxelShapes.union(BASE_SHAPE, createCuboidShape(2, 9, 2, 14, 16, 14));
+	private static final VoxelShape EAST_RAY_TRACE_SHAPE = VoxelShapes.union(DOWN_RAY_TRACE_SHAPE, createCuboidShape(12, 8, 6, 16, 10, 10));
+	private static final VoxelShape NORTH_RAY_TRACE_SHAPE = VoxelShapes.union(DOWN_RAY_TRACE_SHAPE, createCuboidShape(6, 8, 0, 10, 10, 4));
+	private static final VoxelShape SOUTH_RAY_TRACE_SHAPE = VoxelShapes.union(DOWN_RAY_TRACE_SHAPE, createCuboidShape(6, 8, 12, 10, 10, 16));
+	private static final VoxelShape WEST_RAY_TRACE_SHAPE = VoxelShapes.union(DOWN_RAY_TRACE_SHAPE, createCuboidShape(0, 8, 6, 4, 10, 10));
 
 	public AwareHopperBlock(Settings settings) {
 		super(settings);
@@ -129,19 +145,10 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		switch(state.get(FACING)) {
-			case DOWN:
-				return DOWN_SHAPE;
-			case NORTH:
-				return NORTH_SHAPE;
-			case SOUTH:
-				return SOUTH_SHAPE;
-			case WEST:
-				return WEST_SHAPE;
-			case EAST:
-				return EAST_SHAPE;
-			default:
-				return DEFAULT_SHAPE;
+		if (state.get(BLIND)) {
+			return BLIND_SHAPES.getOrDefault(state.get(FACING), BASE_SHAPE);
+		} else {
+			return NORMAL_SHAPES.getOrDefault(state.get(FACING), BASE_SHAPE);
 		}
 	}
 

@@ -102,9 +102,9 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 			if (age % 20 == 0 && suffocating) {
 				sayTicks = -60;
 				world.playSound(null, pos, Yttr.AWARE_HOPPER_BREAK, SoundCategory.BLOCKS, blind ? 0.6f : 1f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
-			} else if (world.random.nextInt(1000) < sayTicks++) {
+			} else if (world.random.nextInt(1000) < sayTicks++ && !blind) {
 				sayTicks = -60;
-				world.playSound(null, pos, Yttr.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, blind ? 0.3f : 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
+				world.playSound(null, pos, Yttr.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
 			}
 			CraftingRecipe r = getRecipe();
 			if (!suffocating && r != null && r.matches(input, world) && output.isEmpty() && remainder.isEmpty()) {
