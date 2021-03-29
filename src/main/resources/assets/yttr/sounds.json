@@ -60,5 +60,8 @@
 	},
 	"aware_hopper_break": {
 		"sounds": ["yttr:aware_hopper_break"]
+	},
+	"aware_hopper_scream": {
+		"sounds": ["yttr:aware_hopper_scream"]
 	}
 }

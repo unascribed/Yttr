@@ -90,8 +90,11 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 
 public class Yttr implements ModInitializer {
 	
-	public static ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "main"))
-			.icon(() -> new ItemStack(Registry.ITEM.get(new Identifier("yttr", "yttrium_ingot"))))
+	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "main"))
+			.icon(() -> new ItemStack(Yttr.YTTRIUM_INGOT))
+		.build();
+	public static final ItemGroup SNARE_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "snare"))
+			.icon(() -> new ItemStack(Yttr.SNARE))
 		.build();
 	
 	public static final VoidFluid.Flowing FLOWING_VOID = new VoidFluid.Flowing();
@@ -205,6 +208,7 @@ public class Yttr implements ModInitializer {
 	public static final SoundEvent CRAFT_AWARE_HOPPER = new SoundEvent(new Identifier("yttr", "craft_aware_hopper"));
 	public static final SoundEvent AWARE_HOPPER_AMBIENT = new SoundEvent(new Identifier("yttr", "aware_hopper_ambient"));
 	public static final SoundEvent AWARE_HOPPER_BREAK = new SoundEvent(new Identifier("yttr", "aware_hopper_break"));
+	public static final SoundEvent AWARE_HOPPER_SCREAM = new SoundEvent(new Identifier("yttr", "aware_hopper_scream"));
 	
 	private static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
 			.configure(new OreFeatureConfig(
@@ -272,6 +276,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.SOUND_EVENT, "yttr:craft_aware_hopper", CRAFT_AWARE_HOPPER);
 		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_ambient", AWARE_HOPPER_AMBIENT);
 		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_break", AWARE_HOPPER_BREAK);
+		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_scream", AWARE_HOPPER_SCREAM);
 		
 		Registry.register(Registry.FLUID, "yttr:void", VOID);
 		Registry.register(Registry.FLUID, "yttr:flowing_void", FLOWING_VOID);

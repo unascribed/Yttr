@@ -31,7 +31,7 @@ public class AwareHopperBlockEntityRenderer extends BlockEntityRenderer<AwareHop
 		matrices.translate(0.5, 2.5, 0.5);
 		matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
 		matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
-		zendermie.setAngles(null, 0, 0, entity.age+tickDelta,
+		zendermie.setAngles(null, entity.craftingTicks > 0 ? 1 : 0, 0, entity.age+tickDelta,
 				MathHelper.lerpAngleDegrees(tickDelta, entity.prevZendermieYaw, entity.zendermieYaw),
 				MathHelper.lerpAngleDegrees(tickDelta, entity.prevZendermiePitch, entity.zendermiePitch));
 		zendermie.arms.visible = true;

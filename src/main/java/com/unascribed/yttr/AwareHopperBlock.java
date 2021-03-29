@@ -12,14 +12,20 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -88,6 +94,20 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 				}
 				world.setBlockState(pos, state.with(BLIND, true));
 				return ActionResult.SUCCESS;
+			} else {
+				// debug. remove later
+				player.openHandledScreen(new NamedScreenHandlerFactory() {
+					
+					@Override
+					public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+						return GenericContainerScreenHandler.createGeneric9x3(syncId, inv, (AwareHopperBlockEntity)world.getBlockEntity(pos));
+					}
+					
+					@Override
+					public Text getDisplayName() {
+						return new TranslatableText("block.yttr.aware_hopper");
+					}
+				});
 			}
 		}
 		return ActionResult.PASS;
@@ -96,6 +116,15 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new AwareHopperBlockEntity();
+	}
+	
+	@Override
+	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be != null) {
+			be.onSyncedBlockEvent(type, data);
+		}
+		return true;
 	}
 	
 	@Override
@@ -148,6 +177,17 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 			li.add(new ItemStack(Blocks.CARVED_PUMPKIN));
 		}
 		return li;
+	}
+	
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (!state.isOf(newState.getBlock())) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof AwareHopperBlockEntity) {
+				((AwareHopperBlockEntity) be).drop();
+			}
+			super.onStateReplaced(state, world, pos, newState, moved);
+		}
 	}
 	
 	@Override

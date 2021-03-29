@@ -1,6 +1,7 @@
 package com.unascribed.yttr;
 
 import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,6 +31,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
@@ -49,6 +52,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
@@ -58,6 +62,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
 
@@ -440,6 +445,21 @@ public class SnareItem extends Item {
 		Entity e = type.create(world);
 		e.fromTag(stack.getTag().getCompound("Contents"));
 		return e;
+	}
+	
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
+		if (group == Yttr.SNARE_ITEM_GROUP) {
+			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+				EntityType<?> e = en.getValue();
+				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(Yttr.SNAREABLE_NONLIVING_TAG)) && !e.isIn(Yttr.UNSNAREABLE_ENTITY_TAG)) {
+					ItemStack is = new ItemStack(this);
+					is.getOrCreateSubTag("Contents").putString("id", en.getKey().getValue().toString());
+					stacks.add(is);
+				}
+			}
+		}
 	}
 	
 }

@@ -61,7 +61,7 @@ public class ZendermieModel extends EntityModel<Entity> {
 		head.yaw = (float)Math.toRadians(netHeadYaw);
 		head.pitch = (float)Math.toRadians(headPitch);
 		
-		boolean crafting = false;
+		boolean crafting = limbSwing > 0;
 		float vigor = crafting ? 0.2f : 0.05f;
 		float fervor = crafting ? 20 : 1;
 		
