@@ -12,6 +12,7 @@ import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.DummyServerWorld;
+import com.unascribed.yttr.client.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
 import com.unascribed.yttr.client.TextureColorThief;
 import com.unascribed.yttr.client.VoidBallParticle;
@@ -25,6 +26,7 @@ import com.google.common.collect.MapMaker;
 import com.google.common.hash.Hashing;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -116,6 +118,9 @@ public class YttrClient implements ClientModInitializer {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
 		});
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
+			Yttr.CHUTE,
+			Yttr.LEVITATION_CHAMBER);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(BASE_MODEL);
 			out.accept(CHAMBER_MODEL);
@@ -293,6 +298,7 @@ public class YttrClient implements ClientModInitializer {
 		});
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.AWARE_HOPPER_ENTITY, AwareHopperBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(Yttr.LEVITATION_CHAMBER_ENTITY, LevitationChamberBlockEntityRenderer::new);
 		FabricModelPredicateProviderRegistry.register(Yttr.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});

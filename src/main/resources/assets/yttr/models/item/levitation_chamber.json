@@ -1,0 +1,13 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "yttr:item/levitation_chamber"
+	},
+	"display": {
+		"head": {
+			"rotation": [ 0, 180, 0 ],
+			"translation": [ 0, -2, -8.25 ],
+			"scale": [ 0.38, 0.38, 3.2218 ]
+		}
+	}
+}

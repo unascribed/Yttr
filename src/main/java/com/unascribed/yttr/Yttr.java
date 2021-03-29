@@ -141,9 +141,26 @@ public class Yttr implements ModInitializer {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
+	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+			.nonOpaque()
+		);
+	public static final ChuteBlock CHUTE = new ChuteBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
 	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
+	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER_ENTITY = new BlockEntityType<>(LevitationChamberBlockEntity::new, ImmutableSet.of(LEVITATION_CHAMBER), null);
+	public static final BlockEntityType<ChuteBlockEntity> CHUTE_ENTITY = new BlockEntityType<>(ChuteBlockEntity::new, ImmutableSet.of(CHUTE), null);
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
@@ -217,14 +234,20 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:power_meter", POWER_METER);
 		Registry.register(Registry.BLOCK, "yttr:void", VOID_BLOCK);
 		Registry.register(Registry.BLOCK, "yttr:aware_hopper", AWARE_HOPPER);
+		Registry.register(Registry.BLOCK, "yttr:levitation_chamber", LEVITATION_CHAMBER);
+		Registry.register(Registry.BLOCK, "yttr:chute", CHUTE);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:levitation_chamber", LEVITATION_CHAMBER_ENTITY);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:chute", CHUTE_ENTITY);
 		
 		Registry.register(Registry.ITEM, "yttr:gadolinite", new BlockItem(GADOLINITE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:yttrium_block", new BlockItem(YTTRIUM_BLOCK, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:power_meter", new BlockItem(POWER_METER, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:aware_hopper", new BlockItem(AWARE_HOPPER, new Item.Settings().group(ITEM_GROUP).maxCount(1)));
+		Registry.register(Registry.ITEM, "yttr:levitation_chamber", new LevitationChamberItem(LEVITATION_CHAMBER, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:chute", new BlockItem(CHUTE, new Item.Settings().group(ITEM_GROUP)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);

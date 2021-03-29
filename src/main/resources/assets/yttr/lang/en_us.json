@@ -15,6 +15,8 @@
 	"block.yttr.power_meter": "Power Meter",
 	"block.yttr.void": "Void",
 	"block.yttr.aware_hopper": "Aware Hopper",
+	"block.yttr.levitation_chamber": "Levitation Chamber",
+	"block.yttr.chute": "Chute",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

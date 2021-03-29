@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "plated=false": {
+      "model": "yttr:block/chute"
+    },
+    "plated=true": {
+      "model": "yttr:block/chute_plate"
+    }
+  }
+}

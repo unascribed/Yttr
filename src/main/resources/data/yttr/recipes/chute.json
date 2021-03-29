@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "IyI",
+    "I I"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "y": {
+      "item": "yttr:yttrium_nugget"
+    }
+  },
+  "result": {
+    "item": "yttr:chute",
+    "count": 8
+  }
+}

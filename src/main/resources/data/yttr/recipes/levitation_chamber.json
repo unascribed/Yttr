@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" I ",
+		"ISI",
+		"I I"
+	],
+	"key": {
+		"S": {
+			"yttr:entity": "minecraft:shulker_bullet"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"result": {
+		"item": "yttr:levitation_chamber"
+	}
+}

@@ -35,6 +35,7 @@
 		"minecraft:campfire",
 		"minecraft:soul_campfire",
 		"#minecraft:beehives",
-		"yttr:power_meter"
+		"yttr:power_meter",
+		"yttr:aware_hopper"
 	]
 }

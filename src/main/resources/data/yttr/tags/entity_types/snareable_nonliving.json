@@ -1,5 +1,6 @@
 {
 	"values": [
-		"minecraft:item"
+		"minecraft:item",
+		"minecraft:shulker_bullet"
 	]
 }

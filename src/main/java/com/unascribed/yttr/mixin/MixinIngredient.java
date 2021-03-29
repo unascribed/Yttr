@@ -29,6 +29,8 @@ public class MixinIngredient {
 				if (en instanceof EntityIngredientEntry) {
 					if (itemStack.getItem() == Yttr.SNARE && Yttr.SNARE.getEntityType(itemStack) == ((EntityIngredientEntry)en).entityType) {
 						ci.setReturnValue(true);
+					} else {
+						ci.setReturnValue(false);
 					}
 				}
 			}
