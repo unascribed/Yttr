@@ -292,7 +292,8 @@ public class Yttr implements ModInitializer {
 		});
 		
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {
-			for (BlockEntity be : world.blockEntities) {
+			// TODO pick random chunks
+			for (BlockEntity be : ImmutableList.copyOf(world.blockEntities)) {
 				if (be instanceof Inventory && world.random.nextInt(40) == 0) {
 					Inventory inv = (Inventory)be;
 					for (int i = 0; i < inv.size(); i++) {

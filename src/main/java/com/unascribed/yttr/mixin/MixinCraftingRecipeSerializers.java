@@ -17,7 +17,7 @@ import net.minecraft.util.registry.Registry;
 @Mixin({ShapedRecipe.Serializer.class, ShapelessRecipe.Serializer.class})
 public class MixinCraftingRecipeSerializers {
 
-	@Inject(at=@At("RETURN"), method="read")
+	@Inject(at=@At("RETURN"), method="read(Lnet/minecraft/util/Identifier;Lcom/google/gson/JsonObject;)Lnet/minecraft/recipe/Recipe;")
 	public void read(Identifier identifier, JsonObject jsonObject, CallbackInfoReturnable<Recipe<?>> ci) {
 		if (jsonObject.has("yttr:sound")) {
 			Yttr.craftingSounds.put(identifier, Registry.SOUND_EVENT.get(new Identifier(jsonObject.get("yttr:sound").getAsString())));

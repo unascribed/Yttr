@@ -219,8 +219,8 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public Optional<RegistryKey<Biome>> method_31081(BlockPos blockPos) {
-		return getDelegate().method_31081(blockPos);
+	public Optional<RegistryKey<Biome>> getBiomeKey(BlockPos blockPos) {
+		return getDelegate().getBiomeKey(blockPos);
 	}
 
 	@Override
