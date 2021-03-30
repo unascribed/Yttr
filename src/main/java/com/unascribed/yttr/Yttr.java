@@ -266,6 +266,7 @@ public class Yttr implements ModInitializer {
 	public static final Tag<EntityType<?>> BOSSES_TAG = TagRegistry.entityType(new Identifier("yttr", "bosses"));
 	public static final Tag<Item> UNSNAREABLE_ITEM_TAG = TagRegistry.item(new Identifier("yttr", "unsnareable"));
 	public static final Tag<Item> VOID_IMMUNE_TAG = TagRegistry.item(new Identifier("yttr", "void_immune"));
+	public static final Tag<Item> CANNOT_UNBREAKABLE_TAG = TagRegistry.item(new Identifier("yttr", "cannot_unbreakable"));
 	
 	@Override
 	public void onInitialize() {

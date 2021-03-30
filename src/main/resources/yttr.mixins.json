@@ -13,7 +13,8 @@
   	"MixinIngredient",
   	"MixinCraftingResultSlot",
   	"MixinCraftingRecipeSerializers",
-  	"MixinRecipeManager"
+  	"MixinRecipeManager",
+  	"MixinSmithingScreenHandler"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",
