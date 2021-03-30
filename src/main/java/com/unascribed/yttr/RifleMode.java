@@ -2,9 +2,7 @@ package com.unascribed.yttr;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -13,17 +11,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
@@ -34,18 +27,6 @@ public enum RifleMode {
 				int damage = (int)Math.ceil(power*14);
 				((EntityHitResult) hit).getEntity().damage(new EntityDamageSource("yttr.rifle", user), damage);
 			}
-			if (hit instanceof BlockHitResult) {
-				BlockHitResult bhr = (BlockHitResult)hit;
-				BlockState bs = user.world.getBlockState(bhr.getBlockPos());
-				if (bs.getBlock() == Yttr.POWER_METER) {
-					if (bhr.getSide() == Direction.UP || bhr.getSide() == bs.get(PowerMeterBlock.FACING)) {
-						BlockEntity be = user.world.getBlockEntity(bhr.getBlockPos());
-						if (be instanceof PowerMeterBlockEntity) {
-							((PowerMeterBlockEntity)be).sendReadout((int)(power*500));
-						}
-					}
-				}
-			}
 			if (power > 1.2f) {
 				user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, DestructionType.NONE);
 			}
@@ -55,29 +36,6 @@ public enum RifleMode {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, power > 1.2 ? 5 : 3*power, power > 1.2, power > 1.2 ? DestructionType.DESTROY : DestructionType.BREAK);
-			if (power > 1.1f && user.world.getRegistryKey().getValue().toString().equals("minecraft:overworld") && hit instanceof BlockHitResult) {
-				BlockHitResult bhr = (BlockHitResult)hit;
-				if (bhr.getBlockPos().getY() < 10 && user.world.getBlockState(bhr.getBlockPos()).isOf(Yttr.BEDROCK_SMASHER) && bhr.getSide() == Direction.UP) {
-					BlockPos down = bhr.getBlockPos().down();
-					if (user.world.getBlockState(down).isOf(Blocks.BEDROCK)) {
-						if (down.getY() == 0) {
-							user.world.setBlockState(down, Yttr.VOID_GEYSER.getDefaultState());
-							user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1, 0.5f);
-						} else {
-							user.world.setBlockState(down, Yttr.RUINED_BEDROCK.getDefaultState());
-							user.world.breakBlock(down.north(), true, user);
-							user.world.breakBlock(down.south(), true, user);
-						}
-						user.world.setBlockState(bhr.getBlockPos(), Blocks.AIR.getDefaultState());
-						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 2);
-						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 1.5f);
-						user.world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.BLOCKS, 1, 0.5f);
-						if (user.world instanceof ServerWorld) {
-							((ServerWorld)user.world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
-						}
-					}
-				}
-			}
 		}
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {

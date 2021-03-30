@@ -8,9 +8,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -19,7 +21,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntityProvider, Shootable {
 
 	public PowerMeterBlock(Settings settings) {
 		super(settings);
@@ -60,6 +62,8 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 		return true;
 	}
 	
+	
+	
 	@Override
 	public boolean emitsRedstonePower(BlockState state) {
 		return true;
@@ -83,6 +87,17 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 			return MathHelper.ceil((readout/650f)*14);
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean onShotByRifle(World world, BlockState bs, LivingEntity user, RifleMode mode, float power, BlockPos pos, BlockHitResult bhr) {
+		if (mode == RifleMode.DAMAGE && bhr.getSide() == Direction.UP || bhr.getSide() == bs.get(PowerMeterBlock.FACING)) {
+			BlockEntity be = user.world.getBlockEntity(bhr.getBlockPos());
+			if (be instanceof PowerMeterBlockEntity) {
+				((PowerMeterBlockEntity)be).sendReadout((int)(power*500));
+			}
+		}
+		return true;
 	}
 	
 }

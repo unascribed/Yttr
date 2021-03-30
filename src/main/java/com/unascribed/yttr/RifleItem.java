@@ -9,6 +9,7 @@ import com.google.common.base.Predicates;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -184,6 +185,14 @@ public class RifleItem extends Item {
 				buf.writeFloat((float)hr.getPos().y);
 				buf.writeFloat((float)hr.getPos().z);
 				((ServerWorld)world).getChunkManager().sendToNearbyPlayers(user, ServerPlayNetworking.createS2CPacket(new Identifier("yttr", "beam"), buf));
+				if (ehr == null) {
+					BlockState bs = world.getBlockState(bhr.getBlockPos());
+					if (bs.getBlock() instanceof Shootable) {
+						if (((Shootable)bs.getBlock()).onShotByRifle(world, bs, user, mode, power, bhr.getBlockPos(), bhr)) {
+							return;
+						}
+					}
+				}
 				mode.handleFire(user, stack, power, hr);
 			}
 		}

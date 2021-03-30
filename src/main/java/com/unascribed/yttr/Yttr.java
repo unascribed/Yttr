@@ -41,7 +41,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.command.CommandException;
@@ -82,9 +81,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
@@ -167,19 +163,10 @@ public class Yttr implements ModInitializer {
 			.strength(-1, 9000000)
 			.dropsNothing()
 		);
-	public static final Block BEDROCK_SMASHER = new Block(FabricBlockSettings.of(Material.STONE)
+	public static final Block BEDROCK_SMASHER = new BedrockSmasherBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES, 3)
-			.strength(35, 4000)
-		) {
-		private final VoxelShape SHAPE = VoxelShapes.union(
-				VoxelShapes.cuboid(6/16D, 0, 2/16D, 10/16D, 13/16D, 14/16D),
-				VoxelShapes.cuboid(0, 12.5/16D, 0, 1, 13.5/16D, 1)
-			);
-		@Override
-		public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-			return SHAPE;
-		}
-	};
+			.strength(35, 4000));
+	
 	public static final Block RUINED_BEDROCK = new Block(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(75, 9000000)
