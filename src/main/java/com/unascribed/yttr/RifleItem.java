@@ -77,11 +77,12 @@ public class RifleItem extends Item {
 							} else {
 								is.decrement(need);
 							}
-							ammo = (mode.shotsPerItem*need)/ammoMod;
 							if (mode == RifleMode.VOID) {
+								ammo = Math.max(1, mode.shotsPerItem/ammoMod);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
 							} else {
+								ammo = (mode.shotsPerItem*need)/ammoMod;
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
