@@ -96,53 +96,60 @@ public class SnareItem extends Item {
 		}
 		if (stack.hasTag() && stack.getTag().contains("Contents")) {
 			if (world.isClient) return TypedActionResult.success(stack, false);
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.75f);
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.95f);
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.PLAYERS, 0.3f, 1.75f);
 			boolean miss = ehr == null && hr.getType() == Type.MISS;
 			if (miss) {
 				end = start.add(user.getRotationVec(1).multiply(3));
 			}
 			Entity e = release(user, world, stack, end, -user.yaw, false);
-			if (e instanceof FallingBlockEntity && ehr == null && hr.getType() == Type.BLOCK) {
+			if (e instanceof FallingBlockEntity) {
 				FallingBlockEntity fbe = (FallingBlockEntity)e;
-				BlockState bs = fbe.getBlockState();
-				BlockPos target = world.getBlockState(hr.getBlockPos()).getMaterial().isReplaceable() ? hr.getBlockPos() : hr.getBlockPos().offset(hr.getSide());
-				AutomaticItemPlacementContext ctx = new AutomaticItemPlacementContext(world, target, user.getHorizontalFacing(), new ItemStack(bs.getBlock()), hr.getSide()) {
-					@Override
-					public float getPlayerYaw() {
-						return user.getYaw(1);
-					}
-				};
-				if (world.getBlockState(target).canReplace(ctx) && fbe.getBlockState().canPlaceAt(world, target)) {
-					fbe.remove();
-					try {
-						BlockState placement = bs.getBlock().getPlacementState(ctx);
-						if (placement.getBlock() == bs.getBlock()) {
-							for (Property prop : bs.getProperties()) {
-								if (prop == Properties.ROTATION || placement.get(prop) instanceof Direction) {
-									bs = bs.with(prop, placement.get(prop));
+				if (ehr == null && hr.getType() == Type.BLOCK) {
+					BlockState bs = fbe.getBlockState();
+					BlockPos target = world.getBlockState(hr.getBlockPos()).getMaterial().isReplaceable() ? hr.getBlockPos() : hr.getBlockPos().offset(hr.getSide());
+					AutomaticItemPlacementContext ctx = new AutomaticItemPlacementContext(world, target, user.getHorizontalFacing(), new ItemStack(bs.getBlock()), hr.getSide()) {
+						@Override
+						public float getPlayerYaw() {
+							return user.getYaw(1);
+						}
+					};
+					if (world.getBlockState(target).canReplace(ctx) && fbe.getBlockState().canPlaceAt(world, target)) {
+						fbe.remove();
+						try {
+							BlockState placement = bs.getBlock().getPlacementState(ctx);
+							if (placement.getBlock() == bs.getBlock()) {
+								for (Property prop : bs.getProperties()) {
+									if (prop == Properties.ROTATION || placement.get(prop) instanceof Direction || prop == Properties.CHEST_TYPE || prop == Properties.WATERLOGGED) {
+										bs = bs.with(prop, placement.get(prop));
+									}
 								}
 							}
+						} catch (Throwable t) {
+							LogManager.getLogger("Yttr").warn("Failed to update rotation for snare placement", t);
 						}
-					} catch (Throwable t) {
-						LogManager.getLogger("Yttr").warn("Failed to update rotation for snare placement", t);
-					}
-					world.setBlockState(target, bs);
-					if (fbe.blockEntityData != null) {
-						BlockEntity be = world.getBlockEntity(target);
-						if (be != null) {
-							CompoundTag data = be.toTag(new CompoundTag());
-							CompoundTag incoming = fbe.blockEntityData.copy();
-							incoming.remove("x");
-							incoming.remove("y");
-							incoming.remove("z");
-							data.copyFrom(incoming);
-							be.fromTag(bs, data);
+						world.setBlockState(target, bs);
+						for (Direction dir : Direction.values()) {
+							bs = bs.getStateForNeighborUpdate(dir, bs, world, target, target.offset(dir));
 						}
+						world.setBlockState(target, bs);
+						if (fbe.blockEntityData != null) {
+							BlockEntity be = world.getBlockEntity(target);
+							if (be != null) {
+								CompoundTag data = be.toTag(new CompoundTag());
+								CompoundTag incoming = fbe.blockEntityData.copy();
+								incoming.remove("x");
+								incoming.remove("y");
+								incoming.remove("z");
+								data.copyFrom(incoming);
+								be.fromTag(bs, data);
+							}
+						}
+					} else if (fbe.blockEntityData != null) {
+						return TypedActionResult.fail(stack);
+					} else {
+						world.spawnEntity(e);
 					}
-				} else {
-					world.spawnEntity(e);
+				} else if (fbe.blockEntityData != null) {
+					return TypedActionResult.fail(stack);
 				}
 			} else {
 				world.spawnEntity(e);
@@ -150,6 +157,10 @@ public class SnareItem extends Item {
 			if (e != null && miss) {
 				e.setVelocity(user.getRotationVec(1).multiply(0.75).add(user.getVelocity()));
 			}
+			stack.getTag().remove("Contents");
+			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.75f);
+			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.95f);
+			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.PLAYERS, 0.3f, 1.75f);
 			return TypedActionResult.success(stack, true);
 		} else {
 			BlockPos toDelete = null;
@@ -433,7 +444,7 @@ public class SnareItem extends Item {
 				e.damage(DamageSource.player(player), 0);
 				e.age = 0;
 			}
-			stack.getTag().remove("Contents");
+			if (spawn) stack.getTag().remove("Contents");
 			return e;
 		}
 		return null;
