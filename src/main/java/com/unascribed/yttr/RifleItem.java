@@ -41,8 +41,15 @@ import net.minecraft.world.RaycastContext.ShapeType;
 
 public class RifleItem extends Item {
 
-	public RifleItem(Settings settings) {
+	private final float speedMod;
+	private final int ammoMod;
+	private final boolean simpleCurve;
+	
+	public RifleItem(Settings settings, float speedMod, int ammoMod, boolean simpleCurve) {
 		super(settings);
+		this.speedMod = speedMod;
+		this.ammoMod = ammoMod;
+		this.simpleCurve = simpleCurve;
 	}
 
 	@Override
@@ -51,25 +58,26 @@ public class RifleItem extends Item {
 		if (hand == Hand.MAIN_HAND) {
 			int ammo = getRemainingAmmo(stack);
 			RifleMode mode = getMode(stack);
+			int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
 			if (ammo <= 0) {
 				if (user.abilities.creativeMode) {
 					ammo = mode.shotsPerItem;
 				} else {
 					for (int i = 0; i < user.inventory.size(); i++) {
 						ItemStack is = user.inventory.getStack(i);
-						if (is.getItem() == mode.item.get().asItem()) {
+						if (is.getItem() == mode.item.get().asItem() && is.getCount() >= need) {
 							Item remainder = is.getItem().getRecipeRemainder();
 							if (remainder != null) {
-								if (is.getCount() == 1) {
+								if (is.getCount() == need) {
 									user.inventory.setStack(i, new ItemStack(remainder));
 								} else {
-									is.decrement(1);
+									is.decrement(need);
 									user.inventory.offerOrDrop(user.world, new ItemStack(remainder));
 								}
 							} else {
-								is.decrement(1);
+								is.decrement(need);
 							}
-							ammo = mode.shotsPerItem;
+							ammo = (mode.shotsPerItem*need)/ammoMod;
 							if (mode == RifleMode.VOID) {
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
@@ -85,12 +93,22 @@ public class RifleItem extends Item {
 			}
 			if (ammo <= 0) {
 				user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, Yttr.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
-				user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+				if (need > 1) {
+					user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+				} else {
+					user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+				}
 				return TypedActionResult.fail(stack);
 			}
 			setRemainingAmmo(stack, ammo);
 			user.playSound(Yttr.RIFLE_FIRE_DUD, 1, 1.75f);
-			world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE, user.getSoundCategory(), 1, mode.speed);
+			float speed = mode.speed*speedMod;
+			if (speed > 2) {
+				speed /= 1.75f;
+				world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE_FAST, user.getSoundCategory(), 1, speed);
+			} else {
+				world.playSoundFromEntity(null, user, Yttr.RIFLE_CHARGE, user.getSoundCategory(), 1, speed);
+			}
 			user.setCurrentHand(hand);
 			return TypedActionResult.success(stack, false);
 		}
@@ -119,7 +137,7 @@ public class RifleItem extends Item {
 	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return (int)(140/getMode(stack).speed);
+		return (int)(140/(getMode(stack).speed*speedMod));
 	}
 	
 	@Override
@@ -199,8 +217,12 @@ public class RifleItem extends Item {
 	}
 	
 	public int calcAdjustedUseTime(ItemStack stack, int remainingUseTicks) {
+		return (int)calcAdjustedUseTime(stack, (float)remainingUseTicks);
+	}
+	
+	public float calcAdjustedUseTime(ItemStack stack, float remainingUseTicks) {
 		int max = getMaxUseTime(stack);
-		return (int)(((max-remainingUseTicks)/(float)max)*140);
+		return (((max-remainingUseTicks)/max)*140);
 	}
 
 	public RifleMode getMode(ItemStack stack) {
@@ -227,19 +249,37 @@ public class RifleItem extends Item {
 		stack.getTag().putInt("RemainingAmmo", ammo);
 	}
 	
+	public int getMaxAmmo(ItemStack stack) {
+		return getMode(stack).shotsPerItem/ammoMod;
+	}
+	
 	private float calculatePower(int i) {
-		// https://blob.jortage.com/blobs/d/b5f/db5fc6177921437d567ff378e36d8d9519998d1bc0de8ea2003d25258994c38ed8e69685a8fbd723466a8c0a27beb61786c1c78633e7d335584f399e78a8e212
 		float power = 0;
-		if (i == 132 || i == 133) {
-			power = 1.3f;
-		} else if (i > 30) {
-			int j = i - 30;
-			if (j > 80) {
-				power = 0.8f+(MathHelper.sin(((j-90)/25f)*(float)Math.PI)/2);
-			} else if (j > 60) {
-				power = 0.7f-(MathHelper.sin(((j-60)/40f)*(float)Math.PI)*0.4f);
-			} else {
-				power = MathHelper.sin((j/80f)*(float)Math.PI);
+		if (simpleCurve) {
+			if (i > 30) {
+				int j = i - 30;
+				power = j/40f;
+				if (power > 1) {
+					power = 1;
+				}
+				if (j > 80) {
+					power += (j-80)/50f;
+				}
+				if (power > 1.24f) power = 1.24f;
+			}
+		} else {
+			// https://blob.jortage.com/blobs/d/b5f/db5fc6177921437d567ff378e36d8d9519998d1bc0de8ea2003d25258994c38ed8e69685a8fbd723466a8c0a27beb61786c1c78633e7d335584f399e78a8e212
+			if (i == 132 || i == 133) {
+				power = 1.3f;
+			} else if (i > 30) {
+				int j = i - 30;
+				if (j > 80) {
+					power = 0.8f+(MathHelper.sin(((j-90)/25f)*(float)Math.PI)/2);
+				} else if (j > 60) {
+					power = 0.7f-(MathHelper.sin(((j-60)/40f)*(float)Math.PI)*0.4f);
+				} else {
+					power = MathHelper.sin((j/80f)*(float)Math.PI);
+				}
 			}
 		}
 		return power;
@@ -248,15 +288,15 @@ public class RifleItem extends Item {
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		user.playSound(Yttr.RIFLE_OVERCHARGE, 1, 1);
-		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8);
-		user.setOnFireFor(3);
+		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8*speedMod);
+		user.setOnFireFor((int)(3*speedMod));
 		if (!stack.hasTag()) stack.setTag(new CompoundTag());
 		setRemainingAmmo(stack, 0);
 		if (!world.isClient) {
 			getMode(stack).handleBackfire(user, stack);
 		}
 		if (user instanceof PlayerEntity) {
-			((PlayerEntity) user).getItemCooldownManager().set(this, 160);
+			((PlayerEntity) user).getItemCooldownManager().set(this, (int)(160*speedMod));
 		}
 		return stack;
 	}
@@ -308,5 +348,5 @@ public class RifleItem extends Item {
 			return eyes.add(look.multiply(0.7)).add(right.multiply(0.25)).add(down.multiply(0.0125));
 		}
 	}
-	
+
 }

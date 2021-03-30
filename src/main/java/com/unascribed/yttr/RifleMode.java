@@ -113,7 +113,7 @@ public enum RifleMode {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (!(user instanceof PlayerEntity)) return;
-			VoidLogic.doVoid((PlayerEntity)user, user.world, hit.getPos(), Math.round(7*power)+1);
+			VoidLogic.doVoid((PlayerEntity)user, user.world, hit.getPos(), Math.round(7.5f*power)+1);
 		}
 		
 		@Override

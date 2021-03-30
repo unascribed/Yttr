@@ -81,6 +81,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
@@ -173,6 +174,17 @@ public class Yttr implements ModInitializer {
 			.nonOpaque()
 		);
 	
+	public static final Block GLASSY_VOID = new Block(FabricBlockSettings.of(Material.STONE)
+			.breakByTool(FabricToolTags.PICKAXES)
+			.strength(7)
+			.nonOpaque()
+		) {
+		@Override
+		public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
+			return world.getMaxLightLevel();
+		}
+	};
+	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
 	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER_ENTITY = new BlockEntityType<>(LevitationChamberBlockEntity::new, ImmutableSet.of(LEVITATION_CHAMBER), null);
@@ -196,8 +208,13 @@ public class Yttr implements ModInitializer {
 		);
 	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
 			.maxCount(1)
-			.group(ITEM_GROUP)
-		);
+			.group(ITEM_GROUP), 1, 1, false);
+	public static final RifleItem RIFLE_REINFORCED = new RifleItem(new Item.Settings()
+			.maxCount(1)
+			.group(ITEM_GROUP), 0.85f, 1, true);
+	public static final RifleItem RIFLE_OVERCLOCKED = new RifleItem(new Item.Settings()
+			.maxCount(1)
+			.group(ITEM_GROUP), 1.65f, 2, false);
 	public static final SnareItem SNARE = new SnareItem(new Item.Settings()
 			.maxDamage(40960)
 			.group(ITEM_GROUP)
@@ -211,6 +228,7 @@ public class Yttr implements ModInitializer {
 		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
+	public static final SoundEvent RIFLE_CHARGE_FAST = new SoundEvent(new Identifier("yttr", "rifle_charge_fast"));
 	public static final SoundEvent RIFLE_CHARGE_CONTINUE = new SoundEvent(new Identifier("yttr", "rifle_charge_continue"));
 	public static final SoundEvent RIFLE_CHARGE_RATTLE = new SoundEvent(new Identifier("yttr", "rifle_charge_rattle"));
 	public static final SoundEvent RIFLE_CHARGE_CANCEL = new SoundEvent(new Identifier("yttr", "rifle_charge_cancel"));
@@ -247,6 +265,7 @@ public class Yttr implements ModInitializer {
 	public static final Tag<EntityType<?>> SNAREABLE_NONLIVING_TAG = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
 	public static final Tag<EntityType<?>> BOSSES_TAG = TagRegistry.entityType(new Identifier("yttr", "bosses"));
 	public static final Tag<Item> UNSNAREABLE_ITEM_TAG = TagRegistry.item(new Identifier("yttr", "unsnareable"));
+	public static final Tag<Item> VOID_IMMUNE_TAG = TagRegistry.item(new Identifier("yttr", "void_immune"));
 	
 	@Override
 	public void onInitialize() {
@@ -260,6 +279,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:void_geyser", VOID_GEYSER);
 		Registry.register(Registry.BLOCK, "yttr:bedrock_smasher", BEDROCK_SMASHER);
 		Registry.register(Registry.BLOCK, "yttr:ruined_bedrock", RUINED_BEDROCK);
+		Registry.register(Registry.BLOCK, "yttr:glassy_void", GLASSY_VOID);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
@@ -274,17 +294,21 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:levitation_chamber", new LevitationChamberItem(LEVITATION_CHAMBER, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:chute", new BlockItem(CHUTE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:bedrock_smasher", new BlockItem(BEDROCK_SMASHER, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:glassy_void", new BlockItem(GLASSY_VOID, new Item.Settings().group(ITEM_GROUP)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);
 		Registry.register(Registry.ITEM, "yttr:xl_iron_ingot", XL_IRON_INGOT);
 		Registry.register(Registry.ITEM, "yttr:rifle", RIFLE);
+		Registry.register(Registry.ITEM, "yttr:rifle_reinforced", RIFLE_REINFORCED);
+		Registry.register(Registry.ITEM, "yttr:rifle_overclocked", RIFLE_OVERCLOCKED);
 		Registry.register(Registry.ITEM, "yttr:void_bucket", VOID_BUCKET);
 		Registry.register(Registry.ITEM, "yttr:snare", SNARE);
 		Registry.register(Registry.ITEM, "yttr:shears", SHEARS);
 		Registry.register(Registry.ITEM, "yttr:bedrock_shard", BEDROCK_SHARD);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
+		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_fast", RIFLE_CHARGE_FAST);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_continue", RIFLE_CHARGE_CONTINUE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_rattle", RIFLE_CHARGE_RATTLE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_cancel", RIFLE_CHARGE_CANCEL);
@@ -309,8 +333,8 @@ public class Yttr implements ModInitializer {
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), net.minecraft.world.gen.GenerationStep.Feature.UNDERGROUND_ORES, gadoliniteOverworld);
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "rifle_mode"), (server, player, handler, buf, responseSender) -> {
-			if (player != null && player.getMainHandStack().getItem() == RIFLE) {
-				RIFLE.attack(player);
+			if (player != null && player.getMainHandStack().getItem() instanceof RifleItem) {
+				((RifleItem)player.getMainHandStack().getItem()).attack(player);
 			}
 		});
 		

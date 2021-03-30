@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "yttr:rifle"
+  },
+  "addition": {
+    "item": "yttr:glassy_void"
+  },
+  "result": {
+    "item": "yttr:rifle_overclocked"
+  }
+}

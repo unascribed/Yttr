@@ -6,8 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.unascribed.yttr.Yttr;
-
+import com.unascribed.yttr.RifleItem;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -23,7 +22,7 @@ public class MixinMinecraftClient {
 	
 	@Inject(at=@At("HEAD"), method="doAttack")
 	private void doAttack(CallbackInfo ci) {
-		if (player != null && player.getMainHandStack().getItem() == Yttr.RIFLE) {
+		if (player != null && player.getMainHandStack().getItem() instanceof RifleItem) {
 			player.networkHandler.sendPacket(ClientPlayNetworking.createC2SPacket(new Identifier("yttr", "rifle_mode"), new PacketByteBuf(Unpooled.buffer())));
 		}
 	}

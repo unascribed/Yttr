@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EquipmentSlot.Type;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -36,6 +37,7 @@ public class VoidFluidBlock extends FluidBlock {
 	
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (!entity.isAlive()) return;
 		int i = 1;
 		if (entity instanceof LivingEntity) {
 			LivingEntity le = (LivingEntity)entity;
@@ -47,6 +49,15 @@ public class VoidFluidBlock extends FluidBlock {
 		}
 		if (entity instanceof ItemEntity || entity.damage(new SolventDamageSource(i), 2*i)) {
 			if (entity instanceof ItemEntity) {
+				ItemStack stack = ((ItemEntity) entity).getStack();
+				if (stack.getItem().isIn(Yttr.VOID_IMMUNE_TAG)) return;
+				if (stack.getItem() == Yttr.BEDROCK_SHARD) {
+					if (getFluidState(state).isStill()) {
+						world.setBlockState(pos, Yttr.GLASSY_VOID.getDefaultState());
+					} else {
+						return;
+					}
+				}
 				entity.remove();
 			}
 			if (entity instanceof LivingEntity) {

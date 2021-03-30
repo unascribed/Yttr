@@ -3,6 +3,8 @@
 	"itemGroup.yttr.snare": "Yttr Snares",
 	
 	"item.yttr.rifle": "Yttric Rifle",
+	"item.yttr.rifle_reinforced": "Bedrock-Reinforced Rifle",
+	"item.yttr.rifle_overclocked": "Void-Enhanced Rifle",
 	"item.yttr.yttrium_ingot": "Yttrium Ingot",
 	"item.yttr.yttrium_nugget": "Yttrium Nugget",
 	"item.yttr.xl_iron_ingot": "Big Iron",
@@ -22,6 +24,7 @@
 	"block.yttr.bedrock_smasher": "Bedrock Smasher",
 	"block.yttr.void_geyser": "Void Geyser",
 	"block.yttr.ruined_bedrock": "Ruined Bedrock",
+	"block.yttr.glassy_void": "Glassy Void",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
@@ -54,6 +57,7 @@
 	
 	"tip.yttr.rifle_mode": "Mode: %s",
 	"tip.yttr.rifle_no_ammo": "Out of %s",
+	"tip.yttr.rifle_no_ammo_multi": "Need %s %s",
 	
 	"tip.yttr.snare.stable": "Containment stable",
 	"tip.yttr.snare.unstable": "Containment failure in %s:%s",

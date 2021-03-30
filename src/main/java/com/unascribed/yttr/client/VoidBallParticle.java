@@ -18,17 +18,11 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 
 public class VoidBallParticle extends BillboardParticle {
 	
 	private static final Identifier TEXTURE = new Identifier("yttr", "textures/particle/void_ball.png");
-	
-	private static final Matrix4f IDENTITY = new Matrix4f();
-	static {
-		IDENTITY.loadIdentity();
-	}
 	
 	private static VertexBuffer buf1, buf2, buf3;
 	private static int buf1c, buf2c, buf3c;

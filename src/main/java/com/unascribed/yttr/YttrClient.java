@@ -114,6 +114,8 @@ public class YttrClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE, this::renderRifle);
+		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE_REINFORCED, this::renderRifle);
+		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE_OVERCLOCKED, this::renderRifle);
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
@@ -121,29 +123,40 @@ public class YttrClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
 			Yttr.CHUTE,
 			Yttr.LEVITATION_CHAMBER);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
+			Yttr.GLASSY_VOID);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(BASE_MODEL);
 			out.accept(CHAMBER_MODEL);
 			out.accept(CHAMBER_GLASS_MODEL);
 		});
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			RifleMode mode = Yttr.RIFLE.getMode(stack);
-			float ammo = (Yttr.RIFLE.getRemainingAmmo(stack)/(float)mode.shotsPerItem)*6;
+			int baseColor;
+			if (stack.getItem() == Yttr.RIFLE_REINFORCED) {
+				baseColor = 0x223333;
+			} else if (stack.getItem() == Yttr.RIFLE_OVERCLOCKED) {
+				baseColor = 0x111111;
+			} else {
+				baseColor = 0x3E5656;
+			}
+			if (tintIndex == 0) return baseColor;
+			tintIndex--;
+			RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
+			float ammo = (((RifleItem)stack.getItem()).getRemainingAmmo(stack)/(float)(((RifleItem)stack.getItem()).getMaxAmmo(stack)))*6;
 			int ammoI = (int)ammo;
-			if (ammoI < tintIndex) return 0x587070;
 			if (ammoI > tintIndex) return mode.color;
-			float a = 1-(ammo%1);
+			float a = ammoI < tintIndex ? 1 : 1-(ammo%1);
 			float rF = NativeImage.getBlue(mode.color)/255f;
 			float gF = NativeImage.getGreen(mode.color)/255f;
 			float bF = NativeImage.getRed(mode.color)/255f;
-			float rE = 0.34509805f;
-			float gE = 0.4392157f;
-			float bE = 0.4392157f;
+			float rE = (((baseColor>>16)&0xFF)/255f)+0.05f;
+			float gE = (((baseColor>>8)&0xFF)/255f)+0.05f;
+			float bE = ((baseColor&0xFF)/255f)+0.15f;
 			float r = rF+((rE-rF)*a);
 			float g = gF+((gE-gF)*a);
 			float b = bF+((bE-bF)*a);
 			return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
-		}, Yttr.RIFLE);
+		}, Yttr.RIFLE, Yttr.RIFLE_REINFORCED, Yttr.RIFLE_OVERCLOCKED);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 			if (tintIndex == 0) return -1;
 			EntityType<?> type = Yttr.SNARE.getEntityType(stack);
@@ -214,7 +227,8 @@ public class YttrClient implements ClientModInitializer {
 		MinecraftClient mc = MinecraftClient.getInstance();
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
-				if (sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE.getId()) && sound instanceof EntityTrackingSoundInstance) {
+				if ((sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(Yttr.RIFLE_CHARGE_FAST.getId()))
+						&& sound instanceof EntityTrackingSoundInstance) {
 					rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
 				}
 			});
@@ -305,14 +319,18 @@ public class YttrClient implements ClientModInitializer {
 	}
 	
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		float tickDelta = MinecraftClient.getInstance().getTickDelta();
 		matrices.pop();
 		MinecraftClient mc = MinecraftClient.getInstance();
 		boolean fp = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND;
 		boolean inUse = fp && mc.player != null && mc.player.isUsingItem();
-		int useTime = inUse ? Yttr.RIFLE.calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft()) : 0;
+		float useTime = inUse ? ((RifleItem)stack.getItem()).calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft()-tickDelta) : 0;
 		if (useTime > 80) {
 			float a = (useTime-80)/40f;
 			a = a*a;
+			if (stack.getItem() == Yttr.RIFLE_REINFORCED) {
+				a /= 3;
+			}
 			float f = 50;
 			ThreadLocalRandom tlr = ThreadLocalRandom.current();
 			matrices.translate((tlr.nextGaussian()/f)*a, (tlr.nextGaussian()/f)*a, (tlr.nextGaussian()/f)*a);
@@ -354,7 +372,7 @@ public class YttrClient implements ClientModInitializer {
 					
 					@Override
 					public VertexConsumer color(int red, int green, int blue, int alpha) {
-						int c = Yttr.RIFLE.getMode(stack).color;
+						int c = ((RifleItem)stack.getItem()).getMode(stack).color;
 						return super.color(NativeImage.getBlue(c), NativeImage.getGreen(c), NativeImage.getRed(c), 255);
 					}
 				}, light, overlay, chamber);

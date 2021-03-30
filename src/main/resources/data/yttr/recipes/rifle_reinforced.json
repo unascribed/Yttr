@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "yttr:rifle"
+  },
+  "addition": {
+    "item": "yttr:bedrock_shard"
+  },
+  "result": {
+    "item": "yttr:rifle_reinforced"
+  }
+}
