@@ -190,12 +190,7 @@ public class Yttr implements ModInitializer {
 			.breakByTool(FabricToolTags.AXES)
 			.strength(2)
 		);
-	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
-			.sounds(BlockSoundGroup.GRASS)
-			.breakByTool(FabricToolTags.HOES)
-			.breakByTool(FabricToolTags.AXES)
-			.strength(2)
-		);
+	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.copyOf(SQUEEZE_LOG));
 	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
 			.breakByTool(FabricToolTags.HOES)

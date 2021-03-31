@@ -27,6 +27,11 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	}
 	
 	@Override
+	public boolean hasRandomTicks(BlockState state) {
+		return true;
+	}
+	
+	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty()) return ActionResult.PASS;
 		if (state.get(SQUEEZING)) return ActionResult.FAIL;
@@ -50,7 +55,6 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		System.out.println("beep");
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof SqueezedLeavesBlockEntity) {
 			SqueezedLeavesBlockEntity slbe = (SqueezedLeavesBlockEntity)be;
