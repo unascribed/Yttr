@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "yttr:block/stripped_squeeze_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "yttr:block/stripped_squeeze_log"
+    },
+    "axis=z": {
+      "model": "yttr:block/stripped_squeeze_log_horizontal",
+      "x": 90
+    }
+  }
+}

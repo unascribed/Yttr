@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "squeezing=false": {
+      "model": "yttr:block/squeeze_leaves"
+    },
+    "squeezing=true": {
+      "model": "minecraft:builtin/entity"
+    }
+  }
+}

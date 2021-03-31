@@ -40,6 +40,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.options.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.RedDustParticle;
@@ -71,6 +72,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -122,7 +124,10 @@ public class YttrClient implements ClientModInitializer {
 		});
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
 			Yttr.CHUTE,
-			Yttr.LEVITATION_CHAMBER);
+			Yttr.LEVITATION_CHAMBER,
+			Yttr.SQUEEZE_LEAVES,
+			Yttr.SQUEEZED_LEAVES,
+			Yttr.SQUEEZE_SAPLING);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
 			Yttr.GLASSY_VOID);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
@@ -208,6 +213,25 @@ public class YttrClient implements ClientModInitializer {
 				return ((ThreadLocalRandom.current().nextInt(100)+155)<<16)|(ThreadLocalRandom.current().nextInt(64)<<8);
 			}
 		}, Yttr.SNARE);
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+			int waterColor = world.getColor(pos, BiomeColors.WATER_COLOR);
+			int waterR = (waterColor >> 16)&0xFF;
+			int waterG = (waterColor >>  8)&0xFF;
+			int waterB = (waterColor >>  0)&0xFF;
+			int leafR = waterB;
+			int leafG = waterB-(waterR/4);
+			int leafB = waterG-(waterB/3);
+			if (!state.get(Properties.WATERLOGGED)) {
+				leafR = leafR*2/3;
+				leafG = leafG*2/3;
+				leafB = leafB*2/3;
+			}
+			int leafColor = (leafR<<16) | (leafG<<8) | (leafB);
+			return leafColor;
+		}, Yttr.SQUEEZE_LEAVES, Yttr.SQUEEZED_LEAVES);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			return 0xFFFFEE58;
+		}, Yttr.SQUEEZE_LEAVES);
 		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
 			@Override
 			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {

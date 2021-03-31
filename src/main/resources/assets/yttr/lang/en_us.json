@@ -25,6 +25,11 @@
 	"block.yttr.void_geyser": "Void Geyser",
 	"block.yttr.ruined_bedrock": "Ruined Bedrock",
 	"block.yttr.glassy_void": "Glassy Void",
+	"block.yttr.squeeze_log": "Deep-Sea Squeeze Stem",
+	"block.yttr.stripped_squeeze_log": "Stripped Deep-Sea Squeeze Stem",
+	"block.yttr.squeeze_leaves": "Deep-Sea Squeeze Leaves",
+	"block.yttr.squeeze_sapling": "Deep-Sea Squeeze Sapling",
+	"block.yttr.squeezed_leaves": "Squeezed Deep-Sea Squeeze Leaves",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-
 import org.apache.logging.log4j.LogManager;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -185,11 +184,46 @@ public class Yttr implements ModInitializer {
 		}
 	};
 	
+	public static final Block SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
+			.sounds(BlockSoundGroup.GRASS)
+			.breakByTool(FabricToolTags.HOES)
+			.breakByTool(FabricToolTags.AXES)
+			.strength(2)
+		);
+	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.of(Material.SPONGE)
+			.sounds(BlockSoundGroup.GRASS)
+			.breakByTool(FabricToolTags.HOES)
+			.breakByTool(FabricToolTags.AXES)
+			.strength(2)
+		);
+	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.of(Material.SPONGE)
+			.sounds(BlockSoundGroup.GRASS)
+			.breakByTool(FabricToolTags.HOES)
+			.breakByTool(FabricToolTags.SHEARS)
+			.strength(0.2f)
+			.suffocates((bs, bv, pos) -> false)
+			.blockVision((bs, bv, pos) -> false)
+			.nonOpaque()
+			.ticksRandomly()
+		);
+	public static final Block SQUEEZED_LEAVES = new SqueezedLeavesBlock(FabricBlockSettings.copyOf(SQUEEZE_LEAVES)
+			.dropsLike(SQUEEZE_LEAVES)
+			.dynamicBounds()
+		);
+	public static final Block SQUEEZE_SAPLING = new SqueezeSaplingBlock(new SqueezeSaplingGenerator(), FabricBlockSettings.of(Material.SPONGE)
+			.sounds(BlockSoundGroup.GRASS)
+			.noCollision()
+			.ticksRandomly()
+			.breakInstantly()
+			.nonOpaque()
+		);
+	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
 	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER_ENTITY = new BlockEntityType<>(LevitationChamberBlockEntity::new, ImmutableSet.of(LEVITATION_CHAMBER), null);
 	public static final BlockEntityType<ChuteBlockEntity> CHUTE_ENTITY = new BlockEntityType<>(ChuteBlockEntity::new, ImmutableSet.of(CHUTE), null);
 	public static final BlockEntityType<VoidGeyserBlockEntity> VOID_GEYSER_ENTITY = new BlockEntityType<>(VoidGeyserBlockEntity::new, ImmutableSet.of(VOID_GEYSER), null);
+	public static final BlockEntityType<SqueezedLeavesBlockEntity> SQUEEZED_LEAVES_ENTITY = new BlockEntityType<>(SqueezedLeavesBlockEntity::new, ImmutableSet.of(SQUEEZED_LEAVES), null);
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
@@ -281,12 +315,18 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:bedrock_smasher", BEDROCK_SMASHER);
 		Registry.register(Registry.BLOCK, "yttr:ruined_bedrock", RUINED_BEDROCK);
 		Registry.register(Registry.BLOCK, "yttr:glassy_void", GLASSY_VOID);
+		Registry.register(Registry.BLOCK, "yttr:squeeze_log", SQUEEZE_LOG);
+		Registry.register(Registry.BLOCK, "yttr:stripped_squeeze_log", STRIPPED_SQUEEZE_LOG);
+		Registry.register(Registry.BLOCK, "yttr:squeeze_leaves", SQUEEZE_LEAVES);
+		Registry.register(Registry.BLOCK, "yttr:squeezed_leaves", SQUEEZED_LEAVES);
+		Registry.register(Registry.BLOCK, "yttr:squeeze_sapling", SQUEEZE_SAPLING);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:levitation_chamber", LEVITATION_CHAMBER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:chute", CHUTE_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:void_geyser", VOID_GEYSER_ENTITY);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:squeezed_leaves", SQUEEZED_LEAVES_ENTITY);
 		
 		Registry.register(Registry.ITEM, "yttr:gadolinite", new BlockItem(GADOLINITE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:yttrium_block", new BlockItem(YTTRIUM_BLOCK, new Item.Settings().group(ITEM_GROUP)));
@@ -296,6 +336,10 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:chute", new BlockItem(CHUTE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:bedrock_smasher", new BlockItem(BEDROCK_SMASHER, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:glassy_void", new BlockItem(GLASSY_VOID, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:squeeze_log", new BlockItem(SQUEEZE_LOG, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:stripped_squeeze_log", new BlockItem(STRIPPED_SQUEEZE_LOG, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:squeeze_leaves", new BlockItem(SQUEEZE_LEAVES, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:squeeze_sapling", new BlockItem(SQUEEZE_SAPLING, new Item.Settings().group(ITEM_GROUP)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);
