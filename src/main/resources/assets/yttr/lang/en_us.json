@@ -13,6 +13,7 @@
 	"item.yttr.snare.filled": "Snare (%s)",
 	"item.yttr.shears": "Surgical Shears",
 	"item.yttr.bedrock_shard": "Bedrock Shard",
+	"item.yttr.delicace": "Delicace",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
@@ -30,6 +31,7 @@
 	"block.yttr.squeeze_leaves": "Deep-Sea Squeeze Leaves",
 	"block.yttr.squeeze_sapling": "Deep-Sea Squeeze Sapling",
 	"block.yttr.squeezed_leaves": "Squeezed Deep-Sea Squeeze Leaves",
+	"block.yttr.delicace": "Delicace",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

@@ -38,7 +38,7 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 		BlockPos.Mutable turt = pos.mutableCopy();
 		BlockPos.Mutable turt2 = new BlockPos.Mutable();
 		
-		BlockState LOG = Yttr.SQUEEZE_LOG.getDefaultState();
+		BlockState LOG = Yttr.SQUEEZE_LOG.getDefaultState().with(SqueezeLogBlock.ALIVE, true);
 		BlockState LEAVES = Yttr.SQUEEZE_LEAVES.getDefaultState().with(LeavesBlock.DISTANCE, 1);
 		
 		int baseStemHeight = random.nextInt(3)+2;

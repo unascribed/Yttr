@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "yttr:squeeze_logs"
+    }
+  ],
+  "result": {
+    "item": "minecraft:sponge",
+    "count": 3
+  }
+}

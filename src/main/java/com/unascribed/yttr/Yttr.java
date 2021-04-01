@@ -38,6 +38,7 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.fabricmc.fabric.mixin.tag.extension.AccessorFluidTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
@@ -212,6 +213,7 @@ public class Yttr implements ModInitializer {
 			.breakInstantly()
 			.nonOpaque()
 		);
+	public static final Block DELICACE_BLOCK = new DelicaceBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK));
 	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
@@ -253,6 +255,9 @@ public class Yttr implements ModInitializer {
 			.group(ITEM_GROUP)
 		);
 	public static final Item BEDROCK_SHARD = new Item(new Item.Settings()
+			.group(ITEM_GROUP)
+		);
+	public static final Item DELICACE = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
 		);
 	
@@ -315,6 +320,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:squeeze_leaves", SQUEEZE_LEAVES);
 		Registry.register(Registry.BLOCK, "yttr:squeezed_leaves", SQUEEZED_LEAVES);
 		Registry.register(Registry.BLOCK, "yttr:squeeze_sapling", SQUEEZE_SAPLING);
+		Registry.register(Registry.BLOCK, "yttr:delicace", DELICACE_BLOCK);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
@@ -346,6 +352,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:snare", SNARE);
 		Registry.register(Registry.ITEM, "yttr:shears", SHEARS);
 		Registry.register(Registry.ITEM, "yttr:bedrock_shard", BEDROCK_SHARD);
+		Registry.register(Registry.ITEM, "yttr:delicace", DELICACE);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_fast", RIFLE_CHARGE_FAST);

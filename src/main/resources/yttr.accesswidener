@@ -1,6 +1,7 @@
 accessWidener v1 named
 
 accessible method net/minecraft/client/particle/RedDustParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/particle/DustParticleEffect;Lnet/minecraft/client/particle/SpriteProvider;)V
+accessible method net/minecraft/client/particle/BlockLeakParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;)V
 
 mutable field net/minecraft/world/World isClient Z
 mutable field net/minecraft/world/World random Ljava/util/Random;

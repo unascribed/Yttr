@@ -1,5 +1,9 @@
 package com.unascribed.yttr;
 
+import java.util.Random;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,6 +13,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
@@ -24,10 +29,35 @@ import net.minecraft.world.World;
 public class SqueezeLogBlock extends PillarBlock {
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	public static final BooleanProperty ALIVE = BooleanProperty.of("alive");
 	
 	public SqueezeLogBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		setDefaultState(getDefaultState().with(WATERLOGGED, false).with(ALIVE, false));
+	}
+	
+	@Override
+	public boolean hasRandomTicks(BlockState state) {
+		return state.get(ALIVE) && state.get(WATERLOGGED);
+	}
+	
+	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (random.nextInt(16) == 0) {
+			BlockPos down = pos.down();
+			BlockState below = world.getBlockState(down);
+			if ((below.isAir() || below.getMaterial().isReplaceable()) && below.getFluidState().isIn(FluidTags.WATER)) {
+				world.setBlockState(down, Yttr.DELICACE_BLOCK.getDefaultState());
+			}
+		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+		if (hasRandomTicks(state) && random.nextInt(8) == 0) {
+			Yttr.DELICACE_BLOCK.randomDisplayTick(state, world, pos, random);
+		}
 	}
 	
 	@Override
@@ -55,7 +85,7 @@ public class SqueezeLogBlock extends PillarBlock {
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(WATERLOGGED);
+		builder.add(WATERLOGGED, ALIVE);
 	}
 	
 	@Override

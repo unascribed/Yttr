@@ -129,7 +129,8 @@ public class YttrClient implements ClientModInitializer {
 			Yttr.SQUEEZED_LEAVES,
 			Yttr.SQUEEZE_SAPLING);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
-			Yttr.GLASSY_VOID);
+			Yttr.GLASSY_VOID,
+			Yttr.DELICACE_BLOCK);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(BASE_MODEL);
 			out.accept(CHAMBER_MODEL);

@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "yttr:block/delicace_1",
+      "x": 180
+    },
+    "stage=1": {
+      "model": "yttr:block/delicace_1",
+      "x": 180
+    },
+    "stage=2": {
+      "model": "yttr:block/delicace_2",
+      "x": 180
+    },
+    "stage=3": {
+      "model": "yttr:block/delicace_2",
+      "x": 180
+    },
+    "stage=4": {
+      "model": "yttr:block/delicace_3",
+      "x": 180
+    },
+    "stage=5": {
+      "model": "yttr:block/delicace_3",
+      "x": 180
+    },
+    "stage=6": {
+      "model": "yttr:block/delicace_4",
+      "x": 180
+    },
+    "stage=7": {
+      "model": "yttr:block/delicace_4",
+      "x": 180
+    }
+  }
+}
