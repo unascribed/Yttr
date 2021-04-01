@@ -91,14 +91,16 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 			scannedThisLayer.add(bp);
 			iter.remove();
 			boolean filled = fill(bp);
-			if (filled || bp.equals(pos) || (!iter.hasNext() && world.getBlockState(bp).isOf(Blocks.WATER))) {
+			if (filled || bp.equals(pos) || world.getBlockState(bp).isOf(Blocks.WATER)) {
 				for (Direction d : Direction.Type.HORIZONTAL) {
 					tmp.set(bp).move(d);
 					if (canFill(tmp)) {
 						queueQueue.add(tmp.toImmutable());
 					}
 				}
-				return filled || !queueQueue.isEmpty();
+				if (filled) {
+					return true;
+				}
 			} else if (!iter.hasNext()) {
 				finished = true;
 			}

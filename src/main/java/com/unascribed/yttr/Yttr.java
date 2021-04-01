@@ -52,12 +52,16 @@ import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -100,6 +104,8 @@ public class Yttr implements ModInitializer {
 	
 	public static final VoidFluid.Flowing FLOWING_VOID = new VoidFluid.Flowing();
 	public static final VoidFluid.Still VOID = new VoidFluid.Still();
+	
+	public static final StatusEffect DELICACENESS = new StatusEffect(StatusEffectType.BENEFICIAL, 0xA68FE0) {};
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
@@ -257,8 +263,14 @@ public class Yttr implements ModInitializer {
 	public static final Item BEDROCK_SHARD = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
 		);
-	public static final Item DELICACE = new Item(new Item.Settings()
+	public static final Item DELICACE = new SwallowableItem(new Item.Settings()
 			.group(ITEM_GROUP)
+			.food(new FoodComponent.Builder()
+					.alwaysEdible()
+					.hunger(1)
+					.statusEffect(new StatusEffectInstance(DELICACENESS, 30*20, 2), 1)
+					.snack()
+					.build())
 		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
@@ -278,6 +290,7 @@ public class Yttr implements ModInitializer {
 	public static final SoundEvent AWARE_HOPPER_AMBIENT = new SoundEvent(new Identifier("yttr", "aware_hopper_ambient"));
 	public static final SoundEvent AWARE_HOPPER_BREAK = new SoundEvent(new Identifier("yttr", "aware_hopper_break"));
 	public static final SoundEvent AWARE_HOPPER_SCREAM = new SoundEvent(new Identifier("yttr", "aware_hopper_scream"));
+	public static final SoundEvent SWALLOW = new SoundEvent(new Identifier("yttr", "swallow"));
 	
 	private static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
 			.configure(new OreFeatureConfig(
@@ -371,9 +384,12 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_ambient", AWARE_HOPPER_AMBIENT);
 		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_break", AWARE_HOPPER_BREAK);
 		Registry.register(Registry.SOUND_EVENT, "yttr:aware_hopper_scream", AWARE_HOPPER_SCREAM);
+		Registry.register(Registry.SOUND_EVENT, "yttr:swallow", SWALLOW);
 		
 		Registry.register(Registry.FLUID, "yttr:void", VOID);
 		Registry.register(Registry.FLUID, "yttr:flowing_void", FLOWING_VOID);
+		
+		Registry.register(Registry.STATUS_EFFECT, "yttr:delicaceness", DELICACENESS);
 		
 		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);

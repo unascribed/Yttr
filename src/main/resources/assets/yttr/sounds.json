@@ -67,5 +67,9 @@
 	},
 	"aware_hopper_scream": {
 		"sounds": ["yttr:aware_hopper_scream"]
+	},
+	"swallow": {
+		"sounds": ["minecraft:item/bottle/drink_honey1"],
+		"subtitle": "subtitles.yttr.swallow"
 	}
 }

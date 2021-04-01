@@ -36,6 +36,8 @@
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
 	
+	"effect.yttr.delicaceness": "Delicaceness",
+	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
 	"subtitles.yttr.rifle_fire": "Yttric Rifle fires",
@@ -48,6 +50,7 @@
 	"subtitles.yttr.dissolve": "Dissolving",
 	"subtitles.yttr.horrible_crafting": "Player commits a terrible deed",
 	"subtitles.yttr.aware_hopper": "Aware hopper makes tortured noises",
+	"subtitles.yttr.swallow": "Player gulps",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

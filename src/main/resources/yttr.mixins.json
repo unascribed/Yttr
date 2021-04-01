@@ -14,7 +14,10 @@
   	"MixinCraftingResultSlot",
   	"MixinCraftingRecipeSerializers",
   	"MixinRecipeManager",
-  	"MixinSmithingScreenHandler"
+  	"MixinSmithingScreenHandler",
+  	"AccessorStatusEffectInstance",
+  	"MixinHungerManager",
+  	"MixinLivingEntity"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",
