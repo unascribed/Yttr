@@ -15,7 +15,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
@@ -31,8 +31,12 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 	}
 	
 	@Override
-	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState blockState, Random random) {
+	public boolean generate(ServerWorld world, ChunkGenerator chunkGenerator, BlockPos pos, BlockState _unused_nullable, Random random) {
+		return generate(world, pos, random);
+	}
 		
+	public boolean generate(WorldAccess world, BlockPos pos, Random random) {
+		if (!Yttr.SQUEEZE_SAPLING.canPlaceAt(null, world, pos)) return false;
 		Map<BlockPos, BlockState> plan = Maps.newLinkedHashMap();
 		
 		BlockPos.Mutable turt = pos.mutableCopy();
@@ -174,13 +178,13 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 		}
 		
 		for (Map.Entry<BlockPos, BlockState> en : plan.entrySet()) {
-			world.setBlockState(en.getKey(), en.getValue().with(Properties.WATERLOGGED, world.getFluidState(en.getKey()).isIn(FluidTags.WATER)));
+			world.setBlockState(en.getKey(), en.getValue().with(Properties.WATERLOGGED, world.getFluidState(en.getKey()).isIn(FluidTags.WATER)), 3);
 		}
 		
 		return true;
 	}
 
-	private boolean canReplace(Map<BlockPos, BlockState> plan, World world, BlockPos pos, boolean leaves) {
+	private boolean canReplace(Map<BlockPos, BlockState> plan, WorldAccess world, BlockPos pos, boolean leaves) {
 		BlockState bs = plan.getOrDefault(pos, world.getBlockState(pos));
 		if (bs.isOf(Yttr.SQUEEZE_LEAVES) || bs.isOf(Yttr.SQUEEZE_SAPLING) || bs.isOf(Yttr.SQUEEZED_LEAVES) || (!leaves && (bs.isOf(Yttr.SQUEEZE_LOG) || bs.isOf(Yttr.STRIPPED_SQUEEZE_LOG))))
 			return true;

@@ -17,7 +17,8 @@
   	"MixinSmithingScreenHandler",
   	"AccessorStatusEffectInstance",
   	"MixinHungerManager",
-  	"MixinLivingEntity"
+  	"MixinLivingEntity",
+  	"MixinChunkGenerator"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",

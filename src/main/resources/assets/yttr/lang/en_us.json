@@ -73,6 +73,11 @@
 	"tip.yttr.snare.unstable": "Containment failure in %s:%s",
 	"tip.yttr.snare.failed": "CONTAINMENT FAILURE",
 	
+	"tip.yttr.delicace_bonus_1": "+40% Food Value",
+	"tip.yttr.delicace_bonus_2": "+20% Saturation",
+	"tip.yttr.delicace_bonus_3": "+40% Beneficial Effect Duration",
+	"tip.yttr.delicace_bonus_4": "-40% Negative Effect Duration",
+	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
 	"commands.yttr.void_undo.not_found": "No undo files could be found matching your request",

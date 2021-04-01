@@ -25,7 +25,7 @@ public class MixinHungerManager {
 		if (player != null) {
 			StatusEffectInstance d = player.getStatusEffect(Yttr.DELICACENESS);
 			if (d != null) {
-				return 1+(d.getAmplifier()+1)*0.05f;
+				return 1+(d.getAmplifier()+1)*0.10f;
 			}
 		}
 		return 1;
@@ -38,7 +38,7 @@ public class MixinHungerManager {
 	
 	@ModifyVariable(at=@At("HEAD"), method="add", ordinal=0, argsOnly=true)
 	public int modifyFood(int in) {
-		return MathHelper.ceil(in*yttr$calculateModifier(yttr$storedPlayer));
+		return MathHelper.ceil(in*(yttr$calculateModifier(yttr$storedPlayer)/2));
 	}
 	
 	@Inject(at=@At("HEAD"), method="update")

@@ -1,5 +1,6 @@
 package com.unascribed.yttr;
 
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -14,6 +15,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
@@ -21,6 +24,7 @@ import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.shape.VoxelShape;
@@ -61,7 +65,7 @@ public class DelicaceBlock extends Block {
 
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
-		return state.get(STAGE) < 7;
+		return true;
 	}
 	
 	@Override
@@ -69,6 +73,25 @@ public class DelicaceBlock extends Block {
 		int stage = state.get(STAGE);
 		if (stage < 7 && random.nextInt(8) == 0) {
 			world.setBlockState(pos, state.with(STAGE, stage+1));
+		}
+		if (stage > 2) {
+			Box box = new Box(pos).expand(8);
+			if (!world.getEntitiesByClass(PlayerEntity.class, box, e -> true).isEmpty()) {
+				world.getBlockTickScheduler().schedule(pos, this, 1);
+			}
+		}
+	}
+	
+	@Override
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		Box box = new Box(pos).expand(8);
+		List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, box, e -> true);
+		if (!players.isEmpty()) {
+			int potency = state.get(STAGE) == 7 ? 1 : 0;
+			for (PlayerEntity pe : players) {
+				pe.addStatusEffect(new StatusEffectInstance(Yttr.DELICACENESS, (20*15)+19, potency));
+			}
+			world.getBlockTickScheduler().schedule(pos, this, 18);
 		}
 	}
 	

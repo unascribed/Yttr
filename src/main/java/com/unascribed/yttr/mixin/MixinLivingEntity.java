@@ -21,14 +21,15 @@ public abstract class MixinLivingEntity {
 	
 	@Inject(at=@At("HEAD"), method="addStatusEffect")
 	public void addStatusEffect(StatusEffectInstance in, CallbackInfoReturnable<Boolean> ci) {
+		if (in == null || in.getEffectType() == Yttr.DELICACENESS) return;
 		StatusEffectInstance d = getStatusEffect(Yttr.DELICACENESS);
 		if (d != null) {
-			float potency = (d.getAmplifier()+1)*0.05f;
+			float potency = (d.getAmplifier()+1)*0.10f;
 			float mod = 1;
 			if (in.getEffectType().getType() == StatusEffectType.BENEFICIAL) {
 				mod = 1+potency;
 			} else if (in.getEffectType().getType() == StatusEffectType.HARMFUL) {
-				mod = 1-(potency*2);
+				mod = 1-potency;
 			}  else {
 				return;
 			}

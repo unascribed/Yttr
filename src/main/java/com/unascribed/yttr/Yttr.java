@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+
 import org.apache.logging.log4j.LogManager;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -43,6 +44,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -77,7 +79,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Property;
 import net.minecraft.tag.Tag;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -87,6 +91,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -268,10 +273,26 @@ public class Yttr implements ModInitializer {
 			.food(new FoodComponent.Builder()
 					.alwaysEdible()
 					.hunger(1)
-					.statusEffect(new StatusEffectInstance(DELICACENESS, 30*20, 2), 1)
+					.statusEffect(new StatusEffectInstance(DELICACENESS, 30*20, 3), 1)
 					.snack()
 					.build())
-		);
+		) {
+		@Override
+		public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+			super.appendTooltip(stack, world, tooltip, context);
+			tooltip.add(new TranslatableText("potion.withDuration",
+					new TranslatableText("potion.withAmplifier",
+							new TranslatableText("effect.yttr.delicaceness"),
+							new TranslatableText("potion.potency.3")),
+					"0:30").formatted(Formatting.BLUE));
+			tooltip.add(new LiteralText(""));
+			tooltip.add(new TranslatableText("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_1").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_2").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_3").formatted(Formatting.BLUE));
+			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
+		}
+	};
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
 	public static final SoundEvent RIFLE_CHARGE_FAST = new SoundEvent(new Identifier("yttr", "rifle_charge_fast"));
@@ -393,7 +414,7 @@ public class Yttr implements ModInitializer {
 		
 		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);
-		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), net.minecraft.world.gen.GenerationStep.Feature.UNDERGROUND_ORES, gadoliniteOverworld);
+		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, gadoliniteOverworld);
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "rifle_mode"), (server, player, handler, buf, responseSender) -> {
 			if (player != null && player.getMainHandStack().getItem() instanceof RifleItem) {

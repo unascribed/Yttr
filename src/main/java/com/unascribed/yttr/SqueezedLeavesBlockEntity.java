@@ -37,11 +37,12 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 		super(Yttr.SQUEEZED_LEAVES_ENTITY);
 	}
 	
-	public void step() {
+	public boolean step() {
 		decayTime = 0;
 		for (int i = 0; i < 100; i++) {
-			if (stepInner()) return;
+			if (stepInner()) return true;
 		}
+		return false;
 	}
 	
 	private boolean stepInner() {
