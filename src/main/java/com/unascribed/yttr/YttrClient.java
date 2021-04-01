@@ -14,6 +14,7 @@ import com.unascribed.yttr.client.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.DummyServerWorld;
 import com.unascribed.yttr.client.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
+import com.unascribed.yttr.client.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.client.TextureColorThief;
 import com.unascribed.yttr.client.VoidBallParticle;
 import com.unascribed.yttr.mixin.AccessorEntityRendererDispatcher;
@@ -338,6 +339,7 @@ public class YttrClient implements ClientModInitializer {
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.POWER_METER_ENTITY, PowerMeterBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.AWARE_HOPPER_ENTITY, AwareHopperBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.LEVITATION_CHAMBER_ENTITY, LevitationChamberBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(Yttr.SQUEEZED_LEAVES_ENTITY, SqueezedLeavesBlockEntityRenderer::new);
 		FabricModelPredicateProviderRegistry.register(Yttr.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});

@@ -7,6 +7,7 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
@@ -32,16 +33,26 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 	}
 	
 	@Override
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		return new ItemStack(Yttr.SQUEEZE_LEAVES);
+	}
+	
+	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty()) return ActionResult.PASS;
 		if (state.get(SQUEEZING)) return ActionResult.FAIL;
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof SqueezedLeavesBlockEntity) {
-			((SqueezedLeavesBlockEntity)be).step();
-			world.setBlockState(pos, state.with(SQUEEZING, true));
-			world.getBlockTickScheduler().schedule(pos, this, 4);
+		if (world.getDimension().isUltrawarm()) return ActionResult.FAIL;
+		if (!world.isClient) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof SqueezedLeavesBlockEntity) {
+				if (!((SqueezedLeavesBlockEntity) be).finished) {
+					world.setBlockState(pos, state.with(SQUEEZING, true));
+					world.getBlockTickScheduler().schedule(pos, this, 4);
+					((SqueezedLeavesBlockEntity)be).step();
+				}
+			}
 		}
-		return ActionResult.success(world.isClient);
+		return ActionResult.success(true);
 	}
 	
 	@Override
