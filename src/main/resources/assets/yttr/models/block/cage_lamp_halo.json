@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"2": "yttr:block/cage_lamp_halo",
+		"particle": "yttr:block/cage_lamp"
+	},
+	"elements": [
+		{
+			"name": "halo",
+			"from": [4.25, 1.25, 4.25],
+			"to": [11.75, 12.75, 11.75],
+			"faces": {
+				"north": {"uv": [0, 6, 6, 16], "texture": "#2", "tintindex": 0},
+				"east": {"uv": [0, 6, 6, 16], "texture": "#2", "tintindex": 0},
+				"south": {"uv": [0, 6, 6, 16], "texture": "#2", "tintindex": 0},
+				"west": {"uv": [0, 6, 6, 16], "texture": "#2", "tintindex": 0},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#2", "tintindex": 0}
+			}
+		}
+	]
+}

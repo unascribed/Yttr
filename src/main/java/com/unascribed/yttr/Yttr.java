@@ -81,7 +81,6 @@ import net.minecraft.tag.Tag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -108,7 +107,7 @@ public class Yttr implements ModInitializer {
 			.icon(() -> new ItemStack(Yttr.SNARE))
 		.build();
 	public static final ItemGroup LAMP_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "lamp"))
-			.icon(() -> new ItemStack(Yttr.LAMP))
+			.icon(() -> Yttr.LAMP.getPickStack(null, null, Yttr.LAMP.getDefaultState().with(LampBlock.COLOR, LampColor.CYAN).with(LampBlock.INVERTED, true)))
 		.build();
 	
 	public static final VoidFluid.Flowing FLOWING_VOID = new VoidFluid.Flowing();
@@ -234,6 +233,21 @@ public class Yttr implements ModInitializer {
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES)
 		);
+	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(2)
+			.sounds(BlockSoundGroup.METAL)
+			.breakByTool(FabricToolTags.PICKAXES), 12, 10, 6);
+	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(2)
+			.sounds(BlockSoundGroup.METAL)
+			.breakByTool(FabricToolTags.PICKAXES), 10, 6, 10);
+	public static final Block YTTRIUM_PLATING = new Block(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
 	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
@@ -241,7 +255,7 @@ public class Yttr implements ModInitializer {
 	public static final BlockEntityType<ChuteBlockEntity> CHUTE_ENTITY = new BlockEntityType<>(ChuteBlockEntity::new, ImmutableSet.of(CHUTE), null);
 	public static final BlockEntityType<VoidGeyserBlockEntity> VOID_GEYSER_ENTITY = new BlockEntityType<>(VoidGeyserBlockEntity::new, ImmutableSet.of(VOID_GEYSER), null);
 	public static final BlockEntityType<SqueezedLeavesBlockEntity> SQUEEZED_LEAVES_ENTITY = new BlockEntityType<>(SqueezedLeavesBlockEntity::new, ImmutableSet.of(SQUEEZED_LEAVES), null);
-	public static final BlockEntityType<LampBlockEntity> LAMP_ENTITY = new BlockEntityType<>(LampBlockEntity::new, ImmutableSet.of(LAMP), null);
+	public static final BlockEntityType<LampBlockEntity> LAMP_ENTITY = new BlockEntityType<>(LampBlockEntity::new, ImmutableSet.of(LAMP, FIXTURE, CAGE_LAMP), null);
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
 			.group(ITEM_GROUP)
@@ -366,6 +380,9 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:squeeze_sapling", SQUEEZE_SAPLING);
 		Registry.register(Registry.BLOCK, "yttr:delicace", DELICACE_BLOCK);
 		Registry.register(Registry.BLOCK, "yttr:lamp", LAMP);
+		Registry.register(Registry.BLOCK, "yttr:fixture", FIXTURE);
+		Registry.register(Registry.BLOCK, "yttr:cage_lamp", CAGE_LAMP);
+		Registry.register(Registry.BLOCK, "yttr:yttrium_plating", YTTRIUM_PLATING);
 		
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:power_meter", POWER_METER_ENTITY);
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, "yttr:aware_hopper", AWARE_HOPPER_ENTITY);
@@ -387,14 +404,10 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:stripped_squeeze_log", new BlockItem(STRIPPED_SQUEEZE_LOG, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:squeeze_leaves", new BlockItem(SQUEEZE_LEAVES, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:squeeze_sapling", new BlockItem(SQUEEZE_SAPLING, new Item.Settings().group(ITEM_GROUP)));
-		Registry.register(Registry.ITEM, "yttr:lamp", new BlockItem(LAMP, new Item.Settings().group(LAMP_ITEM_GROUP)) {
-			@Override
-			public Text getName(ItemStack stack) {
-				DyeColor color = stack.hasTag() ? DyeColor.byId(stack.getTag().getByte("DyeColor")&0xFF) : DyeColor.WHITE;
-				boolean inverted = stack.hasTag() && stack.getTag().getBoolean("Inverted");
-				return new TranslatableText("block.yttr.lamp."+color.getName()+(inverted ? ".inverted" : ""));
-			}
-		});
+		Registry.register(Registry.ITEM, "yttr:lamp", new LampBlockItem(LAMP, new Item.Settings().group(LAMP_ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:fixture", new LampBlockItem(FIXTURE, new Item.Settings().group(LAMP_ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:cage_lamp", new LampBlockItem(CAGE_LAMP, new Item.Settings().group(LAMP_ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:yttrium_plating", new BlockItem(YTTRIUM_PLATING, new Item.Settings().group(ITEM_GROUP)));
 		
 		Registry.register(Registry.ITEM, "yttr:yttrium_ingot", YTTRIUM_INGOT);
 		Registry.register(Registry.ITEM, "yttr:yttrium_nugget", YTTRIUM_NUGGET);

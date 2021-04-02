@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"YYY",
+		"Y Y",
+		"YYY"
+	],
+	"key": {
+		"Y": {
+			"item": "yttr:yttrium_ingot"
+		}
+	},
+	"result": {
+		"item": "yttr:yttrium_plating",
+		"count": 32
+	}
+}

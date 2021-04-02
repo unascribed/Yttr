@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "yttr:block/fixture"
+    },
+    "facing=west": {
+      "model": "yttr:block/fixture",
+      "x": 90,
+      "y": 90
+    },
+    "facing=south": {
+      "model": "yttr:block/fixture",
+      "x": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/fixture",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "yttr:block/fixture",
+      "x": 90,
+      "y": 270
+    },
+    "facing=up": {
+      "model": "yttr:block/fixture",
+      "x": 180
+    }
+  }
+}

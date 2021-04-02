@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.AwareHopperBlockEntityRenderer;
@@ -18,7 +17,6 @@ import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
 import com.unascribed.yttr.client.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.client.TextureColorThief;
 import com.unascribed.yttr.client.VoidBallParticle;
-import com.unascribed.yttr.mixin.AccessorDyeColor;
 import com.unascribed.yttr.mixin.AccessorEntityRendererDispatcher;
 import com.unascribed.yttr.mixin.AccessorEntityTrackingSoundInstance;
 
@@ -51,6 +49,7 @@ import net.minecraft.client.particle.RedDustParticle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
@@ -64,9 +63,11 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundTag;
@@ -77,7 +78,6 @@ import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -123,6 +123,9 @@ public class YttrClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE, this::renderRifle);
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE_REINFORCED, this::renderRifle);
 		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.RIFLE_OVERCLOCKED, this::renderRifle);
+		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.LAMP, this::renderLamp);
+		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.FIXTURE, this::renderLamp);
+		BuiltinItemRendererRegistry.INSTANCE.register(Yttr.CAGE_LAMP, this::renderLamp);
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
@@ -132,8 +135,11 @@ public class YttrClient implements ClientModInitializer {
 			Yttr.LEVITATION_CHAMBER,
 			Yttr.SQUEEZE_LEAVES,
 			Yttr.SQUEEZED_LEAVES,
-			Yttr.SQUEEZE_SAPLING,
-			Yttr.LAMP);
+			Yttr.SQUEEZE_SAPLING);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+			Yttr.LAMP,
+			Yttr.FIXTURE,
+			Yttr.CAGE_LAMP);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
 			Yttr.GLASSY_VOID,
 			Yttr.DELICACE_BLOCK);
@@ -237,20 +243,16 @@ public class YttrClient implements ClientModInitializer {
 			return leafColor;
 		}, Yttr.SQUEEZE_LEAVES, Yttr.SQUEEZED_LEAVES);
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			int color = ((AccessorDyeColor)(Object)state.get(LampBlock.COLOR)).yttr$getColor();
-			if (!state.get(LampBlock.LIT)) color = darken(color);
-			return color;
-		}, Yttr.LAMP);
+			LampColor color = state.get(LampBlock.COLOR);
+			return state.get(LampBlock.LIT) ? color.baseLitColor : color.baseUnlitColor;
+		}, Yttr.LAMP, Yttr.FIXTURE, Yttr.CAGE_LAMP);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 			return 0xFFFFEE58;
 		}, Yttr.SQUEEZE_LEAVES);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			int color = stack.hasTag() ? ((AccessorDyeColor)(Object)DyeColor.byId(stack.getTag().getByte("DyeColor")&0xFF)).yttr$getColor() : -1;
-			if (!stack.hasTag() || !stack.getTag().getBoolean("Inverted")) {
-				color = darken(color);
-			}
-			return color;
-		}, Yttr.LAMP);
+			LampColor color = LampBlockItem.getColor(stack);
+			return LampBlockItem.isInverted(stack) ? color.baseLitColor : color.baseUnlitColor;
+		}, Yttr.LAMP, Yttr.FIXTURE, Yttr.CAGE_LAMP);
 		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
 			@Override
 			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
@@ -368,16 +370,6 @@ public class YttrClient implements ClientModInitializer {
 	
 	public static boolean retrievingHalo = false;
 	
-	private int darken(int color) {
-		int r = (color >> 16) & 0xFF;
-		int g = (color >> 8) & 0xFF;
-		int b = color & 0xFF;
-		r /= 2;
-		g /= 2;
-		b /= 2;
-		return (r << 16) | (g << 8) | b;
-	}
-
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		float tickDelta = MinecraftClient.getInstance().getTickDelta();
 		matrices.pop();
@@ -444,6 +436,26 @@ public class YttrClient implements ClientModInitializer {
 		if (vertexConsumers instanceof Immediate) ((Immediate)vertexConsumers).draw();
 		RenderSystem.enableCull();
 		matrices.push();
+	}
+	
+	private final LampBlockEntityRenderer lampItemGlow = new LampBlockEntityRenderer(null);
+	
+	public void renderLamp(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState()
+				.with(LampBlock.LIT, LampBlockItem.isInverted(stack))
+				.with(LampBlock.COLOR, LampBlockItem.getColor(stack));
+		matrices.translate(0.5, 0.5, 0.5);
+		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90));
+		matrices.translate(-0.5, -0.5, -0.5);
+		BakedModel model = MinecraftClient.getInstance().getBlockRenderManager().getModel(state);
+        int i = MinecraftClient.getInstance().getBlockColors().getColor(state, null, null, 0);
+        float r = (i >> 16 & 255) / 255.0F;
+        float g = (i >> 8 & 255) / 255.0F;
+        float b = (i & 255) / 255.0F;
+        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(matrices.peek(),
+        		vertexConsumers.getBuffer(TexturedRenderLayers.getEntityTranslucentCull()), state, model, r, g, b, light, overlay);
+        if (vertexConsumers instanceof Immediate) ((Immediate)vertexConsumers).draw();
+		lampItemGlow.render(MinecraftClient.getInstance().world, null, state, matrices, vertexConsumers, light, overlay);
 	}
 	
 }

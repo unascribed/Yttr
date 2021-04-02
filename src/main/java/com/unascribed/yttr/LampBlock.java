@@ -19,7 +19,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
@@ -29,7 +28,7 @@ public class LampBlock extends Block implements BlockEntityProvider {
 
 	public static final BooleanProperty LIT = Properties.LIT;
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
-	public static final EnumProperty<DyeColor> COLOR = EnumProperty.of("color", DyeColor.class);
+	public static final EnumProperty<LampColor> COLOR = EnumProperty.of("color", LampColor.class);
 	
 	public LampBlock(Settings settings) {
 		super(settings
@@ -52,7 +51,7 @@ public class LampBlock extends Block implements BlockEntityProvider {
 		ItemStack is = new ItemStack(this);
 		is.setTag(new CompoundTag());
 		is.getTag().putBoolean("Inverted", state.get(INVERTED));
-		is.getTag().putByte("DyeColor", (byte)state.get(COLOR).getId());
+		is.getTag().putString("LampColor", state.get(COLOR).asString());
 		return is;
 	}
 	
@@ -69,8 +68,8 @@ public class LampBlock extends Block implements BlockEntityProvider {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		boolean powered = ctx.getWorld().isReceivingRedstonePower(ctx.getBlockPos());
-		boolean inverted = ctx.getStack().hasTag() && ctx.getStack().getTag().getBoolean("Inverted");
-		DyeColor color = ctx.getStack().hasTag() ? DyeColor.byId(ctx.getStack().getTag().getByte("DyeColor")&0xFF) : DyeColor.WHITE;
+		boolean inverted = LampBlockItem.isInverted(ctx.getStack());
+		LampColor color = LampBlockItem.getColor(ctx.getStack());
 		return getDefaultState()
 				.with(LIT, powered^inverted)
 				.with(INVERTED, inverted)
@@ -80,8 +79,8 @@ public class LampBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (!world.isClient) {
-			boolean cur = state.get(LIT) ^ state.get(INVERTED);
-			if (cur != world.isReceivingRedstonePower(pos)) {
+			boolean cur = state.get(LIT);
+			if (cur != (world.isReceivingRedstonePower(pos) ^ state.get(INVERTED))) {
 				if (cur) {
 					world.getBlockTickScheduler().schedule(pos, this, 4);
 				} else {
@@ -94,16 +93,25 @@ public class LampBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (world.isReceivingRedstonePower(pos) ^ state.get(INVERTED)) {
+		if (!world.isReceivingRedstonePower(pos) ^ state.get(INVERTED)) {
 			world.setBlockState(pos, state.cycle(LIT), 2);
 		}
 	}
 	
 	@Override
 	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
-		for (DyeColor color : DyeColor.values()) {
+		int rem = 9-(LampColor.values().length%9);
+		for (LampColor color : LampColor.values()) {
 			list.add(getDrop(getDefaultState().with(COLOR, color)));
+		}
+		for (int i = 0; i < rem; i++) {
+			list.add(ItemStack.EMPTY);
+		}
+		for (LampColor color : LampColor.values()) {
 			list.add(getDrop(getDefaultState().with(COLOR, color).with(INVERTED, true)));
+		}
+		for (int i = 0; i < rem; i++) {
+			list.add(ItemStack.EMPTY);
 		}
 	}
 

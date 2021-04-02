@@ -464,6 +464,7 @@ public class SnareItem extends Item {
 		if (group == Yttr.SNARE_ITEM_GROUP) {
 			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 				EntityType<?> e = en.getValue();
+				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
 				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(Yttr.SNAREABLE_NONLIVING_TAG)) && !e.isIn(Yttr.UNSNAREABLE_ENTITY_TAG)) {
 					ItemStack is = new ItemStack(this);
 					is.getOrCreateSubTag("Contents").putString("id", en.getKey().getValue().toString());
