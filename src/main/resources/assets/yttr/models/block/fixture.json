@@ -4,6 +4,7 @@
 	"textures": {
 		"0": "yttr:block/fixture",
 		"1": "yttr:block/fixture_glint",
+		"2": "yttr:block/fixture_bottom",
 		"particle": "yttr:block/fixture"
 	},
 	"elements": [
@@ -15,7 +16,8 @@
 				"north": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"},
 				"east": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"},
 				"south": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"},
-				"west": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"}
+				"west": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#2"}
 			}
 		},
 		{

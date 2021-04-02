@@ -4,6 +4,7 @@
 	"textures": {
 		"0": "yttr:block/cage_lamp",
 		"1": "yttr:block/cage_lamp_glint",
+		"2": "yttr:block/cage_lamp_bottom",
 		"particle": "yttr:block/cage_lamp"
 	},
 	"elements": [
@@ -15,7 +16,8 @@
 				"north": {"uv": [14, 4, 16, 16], "rotation": 90, "texture": "#0"},
 				"east": {"uv": [14, 4, 16, 16], "rotation": 90, "texture": "#0"},
 				"south": {"uv": [14, 4, 16, 16], "rotation": 90, "texture": "#0"},
-				"west": {"uv": [14, 4, 16, 16], "rotation": 90, "texture": "#0"}
+				"west": {"uv": [14, 4, 16, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#2"}
 			}
 		},
 		{
