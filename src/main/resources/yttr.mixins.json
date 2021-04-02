@@ -18,7 +18,8 @@
   	"AccessorStatusEffectInstance",
   	"MixinHungerManager",
   	"MixinLivingEntity",
-  	"MixinChunkGenerator"
+  	"MixinChunkGenerator",
+  	"AccessorDyeColor"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",

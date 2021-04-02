@@ -12,11 +12,13 @@ import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.DummyServerWorld;
+import com.unascribed.yttr.client.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.PowerMeterBlockEntityRenderer;
 import com.unascribed.yttr.client.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.client.TextureColorThief;
 import com.unascribed.yttr.client.VoidBallParticle;
+import com.unascribed.yttr.mixin.AccessorDyeColor;
 import com.unascribed.yttr.mixin.AccessorEntityRendererDispatcher;
 import com.unascribed.yttr.mixin.AccessorEntityTrackingSoundInstance;
 
@@ -40,6 +42,7 @@ import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredica
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.options.Perspective;
@@ -74,6 +77,7 @@ import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -128,7 +132,8 @@ public class YttrClient implements ClientModInitializer {
 			Yttr.LEVITATION_CHAMBER,
 			Yttr.SQUEEZE_LEAVES,
 			Yttr.SQUEEZED_LEAVES,
-			Yttr.SQUEEZE_SAPLING);
+			Yttr.SQUEEZE_SAPLING,
+			Yttr.LAMP);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
 			Yttr.GLASSY_VOID,
 			Yttr.DELICACE_BLOCK);
@@ -231,9 +236,21 @@ public class YttrClient implements ClientModInitializer {
 			int leafColor = (leafR<<16) | (leafG<<8) | (leafB);
 			return leafColor;
 		}, Yttr.SQUEEZE_LEAVES, Yttr.SQUEEZED_LEAVES);
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+			int color = ((AccessorDyeColor)(Object)state.get(LampBlock.COLOR)).yttr$getColor();
+			if (!state.get(LampBlock.LIT)) color = darken(color);
+			return color;
+		}, Yttr.LAMP);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 			return 0xFFFFEE58;
 		}, Yttr.SQUEEZE_LEAVES);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			int color = stack.hasTag() ? ((AccessorDyeColor)(Object)DyeColor.byId(stack.getTag().getByte("DyeColor")&0xFF)).yttr$getColor() : -1;
+			if (!stack.hasTag() || !stack.getTag().getBoolean("Inverted")) {
+				color = darken(color);
+			}
+			return color;
+		}, Yttr.LAMP);
 		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
 			@Override
 			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
@@ -340,11 +357,27 @@ public class YttrClient implements ClientModInitializer {
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.AWARE_HOPPER_ENTITY, AwareHopperBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.LEVITATION_CHAMBER_ENTITY, LevitationChamberBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Yttr.SQUEEZED_LEAVES_ENTITY, SqueezedLeavesBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(Yttr.LAMP_ENTITY, LampBlockEntityRenderer::new);
 		FabricModelPredicateProviderRegistry.register(Yttr.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});
+		FabricModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity) -> {
+			return retrievingHalo ? 1 : 0;
+		});
 	}
 	
+	public static boolean retrievingHalo = false;
+	
+	private int darken(int color) {
+		int r = (color >> 16) & 0xFF;
+		int g = (color >> 8) & 0xFF;
+		int b = color & 0xFF;
+		r /= 2;
+		g /= 2;
+		b /= 2;
+		return (r << 16) | (g << 8) | b;
+	}
+
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		float tickDelta = MinecraftClient.getInstance().getTickDelta();
 		matrices.pop();
