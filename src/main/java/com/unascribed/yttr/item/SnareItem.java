@@ -162,6 +162,8 @@ public class SnareItem extends Item implements ItemColorProvider {
 					}
 				} else if (fbe.blockEntityData != null) {
 					return TypedActionResult.fail(stack);
+				} else {
+					world.spawnEntity(e);
 				}
 			} else {
 				world.spawnEntity(e);
