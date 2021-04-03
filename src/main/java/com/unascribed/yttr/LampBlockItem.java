@@ -7,6 +7,7 @@ import com.google.common.base.Enums;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -29,6 +30,15 @@ public class LampBlockItem extends BlockItem {
 
 	public static boolean isInverted(ItemStack stack) {
 		return stack.hasTag() && stack.getTag().getBoolean("Inverted");
+	}
+
+	public static void setInverted(ItemStack is, boolean inverted) {
+		if (!is.hasTag()) is.setTag(new CompoundTag());
+		is.getTag().putBoolean("Inverted", inverted);
+	}
+	
+	public static void setColor(ItemStack is, LampColor color) {
+		is.getTag().putString("LampColor", color.asString());
 	}
 
 }

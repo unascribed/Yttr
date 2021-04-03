@@ -13,7 +13,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -49,9 +48,8 @@ public class LampBlock extends Block implements BlockEntityProvider {
 	
 	private ItemStack getDrop(BlockState state) {
 		ItemStack is = new ItemStack(this);
-		is.setTag(new CompoundTag());
-		is.getTag().putBoolean("Inverted", state.get(INVERTED));
-		is.getTag().putString("LampColor", state.get(COLOR).asString());
+		LampBlockItem.setInverted(is, state.get(INVERTED));
+		LampBlockItem.setColor(is, state.get(COLOR));
 		return is;
 	}
 	

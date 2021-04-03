@@ -1,0 +1,13 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"L"
+	],
+	"key": {
+		"L": { "item": "yttr:lamp" }
+	},
+	"result": {
+		"item": "yttr:fixture",
+		"count": 4
+	}
+}

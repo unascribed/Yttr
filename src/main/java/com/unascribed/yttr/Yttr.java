@@ -13,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.mixin.AccessorHorseBaseEntity;
@@ -71,6 +72,8 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -317,6 +320,11 @@ public class Yttr implements ModInitializer {
 			tooltip.add(new TranslatableText("tip.yttr.delicace_bonus_4").formatted(Formatting.BLUE));
 		}
 	};
+	public static final Item GLOWING_GAS = new Item(new Item.Settings()
+			.group(ITEM_GROUP)
+			.maxCount(16)
+			.recipeRemainder(Items.GLASS_BOTTLE)
+		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
 	public static final SoundEvent RIFLE_CHARGE_FAST = new SoundEvent(new Identifier("yttr", "rifle_charge_fast"));
@@ -420,6 +428,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:shears", SHEARS);
 		Registry.register(Registry.ITEM, "yttr:bedrock_shard", BEDROCK_SHARD);
 		Registry.register(Registry.ITEM, "yttr:delicace", DELICACE);
+		Registry.register(Registry.ITEM, "yttr:glowing_gas", GLOWING_GAS);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_fast", RIFLE_CHARGE_FAST);
@@ -444,6 +453,18 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.FLUID, "yttr:flowing_void", FLOWING_VOID);
 		
 		Registry.register(Registry.STATUS_EFFECT, "yttr:delicaceness", DELICACENESS);
+		
+		Registry.register(Registry.RECIPE_SERIALIZER, "yttr:lamp_crafting", new ShapedRecipe.Serializer() {
+			@Override
+			public ShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
+				return new LampRecipe(super.read(identifier, jsonObject));
+			}
+			
+			@Override
+			public ShapedRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
+				return new LampRecipe(super.read(identifier, packetByteBuf));
+			}
+		});
 		
 		RegistryKey<ConfiguredFeature<?, ?>> gadoliniteOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", "gadolinite_overworld"));
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, gadoliniteOverworld.getValue(), GADOLINITE_OVERWORLD);

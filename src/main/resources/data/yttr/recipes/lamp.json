@@ -1,0 +1,21 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"YDY",
+		"GBG",
+		"YRY"
+	],
+	"key": {
+		"G": { "item": "minecraft:glass_pane" },
+		"R": [
+			{ "item": "minecraft:redstone" },
+			{ "item": "minecraft:redstone_torch" }
+		],
+		"Y": { "item": "yttr:yttrium_ingot" },
+		"B": { "item": "yttr:glowing_gas" },
+		"D": { "tag": "yttr:dyes" }
+	},
+	"result": {
+		"item": "yttr:lamp"
+	}
+}

@@ -19,7 +19,10 @@
   	"MixinHungerManager",
   	"MixinLivingEntity",
   	"MixinChunkGenerator",
-  	"AccessorDyeColor"
+  	"AccessorDyeColor",
+  	"MixinPistonHandler",
+  	"MixinGlassBottleItem",
+  	"AccessorShapedRecipe"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",

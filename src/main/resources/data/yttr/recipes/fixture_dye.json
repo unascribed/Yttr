@@ -1,0 +1,13 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"LD"
+	],
+	"key": {
+		"L": { "item": "yttr:fixture" },
+		"D": { "tag": "yttr:dyes" }
+	},
+	"result": {
+		"item": "yttr:fixture"
+	}
+}

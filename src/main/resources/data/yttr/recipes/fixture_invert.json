@@ -1,0 +1,13 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"LT"
+	],
+	"key": {
+		"L": { "item": "yttr:fixture" },
+		"T": { "item": "minecraft:redstone_torch" }
+	},
+	"result": {
+		"item": "yttr:fixture"
+	}
+}

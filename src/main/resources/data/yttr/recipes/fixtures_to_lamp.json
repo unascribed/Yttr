@@ -1,0 +1,16 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"LL",
+		"LL"
+	],
+	"key": {
+		"L": [
+			{ "item": "yttr:fixture" },
+			{ "item": "yttr:cage_lamp" }
+		]
+	},
+	"result": {
+		"item": "yttr:lamp"
+	}
+}
