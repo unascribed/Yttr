@@ -1,9 +1,11 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.annotate.RenderLayer;
 import com.unascribed.yttr.block.AwareHopperBlock;
 import com.unascribed.yttr.block.BedrockSmasherBlock;
 import com.unascribed.yttr.block.ChuteBlock;
+import com.unascribed.yttr.block.CleavedBlock;
 import com.unascribed.yttr.block.DelicaceBlock;
 import com.unascribed.yttr.block.LampBlock;
 import com.unascribed.yttr.block.LevitationChamberBlock;
@@ -75,6 +77,7 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
+	@RenderLayer("cutout_mipped")
 	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(4)
 			.requiresTool()
@@ -83,6 +86,7 @@ public class YBlocks {
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 			.nonOpaque()
 		);
+	@RenderLayer("cutout_mipped")
 	public static final ChuteBlock CHUTE = new ChuteBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(4)
 			.requiresTool()
@@ -102,6 +106,7 @@ public class YBlocks {
 			.strength(75, 9000000)
 			.nonOpaque()
 		);
+	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID = new Block(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES)
 			.strength(7)
@@ -119,6 +124,7 @@ public class YBlocks {
 			.strength(2)
 		);
 	public static final Block STRIPPED_SQUEEZE_LOG = new SqueezeLogBlock(FabricBlockSettings.copyOf(SQUEEZE_LOG));
+	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZE_LEAVES = new SqueezeLeavesBlock(FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
 			.breakByTool(FabricToolTags.HOES)
@@ -129,10 +135,12 @@ public class YBlocks {
 			.nonOpaque()
 			.ticksRandomly()
 		);
+	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZED_LEAVES = new SqueezedLeavesBlock(FabricBlockSettings.copyOf(SQUEEZE_LEAVES)
 			.dropsLike(SQUEEZE_LEAVES)
 			.dynamicBounds()
 		);
+	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZE_SAPLING = new SqueezeSaplingBlock(new SqueezeSaplingGenerator(), FabricBlockSettings.of(Material.SPONGE)
 			.sounds(BlockSoundGroup.GRASS)
 			.noCollision()
@@ -140,16 +148,20 @@ public class YBlocks {
 			.breakInstantly()
 			.nonOpaque()
 		);
+	@RenderLayer("translucent")
 	public static final Block DELICACE = new DelicaceBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK));
+	@RenderLayer("cutout")
 	public static final Block LAMP = new LampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES)
 		);
+	@RenderLayer("cutout")
 	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES), 12, 10, 6);
+	@RenderLayer("cutout")
 	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
@@ -161,6 +173,7 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
+	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES)
 			.strength(7)
@@ -171,6 +184,8 @@ public class YBlocks {
 			return world.getMaxLightLevel();
 		}
 	};
+	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
+			.dynamicBounds());
 
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

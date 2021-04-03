@@ -9,10 +9,14 @@ import com.unascribed.yttr.item.block.LampBlockItem;
 
 import com.google.common.collect.Lists;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -24,10 +28,12 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class LampBlock extends Block implements BlockEntityProvider {
+@EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
+public class LampBlock extends Block implements BlockEntityProvider, BlockColorProvider {
 
 	public static final BooleanProperty LIT = Properties.LIT;
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
@@ -115,6 +121,13 @@ public class LampBlock extends Block implements BlockEntityProvider {
 		for (int i = 0; i < rem; i++) {
 			list.add(ItemStack.EMPTY);
 		}
+	}
+	
+	@Override
+	@Environment(EnvType.CLIENT)
+	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
+		LampColor color = state.get(LampBlock.COLOR);
+		return state.get(LampBlock.LIT) ? color.baseLitColor : color.baseUnlitColor;
 	}
 
 }

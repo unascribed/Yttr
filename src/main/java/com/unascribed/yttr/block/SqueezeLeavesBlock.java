@@ -2,10 +2,15 @@ package com.unascribed.yttr.block;
 
 import com.unascribed.yttr.init.YBlocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.client.color.block.BlockColorProvider;
+import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -18,9 +23,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 
-public class SqueezeLeavesBlock extends LeavesBlock implements Waterloggable {
+@EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
+public class SqueezeLeavesBlock extends LeavesBlock implements Waterloggable, BlockColorProvider {
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	
@@ -59,6 +66,25 @@ public class SqueezeLeavesBlock extends LeavesBlock implements Waterloggable {
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
+		int waterColor = world.getColor(pos, BiomeColors.WATER_COLOR);
+		int waterR = (waterColor >> 16)&0xFF;
+		int waterG = (waterColor >>  8)&0xFF;
+		int waterB = (waterColor >>  0)&0xFF;
+		int leafR = waterB;
+		int leafG = waterB-(waterR/4);
+		int leafB = waterG-(waterB/3);
+		if (!state.get(Properties.WATERLOGGED)) {
+			leafR = leafR*2/3;
+			leafG = leafG*2/3;
+			leafB = leafB*2/3;
+		}
+		int leafColor = (leafR<<16) | (leafG<<8) | (leafB);
+		return leafColor;
 	}
 
 }

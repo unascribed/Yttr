@@ -1,25 +1,23 @@
 package com.unascribed.yttr.client;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
-
-import org.apache.logging.log4j.LogManager;
+import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
-import com.google.gson.internal.UnsafeAllocator;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.LampColor;
+import com.unascribed.yttr.annotate.ConstantColor;
+import com.unascribed.yttr.annotate.Renderer;
 import com.unascribed.yttr.block.LampBlock;
 import com.unascribed.yttr.client.particle.VoidBallParticle;
-import com.unascribed.yttr.client.render.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.render.LampBlockEntityRenderer;
-import com.unascribed.yttr.client.render.LevitationChamberBlockEntityRenderer;
-import com.unascribed.yttr.client.render.PowerMeterBlockEntityRenderer;
-import com.unascribed.yttr.client.render.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.client.util.UVObserver;
@@ -31,16 +29,9 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
-import com.unascribed.yttr.mixin.accessor.client.AccessorEntityRendererDispatcher;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
-import com.unascribed.yttr.rifle.RifleMode;
-
-import com.google.common.base.Charsets;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
 import com.google.common.collect.MapMaker;
-import com.google.common.hash.Hashing;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
@@ -52,13 +43,18 @@ import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.color.world.BiomeColors;
+import net.minecraft.client.color.block.BlockColorProvider;
+import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.options.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.RedDustParticle;
@@ -69,7 +65,8 @@ import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
-import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
@@ -81,19 +78,16 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -103,7 +97,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.World;
 
 public class YttrClient implements ClientModInitializer {
 	
@@ -120,23 +113,9 @@ public class YttrClient implements ClientModInitializer {
 	
 	private final UVObserver uvo = new UVObserver();
 	
-	private static final Supplier<World> dummyWorld;
-	static {
-		Supplier<World> dummyWorldTemp;
-		try {
-			DummyServerWorld sw = UnsafeAllocator.create().newInstance(DummyServerWorld.class);
-			sw.init();
-			dummyWorldTemp = () -> sw;
-		} catch (Exception e) {
-			dummyWorldTemp = () -> MinecraftClient.getInstance().world;
-			LogManager.getLogger("Yttr").warn("Failed to construct dummy ServerWorld, using client world directly. Snare color determination may be wrong for some entities!", e);
-		}
-		dummyWorld = dummyWorldTemp;
-	}
-	private static final Cache<CompoundTag, Identifier> textureCache = CacheBuilder.newBuilder()
-			.expireAfterAccess(5, TimeUnit.SECONDS)
-			.build();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onInitializeClient() {
 		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE, this::renderRifle);
@@ -149,147 +128,57 @@ public class YttrClient implements ClientModInitializer {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
 		});
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
-			YBlocks.CHUTE,
-			YBlocks.LEVITATION_CHAMBER,
-			YBlocks.SQUEEZE_LEAVES,
-			YBlocks.SQUEEZED_LEAVES,
-			YBlocks.SQUEEZE_SAPLING);
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-			YBlocks.LAMP,
-			YBlocks.FIXTURE,
-			YBlocks.CAGE_LAMP);
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
-			YBlocks.GLASSY_VOID,
-			YBlocks.DELICACE,
-			YBlocks.GLASSY_VOID_PANE);
+		eachRegisterableField(YBlocks.class, Block.class, (f, b) -> {
+			if (b instanceof BlockColorProvider) {
+				ColorProviderRegistry.BLOCK.register((BlockColorProvider)b, b);
+			}
+			com.unascribed.yttr.annotate.RenderLayer ann = f.getAnnotation(com.unascribed.yttr.annotate.RenderLayer.class);
+			if (ann != null) {
+				boolean foundIt = false;
+				for (RenderLayer layer : RenderLayer.getBlockLayers()) {
+					if (((AccessorRenderPhase)layer).yttr$getName().equals(ann.value())) {
+						BlockRenderLayerMap.INSTANCE.putBlocks(layer, b);
+						foundIt = true;
+						break;
+					}
+				}
+				if (!foundIt) throw new RuntimeException("YBlocks."+f.getName()+" has an unknown @RenderLayer: "+ann.value());
+			}
+		});
+		eachRegisterableField(YItems.class, Item.class, (f, i) -> {
+			if (i instanceof ItemColorProvider) {
+				ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
+			}
+			ConstantColor ann = f.getAnnotation(ConstantColor.class);
+			if (ann != null) {
+				ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ann.value(), i);
+			}
+		});
+		eachRegisterableField(YBlockEntities.class, BlockEntityType.class, (f, type) -> {
+			Renderer ann = f.getAnnotation(Renderer.class);
+			if (ann != null) {
+				try {
+					MethodHandle handle = MethodHandles.publicLookup().findConstructor(ann.value(), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
+					BlockEntityRendererRegistry.INSTANCE.register(type, berd -> {
+						try {
+							return (BlockEntityRenderer<?>)handle.invoke(berd);
+						} catch (RuntimeException | Error e) {
+							throw e;
+						} catch (Throwable e) {
+							throw new RuntimeException(e);
+						}
+					});
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(BASE_MODEL);
 			out.accept(CHAMBER_MODEL);
 			out.accept(CHAMBER_GLASS_MODEL);
 		});
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			int baseColor;
-			if (stack.getItem() == YItems.RIFLE_REINFORCED) {
-				baseColor = 0x223333;
-			} else if (stack.getItem() == YItems.RIFLE_OVERCLOCKED) {
-				baseColor = 0x111111;
-			} else {
-				baseColor = 0x3E5656;
-			}
-			if (tintIndex == 0) return baseColor;
-			tintIndex--;
-			RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
-			float ammo = (((RifleItem)stack.getItem()).getRemainingAmmo(stack)/(float)(((RifleItem)stack.getItem()).getMaxAmmo(stack)))*6;
-			int ammoI = (int)ammo;
-			if (ammoI > tintIndex) return mode.color;
-			float a = ammoI < tintIndex ? 1 : 1-(ammo%1);
-			float rF = NativeImage.getBlue(mode.color)/255f;
-			float gF = NativeImage.getGreen(mode.color)/255f;
-			float bF = NativeImage.getRed(mode.color)/255f;
-			float rE = (((baseColor>>16)&0xFF)/255f)+0.05f;
-			float gE = (((baseColor>>8)&0xFF)/255f)+0.05f;
-			float bE = ((baseColor&0xFF)/255f)+0.15f;
-			float r = rF+((rE-rF)*a);
-			float g = gF+((gE-gF)*a);
-			float b = bF+((bE-bF)*a);
-			return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
-		}, YItems.RIFLE, YItems.RIFLE_REINFORCED, YItems.RIFLE_OVERCLOCKED);
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			if (tintIndex == 0) return -1;
-			EntityType<?> type = YItems.SNARE.getEntityType(stack);
-			if (type != null) {
-				int primary;
-				int secondary;
-				CompoundTag data = stack.getTag().getCompound("Contents");
-				if (!textureCache.asMap().containsKey(data)) {
-					if (type == EntityType.FALLING_BLOCK) {
-						BlockState bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
-						BakedModel bm = MinecraftClient.getInstance().getBlockRenderManager().getModel(bs);
-						Identifier id = bm.getSprite().getId();
-						textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
-					} else if (type == EntityType.ITEM) {
-						ItemStack item = ItemStack.fromTag(data.getCompound("Item"));
-						BakedModel bm = MinecraftClient.getInstance().getItemRenderer().getModels().getModel(item);
-						Identifier id = bm.getSprite().getId();
-						textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
-					} else {
-						EntityRenderer renderer = ((AccessorEntityRendererDispatcher)MinecraftClient.getInstance().getEntityRenderDispatcher()).yttr$getRenderers().get(type);
-						if (renderer == null) {
-							textureCache.put(data, TextureColorThief.MISSINGNO);
-						} else {
-							try {
-								textureCache.put(data, renderer.getTexture(YItems.SNARE.createEntity(dummyWorld.get(), stack)));
-							} catch (Throwable e) {
-								LogManager.getLogger("Yttr").warn("Failed to determine color for entity", e);
-								textureCache.put(data, TextureColorThief.MISSINGNO);
-							}
-						}
-					}
-				}
-				Identifier tex = textureCache.getIfPresent(data);
-				if (tex != null && tex != TextureColorThief.MISSINGNO) {
-					primary = TextureColorThief.getPrimaryColor(tex);
-					secondary = TextureColorThief.getSecondaryColor(tex);
-				} else {
-					SpawnEggItem spi = SpawnEggItem.forEntity(type);
-					if (spi != null) {
-						primary = spi.getColor(0);
-						secondary = spi.getColor(1);
-					} else {
-						primary = Hashing.murmur3_32().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
-						secondary = ~primary;
-					}
-				}
-				return tintIndex == 1 ? primary : secondary;
-			} else {
-				return ((ThreadLocalRandom.current().nextInt(100)+155)<<16)|(ThreadLocalRandom.current().nextInt(64)<<8);
-			}
-		}, YItems.SNARE);
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			int waterColor = world.getColor(pos, BiomeColors.WATER_COLOR);
-			int waterR = (waterColor >> 16)&0xFF;
-			int waterG = (waterColor >>  8)&0xFF;
-			int waterB = (waterColor >>  0)&0xFF;
-			int leafR = waterB;
-			int leafG = waterB-(waterR/4);
-			int leafB = waterG-(waterB/3);
-			if (!state.get(Properties.WATERLOGGED)) {
-				leafR = leafR*2/3;
-				leafG = leafG*2/3;
-				leafB = leafB*2/3;
-			}
-			int leafColor = (leafR<<16) | (leafG<<8) | (leafB);
-			return leafColor;
-		}, YBlocks.SQUEEZE_LEAVES, YBlocks.SQUEEZED_LEAVES);
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			LampColor color = state.get(LampBlock.COLOR);
-			return state.get(LampBlock.LIT) ? color.baseLitColor : color.baseUnlitColor;
-		}, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			return 0xFFFFEE58;
-		}, YBlocks.SQUEEZE_LEAVES);
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			LampColor color = LampBlockItem.getColor(stack);
-			return LampBlockItem.isInverted(stack) ? color.baseLitColor : color.baseUnlitColor;
-		}, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
-		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
-			@Override
-			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
-				MinecraftClient mc = MinecraftClient.getInstance();
-				return new Sprite[] {
-					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_STILL),
-					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_FLOW)
-				};
-			}
-			@Override
-			public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
-				return 0xFFAAAAAA;
-			}
-		};
-		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.VOID, voidRenderHandler);
-		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.FLOWING_VOID, voidRenderHandler);
-		MinecraftClient mc = MinecraftClient.getInstance();
+		registerFluidRenderers();
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
@@ -310,62 +199,7 @@ public class YttrClient implements ClientModInitializer {
 				}
 			});
 		});
-		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "beam"), (client, handler, buf, responseSender) -> {
-			int entityId = buf.readInt();
-			int color = buf.readInt();
-			// NativeImage assumes little-endian, but our colors are big-endian, so swap red/blue
-			float a = NativeImage.getAlpha(color)/255f;
-			float r = NativeImage.getBlue(color)/255f;
-			float g = NativeImage.getGreen(color)/255f;
-			float b = NativeImage.getRed(color)/255f;
-			float eX = buf.readFloat();
-			float eY = buf.readFloat();
-			float eZ = buf.readFloat();
-			mc.send(() -> {
-				Entity ent = mc.world.getEntityById(entityId);
-				if (ent == null) return;
-				boolean fp = ent == mc.player && mc.options.getPerspective() == Perspective.FIRST_PERSON;
-				Vec3d start = RifleItem.getMuzzlePos(ent, fp);
-				double len = MathHelper.sqrt(start.squaredDistanceTo(eX, eY, eZ));
-				double diffX = eX-start.x;
-				double diffY = eY-start.y;
-				double diffZ = eZ-start.z;
-				int count = (int)(len*14);
-				DustParticleEffect eff = new DustParticleEffect(r, g, b, 0.2f);
-				SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
-				for (int i = 0; i < count; i++) {
-					double t = (i/(double)count);
-					double x = start.x+(diffX*t);
-					double y = start.y+(diffY*t);
-					double z = start.z+(diffZ*t);
-					final int fi = i;
-					mc.particleManager.addParticle(new RedDustParticle(mc.world, x, y, z, 0, 0, 0, eff, sprites) {
-						{
-							if (fp && fi < 3) {
-								scale /= 2;
-							}
-							setMaxAge((int)(Math.log10((fi*4)+5))+10);
-							setColor(r, g, b);
-							setColorAlpha(a);
-							velocityX = 0;
-							velocityY = 0;
-							velocityZ = 0;
-						}
-						
-						@Override
-						protected int getColorMultiplier(float tint) {
-							return LightmapTextureManager.pack(15, 15);
-						}
-
-						@Override
-						public ParticleTextureSheet getType() {
-							return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
-						}
-						
-					});
-				}
-			});
-		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "beam"), this::handleBeamPacket);
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "void_ball"), (client, handler, buf, responseSender) -> {
 			float x = buf.readFloat();
 			float y = buf.readFloat();
@@ -375,11 +209,6 @@ public class YttrClient implements ClientModInitializer {
 				mc.particleManager.addParticle(new VoidBallParticle(mc.world, x, y, z, r));
 			});
 		});
-		BlockEntityRendererRegistry.INSTANCE.register(YBlockEntities.POWER_METER, PowerMeterBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(YBlockEntities.AWARE_HOPPER, AwareHopperBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(YBlockEntities.LEVITATION_CHAMBER, LevitationChamberBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(YBlockEntities.SQUEEZED_LEAVES, SqueezedLeavesBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(YBlockEntities.LAMP, LampBlockEntityRenderer::new);
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});
@@ -387,106 +216,101 @@ public class YttrClient implements ClientModInitializer {
 			return retrievingHalo ? 1 : 0;
 		});
 		
-		WorldRenderEvents.BLOCK_OUTLINE.register((wrc, boc) -> {
-			ItemStack held = MinecraftClient.getInstance().player.getStackInHand(Hand.MAIN_HAND);
-			if (held.getItem() instanceof CleaverItem) {
-				CleaverItem ci = (CleaverItem)held.getItem();
-				HitResult tgt = MinecraftClient.getInstance().crosshairTarget;
-				if (tgt instanceof BlockHitResult && (!ci.requiresSneaking() || boc.entity().isSneaking())) {
-					BlockPos cleaving = ci.getCleaveBlock(held);
-					if (cleaving == null && tgt.getPos().squaredDistanceTo(boc.cameraX(), boc.cameraY(), boc.cameraZ()) > 2*2) return true;
-					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
-					BlockState bs = wrc.world().getBlockState(pos);
-					if (bs.isSolidBlock(wrc.world(), pos)) {
-						GlStateManager.pushMatrix();
-						GlStateManager.multMatrix(wrc.matrixStack().peek().getModel());
-						GlStateManager.translated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-						GlStateManager.disableTexture();
-						RenderSystem.defaultBlendFunc();
-						GlStateManager.enableBlend();
-						GL11.glEnable(GL11.GL_POINT_SMOOTH);
-						GL11.glEnable(GL11.GL_LINE_SMOOTH);
-						float scale = (float)MinecraftClient.getInstance().getWindow().getScaleFactor();
-						int sd = CleaverItem.SUBDIVISIONS;
-						Vec3d cleaveStart = ci.getCleaveStart(held);
-						boolean anySelected = false;
-						float selectedX = 0;
-						float selectedY = 0;
-						float selectedZ = 0;
-						for (int x = 0; x <= sd; x++) {
-							for (int y = 0; y <= sd; y++) {
-								for (int z = 0; z <= sd; z++) {
-									if ((x > 0 && x < sd) &&
-											(y > 0 && y < sd) &&
-											(z > 0 && z < sd)) {
-										continue;
-									}
-									
-									float wX = x/(float)sd;
-									float wY = y/(float)sd;
-									float wZ = z/(float)sd;
-									boolean isStart = cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05;
-									boolean selected = false;
-									float a;
-									if (!isStart) {
-										double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
-										final double maxDist = 0.75;
-										if (dist > maxDist*maxDist) continue;
-										selected = dist < 0.1*0.1;
-										double distSq = Math.sqrt(dist);
-										a = (float)((maxDist-distSq)/maxDist);
-									} else {
-										a = 1;
-									}
-									float r = 1;
-									float g = 1;
-									float b = 1;
-									float size = a*10;
-									if (isStart) {
-										size = 8;
-										g = 0;
-										b = 0;
-									} else if (selected) {
-										size = 15;
-										b = 0;
-										anySelected = true;
-										selectedX = wX;
-										selectedY = wY;
-										selectedZ = wZ;
-									}
-									GL11.glPointSize(size*scale);
-									GlStateManager.color4f(r, g, b, a);
-									GL11.glBegin(GL11.GL_POINTS);
-									GL11.glVertex3f(wX, wY, wZ);
-									GL11.glEnd();
-								}
-							}
-						}
-						if (anySelected && cleaveStart != null) {
-							GlStateManager.color4f(1, 0.5f, 0, 0.5f);
-							GL11.glLineWidth(4*scale);
-							GL11.glBegin(GL11.GL_LINES);
-							GL11.glVertex3d(cleaveStart.x, cleaveStart.y, cleaveStart.z);
-							GL11.glVertex3f(selectedX, selectedY, selectedZ);
-							GL11.glEnd();
-						}
-						GlStateManager.disableBlend();
-						GlStateManager.popMatrix();
-						GlStateManager.enableTexture();
-						return true;
-					}
+		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
+	}
+	
+	private void registerFluidRenderers() {
+		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
+			@Override
+			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				return new Sprite[] {
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_STILL),
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(VOID_FLOW)
+				};
+			}
+			@Override
+			public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				return 0xFFAAAAAA;
+			}
+		};
+		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.VOID, voidRenderHandler);
+		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.FLOWING_VOID, voidRenderHandler);
+	}
+
+	private <T> void eachRegisterableField(Class<?> holder, Class<T> type, BiConsumer<Field, T> cb) {
+		for (Field f : holder.getDeclaredFields()) {
+			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
+				try {
+					cb.accept(f, (T)f.get(null));
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
 			}
-			return true;
+		}
+	}
+
+	private void handleBeamPacket(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+		int entityId = buf.readInt();
+		int color = buf.readInt();
+		// NativeImage assumes little-endian, but our colors are big-endian, so swap red/blue
+		float a = NativeImage.getAlpha(color)/255f;
+		float r = NativeImage.getBlue(color)/255f;
+		float g = NativeImage.getGreen(color)/255f;
+		float b = NativeImage.getRed(color)/255f;
+		float eX = buf.readFloat();
+		float eY = buf.readFloat();
+		float eZ = buf.readFloat();
+		mc.send(() -> {
+			Entity ent = mc.world.getEntityById(entityId);
+			if (ent == null) return;
+			boolean fp = ent == mc.player && mc.options.getPerspective() == Perspective.FIRST_PERSON;
+			Vec3d start = RifleItem.getMuzzlePos(ent, fp);
+			double len = MathHelper.sqrt(start.squaredDistanceTo(eX, eY, eZ));
+			double diffX = eX-start.x;
+			double diffY = eY-start.y;
+			double diffZ = eZ-start.z;
+			int count = (int)(len*14);
+			DustParticleEffect eff = new DustParticleEffect(r, g, b, 0.2f);
+			SpriteProvider sprites = ((ParticleManagerAccessor)mc.particleManager).getSpriteAwareFactories().get(Registry.PARTICLE_TYPE.getKey(ParticleTypes.DUST).get().getValue());
+			for (int i = 0; i < count; i++) {
+				double t = (i/(double)count);
+				double x = start.x+(diffX*t);
+				double y = start.y+(diffY*t);
+				double z = start.z+(diffZ*t);
+				final int fi = i;
+				mc.particleManager.addParticle(new RedDustParticle(mc.world, x, y, z, 0, 0, 0, eff, sprites) {
+					{
+						if (fp && fi < 3) {
+							scale /= 2;
+						}
+						setMaxAge((int)(Math.log10((fi*4)+5))+10);
+						setColor(r, g, b);
+						setColorAlpha(a);
+						velocityX = 0;
+						velocityY = 0;
+						velocityZ = 0;
+					}
+					
+					@Override
+					protected int getColorMultiplier(float tint) {
+						return LightmapTextureManager.pack(15, 15);
+					}
+
+					@Override
+					public ParticleTextureSheet getType() {
+						return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+					}
+					
+				});
+			}
 		});
 	}
 	
 	public static boolean retrievingHalo = false;
 	
 	public void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		float tickDelta = MinecraftClient.getInstance().getTickDelta();
+		float tickDelta = mc.getTickDelta();
 		matrices.pop();
-		MinecraftClient mc = MinecraftClient.getInstance();
 		boolean fp = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND;
 		boolean inUse = fp && mc.player != null && mc.player.isUsingItem();
 		float useTime = inUse ? ((RifleItem)stack.getItem()).calcAdjustedUseTime(stack, mc.player.getItemUseTimeLeft()-tickDelta) : 0;
@@ -560,15 +384,15 @@ public class YttrClient implements ClientModInitializer {
 		matrices.translate(0.5, 0.5, 0.5);
 		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90));
 		matrices.translate(-0.5, -0.5, -0.5);
-		BakedModel model = MinecraftClient.getInstance().getBlockRenderManager().getModel(state);
-        int i = MinecraftClient.getInstance().getBlockColors().getColor(state, null, null, 0);
+		BakedModel model = mc.getBlockRenderManager().getModel(state);
+        int i = mc.getBlockColors().getColor(state, null, null, 0);
         float r = (i >> 16 & 255) / 255.0F;
         float g = (i >> 8 & 255) / 255.0F;
         float b = (i & 255) / 255.0F;
-        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(matrices.peek(),
+        mc.getBlockRenderManager().getModelRenderer().render(matrices.peek(),
         		vertexConsumers.getBuffer(TexturedRenderLayers.getEntityTranslucentCull()), state, model, r, g, b, light, overlay);
         if (vertexConsumers instanceof Immediate) ((Immediate)vertexConsumers).draw();
-		lampItemGlow.render(MinecraftClient.getInstance().world, null, state, matrices, vertexConsumers, light, overlay);
+		lampItemGlow.render(mc.world, null, state, matrices, vertexConsumers, light, overlay);
 	}
 	
 }

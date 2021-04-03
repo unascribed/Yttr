@@ -5,18 +5,26 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.client.SnareEntityTextureCache;
+import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YItemGroups;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
-
+import com.google.common.base.Charsets;
 import com.google.common.base.Enums;
+import com.google.common.hash.Hashing;
 import com.google.common.primitives.Ints;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -36,6 +44,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
@@ -68,7 +77,8 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
 
-public class SnareItem extends Item {
+@EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
+public class SnareItem extends Item implements ItemColorProvider {
 
 	public SnareItem(Settings settings) {
 		super(settings);
@@ -473,6 +483,34 @@ public class SnareItem extends Item {
 					stacks.add(is);
 				}
 			}
+		}
+	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public int getColor(ItemStack stack, int tintIndex) {
+		if (tintIndex == 0) return -1;
+		EntityType<?> type = YItems.SNARE.getEntityType(stack);
+		if (type != null) {
+			int primary;
+			int secondary;
+			Identifier tex = SnareEntityTextureCache.get(stack);
+			if (tex != null && tex != TextureColorThief.MISSINGNO) {
+				primary = TextureColorThief.getPrimaryColor(tex);
+				secondary = TextureColorThief.getSecondaryColor(tex);
+			} else {
+				SpawnEggItem spi = SpawnEggItem.forEntity(type);
+				if (spi != null) {
+					primary = spi.getColor(0);
+					secondary = spi.getColor(1);
+				} else {
+					primary = Hashing.murmur3_32().hashString(Registry.ENTITY_TYPE.getId(type).toString(), Charsets.UTF_8).asInt();
+					secondary = ~primary;
+				}
+			}
+			return tintIndex == 1 ? primary : secondary;
+		} else {
+			return -1;
 		}
 	}
 	

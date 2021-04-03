@@ -34,7 +34,8 @@
 	"rifle.client.MixinPlayerEntityRenderer",
 	"tooltip.client.MixinItemStack",
 	"accessor.client.AccessorEntityRendererDispatcher",
-	"accessor.client.AccessorEntityTrackingSoundInstance"
+	"accessor.client.AccessorEntityTrackingSoundInstance",
+	"accessor.client.AccessorRenderPhase"
   ],
   "injectors": {
     "defaultRequire": 1

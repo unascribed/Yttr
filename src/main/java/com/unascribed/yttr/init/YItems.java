@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.item.RifleItem;
@@ -41,6 +42,7 @@ public class YItems {
 	public static final BlockItem GLASSY_VOID_PANE = createNormalBlockItem(YBlocks.GLASSY_VOID_PANE);
 	public static final BlockItem SQUEEZE_LOG = createNormalBlockItem(YBlocks.SQUEEZE_LOG);
 	public static final BlockItem STRIPPED_SQUEEZE_LOG = createNormalBlockItem(YBlocks.STRIPPED_SQUEEZE_LOG);
+	@ConstantColor(0xFFEE58)
 	public static final BlockItem SQUEEZE_LEAVES = createNormalBlockItem(YBlocks.SQUEEZE_LEAVES);
 	public static final BlockItem SQUEEZE_SAPLING = createNormalBlockItem(YBlocks.SQUEEZE_SAPLING);
 	public static final BlockItem YTTRIUM_PLATING = createNormalBlockItem(YBlocks.YTTRIUM_PLATING);
@@ -81,15 +83,15 @@ public class YItems {
 	
 	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
 			.maxCount(1)
-			.group(YItemGroups.MAIN), 1, 1, false);
+			.group(YItemGroups.MAIN), 1, 1, false, 0x3E5656);
 	
 	public static final RifleItem RIFLE_REINFORCED = new RifleItem(new Item.Settings()
 			.maxCount(1)
-			.group(YItemGroups.MAIN), 0.85f, 1, true);
+			.group(YItemGroups.MAIN), 0.85f, 1, true, 0x223333);
 	
 	public static final RifleItem RIFLE_OVERCLOCKED = new RifleItem(new Item.Settings()
 			.maxCount(1)
-			.group(YItemGroups.MAIN), 1.65f, 2, false);
+			.group(YItemGroups.MAIN), 1.65f, 2, false, 0x111111);
 	
 	public static final SnareItem SNARE = new SnareItem(new Item.Settings()
 			.maxDamage(40960)

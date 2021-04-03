@@ -11,8 +11,13 @@ import com.google.common.base.Enums;
 import com.google.common.base.Predicates;
 
 import io.netty.buffer.Unpooled;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -42,17 +47,20 @@ import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
 
-public class RifleItem extends Item {
+@EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
+public class RifleItem extends Item implements ItemColorProvider {
 
 	private final float speedMod;
 	private final int ammoMod;
 	private final boolean simpleCurve;
+	private final int baseColor;
 	
-	public RifleItem(Settings settings, float speedMod, int ammoMod, boolean simpleCurve) {
+	public RifleItem(Settings settings, float speedMod, int ammoMod, boolean simpleCurve, int baseColor) {
 		super(settings);
 		this.speedMod = speedMod;
 		this.ammoMod = ammoMod;
 		this.simpleCurve = simpleCurve;
+		this.baseColor = baseColor;
 	}
 
 	@Override
@@ -351,6 +359,28 @@ public class RifleItem extends Item {
 		} else {
 			return eyes.add(look.multiply(0.7)).add(right.multiply(0.25)).add(down.multiply(0.0125));
 		}
+	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public int getColor(ItemStack stack, int tintIndex) {
+		if (tintIndex == 0) return baseColor;
+		tintIndex--;
+		RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
+		float ammo = (((RifleItem)stack.getItem()).getRemainingAmmo(stack)/(float)(((RifleItem)stack.getItem()).getMaxAmmo(stack)))*6;
+		int ammoI = (int)ammo;
+		if (ammoI > tintIndex) return mode.color;
+		float a = ammoI < tintIndex ? 1 : 1-(ammo%1);
+		float rF = NativeImage.getBlue(mode.color)/255f;
+		float gF = NativeImage.getGreen(mode.color)/255f;
+		float bF = NativeImage.getRed(mode.color)/255f;
+		float rE = (((baseColor>>16)&0xFF)/255f)+0.05f;
+		float gE = (((baseColor>>8)&0xFF)/255f)+0.05f;
+		float bE = ((baseColor&0xFF)/255f)+0.15f;
+		float r = rF+((rE-rF)*a);
+		float g = gF+((gE-gF)*a);
+		float b = bF+((bE-bF)*a);
+		return NativeImage.getAbgrColor(255, (int)(r*255), (int)(g*255), (int)(b*255));
 	}
 
 }

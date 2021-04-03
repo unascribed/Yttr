@@ -2,6 +2,8 @@ package com.unascribed.yttr.item;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.NBTUtils;
+
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -9,9 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
@@ -79,44 +78,16 @@ public class CleaverItem extends Item {
 		return false;
 	}
 	
-	private static ListTag vecToList(Vec3d vec) {
-		ListTag li = new ListTag();
-		li.add(DoubleTag.of(vec.x));
-		li.add(DoubleTag.of(vec.y));
-		li.add(DoubleTag.of(vec.z));
-		return li;
-	}
-	
-	private static @Nullable Vec3d listToVec(ListTag li) {
-		if (li.getElementType() != NbtType.DOUBLE) return null;
-		if (li.size() != 3) return null;
-		return new Vec3d(li.getDouble(0), li.getDouble(1), li.getDouble(2));
-	}
-	
-	private static ListTag blockPosToList(BlockPos vec) {
-		ListTag li = new ListTag();
-		li.add(IntTag.of(vec.getX()));
-		li.add(IntTag.of(vec.getY()));
-		li.add(IntTag.of(vec.getZ()));
-		return li;
-	}
-	
-	private static @Nullable BlockPos listToBlockPos(ListTag li) {
-		if (li.getElementType() != NbtType.INT) return null;
-		if (li.size() != 3) return null;
-		return new BlockPos(li.getInt(0), li.getInt(1), li.getInt(2));
-	}
-	
 	public @Nullable BlockPos getCleaveBlock(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().contains("CleaveBlock", NbtType.LIST)) {
-			return listToBlockPos(stack.getTag().getList("CleaveBlock", NbtType.INT));
+			return NBTUtils.listToBlockPos(stack.getTag().getList("CleaveBlock", NbtType.INT));
 		}
 		return null;
 	}
 	
 	public @Nullable Vec3d getCleaveStart(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().contains("CleaveStart", NbtType.LIST)) {
-			return listToVec(stack.getTag().getList("CleaveStart", NbtType.DOUBLE));
+			return NBTUtils.listToVec(stack.getTag().getList("CleaveStart", NbtType.DOUBLE));
 		}
 		return null;
 	}
@@ -129,7 +100,7 @@ public class CleaverItem extends Item {
 		if (pos == null) {
 			stack.getTag().remove("CleaveBlock");
 		} else {
-			stack.getTag().put("CleaveBlock", blockPosToList(pos));
+			stack.getTag().put("CleaveBlock", NBTUtils.blockPosToList(pos));
 		}
 	}
 	
@@ -141,7 +112,7 @@ public class CleaverItem extends Item {
 		if (pos == null) {
 			stack.getTag().remove("CleaveStart");
 		} else {
-			stack.getTag().put("CleaveStart", vecToList(pos));
+			stack.getTag().put("CleaveStart", NBTUtils.vecToList(pos));
 		}
 	}
 	
