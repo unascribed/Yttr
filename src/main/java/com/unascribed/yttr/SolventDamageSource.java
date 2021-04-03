@@ -6,7 +6,7 @@ public class SolventDamageSource extends DamageSource {
 
 	public final int i;
 	
-	protected SolventDamageSource(int i) {
+	public SolventDamageSource(int i) {
 		super("yttr.solvent");
 		this.i = i;
 	}

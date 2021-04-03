@@ -2,7 +2,7 @@ package com.unascribed.yttr;
 
 import java.util.Locale;
 
-import com.unascribed.yttr.mixin.AccessorDyeColor;
+import com.unascribed.yttr.mixin.accessor.AccessorDyeColor;
 
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.StringIdentifiable;

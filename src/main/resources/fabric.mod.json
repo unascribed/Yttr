@@ -20,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [ "com.unascribed.yttr.Yttr" ],
-    "client": [ "com.unascribed.yttr.YttrClient" ]
+    "client": [ "com.unascribed.yttr.client.YttrClient" ]
   },
   "mixins": ["yttr.mixins.json"],
   "accessWidener": "yttr.accesswidener",
