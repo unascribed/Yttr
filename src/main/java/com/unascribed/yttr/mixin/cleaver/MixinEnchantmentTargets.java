@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 @Mixin(targets={"net/minecraft/enchantment/EnchantmentTarget$11", "net/minecraft/enchantment/EnchantmentTarget$12"})
 public class MixinEnchantmentTargets {
 
-	@Inject(at=@At("HEAD"), method="isAcceptableItem", cancellable=true)
+	@Inject(at=@At("HEAD"), method="isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable=true)
 	public void isAcceptableItem(Item item, CallbackInfoReturnable<Boolean> ci) {
 		if (item == YItems.REINFORCED_CLEAVER) {
 			ci.setReturnValue(true);

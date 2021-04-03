@@ -32,7 +32,7 @@ public class MixinPistonHandler {
 	@Shadow @Final
 	private List<BlockPos> brokenBlocks;
 	
-	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior"), method="tryMove", cancellable=true,
+	@Inject(at=@At(value="INVOKE", target="net/minecraft/block/BlockState.getPistonBehavior()Lnet/minecraft/block/piston/PistonBehavior;"), method="tryMove", cancellable=true,
 			locals=LocalCapture.CAPTURE_FAILHARD)
 	public void tryMove(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> ci, BlockState state, Block b, int i, int j, int k, BlockPos moving) {
 		if (world.getBlockState(moving).isOf(Blocks.SHROOMLIGHT)
