@@ -43,6 +43,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
@@ -54,6 +55,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -86,6 +88,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -104,7 +107,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 public class Yttr implements ModInitializer {
 	
 	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "main"))
-			.icon(() -> new ItemStack(Yttr.YTTRIUM_INGOT))
+			.icon(() -> new ItemStack(Yttr.LOGO))
 		.build();
 	public static final ItemGroup SNARE_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("yttr", "snare"))
 			.icon(() -> new ItemStack(Yttr.SNARE))
@@ -116,7 +119,25 @@ public class Yttr implements ModInitializer {
 	public static final VoidFluid.Flowing FLOWING_VOID = new VoidFluid.Flowing();
 	public static final VoidFluid.Still VOID = new VoidFluid.Still();
 	
+	public static final DamageSource BLEEDING_SOURCE = new DamageSource("yttr.bleeding") {{
+		setBypassesArmor();
+		setUnblockable();
+	}};
+	
 	public static final StatusEffect DELICACENESS = new StatusEffect(StatusEffectType.BENEFICIAL, 0xA68FE0) {};
+	public static final StatusEffect BLEEDING = new StatusEffect(StatusEffectType.HARMFUL, 0xFF0606) {
+		@Override
+		public boolean canApplyUpdateEffect(int duration, int amplifier) {
+			return duration % Math.max(1, 40-(amplifier*5)) == 0;
+		}
+		@Override
+		public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+			int oldHurtTime = entity.hurtTime;
+			entity.hurtTime = -20;
+			entity.damage(BLEEDING_SOURCE, (amplifier/4)+1);
+			entity.hurtTime = oldHurtTime;
+		}
+	};
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
@@ -252,6 +273,17 @@ public class Yttr implements ModInitializer {
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
 	
+	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
+			.breakByTool(FabricToolTags.PICKAXES)
+			.strength(7)
+			.nonOpaque()
+		) {
+		@Override
+		public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
+			return world.getMaxLightLevel();
+		}
+	};
+	
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER_ENTITY = new BlockEntityType<>(AwareHopperBlockEntity::new, ImmutableSet.of(AWARE_HOPPER), null);
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER_ENTITY = new BlockEntityType<>(PowerMeterBlockEntity::new, ImmutableSet.of(POWER_METER), null);
 	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER_ENTITY = new BlockEntityType<>(LevitationChamberBlockEntity::new, ImmutableSet.of(LEVITATION_CHAMBER), null);
@@ -325,6 +357,19 @@ public class Yttr implements ModInitializer {
 			.maxCount(16)
 			.recipeRemainder(Items.GLASS_BOTTLE)
 		);
+	public static final Item LOGO = new Item(new Item.Settings()) {
+		@Override
+		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
+	};
+	public static final Item CLEAVER = new CleaverItem(new Item.Settings()
+			.maxDamage(1562)
+			.group(ITEM_GROUP)
+		);
+	public static final Item REINFORCED_CLEAVER = new ReinforcedCleaverItem(new Item.Settings()
+			.maxDamage(3072)
+			.fireproof()
+			.group(ITEM_GROUP)
+		);
 	
 	public static final SoundEvent RIFLE_CHARGE = new SoundEvent(new Identifier("yttr", "rifle_charge"));
 	public static final SoundEvent RIFLE_CHARGE_FAST = new SoundEvent(new Identifier("yttr", "rifle_charge_fast"));
@@ -381,6 +426,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.BLOCK, "yttr:bedrock_smasher", BEDROCK_SMASHER);
 		Registry.register(Registry.BLOCK, "yttr:ruined_bedrock", RUINED_BEDROCK);
 		Registry.register(Registry.BLOCK, "yttr:glassy_void", GLASSY_VOID);
+		Registry.register(Registry.BLOCK, "yttr:glassy_void_pane", GLASSY_VOID_PANE);
 		Registry.register(Registry.BLOCK, "yttr:squeeze_log", SQUEEZE_LOG);
 		Registry.register(Registry.BLOCK, "yttr:stripped_squeeze_log", STRIPPED_SQUEEZE_LOG);
 		Registry.register(Registry.BLOCK, "yttr:squeeze_leaves", SQUEEZE_LEAVES);
@@ -408,6 +454,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:chute", new BlockItem(CHUTE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:bedrock_smasher", new BlockItem(BEDROCK_SMASHER, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:glassy_void", new BlockItem(GLASSY_VOID, new Item.Settings().group(ITEM_GROUP)));
+		Registry.register(Registry.ITEM, "yttr:glassy_void_pane", new BlockItem(GLASSY_VOID_PANE, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:squeeze_log", new BlockItem(SQUEEZE_LOG, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:stripped_squeeze_log", new BlockItem(STRIPPED_SQUEEZE_LOG, new Item.Settings().group(ITEM_GROUP)));
 		Registry.register(Registry.ITEM, "yttr:squeeze_leaves", new BlockItem(SQUEEZE_LEAVES, new Item.Settings().group(ITEM_GROUP)));
@@ -429,6 +476,9 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.ITEM, "yttr:bedrock_shard", BEDROCK_SHARD);
 		Registry.register(Registry.ITEM, "yttr:delicace", DELICACE);
 		Registry.register(Registry.ITEM, "yttr:glowing_gas", GLOWING_GAS);
+		Registry.register(Registry.ITEM, "yttr:logo", LOGO);
+		Registry.register(Registry.ITEM, "yttr:cleaver", CLEAVER);
+		Registry.register(Registry.ITEM, "yttr:reinforced_cleaver", REINFORCED_CLEAVER);
 		
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge", RIFLE_CHARGE);
 		Registry.register(Registry.SOUND_EVENT, "yttr:rifle_charge_fast", RIFLE_CHARGE_FAST);
@@ -453,6 +503,7 @@ public class Yttr implements ModInitializer {
 		Registry.register(Registry.FLUID, "yttr:flowing_void", FLOWING_VOID);
 		
 		Registry.register(Registry.STATUS_EFFECT, "yttr:delicaceness", DELICACENESS);
+		Registry.register(Registry.STATUS_EFFECT, "yttr:bleeding", BLEEDING);
 		
 		Registry.register(Registry.RECIPE_SERIALIZER, "yttr:lamp_crafting", new ShapedRecipe.Serializer() {
 			@Override

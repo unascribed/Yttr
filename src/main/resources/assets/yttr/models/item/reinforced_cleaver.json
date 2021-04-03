@@ -1,0 +1,7 @@
+{
+	"parent": "yttr:item/cleaver",
+	"textures": {
+		"0": "yttr:item/reinforced_cleaver",
+		"particle": "yttr:item/reinforced_cleaver"
+	}
+}

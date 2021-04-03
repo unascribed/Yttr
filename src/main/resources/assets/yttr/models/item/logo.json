@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:builtin/generated",
+  "textures": {
+    "layer0": "yttr:icon"
+  }
+}

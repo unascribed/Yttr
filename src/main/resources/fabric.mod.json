@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Yttr",
-  "description": "Stuff",
+  "description": "A mod about nothing. Just a hodgepodge of things I thought would be fun or useful.",
   "authors": [
     "unascribed"
   ],
@@ -15,7 +15,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/yttr/icon.png",
+  "icon": "assets/yttr/textures/icon.png",
 
   "environment": "*",
   "entrypoints": {

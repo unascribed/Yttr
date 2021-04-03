@@ -22,7 +22,9 @@
   	"AccessorDyeColor",
   	"MixinPistonHandler",
   	"MixinGlassBottleItem",
-  	"AccessorShapedRecipe"
+  	"AccessorShapedRecipe",
+  	"MixinMobEntity",
+  	"MixinEnchantmentTargets"
   ],
   "client": [
   	"MixinClientPlayNetworkHandler",
@@ -30,7 +32,8 @@
   	"MixinPlayerEntityRenderer",
   	"MixinMinecraftClient",
   	"MixinGameRenderer",
-  	"AccessorEntityRendererDispatcher"
+  	"AccessorEntityRendererDispatcher",
+  	"MixinItemStackClient"
   ],
   "injectors": {
     "defaultRequire": 1

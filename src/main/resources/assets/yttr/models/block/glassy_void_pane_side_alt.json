@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side_alt",
+  "textures": {
+    "pane": "yttr:block/glassy_void",
+    "edge": "yttr:block/glassy_void_pane_top"
+  }
+}
