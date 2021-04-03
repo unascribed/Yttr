@@ -71,7 +71,7 @@ public class VoidLogic {
 					((ServerPlayerEntity)pe).networkHandler.sendPacket(pkt);
 				}
 			}
-			world.playSound(null, _pos.x, _pos.y, _pos.z, YSounds.VOID_SOUND, SoundCategory.PLAYERS, 4, 1);
+			world.playSound(null, _pos.x, _pos.y, _pos.z, YSounds.VOID, SoundCategory.PLAYERS, 4, 1);
 			BlockPos pos = new BlockPos(_pos);
 			Path root = getUndoDirectory(world.getServer());
 			Path out = root.resolve(undoName+".dat");

@@ -9,6 +9,7 @@ import com.unascribed.yttr.client.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
@@ -53,7 +54,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.text.Text;
@@ -170,9 +170,9 @@ public class SnareItem extends Item implements ItemColorProvider {
 				e.setVelocity(user.getRotationVec(1).multiply(0.75).add(user.getVelocity()));
 			}
 			stack.getTag().remove("Contents");
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.75f);
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 0.95f);
-			world.playSound(null, end.x, end.y, end.z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.PLAYERS, 0.3f, 1.75f);
+			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_PLOP, SoundCategory.PLAYERS, 1.0f, 0.75f);
+			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_PLOP, SoundCategory.PLAYERS, 1.0f, 0.95f);
+			world.playSound(null, end.x, end.y, end.z, YSounds.SNARE_RELEASE, SoundCategory.PLAYERS, 0.3f, 1.75f);
 			return TypedActionResult.success(stack, true);
 		} else {
 			BlockPos toDelete = null;
@@ -222,9 +222,9 @@ public class SnareItem extends Item implements ItemColorProvider {
 				if (hit instanceof LivingEntity) {
 					((AccessorLivingEntity)hit).yttr$playHurtSound(DamageSource.GENERIC);
 				}
-				hit.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0f, 0.5f);
-				hit.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0f, 0.75f);
-				hit.playSound(SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.2f, 2f);
+				hit.playSound(YSounds.SNARE_PLOP, 1.0f, 0.5f);
+				hit.playSound(YSounds.SNARE_PLOP, 1.0f, 0.75f);
+				hit.playSound(YSounds.SNARE_GRAB, 0.2f, 2f);
 				if (hit instanceof MobEntity) {
 					MobEntity mob = ((MobEntity) hit);
 					SoundEvent sound = ((AccessorMobEntity)hit).yttr$getAmbientSound();
@@ -344,10 +344,10 @@ public class SnareItem extends Item implements ItemColorProvider {
 		if (dmg > 0) {
 			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), RANDOM, null)) {
 				stack.decrement(1);
-				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ITEM_PICKUP, entity.getSoundCategory(), 1.0f, 0.75f);
-				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ITEM_PICKUP, entity.getSoundCategory(), 1.0f, 0.95f);
-				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.7f, 1.75f);
-				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, entity.getSoundCategory(), 0.5f, 1.3f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.75f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_PLOP, entity.getSoundCategory(), 1.0f, 0.95f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_BREAK, entity.getSoundCategory(), 0.7f, 1.75f);
+				world.playSound(null, entity.getPos().x, entity.getPos().y, entity.getPos().z, YSounds.SNARE_BREAK, entity.getSoundCategory(), 0.5f, 1.3f);
 				release((entity instanceof PlayerEntity) ? (PlayerEntity)entity : null, world, stack, entity.getPos(), entity.getYaw(1), true);
 			}
 		}
@@ -368,10 +368,10 @@ public class SnareItem extends Item implements ItemColorProvider {
 		if (dmg > 0) {
 			if (stack.damage(dmg*(getCheatedTicks(world, stack)+1), RANDOM, null)) {
 				stack.decrement(1);
-				world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 0.75f);
-				world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 0.95f);
-				world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.7f, 1.75f);
-				world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1.3f);
+				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.75f);
+				world.playSound(null, pos, YSounds.SNARE_PLOP, SoundCategory.BLOCKS, 1.0f, 0.95f);
+				world.playSound(null, pos, YSounds.SNARE_BREAK, SoundCategory.BLOCKS, 0.7f, 1.75f);
+				world.playSound(null, pos, YSounds.SNARE_BREAK, SoundCategory.BLOCKS, 0.5f, 1.3f);
 				release(null, world, stack, Vec3d.ofBottomCenter(pos.up()), 0, true);
 			}
 		}

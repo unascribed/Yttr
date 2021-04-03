@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.unascribed.yttr.block.entity.ChuteBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YSounds;
 
 import com.google.common.collect.Lists;
 
@@ -23,7 +24,6 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -119,7 +119,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 					player.setStackInHand(hand, stack);
 				}
 				world.setBlockState(pos, state.with(PLATED, true));
-				player.playSound(SoundEvents.BLOCK_SMITHING_TABLE_USE, 1, 1);
+				player.playSound(YSounds.CHUTE_PLATED, 1, 1);
 				return ActionResult.SUCCESS;
 			}
 		}

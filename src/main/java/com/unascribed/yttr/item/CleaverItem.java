@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.yttr.NBTUtils;
 import com.unascribed.yttr.block.entity.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.math.partitioner.Plane;
 import com.unascribed.yttr.math.partitioner.Polygon;
 
@@ -21,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.BlockHitResult;
@@ -96,7 +96,7 @@ public class CleaverItem extends Item {
 			System.out.println("on: "+on);
 			System.out.println("below: "+below);
 			if (!below.isEmpty()) {
-				world.playSound(null, block, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundCategory.BLOCKS, 1, 1.5f);
+				world.playSound(null, block, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
 				if (state.getSoundGroup().getBreakSound() != null) {
 					world.playSound(null, block, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1f);
 				}

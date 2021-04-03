@@ -1,6 +1,7 @@
 package com.unascribed.yttr.block;
 
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.rifle.RifleMode;
 import com.unascribed.yttr.rifle.Shootable;
 
@@ -12,7 +13,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -44,16 +44,16 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 			if (world.getBlockState(down).isOf(Blocks.BEDROCK)) {
 				if (down.getY() == 0) {
 					world.setBlockState(down, YBlocks.VOID_GEYSER.getDefaultState());
-					world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1, 0.5f);
+					world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.VOID_HOLE, SoundCategory.BLOCKS, 1, 0.5f);
 				} else {
 					world.setBlockState(down, YBlocks.RUINED_BEDROCK.getDefaultState());
 					world.breakBlock(down.north(), true, user);
 					world.breakBlock(down.south(), true, user);
 				}
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 2);
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 1.5f);
-				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, SoundCategory.BLOCKS, 1, 0.5f);
+				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);
+				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 1.5f);
+				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.CLANG, SoundCategory.BLOCKS, 1, 0.5f);
 				if (world instanceof ServerWorld) {
 					((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
 				}

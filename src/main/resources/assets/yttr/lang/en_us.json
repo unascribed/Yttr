@@ -73,6 +73,12 @@
 	"subtitles.yttr.horrible_crafting": "Player commits a terrible deed",
 	"subtitles.yttr.aware_hopper": "Aware hopper makes tortured noises",
 	"subtitles.yttr.swallow": "Player gulps",
+	"subtitles.yttr.cleaver": "Block cleaved",
+	"subtitles.yttr.snare_grab": "Snare grabs",
+	"subtitles.yttr.snare_release": "Snare releases",
+	"subtitles.yttr.snare_break": "Snare breaks",
+	"subtitles.yttr.chute_plated": "Chute plated",
+	"subtitles.yttr.void_hole": "Void hole opened",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

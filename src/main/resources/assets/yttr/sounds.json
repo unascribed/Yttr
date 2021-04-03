@@ -71,5 +71,42 @@
 	"swallow": {
 		"sounds": ["minecraft:item/bottle/drink_honey1"],
 		"subtitle": "subtitles.yttr.swallow"
+	},
+	"cleaver": {
+		"sounds": ["minecraft:ui/stonecutter/cut1"],
+		"subtitle": "subtitles.yttr.cleaver"
+	},
+	"snare_plop": {
+		"sounds": ["minecraft:random/pop"]
+	},
+	"snare_grab": {
+		"sounds": ["minecraft:mob/zombie/woodbreak"],
+		"subtitle": "subtitles.yttr.snare_grab"
+	},
+	"snare_release": {
+		"sounds": ["minecraft:mob/zombie/woodbreak"],
+		"subtitle": "subtitles.yttr.snare_release"
+	},
+	"snare_break": {
+		"sounds": ["minecraft:mob/zombie/woodbreak"],
+		"subtitle": "subtitles.yttr.snare_break"
+	},
+	"snap": {
+		"sounds": ["minecraft:mob/zombie/woodbreak"]
+	},
+	"clang": {
+		"sounds": [
+			"minecraft:mob/zombie/metal1",
+			"minecraft:mob/zombie/metal2",
+			"minecraft:mob/zombie/metal3"
+		]
+	},
+	"chute_plated": {
+		"sounds": ["minecraft:block/smithing_table/smithing_table1"],
+		"subtitle": "subtitles.yttr.chute_plated"
+	},
+	"void_hole": {
+		"sounds": ["minecraft:mob/wither/spawn"],
+		"subtitle": "subtitles.yttr.void_hole"
 	}
 }
