@@ -1,19 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "  V",
-    " V ",
-    "YY "
+    "I I",
+    "IyI",
+    "I I"
   ],
   "key": {
-    "V": {
-      "item": "yttr:glassy_void"
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "Y": {
-      "item": "yttr:yttrium_ingot"
+    "y": {
+      "item": "yttr:yttrium_nugget"
     }
   },
   "result": {
-    "item": "yttr:cleaver"
+    "item": "yttr:chute",
+    "count": 8
   }
 }

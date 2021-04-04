@@ -2,6 +2,7 @@ package com.unascribed.yttr.item;
 
 import java.util.Locale;
 
+import com.unascribed.yttr.Attackable;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
 import com.unascribed.yttr.rifle.RifleMode;
@@ -48,7 +49,7 @@ import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class RifleItem extends Item implements ItemColorProvider {
+public class RifleItem extends Item implements ItemColorProvider, Attackable {
 
 	private final float speedMod;
 	private final int ammoMod;
@@ -127,6 +128,7 @@ public class RifleItem extends Item implements ItemColorProvider {
 		return TypedActionResult.pass(stack);
 	}
 	
+	@Override
 	public void attack(PlayerEntity user) {
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;

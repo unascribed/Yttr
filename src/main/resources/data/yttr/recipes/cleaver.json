@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "OOO",
-    " O ",
-    " D "
+    "  V",
+    " V ",
+    "YY "
   ],
   "key": {
-    "O": {
-      "item": "minecraft:obsidian"
+    "V": {
+      "item": "yttr:glassy_void"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "Y": {
+      "item": "yttr:yttrium_ingot"
     }
   },
   "result": {
-    "item": "yttr:bedrock_smasher"
+    "item": "yttr:cleaver"
   }
 }

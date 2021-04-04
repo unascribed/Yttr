@@ -48,7 +48,7 @@ public class MixinPistonHandler {
 				AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(world, moving.getX()+0.5, moving.getY()+ofs, moving.getZ()+0.5);
 				cloud.setColor(0xFEAC6D);
 				cloud.setRadius(1f);
-				cloud.setDuration(200);
+				cloud.setDuration(100);
 				cloud.setCustomName(new LiteralText("§e§6§eGlowdampCloud"));
 				cloud.addEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5*20));
 				cloud.addEffect(new StatusEffectInstance(StatusEffects.GLOWING, 10*20));

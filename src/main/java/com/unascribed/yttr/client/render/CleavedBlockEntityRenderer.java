@@ -1,17 +1,14 @@
 package com.unascribed.yttr.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.unascribed.yttr.block.entity.CleavedBlockEntity;
-
-import com.google.common.collect.ImmutableList;
-
+import com.unascribed.yttr.client.CleavedBlockModels;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3d;
 
 public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlockEntity> {
 
@@ -21,23 +18,32 @@ public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlock
 
 	@Override
 	public void render(CleavedBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		GL11.glEnable(GL11.GL_POINT_SMOOTH);
-		GL11.glPointSize(8);
-		GlStateManager.pushMatrix();
-		GlStateManager.multMatrix(matrices.peek().getModel());
-		GlStateManager.disableTexture();
-		GlStateManager.disableDepthTest();
-		GL11.glBegin(GL11.GL_POINTS);
-		for (ImmutableList<Vec3d> polygon : entity.getPolygons()) {
-			for (Vec3d point : polygon) {
-				GlStateManager.color4f((float)point.x, (float)point.y, (float)point.z, 1);
-				GL11.glVertex3d(point.x, point.y, point.z);
-			}
+		BakedModel model = CleavedBlockModels.getModel(entity);
+		if (model != null) {
+			MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(
+					entity.getWorld(), model,
+					entity.getCachedState(), entity.getPos().up(),
+					matrices, vertexConsumers.getBuffer(RenderLayer.getCutout()),
+					true, entity.getWorld().random, 0, overlay);
 		}
-		GL11.glEnd();
-		GlStateManager.enableDepthTest();
-		GlStateManager.enableTexture();
-		GlStateManager.popMatrix();
+//		GlStateManager.pushMatrix();
+//		GlStateManager.multMatrix(matrices.peek().getModel());
+//		GlStateManager.disableTexture();
+//		GlStateManager.disableCull();
+//		GlStateManager.enablePolygonOffset();
+//		GlStateManager.polygonOffset(3, 3);
+//		Random rand = new Random(entity.hashCode());
+//		for (Polygon polygon : entity.getPolygons()) {
+//			GL11.glBegin(GL11.GL_POLYGON);
+//			GlStateManager.color4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1);
+//			for (DEdge edge : polygon) {
+//				GL11.glVertex3d(edge.srcPoint().x, edge.srcPoint().y, edge.srcPoint().z);
+//			}
+//			GL11.glEnd();
+//		}
+//		GlStateManager.enableCull();
+//		GlStateManager.enableTexture();
+//		GlStateManager.popMatrix();
 	}
 
 }

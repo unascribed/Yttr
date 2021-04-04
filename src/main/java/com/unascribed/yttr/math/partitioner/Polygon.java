@@ -1,7 +1,11 @@
 package com.unascribed.yttr.math.partitioner;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.collect.Lists;
 
@@ -12,7 +16,7 @@ import static com.unascribed.yttr.math.partitioner.Where.*;
 //Gems V: Spatial Partitioning of a Polygon by a Plane
 //by George Vanecek Jr, Sept. 1994
 //https://github.com/erich666/GraphicsGems/tree/9632659c0e3592d8cecf8866fcc34498a85c8d22/gemsv/ch7-4
-public class Polygon {
+public class Polygon implements Iterable<DEdge> {
 
 	private Plane supportPlane;
 	private int     nDEdges;		// Number of DEdges in loop...
@@ -38,6 +42,10 @@ public class Polygon {
 		}
 	}
 
+	public Polygon(Vec3d... pts) {
+		this(Arrays.asList(pts));
+	}
+	
 	public Polygon(List<Vec3d> pts)
 	{
 		supportPlane = new Plane(pts);
@@ -66,6 +74,7 @@ public class Polygon {
 	public Where classifyPoints(Plane cut,
 			List<DEdge> onDEdges)
 	{
+		if (first() == null) return NOWHERE;
 		first().srcWhere(cut.whichSide( first().srcPoint() ));
 		Where[] polyW = {first().srcWhere()};
 		forEachDEdge( new Consumer<DEdge>() {
@@ -135,7 +144,7 @@ public class Polygon {
 	//void sortDEdges(  int nOnDs, DEdge onDs[],  Vec3d cutDir )
 	void sortDEdges(  List<DEdge> onDs,  Vec3d cutDir )
 	{
-		assert( onDs.size() >= 2 );
+		if (onDs.size() < 2) return;
 		 Vec3d refP = onDs.get(0).srcPoint();
 		for( int i = 0; i < onDs.size(); ++i )
 			onDs.get(i).distFromRefP(cutDir.dotProduct(onDs.get(i).srcPoint().subtract(refP) ));
@@ -250,10 +259,57 @@ public class Polygon {
 	}
 	
 	@Override
+	public int hashCode() {
+		HashCodeBuilder b = new HashCodeBuilder();
+		forEachDEdge((de) -> {
+			b.append(de.srcPoint());
+		});
+		return b.toHashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Polygon that = (Polygon) obj;
+		if (this.nDEdges != that.nDEdges)
+			return false;
+		List<Vec3d> ours = Lists.newArrayList();
+		List<Vec3d> theirs = Lists.newArrayList();
+		this.forEachDEdge((de) -> ours.add(de.srcPoint()));
+		that.forEachDEdge((de) -> theirs.add(de.srcPoint()));
+		return ours.equals(theirs);
+	}
+	@Override
 	public String toString() {
 		List<Vec3d> li = Lists.newArrayList();
 		forEachDEdge((de) -> li.add(de.srcPoint()));
 		return li.toString();
+	}
+	@Override
+	public Iterator<DEdge> iterator() {
+		return new Iterator<DEdge>() {
+			DEdge first = first();
+			DEdge last = null;
+			DEdge cur = first();
+			
+			@Override
+			public boolean hasNext() {
+				return cur != first || last == null;
+			}
+			
+			@Override
+			public DEdge next() {
+				last = cur;
+				cur = cur.next();
+				return cur;
+			}
+			
+		};
 	}
 
 }

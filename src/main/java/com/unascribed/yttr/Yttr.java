@@ -58,9 +58,9 @@ public class Yttr implements ModInitializer {
 		YCommands.init();
 		YTags.init();
 		
-		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "rifle_mode"), (server, player, handler, buf, responseSender) -> {
-			if (player != null && player.getMainHandStack().getItem() instanceof RifleItem) {
-				((RifleItem)player.getMainHandStack().getItem()).attack(player);
+		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "attack"), (server, player, handler, buf, responseSender) -> {
+			if (player != null && player.getMainHandStack().getItem() instanceof Attackable) {
+				((Attackable)player.getMainHandStack().getItem()).attack(player);
 			}
 		});
 		

@@ -14,6 +14,7 @@
 	"cleaver.MixinMobEntity",
 	"glowing_gas.MixinGlassBottleItem",
 	"glowing_gas.MixinPistonHandler",
+	"glowing_gas.MixinGlassBottleDispenserBehavior",
 	"delicace.MixinHungerManager",
 	"delicace.MixinLivingEntity",
 	"crafting_sound.MixinCraftingRecipeSerializers",
@@ -30,9 +31,9 @@
   "client": [
   	"void_fluid.client.MixinGameRenderer",
 	"rifle.client.MixinClientPlayNetworkHandler",
-	"rifle.client.MixinMinecraftClient",
 	"rifle.client.MixinPlayerEntityRenderer",
 	"tooltip.client.MixinItemStack",
+	"client.MixinMinecraftClient",
 	"accessor.client.AccessorEntityRendererDispatcher",
 	"accessor.client.AccessorEntityTrackingSoundInstance",
 	"accessor.client.AccessorRenderPhase"

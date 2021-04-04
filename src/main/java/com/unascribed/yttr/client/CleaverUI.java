@@ -1,20 +1,27 @@
 package com.unascribed.yttr.client;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.block.entity.CleavedBlockEntity;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.item.CleaverItem;
+import com.unascribed.yttr.math.partitioner.Polygon;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class CleaverUI {
@@ -43,6 +50,7 @@ public class CleaverUI {
 					float scale = (float)mc.getWindow().getScaleFactor();
 					int sd = CleaverItem.SUBDIVISIONS;
 					Vec3d cleaveStart = ci.getCleaveStart(held);
+					Vec3d cleaveCorner = ci.getCleaveCorner(held);
 					boolean anySelected = false;
 					float selectedX = 0;
 					float selectedY = 0;
@@ -59,10 +67,10 @@ public class CleaverUI {
 								float wX = x/(float)sd;
 								float wY = y/(float)sd;
 								float wZ = z/(float)sd;
-								boolean isStart = cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05;
+								boolean highlight = (cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05) || (cleaveCorner != null && cleaveCorner.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05);
 								boolean selected = false;
 								float a;
-								if (!isStart) {
+								if (!highlight) {
 									double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
 									final double maxDist = 0.75;
 									if (dist > maxDist*maxDist) continue;
@@ -76,7 +84,7 @@ public class CleaverUI {
 								float g = 1;
 								float b = 1;
 								float size = a*10;
-								if (isStart) {
+								if (highlight) {
 									size = 8;
 									g = 0;
 									b = 0;
@@ -96,18 +104,55 @@ public class CleaverUI {
 							}
 						}
 					}
-					if (anySelected && cleaveStart != null) {
-						GlStateManager.color4f(1, 0.5f, 0, 0.5f);
-						GL11.glLineWidth(4*scale);
-						GL11.glBegin(GL11.GL_LINES);
-						GL11.glVertex3d(cleaveStart.x, cleaveStart.y, cleaveStart.z);
-						GL11.glVertex3f(selectedX, selectedY, selectedZ);
-						GL11.glEnd();
+					if (anySelected && cleaveStart != null && cleaveCorner != null) {
+						final float TAU = (float)(Math.PI*2);
+						float t = (wrc.world().getTime()+wrc.tickDelta())/5;
+						float a = (MathHelper.sin(t%TAU)+1)/2;
+						GlStateManager.color4f(1, 0.25f, 0, 0.1f+(a*0.3f));
+						GlStateManager.disableCull();
+						GlStateManager.enableDepthTest();
+						GlStateManager.enablePolygonOffset();
+						GlStateManager.polygonOffset(-3, -3);
+						List<Polygon> cleave = CleaverItem.performCleave(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ), CleavedBlockEntity.cube(), true);
+						for (Polygon polygon : cleave) {
+							GL11.glBegin(GL11.GL_POLYGON);
+							polygon.forEachDEdge((de) -> {
+								GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+							});
+							GL11.glEnd();
+						}
+						GlStateManager.disablePolygonOffset();
+						GlStateManager.color4f(1, 0.25f, 0, 0.05f+(a*0.1f));
+						GlStateManager.disableDepthTest();
+						for (Polygon polygon : cleave) {
+							GL11.glBegin(GL11.GL_POLYGON);
+							polygon.forEachDEdge((de) -> {
+								GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+							});
+							GL11.glEnd();
+						}
+						GlStateManager.enableCull();
 					}
 					GlStateManager.disableBlend();
 					GlStateManager.popMatrix();
 					GlStateManager.enableTexture();
 				}
+			}
+		}
+		if (boc.blockState().getBlock() == YBlocks.CLEAVED_BLOCK) {
+			BlockEntity be = wrc.world().getBlockEntity(boc.blockPos());
+			if (be instanceof CleavedBlockEntity) {
+				wrc.matrixStack().push();
+				BlockPos pos = boc.blockPos();
+				wrc.matrixStack().translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
+				for (Polygon pg : ((CleavedBlockEntity)be).getPolygons()) {
+					pg.forEachDEdge((de) -> {
+						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
+						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
+					});
+				}
+				wrc.matrixStack().pop();
+				return false;
 			}
 		}
 		return true;

@@ -25,20 +25,20 @@ public class MixinHungerManager {
 		if (player != null) {
 			StatusEffectInstance d = player.getStatusEffect(YStatusEffects.DELICACENESS);
 			if (d != null) {
-				return 1+(d.getAmplifier()+1)*0.10f;
+				return (d.getAmplifier()+1)*0.10f;
 			}
 		}
-		return 1;
+		return 0;
 	}
 	
 	@ModifyVariable(at=@At("HEAD"), method="add", ordinal=0, argsOnly=true)
 	public float modifySaturation(float in) {
-		return in*yttr$calculateModifier(yttr$storedPlayer);
+		return in*(1+yttr$calculateModifier(yttr$storedPlayer));
 	}
 	
 	@ModifyVariable(at=@At("HEAD"), method="add", ordinal=0, argsOnly=true)
 	public int modifyFood(int in) {
-		return MathHelper.ceil(in*(yttr$calculateModifier(yttr$storedPlayer)/2));
+		return MathHelper.ceil(in*(1+(yttr$calculateModifier(yttr$storedPlayer)/2)));
 	}
 	
 	@Inject(at=@At("HEAD"), method="update")
