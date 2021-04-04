@@ -51,7 +51,7 @@ public class CleaverItem extends Item implements Attackable {
 	
 	@Override
 	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-		return false;
+		return !miner.abilities.creativeMode;
 	}
 	
 	@Override

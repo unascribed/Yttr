@@ -16,6 +16,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
@@ -31,6 +32,11 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	
 	public ReinforcedCleaverItem(Settings settings) {
 		super(settings);
+	}
+	
+	@Override
+	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
+		return !miner.abilities.creativeMode || !miner.isSneaking();
 	}
 	
 	@Override
