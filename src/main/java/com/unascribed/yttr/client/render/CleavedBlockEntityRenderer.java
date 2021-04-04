@@ -9,6 +9,8 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlockEntity> {
 
@@ -19,10 +21,21 @@ public class CleavedBlockEntityRenderer extends BlockEntityRenderer<CleavedBlock
 	@Override
 	public void render(CleavedBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		BakedModel model = CleavedBlockModels.getModel(entity);
+		BlockPos bestLighting = entity.getPos();
+		int bestLightingVal = entity.getWorld().getLightLevel(entity.getPos());
+		// TODO just fix lighting instead of using this neighbor lighting hack
+		for (Direction d : Direction.values()) {
+			BlockPos pos = entity.getPos().offset(d);
+			int val = entity.getWorld().getLightLevel(pos);
+			if (val > bestLightingVal) {
+				bestLighting = pos;
+				bestLightingVal = val;
+			}
+		}
 		if (model != null) {
 			MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(
 					entity.getWorld(), model,
-					entity.getCachedState(), entity.getPos().up(),
+					entity.getCachedState(), bestLighting,
 					matrices, vertexConsumers.getBuffer(RenderLayer.getCutout()),
 					true, entity.getWorld().random, 0, overlay);
 		}
