@@ -145,7 +145,10 @@ public class CleaverUI {
 				wrc.matrixStack().push();
 				BlockPos pos = boc.blockPos();
 				wrc.matrixStack().translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-				for (Polygon pg : ((CleavedBlockEntity)be).getPolygons()) {
+				List<Polygon> polys = ((CleavedBlockEntity)be).getPolygons();
+				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
+				// TODO why does the line happen? is the joiner polygon invalid?
+				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
 						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
 						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
