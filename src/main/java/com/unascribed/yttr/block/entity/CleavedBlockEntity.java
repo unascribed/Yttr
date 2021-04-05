@@ -20,10 +20,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.BitSetVoxelSet;
+import net.minecraft.util.shape.SimpleVoxelShape;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 
 public class CleavedBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
@@ -95,13 +95,11 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	}
 	
 	public VoxelShape getShape() {
-		// FIXME this is unacceptably slow and causes a notable spike on the client and a notable
-		// delay in joining worlds with lots of cleaved blocks nearby
 		if (cachedShape != null) return cachedShape;
 		world.getProfiler().push("yttr:cleaved_shapegen");
 		final int acc = 8;
 		
-		List<VoxelShape> shapes = Lists.newArrayList();
+		BitSetVoxelSet voxels = new BitSetVoxelSet(acc, acc, acc);
 		for (int x = 0; x < acc; x++) {
 			for (int y = 0; y < acc; y++) {
 				for (int z = 0; z < acc; z++) {
@@ -114,13 +112,13 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 						}
 					}
 					if (inside) {
-						double a = acc;
-						shapes.add(VoxelShapes.cuboid((x)/a, (y)/a, (z)/a, (x+1)/a, (y+1)/a, (z+1)/a));
+						voxels.set(x, y, z, true, true);
 					}
 				}
 			}
 		}
-		VoxelShape shape = shapes.stream().reduce((a, b) -> VoxelShapes.combineAndSimplify(a, b, BooleanBiFunction.OR)).get();
+
+		VoxelShape shape = new SimpleVoxelShape(voxels).simplify();
 		cachedShape = shape;
 		world.getProfiler().pop();
 		return shape;
