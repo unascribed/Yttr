@@ -30,6 +30,7 @@ import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
@@ -334,7 +335,7 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 					6, 7, 8
 			};
 		}
-		// all input and aux output
+		// input and aux output
 		return new int[] {
 			 0,  1,  2,
 			 3,  4,  5,
@@ -356,7 +357,6 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 		CraftingRecipe recipe = getRecipe();
 		if (recipe == null) return false;
 		DefaultedList<Ingredient> inputs = recipe.getPreviewInputs();
-		if (slot >= inputs.size()) return false;
 		List<Integer> candidates = Lists.newArrayList();
 		for (int i = 0; i < inputs.size(); i++) {
 			if (inputs.get(i).test(stack)) {
@@ -366,9 +366,18 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 		int smallestStack = -1;
 		int smallestStackCount = Integer.MAX_VALUE;
 		for (int i : candidates) {
-			int c = input.getStack(i).getCount();
+			int index;
+			if (recipe instanceof ShapedRecipe) {
+				ShapedRecipe sr = (ShapedRecipe)recipe;
+				int x = i%sr.getWidth();
+				int y = i/sr.getWidth();
+				index = (y*3)+x;
+			} else {
+				index = i;
+			}
+			int c = input.getStack(index).getCount();
 			if (c < smallestStackCount) {
-				smallestStack = i;
+				smallestStack = index;
 				smallestStackCount = c;
 			}
 		}
