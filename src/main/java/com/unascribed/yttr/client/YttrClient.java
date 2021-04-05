@@ -5,11 +5,18 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.EffectorWorld;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.annotate.Renderer;
 import com.unascribed.yttr.block.LampBlock;
@@ -28,9 +35,13 @@ import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -56,11 +67,16 @@ import net.minecraft.client.options.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.RedDustParticle;
 import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -68,12 +84,14 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItem;
@@ -85,13 +103,19 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Direction.Axis;
+import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 
 public class YttrClient implements ClientModInitializer {
 	
@@ -100,15 +124,19 @@ public class YttrClient implements ClientModInitializer {
 	private static final Identifier VOID_FLOW = new Identifier("yttr", "block/void_flow");
 	private static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
 	
-	private static final ModelIdentifier BASE_MODEL = new ModelIdentifier("yttr:rifle_base#inventory");
-	private static final ModelIdentifier CHAMBER_MODEL = new ModelIdentifier("yttr:rifle_chamber#inventory");
-	private static final ModelIdentifier CHAMBER_GLASS_MODEL = new ModelIdentifier("yttr:rifle_chamber_glass#inventory");
+	private static final ModelIdentifier RIFLE_BASE_MODEL = new ModelIdentifier("yttr:rifle_base#inventory");
+	private static final ModelIdentifier RIFLE_CHAMBER_MODEL = new ModelIdentifier("yttr:rifle_chamber#inventory");
+	private static final ModelIdentifier RIFLE_CHAMBER_GLASS_MODEL = new ModelIdentifier("yttr:rifle_chamber_glass#inventory");
+	
+	private static final ModelIdentifier VOID_HOLE_MODEL = new ModelIdentifier("yttr:block/void_hole");
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
 	private final UVObserver uvo = new UVObserver();
 	
 	private final MinecraftClient mc = MinecraftClient.getInstance();
+	
+	private final List<EffectorHole> effectorHoles = Lists.newArrayList();
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -169,9 +197,10 @@ public class YttrClient implements ClientModInitializer {
 			}
 		});
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			out.accept(BASE_MODEL);
-			out.accept(CHAMBER_MODEL);
-			out.accept(CHAMBER_GLASS_MODEL);
+			out.accept(RIFLE_BASE_MODEL);
+			out.accept(RIFLE_CHAMBER_MODEL);
+			out.accept(RIFLE_CHAMBER_GLASS_MODEL);
+			out.accept(VOID_HOLE_MODEL);
 		});
 		registerFluidRenderers();
 		mc.send(() -> {
@@ -209,6 +238,17 @@ public class YttrClient implements ClientModInitializer {
 			Direction dir = Direction.byId(buf.readUnsignedByte());
 			int dist = buf.readUnsignedByte();
 			mc.send(() -> {
+				BlockPos endPos = pos.offset(dir, dist);
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, pos));
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, pos), 80);
+				for (int i = 0; i < dist; i += 4) {
+					BlockPos midPos = pos.offset(dir, i);
+					client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, midPos));
+					client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, midPos), 80);
+				}
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, endPos));
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, endPos), 80);
+				effectorHoles.add(new EffectorHole(pos, dir, dist));
 				EffectorItem.effect(client.world, pos, dir, null, dist, false);
 			});
 		});
@@ -219,9 +259,208 @@ public class YttrClient implements ClientModInitializer {
 			return retrievingHalo ? 1 : 0;
 		});
 		
+		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
+			Iterator<EffectorHole> iter = effectorHoles.iterator();
+			while (iter.hasNext()) {
+				if (iter.next().age++ > 100) {
+					iter.remove();
+				}
+			}
+		});
+		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
+		WorldRenderEvents.LAST.register((wrc) -> {
+			if (effectorHoles.isEmpty()) return;
+			ClientWorld w = wrc.world();
+			if (!(w instanceof EffectorWorld)) return;
+			EffectorWorld ew = (EffectorWorld)w;
+			Vec3d cam = wrc.camera().getPos();
+			MatrixStack ms = new MatrixStack();
+			ms.translate(-cam.x, -cam.y, -cam.z);
+			BlockPos.Mutable mut = new BlockPos.Mutable();
+			List<Axis> axes = Arrays.asList(Direction.Axis.values());
+			Tessellator tess = Tessellator.getInstance();
+			BufferBuilder bb = tess.getBuffer();
+			for (EffectorHole hole : effectorHoles) {
+				Axis axisZ = hole.dir.getAxis();
+				Axis axisX = Iterables.find(axes, a -> a != axisZ);
+				Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
+				float t = hole.age+wrc.tickDelta();
+				float a;
+				if (t <= 4) {
+					a = 1-sCurve5(1-(t/4));
+				} else if (t >= 80) {
+					a = sCurve5((100-t)/20);
+				} else {
+					a = 1;
+				}
+				if (a < 0.05) a = 0;
+				if (a > 0.95) a = 1;
+				if (a != 1) {
+					drawVoidCap(w, ms, mut, hole.length, axisX, axisY, a, hole.start, hole.dir);
+					drawVoidCap(w, ms, mut, 0, axisX, axisY, a, hole.start.offset(hole.dir, hole.length-1), hole.dir.getOpposite());
+				}
+				bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
+				for (int z = 0; z < hole.length; z++) {
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -2);
+					EffectorItem.move(mut, axisX, -1);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.POSITIVE));
+						EffectorItem.move(mut, axisX, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, 2);
+					EffectorItem.move(mut, axisX, -1);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.NEGATIVE));
+						EffectorItem.move(mut, axisX, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -1);
+					EffectorItem.move(mut, axisX, -2);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.POSITIVE));
+						EffectorItem.move(mut, axisY, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -1);
+					EffectorItem.move(mut, axisX, 2);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.NEGATIVE));
+						EffectorItem.move(mut, axisY, 1);
+					}
+				}
+				GlStateManager.depthMask(false);
+				GlStateManager.disableTexture();
+				GlStateManager.enablePolygonOffset();
+				GlStateManager.polygonOffset(-3, -3);
+				tess.draw();
+				GlStateManager.enableTexture();
+				GlStateManager.depthMask(true);
+				GlStateManager.depthFunc(GL11.GL_LESS);
+				GlStateManager.disablePolygonOffset();
+			}
+		});
+	}
+
+	private void drawVoidCap(ClientWorld w, MatrixStack ms, BlockPos.Mutable mut, int l, Axis axisX, Axis axisY, float a, BlockPos pos, Direction dir) {
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder bb = tess.getBuffer();
+		ms.push();
+		ms.translate(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
+		ms.translate(dir.getOffsetX()*-0.5, dir.getOffsetY()*-0.5, dir.getOffsetZ()*-0.5);
+		ms.multiply(dir.getRotationQuaternion());
+		Matrix4f mat = ms.peek().getModel();
+		if (a != 0) {
+			float s = a*1.5f;
+			GlStateManager.disableTexture();
+			if (l > 0) {
+				GlStateManager.enableBlend();
+				RenderSystem.defaultBlendFunc();
+				GlStateManager.color4f(0, 0, 0, a > 0.75f ? (1-a)*4 : 1);
+				GlStateManager.depthMask(false);
+				bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+				bb.vertex(mat,  s, 0,  s).next();
+				bb.vertex(mat,  s, l,  s).next();
+				bb.vertex(mat,  s, l, -s).next();
+				bb.vertex(mat,  s, 0, -s).next();
+	
+				bb.vertex(mat, -s, 0, -s).next();
+				bb.vertex(mat, -s, l, -s).next();
+				bb.vertex(mat, -s, l,  s).next();
+				bb.vertex(mat, -s, 0,  s).next();
+				
+				bb.vertex(mat, -s, 0,  s).next();
+				bb.vertex(mat, -s, l,  s).next();
+				bb.vertex(mat,  s, l,  s).next();
+				bb.vertex(mat,  s, 0,  s).next();
+	
+				bb.vertex(mat,  s, 0, -s).next();
+				bb.vertex(mat,  s, l, -s).next();
+				bb.vertex(mat, -s, l, -s).next();
+				bb.vertex(mat, -s, 0, -s).next();
+				tess.draw();
+				GlStateManager.disableBlend();
+				GlStateManager.depthMask(true);
+			}
+			GlStateManager.colorMask(false, false, false, false);
+			GlStateManager.enablePolygonOffset();
+			GlStateManager.polygonOffset(-3, -3);
+			GlStateManager.disableCull();
+			bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+			bb.vertex(mat, -s, 0, -s).next();
+			bb.vertex(mat,  s, 0, -s).next();
+			bb.vertex(mat,  s, 0,  s).next();
+			bb.vertex(mat, -s, 0,  s).next();
+			tess.draw();
+			GlStateManager.disablePolygonOffset();
+			GlStateManager.colorMask(true, true, true, true);
+			GlStateManager.color4f(1, 1, 1, 1);
+			GlStateManager.enableCull();
+			GlStateManager.enableTexture();
+		}
+		ms.pop();
+		mc.getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
+		DiffuseLighting.enable();
+		Random r = new Random();
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				mut.set(pos);
+				EffectorItem.move(mut, axisX, x);
+				EffectorItem.move(mut, axisY, y);
+				ms.push();
+				ms.translate(mut.getX(), mut.getY(), mut.getZ());
+				int sky = w.getLightLevel(LightType.SKY, mut);
+				int block = w.getLightLevel(LightType.BLOCK, mut);
+				int light = LightmapTextureManager.pack(block, sky);
+				BlockState state = mc.world.getBlockState(mut);
+				BakedModel model = mc.getBlockRenderManager().getModel(state);
+				r.setSeed(42);
+				for (BakedQuad q : model.getQuads(state, dir.getOpposite(), r)) {
+					int color = q.hasColor() ? mc.getBlockColors().getColor(state, w, pos, q.getColorIndex()) : -1;
+					bb.quad(ms.peek(), q, ((color >> 16)&0xFF)/255f, ((color >> 8)&0xFF)/255f, (color&0xFF)/255f, light, OverlayTexture.DEFAULT_UV);
+				}
+				ms.pop();
+			}
+		}
+		tess.draw();
+		DiffuseLighting.disable();
+		GlStateManager.colorMask(false, false, false, false);
+		GlStateManager.disableCull();
+		GlStateManager.disableTexture();
+		bb.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+		bb.vertex(mat, -1.5f, 0, -1.5f).next();
+		bb.vertex(mat,  1.5f, 0, -1.5f).next();
+		bb.vertex(mat,  1.5f, 0,  1.5f).next();
+		bb.vertex(mat, -1.5f, 0,  1.5f).next();
+		tess.draw();
+		GlStateManager.colorMask(true, true, true, true);
+		GlStateManager.enableTexture();
+		GlStateManager.enableCull();
 	}
 	
+	public static float sCurve5(float a) {
+		float a3 = a * a * a;
+		float a4 = a3 * a;
+		float a5 = a4 * a;
+		return (6 * a5) - (15 * a4) + (10 * a3);
+	}
+	
+	private void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {
+		EffectorWorld ew = (EffectorWorld)w;
+		if (ew.yttr$isPhased(pos)) return;
+		if (w.isAir(pos.offset(face))) return;
+		ms.push();
+		ms.translate(pos.getX(), pos.getY(), pos.getZ());
+		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));
+		for (BakedQuad q : model.getQuads(null, face, mc.world.random)) {
+			vc.quad(ms.peek(), q, 0, 0, 0, LightmapTextureManager.pack(0, 0), OverlayTexture.DEFAULT_UV);
+		}
+		ms.pop();
+	}
+
 	private void registerFluidRenderers() {
 		FluidRenderHandler voidRenderHandler = new FluidRenderHandler() {
 			@Override
@@ -327,9 +566,9 @@ public class YttrClient implements ClientModInitializer {
 			ThreadLocalRandom tlr = ThreadLocalRandom.current();
 			matrices.translate((tlr.nextGaussian()/f)*a, (tlr.nextGaussian()/f)*a, (tlr.nextGaussian()/f)*a);
 		}
-		BakedModel base = mc.getBakedModelManager().getModel(BASE_MODEL);
-		BakedModel chamber = mc.getBakedModelManager().getModel(CHAMBER_MODEL);
-		BakedModel chamberGlass = mc.getBakedModelManager().getModel(CHAMBER_GLASS_MODEL);
+		BakedModel base = mc.getBakedModelManager().getModel(RIFLE_BASE_MODEL);
+		BakedModel chamber = mc.getBakedModelManager().getModel(RIFLE_CHAMBER_MODEL);
+		BakedModel chamberGlass = mc.getBakedModelManager().getModel(RIFLE_CHAMBER_GLASS_MODEL);
 		boolean leftHanded = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.THIRD_PERSON_LEFT_HAND;
 		mc.getItemRenderer().renderItem(stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, base);
 		if (fp) {

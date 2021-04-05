@@ -19,7 +19,7 @@ public class MixinGameRenderer {
 	@Inject(at=@At("HEAD"), method="renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V", cancellable=true)
 	public void renderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		if (mc.player != null && mc.player.isSubmergedIn(YTags.Fluid.VOID_TAG)) {
+		if (mc.player != null && mc.player.isSubmergedIn(YTags.Fluid.VOID)) {
 			RenderSystem.clearColor(0, 0, 0, 1);
 			RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 			ci.cancel();

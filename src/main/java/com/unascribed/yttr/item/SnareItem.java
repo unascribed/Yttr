@@ -202,9 +202,9 @@ public class SnareItem extends Item implements ItemColorProvider {
 			if (hit == null) return TypedActionResult.pass(stack);
 			if (world.isClient) return TypedActionResult.success(stack, false);
 			if (!hit.isAlive()) return TypedActionResult.fail(stack);
-			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY_TAG) || hit.hasPassengers()) return TypedActionResult.fail(stack);
-			if (!hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING_TAG) && !(hit instanceof LivingEntity) && !(hit instanceof FallingBlockEntity)) return TypedActionResult.fail(stack);
-			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE_ITEM_TAG)) return TypedActionResult.fail(stack);
+			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY) || hit.hasPassengers()) return TypedActionResult.fail(stack);
+			if (!hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING) && !(hit instanceof LivingEntity) && !(hit instanceof FallingBlockEntity)) return TypedActionResult.fail(stack);
+			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE_ITEM)) return TypedActionResult.fail(stack);
 			CompoundTag data = new CompoundTag();
 			if (hit.saveSelfToTag(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
@@ -420,7 +420,7 @@ public class SnareItem extends Item implements ItemColorProvider {
 				default:
 					break;
 			}
-			if (type.isIn(com.unascribed.yttr.init.YTags.Entity.BOSSES_TAG)) {
+			if (type.isIn(com.unascribed.yttr.init.YTags.Entity.BOSSES)) {
 				dmg *= 4;
 			}
 			if (stack.getTag().getBoolean("Baby")) {
@@ -479,7 +479,7 @@ public class SnareItem extends Item implements ItemColorProvider {
 			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 				EntityType<?> e = en.getValue();
 				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
-				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING_TAG)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY_TAG)) {
+				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY)) {
 					ItemStack is = new ItemStack(this);
 					is.getOrCreateSubTag("Contents").putString("id", en.getKey().getValue().toString());
 					stacks.add(is);

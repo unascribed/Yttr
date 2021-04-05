@@ -23,7 +23,7 @@ public class MixinEntity {
 	
 	@Inject(at=@At("HEAD"), method="isInsideWaterOrBubbleColumn()Z", cancellable=true)
 	public void isInsideWaterOrBubbleColumn(CallbackInfoReturnable<Boolean> ci) {
-		if (!firstUpdate && fluidHeight.getDouble(YTags.Fluid.VOID_TAG) > 0) {
+		if (!firstUpdate && fluidHeight.getDouble(YTags.Fluid.VOID) > 0) {
 			ci.setReturnValue(true);
 		}
 	}

@@ -10,9 +10,9 @@ public class YTags {
 
 	public static class Item {
 
-		public static final Tag<net.minecraft.item.Item> UNSNAREABLE_ITEM_TAG = TagRegistry.item(new Identifier("yttr", "unsnareable"));
-		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE_TAG = TagRegistry.item(new Identifier("yttr", "void_immune"));
-		public static final Tag<net.minecraft.item.Item> CANNOT_UNBREAKABLE_TAG = TagRegistry.item(new Identifier("yttr", "cannot_unbreakable"));
+		public static final Tag<net.minecraft.item.Item> UNSNAREABLE_ITEM = TagRegistry.item(new Identifier("yttr", "unsnareable"));
+		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
+		public static final Tag<net.minecraft.item.Item> CANNOT_UNBREAKABLE = TagRegistry.item(new Identifier("yttr", "cannot_unbreakable"));
 		
 		private static void init() {}
 		
@@ -30,7 +30,7 @@ public class YTags {
 	
 	public static class Fluid {
 
-		public static final Tag<net.minecraft.fluid.Fluid> VOID_TAG = AccessorFluidTags.getRequiredTags().add("yttr:void");
+		public static final Tag<net.minecraft.fluid.Fluid> VOID = AccessorFluidTags.getRequiredTags().add("yttr:void");
 		
 		private static void init() {}
 		
@@ -38,9 +38,9 @@ public class YTags {
 	
 	public static class Entity {
 
-		public static final Tag<EntityType<?>> UNSNAREABLE_ENTITY_TAG = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
-		public static final Tag<EntityType<?>> SNAREABLE_NONLIVING_TAG = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
-		public static final Tag<EntityType<?>> BOSSES_TAG = TagRegistry.entityType(new Identifier("yttr", "bosses"));
+		public static final Tag<EntityType<?>> UNSNAREABLE_ENTITY = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
+		public static final Tag<EntityType<?>> SNAREABLE_NONLIVING = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
+		public static final Tag<EntityType<?>> BOSSES = TagRegistry.entityType(new Identifier("yttr", "bosses"));
 		
 		private static void init() {}
 		

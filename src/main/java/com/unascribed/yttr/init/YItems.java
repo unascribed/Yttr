@@ -150,7 +150,7 @@ public class YItems {
 			.fireproof()
 			.group(YItemGroups.MAIN));
 	
-	public static final Item EFFECTOR = new EffectorItem(new Item.Settings()
+	public static final EffectorItem EFFECTOR = new EffectorItem(new Item.Settings()
 			.group(YItemGroups.MAIN));
 
 

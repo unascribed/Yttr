@@ -108,5 +108,13 @@
 	"void_hole": {
 		"sounds": ["minecraft:mob/wither/spawn"],
 		"subtitle": "subtitles.yttr.void_hole"
+	},
+	"effector_open": {
+		"sounds": ["yttr:effector_open"],
+		"subtitle": "subtitles.yttr.effector_open"
+	},
+	"effector_close": {
+		"sounds": ["yttr:effector_close"],
+		"subtitle": "subtitles.yttr.effector_close"
 	}
 }

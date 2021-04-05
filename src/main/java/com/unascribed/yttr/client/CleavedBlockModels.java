@@ -25,8 +25,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Direction.Axis;
-import net.minecraft.util.math.Direction.AxisDirection;
 
 public class CleavedBlockModels {
 
@@ -112,17 +110,7 @@ public class CleavedBlockModels {
 	}
 	
 	private static Direction findClosestFace(Vec3d normal) {
-		double xA = Math.abs(normal.x);
-		double yA = Math.abs(normal.y);
-		double zA = Math.abs(normal.z);
-		if (xA > yA && xA > zA) {
-			return Direction.get(normal.x < 0 ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, Axis.X);
-		} else if (yA > xA && yA > zA) {
-			return Direction.get(normal.y < 0 ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, Axis.Y);
-		} else if (zA > xA && zA > yA) {
-			return Direction.get(normal.z < 0 ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, Axis.Z);
-		}
-		return Direction.DOWN;
+		return Direction.getFacing(normal.x, normal.y, normal.z);
 	}
 	
 }

@@ -24,6 +24,8 @@
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
 	
+	"item.yttr.effector.tip.1": "§7A portable hole-making device.",
+	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",
 	"block.yttr.power_meter": "Power Meter",
@@ -80,6 +82,8 @@
 	"subtitles.yttr.snare_break": "Snare breaks",
 	"subtitles.yttr.chute_plated": "Chute plated",
 	"subtitles.yttr.void_hole": "Void hole opened",
+	"subtitles.yttr.effector_open": "Effector hole opens",
+	"subtitles.yttr.effector_close": "Effector hole closes",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
@@ -107,6 +111,8 @@
 	"tip.yttr.delicace_bonus_2": "+20% Saturation",
 	"tip.yttr.delicace_bonus_3": "+40% Beneficial Effect Duration",
 	"tip.yttr.delicace_bonus_4": "-40% Negative Effect Duration",
+	
+	"tip.yttr.effector.no_fuel": "Out of Void",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",

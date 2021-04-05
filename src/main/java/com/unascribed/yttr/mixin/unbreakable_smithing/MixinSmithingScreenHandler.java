@@ -32,7 +32,7 @@ public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
 		yttr$applyingBedrock = false;
 		if (output.isEmpty() && input.getStack(1).getItem() == YItems.BEDROCK_SHARD) {
 			ItemStack in = input.getStack(0);
-			if (!in.isDamageable() || (in.hasTag() && in.getTag().getBoolean("Unbreakable")) || in.getItem().isIn(YTags.Item.CANNOT_UNBREAKABLE_TAG)) return;
+			if (!in.isDamageable() || (in.hasTag() && in.getTag().getBoolean("Unbreakable")) || in.getItem().isIn(YTags.Item.CANNOT_UNBREAKABLE)) return;
 			ItemStack copy = in.copy();
 			copy.setDamage(0);
 			if (!copy.hasTag()) copy.setTag(new CompoundTag());

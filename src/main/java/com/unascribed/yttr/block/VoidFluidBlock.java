@@ -57,7 +57,7 @@ public class VoidFluidBlock extends FluidBlock {
 		if (entity instanceof ItemEntity || entity.damage(new SolventDamageSource(i), 2*i)) {
 			if (entity instanceof ItemEntity) {
 				ItemStack stack = ((ItemEntity) entity).getStack();
-				if (stack.getItem().isIn(YTags.Item.VOID_IMMUNE_TAG)) return;
+				if (stack.getItem().isIn(YTags.Item.VOID_IMMUNE)) return;
 				if (stack.getItem() == YItems.BEDROCK_SHARD) {
 					if (getFluidState(state).isStill()) {
 						world.setBlockState(pos, YBlocks.GLASSY_VOID.getDefaultState());

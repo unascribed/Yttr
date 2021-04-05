@@ -35,6 +35,8 @@ public class YSounds {
 	public static final SoundEvent CLANG = create("clang");
 	public static final SoundEvent CHUTE_PLATED = create("chute_plated");
 	public static final SoundEvent VOID_HOLE = create("void_hole");
+	public static final SoundEvent EFFECTOR_OPEN = create("effector_open");
+	public static final SoundEvent EFFECTOR_CLOSE = create("effector_close");
 	
 
 	public static void init() {

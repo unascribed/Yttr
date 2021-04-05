@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V  ",
+    " Y ",
+    "  Y"
+  ],
+  "key": {
+    "V": {
+      "item": "yttr:glassy_void"
+    },
+    "Y": {
+      "item": "yttr:yttrium_ingot"
+    }
+  },
+  "result": {
+    "item": "yttr:effector"
+  }
+}
