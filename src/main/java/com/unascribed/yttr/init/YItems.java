@@ -5,6 +5,7 @@ import java.util.List;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.item.CleaverItem;
+import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.ShearsItem;
@@ -147,6 +148,9 @@ public class YItems {
 	public static final Item REINFORCED_CLEAVER = new ReinforcedCleaverItem(new Item.Settings()
 			.maxDamage(3072)
 			.fireproof()
+			.group(YItemGroups.MAIN));
+	
+	public static final Item EFFECTOR = new EffectorItem(new Item.Settings()
 			.group(YItemGroups.MAIN));
 
 

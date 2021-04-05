@@ -15,7 +15,6 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
-import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
 
 import com.google.common.base.Predicates;

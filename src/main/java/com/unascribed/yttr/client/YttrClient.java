@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.annotate.Renderer;
@@ -26,7 +23,7 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.item.CleaverItem;
+import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
@@ -88,11 +85,9 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
@@ -207,6 +202,14 @@ public class YttrClient implements ClientModInitializer {
 			float r = buf.readFloat();
 			mc.send(() -> {
 				mc.particleManager.addParticle(new VoidBallParticle(mc.world, x, y, z, r));
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "effector"), (client, handler, buf, responseSender) -> {
+			BlockPos pos = buf.readBlockPos();
+			Direction dir = Direction.byId(buf.readUnsignedByte());
+			int dist = buf.readUnsignedByte();
+			mc.send(() -> {
+				EffectorItem.effect(client.world, pos, dir, null, dist, false);
 			});
 		});
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
