@@ -116,22 +116,24 @@ public class EffectorItem extends Item {
 		Axis axisX = Iterables.find(axes, a -> a != axisZ);
 		Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
 		int hits = 0;
-		for (int z = 0; z < distance; z++) {
+		for (int z = -2; z < distance; z++) {
+			cursor.set(pos).move(dir, z);
+			boolean everythingWasUnpassable = true;
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					outerCursor.set(cursor);
 					move(outerCursor, axisX, x);
 					move(outerCursor, axisY, y);
 					BlockState bs = world.getBlockState(outerCursor);
-					if (bs.getHardness(world, outerCursor) < 0) continue;
+					if (bs.getHardness(world, outerCursor) < 0 || bs.isAir()) continue;
+					everythingWasUnpassable = false;
 					ew.yttr$addPhaseBlock(outerCursor, 150, 0);
 				}
 			}
-			hits++;
-			cursor.move(dir);
-			if (server && world.isAir(cursor)) {
+			if (z >= 0 && server && everythingWasUnpassable) {
 				break;
 			}
+			hits++;
 		}
 		return hits;
 	}
