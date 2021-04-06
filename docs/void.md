@@ -11,4 +11,4 @@ and deals damage that causes extra armor damage and bypasses armor damage reduct
 fluid damage multiple times in a row will do more damage every time, making it an extremely deadly
 substance.
 
-Submerging yourself in Void fluid will [greatly increase your FPS](/img/fps.mp4).
+Submerging yourself in Void fluid will [greatly increase your FPS](../img/fps.mp4).

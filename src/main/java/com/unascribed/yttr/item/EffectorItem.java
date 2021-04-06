@@ -125,8 +125,8 @@ public class EffectorItem extends Item {
 					move(outerCursor, axisX, x);
 					move(outerCursor, axisY, y);
 					BlockState bs = world.getBlockState(outerCursor);
-					if (bs.getHardness(world, outerCursor) < 0 || bs.isAir()) continue;
-					everythingWasUnpassable = false;
+					if (bs.getHardness(world, outerCursor) < 0) continue;
+					if (!bs.isAir()) everythingWasUnpassable = false;
 					ew.yttr$addPhaseBlock(outerCursor, 150, 0);
 				}
 			}

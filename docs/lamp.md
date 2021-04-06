@@ -24,15 +24,15 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 		<img title="Lamp" src="../img/item/lamp_cycle.png"/>
 	</div>
 	<div class="input">
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Dye"><img alt="[any dye]" src="../img/item/dye_cycle.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
-		<a href="/glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
+		<a href="../glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Redstone_Dust"><img alt="Redstone Dust" src="../img/item/redstone.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>
 
@@ -42,15 +42,15 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 		<img title="Lamp" src="../img/item/lamp_inverted_cycle.png"/>
 	</div>
 	<div class="input">
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Dye"><img alt="[any dye]" src="../img/item/dye_cycle.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
-		<a href="/glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
+		<a href="../glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
-		<a href="/yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>
 
@@ -93,7 +93,7 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 
 ### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Fixture
 <div class="recipe" title="Namespaced ID: yttr:fixtures_from_lamp">
-	<a href="/fixture" class="output">
+	<a href="../fixture" class="output">
 		<img title="Fixture" src="../img/item/fixture_cycle_all.png"/>
 		<span class="quantity">4</span>
 	</a>

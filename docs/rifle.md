@@ -88,7 +88,7 @@ and more predictable power curve, visible below. However, its stability also mea
 	<div class="input">
 		<a href="#"><img title="Yttric Rifle" src="../img/item/rifle.png"/></a>
 		<div class="add"></div>
-		<a href="/bedrock_shard"><img title="Bedrock Shard" src="../img/item/bedrock_shard.png"/></a>
+		<a href="../bedrock_shard"><img title="Bedrock Shard" src="../img/item/bedrock_shard.png"/></a>
 	</div>
 </div>
 
@@ -106,17 +106,17 @@ double ammo usage from losing some of the loaded dust.
 	<div class="input">
 		<a href="#"><img title="Yttric Rifle" src="../img/item/rifle.png"/></a>
 		<div class="add"></div>
-		<a href="/glassy_void"><img title="Glassy Void" src="../img/item/glassy_void.png"/></a>
+		<a href="../glassy_void"><img title="Glassy Void" src="../img/item/glassy_void.png"/></a>
 	</div>
 </div>
 
 ## Power Curves
 
 ### Yttric Rifle
-![](/img/rifle_power.png)
+<img class="invert-dark" src="../img/rifle_power.png">
 
 ### Bedrock-Reinforced Rifle
-![](/img/rifle_power_reinforced.png)
+<img class="invert-dark" src="../img/rifle_power_reinforced.png">
 
 ### Void-Enhanced Rifle
-![](/img/rifle_power_overclocked.png)
+<img class="invert-dark" src="../img/rifle_power_overclocked.png">

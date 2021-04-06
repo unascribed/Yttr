@@ -19,7 +19,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 		<img title="Cage Lamp" src="../img/item/cage_lamp_cycle_all.png"/>
 	</a>
 	<div class="input">
-		<a href="/fixture"><img title="Fixture" src="../img/item/fixture_cycle_all.png"/></a>
+		<a href="../fixture"><img title="Fixture" src="../img/item/fixture_cycle_all.png"/></a>
 	</div>
 </div>
 
@@ -48,7 +48,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 
 ### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/>  Cage Lamp to Fixture
 <div class="recipe" title="Namespaced ID: yttr:fixture_from_cage_lamp">
-	<a href="/fixture" class="output">
+	<a href="../fixture" class="output">
 		<img title="Fixture" src="../img/item/fixture_cycle_all.png"/>
 	</a>
 	<div class="input">
@@ -58,7 +58,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 
 ### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/>  Recombine Cage Lamps
 <div class="recipe" title="Namespaced ID: yttr:fixtures_to_lamp">
-	<a href="/lamp" class="output">
+	<a href="../lamp" class="output">
 		<img title="Lamp" src="../img/item/lamp_cycle_all.png"/>
 	</a>
 	<div class="input small">

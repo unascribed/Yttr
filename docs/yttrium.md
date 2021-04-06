@@ -17,7 +17,7 @@ will be listed in the Recipes section on this page. Most things in Yttr take Ytt
 		<img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/>
 	</a>
 	<div class="input">
-		<a href="/gadolinite"><img title="Gadolinite" src="../img/item/gadolinite.png"/></a>
+		<a href="../gadolinite"><img title="Gadolinite" src="../img/item/gadolinite.png"/></a>
 	</div>
 </div>
 

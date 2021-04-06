@@ -1,3 +1,30 @@
+body {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+}
+
+footer {
+	font-weight: normal;
+}
+
+h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+.wm-page-content {
+	margin-top: 16px;
+}
+
+.navbar, .wm-toc-li.wm-current, .wm-toc-li.wm-current:hover {
+	background: #009688;
+}
+
+.wm-top-version {
+	font-weight: normal;
+	font-size: 14px;
+	position: relative;
+	top: 2px;
+}
+
 img.infobox {
 	float: right;
 	width: 192px;
@@ -10,6 +37,9 @@ img.infobox {
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 	image-rendering: -moz-crisp-edges;
+}
+span.big {
+	font-size: 24px;
 }
 .aside {
 	float: right;
@@ -71,8 +101,8 @@ img.symbolic {
 }
 .recipe .quantity {
 	position: absolute;
-	right: -2px;
-	bottom: -12px;
+	right: 4px;
+	bottom: -6px;
 	font-weight: bold;
 	font-size: 24px;
 	text-decoration: none;
@@ -106,6 +136,55 @@ img.symbolic {
 	transform: translateY(-50%) translateX(-50%);
 }
 video {
-	max-width: 100%;
-	height: auto;
+	width: 100%;
+	height: calc(56.25vw - 32px);
+}
+
+@media(min-width: 700px) {
+	video {
+		width: 700px;
+		height: 394px;
+	}
+}
+
+@media(prefers-color-scheme: dark) {
+	body {
+		background: #1A2327;
+		color: #CFD8DC;
+	}
+	.wm-toc-pane {
+		background: #263238;
+	}
+	.wm-toctree a, .wm-toctree a:visited, .wm-toctree a:hover, .wm-toctree a:focus {
+		color: #CFD8DC;
+	}
+	.wm-toc-li:hover {
+		background: #37474F;
+	}
+	h1 {
+		color: #FFF;
+	}
+	h2, h3, h4, h5, h6 {
+		color: #ECEFF1;
+	}
+	img.symbolic, .invert-dark {
+		filter: invert(90%) hue-rotate(180deg);
+	}
+	.aside span {
+		background: #455A64;
+		color: #FF1744;
+		border-radius: 3px;
+	}
+	img.infobox {
+		background: #455A64;
+	}
+	.recipe {
+		background: #455A64;
+	}
+	.recipe img {
+		background: #607D8B;
+	}
+	.recipe .quantity {
+		color: #FFF;
+	}
 }

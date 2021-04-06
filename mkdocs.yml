@@ -1,4 +1,9 @@
 site_name: Yttr Wiki
+site_url: https://unascribed.com/yttr/
+repo_url: https://github.com/unascribed/Yttr
+edit_uri: edit/trunk/docs/
+site_description: Yttr is a Fabric mod for Minecraft 1.16.5 with no particular focus.
+copyright: "Copyright &copy; 2021 Una Thompson"
 theme: windmill
 nav:
     - Home: index.md
@@ -12,10 +17,13 @@ nav:
     - Yttric Rifle: rifle.md
     - Bedrock Smasher: bedrock_smasher.md
     - Void: void.md
+    - Void Effector: effector.md
 plugins:
     - search
 extra:
     logo: img/logo.png
     version: "0.3.3"
+    article_nav_top: false
+    article_nav_bottom: false
 extra_css:
     - css/yttr.css

@@ -4,8 +4,8 @@
 # Big Iron
 
 Big Iron is an intermediate resource used to work around the fact furnaces can't output more than
-one item in Fabric 1.16, like they could in Forge 1.12. I don't know if this is a Fabric or 1.16
-limitation, but it means we get to have an item called "Big Iron", so it's not all bad.
+one item in 1.16, like they could in Forge 1.12. It means we get to have an item called "Big Iron",
+so it's not all bad.
 
 It's produced by smelting Gadolinite in a furnace. Blasting Gadolinite in a blast furnace produces
 [Yttrium](/yttrium) instead.
@@ -21,7 +21,7 @@ Big Iron gives you an alternative use for Gadolinite if you already have enough 
 		<img title="Big Iron" src="../img/item/xl_iron_ingot.png"/>
 	</a>
 	<div class="input">
-		<a href="/gadolinite"><img title="Gadolinite" src="../img/item/gadolinite.png"/></a>
+		<a href="../gadolinite"><img title="Gadolinite" src="../img/item/gadolinite.png"/></a>
 	</div>
 </div>
 
