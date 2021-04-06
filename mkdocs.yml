@@ -1,0 +1,21 @@
+site_name: Yttr Wiki
+theme: windmill
+nav:
+    - Home: index.md
+    - Gadolinite: gadolinite.md
+    - Yttrium: yttrium.md
+    - Big Iron: big_iron.md
+    - Glowdamp: glowdamp.md
+    - Lamp: lamp.md
+    - Fixture: fixture.md
+    - Cage Lamp: cage_lamp.md
+    - Yttric Rifle: rifle.md
+    - Bedrock Smasher: bedrock_smasher.md
+    - Void: void.md
+plugins:
+    - search
+extra:
+    logo: img/logo.png
+    version: "0.3.3"
+extra_css:
+    - css/yttr.css

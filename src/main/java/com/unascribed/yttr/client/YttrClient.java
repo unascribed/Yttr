@@ -240,14 +240,14 @@ public class YttrClient implements ClientModInitializer {
 			mc.send(() -> {
 				BlockPos endPos = pos.offset(dir, dist);
 				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, pos));
-				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, pos), 80);
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, pos), 130);
 				for (int i = 0; i < dist; i += 4) {
 					BlockPos midPos = pos.offset(dir, i);
 					client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, midPos));
-					client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, midPos), 80);
+					client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, midPos), 130);
 				}
 				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, endPos));
-				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, endPos), 80);
+				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, endPos), 130);
 				effectorHoles.add(new EffectorHole(pos, dir, dist));
 				EffectorItem.effect(client.world, pos, dir, null, dist, false);
 			});
@@ -262,7 +262,7 @@ public class YttrClient implements ClientModInitializer {
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
 			Iterator<EffectorHole> iter = effectorHoles.iterator();
 			while (iter.hasNext()) {
-				if (iter.next().age++ > 100) {
+				if (iter.next().age++ > 150) {
 					iter.remove();
 				}
 			}
@@ -289,8 +289,8 @@ public class YttrClient implements ClientModInitializer {
 				float a;
 				if (t <= 4) {
 					a = 1-sCurve5(1-(t/4));
-				} else if (t >= 80) {
-					a = sCurve5((100-t)/20);
+				} else if (t >= 130) {
+					a = sCurve5((150-t)/20);
 				} else {
 					a = 1;
 				}

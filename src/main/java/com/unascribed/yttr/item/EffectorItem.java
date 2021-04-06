@@ -124,7 +124,7 @@ public class EffectorItem extends Item {
 					move(outerCursor, axisY, y);
 					BlockState bs = world.getBlockState(outerCursor);
 					if (bs.getHardness(world, outerCursor) < 0) continue;
-					ew.yttr$addPhaseBlock(outerCursor, 100, 0);
+					ew.yttr$addPhaseBlock(outerCursor, 150, 0);
 				}
 			}
 			hits++;
