@@ -11,4 +11,7 @@ public interface AccessorDyeColor {
 	@Accessor("color")
 	int yttr$getColor();
 	
+	@Accessor("signColor")
+	int yttr$getSignColor();
+	
 }

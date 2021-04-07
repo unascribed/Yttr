@@ -24,6 +24,7 @@
 	"crafting_sound.MixinCraftingRecipeSerializers",
 	"crafting_sound.MixinCraftingResultSlot",
 	"unbreakable_smithing.MixinSmithingScreenHandler",
+	"accessor.AccessorBlockSoundGroup",
 	"accessor.AccessorLivingEntity",
 	"accessor.AccessorStatusEffectInstance",
 	"accessor.AccessorMobEntity",

@@ -14,6 +14,7 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.math.partitioner.DEdge;
 import com.unascribed.yttr.math.partitioner.Plane;
 import com.unascribed.yttr.math.partitioner.Polygon;
+import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 
 import com.google.common.collect.Lists;
 
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
@@ -98,8 +100,9 @@ public class CleaverItem extends Item implements Attackable {
 					List<Polygon> result = performCleave(start, corner, end, CleavedBlockEntity.cube(), false);
 					if (!result.isEmpty()) {
 						world.playSound(null, block, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
-						if (state.getSoundGroup().getBreakSound() != null) {
-							world.playSound(null, block, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1f);
+						SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
+						if (breakSound != null) {
+							world.playSound(null, block, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
 						}
 						world.setBlockState(block, YBlocks.CLEAVED_BLOCK.getDefaultState());
 						CleavedBlockEntity cbe = ((CleavedBlockEntity)world.getBlockEntity(block));

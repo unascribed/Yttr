@@ -45,4 +45,4 @@ extra:
     article_nav_top: false
     article_nav_bottom: false
 extra_css:
-    - css/yttr.css
+    - css/yttr.css?v=2

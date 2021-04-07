@@ -35,7 +35,7 @@ public enum LampColor implements StringIdentifiable {
 	private final String lowerName;
 	
 	LampColor(DyeColor inherit) {
-		this(inherit, inherit.getSignColor());
+		this(inherit, ((AccessorDyeColor)(Object)inherit).yttr$getSignColor());
 	}
 	
 	LampColor(DyeColor inherit, int glowColor) {

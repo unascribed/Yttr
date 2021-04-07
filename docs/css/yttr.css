@@ -202,20 +202,6 @@ video {
 	content: "Learn about it";
 }
 
-.wm-toc-pane a[href^="https://"]:after,
-.wm-toc-pane a[href^="mailto:"]:after,
-p a[href^="https://"]:after,
-p a[href^="mailto:"]:after {
-	content: "";
-	display: inline-block;
-	width: 1em;
-	height: 1em;
-	background-size: 100% 100%;
-	margin-left: 4px;
-	vertical-align: middle;
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/open-in-new.svg);
-}
-
 @media(min-width: 700px) {
 	video {
 		width: 700px;

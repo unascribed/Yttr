@@ -11,6 +11,9 @@ Unlike similar *portable hole*-making devices, the Effector works on a second wo
 "phased blocks"; blocks that the Effector passes through are never deleted or re-created, they are
 simply temporarily hidden. For example, redstone signals can still pass through phased blocks.
 
+*Note*: The Void Effector is incompatible with Sodium *and* Lithium. When or if this will be fixed
+is unknown.
+
 ## Video
 
 <video src="../img/effector.mp4" controls></video>
