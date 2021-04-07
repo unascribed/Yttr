@@ -48,6 +48,8 @@
 	"block.yttr.cage_lamp": "Cage Lamp",
 	"block.yttr.yttrium_plating": "Yttrium Plating",
 	"block.yttr.glassy_void_pane": "Glassy Void Pane",
+	"block.yttr.heavy_yttrium_plate": "Heavy Yttrium Weighted Pressure Plate",
+	"block.yttr.light_yttrium_plate": "Light Yttrium Weighted Pressure Plate",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",

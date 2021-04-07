@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/lamp_cycle_all.png">
 
-<span class="aside">Namespaced ID: <span>yttr:lamp</span></span>
+<span class="aside">Namespaced ID: <span>yttr:lamp</span></span><br/>
 # Lamp
 
 Lamps are simple redstone-controlled glowing blocks (light level 15) with a "halo" effect that makes
@@ -12,9 +12,9 @@ by default and turned off by a redstone signal.
 There is an additional 17th "teal" color currently not obtainable in survival.
 
 ## Screenshots
-![All 17 colors of lamp, both inverted and not, during the day.](img/lamp1.png)
+![All 17 colors of lamp, both inverted and not, during the day.](../img/lamp1.png)
 
-![All 17 colors of lamp, both inverted and not, at night.](img/lamp2.png)
+![All 17 colors of lamp, both inverted and not, at night.](../img/lamp2.png)
 
 ## Recipes
 
@@ -25,13 +25,13 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 	</div>
 	<div class="input">
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Dye"><img alt="[any dye]" src="../img/item/dye_cycle.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Dye"><img title="[any dye]" src="../img/item/dye_cycle.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img title="Glass Pane" src="../img/item/glass_pane.png"/></a>
 		<a href="../glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img title="Glass Pane" src="../img/item/glass_pane.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Dust"><img alt="Redstone Dust" src="../img/item/redstone.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Dust"><img title="Redstone Dust" src="../img/item/redstone.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>
@@ -43,13 +43,13 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 	</div>
 	<div class="input">
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Dye"><img alt="[any dye]" src="../img/item/dye_cycle.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Dye"><img title="[any dye]" src="../img/item/dye_cycle.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img title="Glass Pane" src="../img/item/glass_pane.png"/></a>
 		<a href="../glowdamp"><img title="Glowdamp" src="../img/item/glowing_gas.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img alt="Glass Pane" src="../img/item/glass_pane.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Glass_Pane"><img title="Glass Pane" src="../img/item/glass_pane.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>
@@ -62,7 +62,7 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 	</div>
 	<div class="input">
 		<a href="#"><img title="Inverted Lamp" src="../img/item/lamp_inverted_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 
@@ -72,7 +72,7 @@ There is an additional 17th "teal" color currently not obtainable in survival.
 	</div>
 	<div class="input">
 		<a href="#"><img title="Lamp" src="../img/item/lamp_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 

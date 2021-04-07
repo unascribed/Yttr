@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/bedrock_smasher.png">
 
-<span class="aside">Namespaced ID: <span>yttr:bedrock_smasher</span></span>
+<span class="aside">Namespaced ID: <span>yttr:bedrock_smasher</span></span><br/>
 # Bedrock Smasher
 
 The Bedrock Smasher allows you to do just that: smash bedrock.
@@ -14,20 +14,20 @@ from the [Yttric Rifle](/rifle). The explosion provides enough instananeous forc
 hardness of Bedrock, and creates Ruined Bedrock. Ruined Bedrock can be broken with a diamond pickaxe
 or better to yield 1-2 Bedrock Shards and 0-3 Obsidian.
 
-Breaking bedrock at Y0 opens a hole to the Void, allowing a Void geyser to appear. The Void fluid
-this emits can be collected, and is the primary progression gate in Yttr.
+Breaking bedrock at Y0 opens a hole to the Void, allowing a [Void](../void) geyser to appear. The
+Void fluid this emits can be collected, and is the primary progression gate in Yttr.
 
 ## Videos
 
 ### Smashing bedrock above Y=0
 <video src="../img/bedrock_shard.mp4" controls></video>
 
-See [Bedrock Shard](/bedrock_shard) for more information.
+See [Bedrock Shard](../bedrock_shard) for more information.
 
 ### Smashing bedrock at Y=0
 <video src="../img/void_geyser.mp4" controls></video>
 
-See [Void](/void) for more information.
+See [Void](../void) for more information.
 
 
 ## Recipe

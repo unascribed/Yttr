@@ -102,7 +102,7 @@
 		]
 	},
 	"chute_plated": {
-		"sounds": ["minecraft:block/smithing_table/smithing_table1"],
+		"sounds": ["minecraft:block/smithing_table/smithing_table2"],
 		"subtitle": "subtitles.yttr.chute_plated"
 	},
 	"void_hole": {

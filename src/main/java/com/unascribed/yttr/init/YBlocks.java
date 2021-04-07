@@ -17,6 +17,7 @@ import com.unascribed.yttr.block.SqueezedLeavesBlock;
 import com.unascribed.yttr.block.VoidFluidBlock;
 import com.unascribed.yttr.block.VoidGeyserBlock;
 import com.unascribed.yttr.block.WallLampBlock;
+import com.unascribed.yttr.block.YttriumPressurePlateBlock;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -187,6 +188,19 @@ public class YBlocks {
 	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
 			.dynamicBounds());
 
+	public static final YttriumPressurePlateBlock LIGHT_YTTRIUM_PLATE = new YttriumPressurePlateBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1), 15);
+
+	public static final YttriumPressurePlateBlock HEAVY_YTTRIUM_PLATE = new YttriumPressurePlateBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1), 64);
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}

@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/xl_iron_ingot.png">
 
-<span class="aside">Namespaced ID: <span>yttr:xl_iron_ingot</span></span>
+<span class="aside">Namespaced ID: <span>yttr:xl_iron_ingot</span></span><br/>
 # Big Iron
 
 Big Iron is an intermediate resource used to work around the fact furnaces can't output more than

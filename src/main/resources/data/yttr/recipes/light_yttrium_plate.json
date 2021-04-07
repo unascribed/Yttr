@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:light_weighted_pressure_plate"
+		},
+		{
+			"item": "yttr:yttrium_ingot"
+		}
+	],
+	"result": {
+		"item": "yttr:light_yttrium_plate"
+	}
+}

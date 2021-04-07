@@ -47,6 +47,8 @@ public class YItems {
 	public static final BlockItem SQUEEZE_LEAVES = createNormalBlockItem(YBlocks.SQUEEZE_LEAVES);
 	public static final BlockItem SQUEEZE_SAPLING = createNormalBlockItem(YBlocks.SQUEEZE_SAPLING);
 	public static final BlockItem YTTRIUM_PLATING = createNormalBlockItem(YBlocks.YTTRIUM_PLATING);
+	public static final BlockItem LIGHT_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.LIGHT_YTTRIUM_PLATE);
+	public static final BlockItem HEAVY_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.HEAVY_YTTRIUM_PLATE);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));

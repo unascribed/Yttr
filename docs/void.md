@@ -1,4 +1,4 @@
-<span class="aside">Namespaced ID: <span>yttr:void</span></span>
+<span class="aside">Namespaced ID: <span>yttr:void</span></span><br/>
 # Void
 Void is a mysterious powerful volatile solvent that fills the entire underside of the Overworld.
 It's possible Bedrock is created by stone reacting with Void under pressure.

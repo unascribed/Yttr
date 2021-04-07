@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/fixture_cycle_all.png">
 
-<span class="aside">Namespaced ID: <span>yttr:fixture</span></span>
+<span class="aside">Namespaced ID: <span>yttr:fixture</span></span><br/>
 # Fixture
 
 Fixtures are smaller versions of [Lamps](/lamp) which can be placed on any of the 6 block faces.
@@ -8,7 +8,7 @@ Fixtures are smaller versions of [Lamps](/lamp) which can be placed on any of th
 See the [Lamp](/lamp) page for more information on how lamps work, including these.
 
 ## Screenshots
-![A few fixtures hanging around.](img/fixture.png)
+![A few fixtures hanging around.](../img/fixture.png)
  
 ## Recipes
 
@@ -41,7 +41,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 	</a>
 	<div class="input">
 		<a href="#"><img title="Inverted Fixture" src="../img/item/fixture_inverted_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 
@@ -51,7 +51,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 	</a>
 	<div class="input">
 		<a href="#"><img title="Fixture" src="../img/item/fixture_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 

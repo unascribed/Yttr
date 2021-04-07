@@ -1,12 +1,9 @@
 <img class="infobox" src="../img/item/yttrium_ingot.png">
 
-<span class="aside">Namespaced ID: <span>yttr:yttrium_ingot</span></span>
+<span class="aside">Namespaced ID: <span>yttr:yttrium_ingot</span></span><br/>
 # Yttrium
 
 Yttrium is Yttr's primary metal resource and namesake. It is simply a crafting ingredient.
-
-For brevity and simplicity of maintaining this wiki, only recipes directly related to Yttrium itself
-will be listed in the Recipes section on this page. Most things in Yttr take Yttrium to craft.
 
 ## Recipes
 
@@ -33,6 +30,7 @@ will be listed in the Recipes section on this page. Most things in Yttr take Ytt
 	</div>
 </div>
 
+<span class="aside">Namespaced ID: <span>yttr:yttrium_block</span></span>
 ### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> To Block
 
 <div class="recipe" title="Namespaced ID: yttr:yttrium_block">
@@ -71,6 +69,7 @@ will be listed in the Recipes section on this page. Most things in Yttr take Ytt
 	</div>
 </div>
 
+<span class="aside">Namespaced ID: <span>yttr:yttrium_nugget</span></span>
 ### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> To Nuggets
 
 <div class="recipe" title="Namespaced ID: yttr:yttrium_nugget">
@@ -79,6 +78,34 @@ will be listed in the Recipes section on this page. Most things in Yttr take Ytt
 		<span class="quantity">9</span>
 	</a>
 	<div class="input">
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+	</div>
+</div>
+
+## Recipe Usages
+
+For brevity and simplicity of maintaining this wiki, only recipes directly related to Yttrium itself
+will be listed in this section. Most things in Yttr take Yttrium to craft.
+
+<span class="aside">Namespaced ID: <span>yttr:yttrium_plating</span></span>
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Yttrium Plating
+
+Yttrium Plating is a decorative block.
+
+<div class="recipe" title="Namespaced ID: yttr:yttrium_plating">
+	<a href="#" class="output">
+		<img title="Yttrium Plating" src="../img/item/yttrium_plating.png"/>
+		<span class="quantity">32</span>
+	</a>
+	<div class="input">
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img src="../img/item/air.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 		<a href="#"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>

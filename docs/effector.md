@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/effector.png">
 
-<span class="aside">Namespaced ID: <span>yttr:effector</span></span>
+<span class="aside">Namespaced ID: <span>yttr:effector</span></span><br/>
 # Void Effector
 The Void Effector allows creating temporary 3x3 holes through any kind of block (except unbreakable
 blocks, of course). It is fueled by Void fluid, with each bucket being worth 512 blocks of

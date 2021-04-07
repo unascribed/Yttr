@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/gadolinite.png">
 
-<span class="aside">Namespaced ID: <span>yttr:gadolinite</span></span>
+<span class="aside">Namespaced ID: <span>yttr:gadolinite</span></span><br/>
 # Gadolinite
 
 Gadolinite is an ore that spawns underground from Y20 to Y96, less commonly than iron. It gives you

@@ -6,23 +6,42 @@ site_description: Yttr is a Fabric mod for Minecraft 1.16.5 with no particular f
 copyright: "Copyright &copy; 2021 Una Thompson"
 theme: windmill
 nav:
+    - Support Me: https://donate.unascribed.com
+    - GitHub: https://github.com/unascribed/Yttr
+    - CurseForge: https://www.curseforge.com/minecraft/mc-mods/yttr
+    - GitHub: https://github.com/unascribed/Yttr/releases
+    - Discord: https://discord.gg/8WBauq2eYK
+    - Matrix: https://matrix.to/#/#unascribed:sleeping.town
+    - E-Mail Me: mailto:me@unascribed.com
     - Home: index.md
     - Gadolinite: gadolinite.md
     - Yttrium: yttrium.md
     - Big Iron: big_iron.md
+    - Yttrium Pressure Plates: yttrium_plates.md
+    - Chute: chute.md
     - Glowdamp: glowdamp.md
     - Lamp: lamp.md
     - Fixture: fixture.md
     - Cage Lamp: cage_lamp.md
     - Yttric Rifle: rifle.md
+    - Power Meter: power_meter.md
     - Bedrock Smasher: bedrock_smasher.md
+    - Bedrock Shard: bedrock_shard.md
     - Void: void.md
+    - Glassy Void: glassy_void.md
     - Void Effector: effector.md
+    - Void Cleaver: cleaver.md
+    - Reinforced Void Cleaver: reinforced_cleaver.md
+    - Squeeze Trees: squeeze_trees.md
+    - Snare: snare.md
+    - Levitation Chamber: levitation_chamber.md
+    - Surgical Shears: shears.md
+    - Aware Hopper: aware_hopper.md
 plugins:
     - search
 extra:
     logo: img/logo.png
-    version: "0.3.3"
+    version: "0.3.4"
     article_nav_top: false
     article_nav_bottom: false
 extra_css:

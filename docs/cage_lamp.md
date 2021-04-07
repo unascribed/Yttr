@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/cage_lamp_cycle_all.png">
 
-<span class="aside">Namespaced ID: <span>yttr:cage_lamp</span></span>
+<span class="aside">Namespaced ID: <span>yttr:cage_lamp</span></span><br/>
 # Cage Lamp
 
 Cage Lamps are smaller versions of [Lamps](/lamp) which can be placed on any of the 6 block faces,
@@ -9,7 +9,7 @@ enclosed in a decorative industrial cage.
 See the [Lamp](/lamp) page for more information on how lamps work, including these.
 
 ## Screenshots
-![A few cage lamps hanging around.](img/cage_lamp.png)
+![A few cage lamps hanging around.](../img/cage_lamp.png)
 
 ## Recipes
 
@@ -30,7 +30,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 	</a>
 	<div class="input">
 		<a href="#"><img title="Inverted Cage Lamp" src="../img/item/cage_lamp_inverted_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 
@@ -40,7 +40,7 @@ See the [Lamp](/lamp) page for more information on how lamps work, including the
 	</a>
 	<div class="input">
 		<a href="#"><img title="Cage Lamp" src="../img/item/cage_lamp_cycle.png"/></a>
-		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img alt="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Redstone_Torch"><img title="Redstone Torch" src="../img/item/redstone_torch.png"/></a>
 	</div>
 </div>
 

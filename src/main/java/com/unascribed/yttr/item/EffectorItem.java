@@ -78,7 +78,7 @@ public class EffectorItem extends Item {
 		BlockPos pos = context.getBlockPos();
 		Direction dir = context.getSide().getOpposite();
 		ItemStack stack = context.getStack();
-		int fuel = getFuel(stack);
+		int fuel = context.getPlayer().abilities.creativeMode ? MAX_FUEL : getFuel(stack);
 		if (fuel <= 0) {
 			context.getPlayer().sendMessage(new TranslatableText("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
@@ -115,7 +115,7 @@ public class EffectorItem extends Item {
 		List<Axis> axes = Arrays.asList(Direction.Axis.values());
 		Axis axisX = Iterables.find(axes, a -> a != axisZ);
 		Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
-		int hits = 0;
+		int hits = -2;
 		for (int z = -2; z < distance; z++) {
 			cursor.set(pos).move(dir, z);
 			boolean everythingWasUnpassable = true;

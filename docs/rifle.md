@@ -1,6 +1,6 @@
 <img class="infobox" src="../img/item/rifle.png">
 
-<span class="aside">Namespaced ID: <span>yttr:rifle</span></span>
+<span class="aside">Namespaced ID: <span>yttr:rifle</span></span><br/>
 # Yttric Rifle
 The Yttric Rifle is a high-tech weapon that is sort of like a cross between a centrifuge and a
 railgun. Given some kinds of dusts, it can shoot various beams with varying effects.
@@ -28,12 +28,16 @@ This is the only firing mode safe enough to be measured by the [Power Meter](/po
 
 This mode takes 3½ seconds to backfire.
 
+<video src="../img/rifle_beam.mp4" controls></video>
+
 ### Explode
 This mode consumes Gunpowder, worth 1 shot each. Explosion power starts at 0.3 for 50kJ, and maxes
 out at 3 for 500kJ. 600kJ shots or higher cause an explosion with a power of 5, and are strong
-enough to activate a [Bedrock Smasher](/bedrock_smasher)
+enough to activate a [Bedrock Smasher](/bedrock_smasher).
 
 This mode takes 7 seconds to backfire.
+
+<video src="../img/rifle_explode.mp4" controls></video>
 
 ### Teleport
 This mode consumes Chorus Fruit, worth 3 shots each. Firing at least a 400kJ shot will teleport you
@@ -45,6 +49,8 @@ nearby. A shot of 600kJ or above creates an explosion both where you were and wh
 to, hurting you.
 
 This mode takes 4⅔ seconds to backfire.
+
+<video src="../img/rifle_teleport.mp4" controls></video>
 
 ### Fire
 Fire mode is similar to Beam mode, but additionally lights things on fire and deals less instant
@@ -58,6 +64,8 @@ overcharged shot will break all wool or cobwebs in a 3x3x3.
 
 This mode takes 3½ seconds to backfire.
 
+<video src="../img/rifle_fire.mp4" controls></video>
+
 ### Void
 Void mode is extremely destructive and dangerous, but can be used to clear land for building. It
 consumes Void Buckets, worth 1 shot each. A Void Ball is created where the shot lands, deleting all
@@ -69,6 +77,8 @@ Due to its extreme destructive power and griefing potential, Void shots are logg
 and can be undone by admins with the `/yttr:void_undo` command.
 
 This mode takes 9⅓ seconds to backfire.
+
+<video src="../img/rifle_void.mp4" controls></video>
 
 ## Upgrades
 There are two available upgrades to the Yttric Rifle.
