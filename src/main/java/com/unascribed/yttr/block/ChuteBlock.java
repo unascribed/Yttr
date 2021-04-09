@@ -13,8 +13,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.StairShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -164,7 +167,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 				}
 			} else if (newState.isOf(YBlocks.LEVITATION_CHAMBER)) {
 				mode = Mode.LEVITATE;
-			} else if (newState.getCollisionShape(world, posFrom).isEmpty()) {
+			} else if (newState.getCollisionShape(world, posFrom).isEmpty() || getStairRedirection(Direction.DOWN, newState) != null) {
 				mode = Mode.DROP;
 			} else if (world.getBlockEntity(posFrom) instanceof Inventory) {
 				mode = Mode.PASS;
@@ -198,7 +201,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 					} else {
 						mode = theirMode;
 					}
-				} else if (newState.getCollisionShape(world, posFrom).isEmpty()) {
+				} else if (newState.getCollisionShape(world, posFrom).isEmpty() || getStairRedirection(Direction.UP, newState) != null) {
 					mode = Mode.LEVITATE_DROP;
 				} else if (world.getBlockEntity(posFrom) instanceof Inventory) {
 					mode = Mode.LEVITATE_INSERT;
@@ -214,6 +217,17 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 		return state;
 	}
 	
+	public static Direction getStairRedirection(Direction dir, BlockState state) {
+		if (state.getBlock() instanceof StairsBlock && state.contains(StairsBlock.FACING) && state.contains(StairsBlock.HALF) && state.contains(StairsBlock.SHAPE)) {
+			if (state.get(StairsBlock.SHAPE) != StairShape.STRAIGHT) return null;
+			boolean topStair = state.get(StairsBlock.HALF) == BlockHalf.TOP;
+			if ((dir == Direction.UP) == topStair) {
+				return state.get(StairsBlock.FACING).getOpposite();
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState state = getDefaultState();

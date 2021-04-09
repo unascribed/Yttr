@@ -6,6 +6,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.item.EffectorItem;
+import com.unascribed.yttr.item.HornItem;
 import com.unascribed.yttr.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.ShearsItem;
@@ -50,6 +51,8 @@ public class YItems {
 	public static final BlockItem LIGHT_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.LIGHT_YTTRIUM_PLATE);
 	public static final BlockItem HEAVY_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.HEAVY_YTTRIUM_PLATE);
 	public static final BlockItem CENTRIFUGE = createNormalBlockItem(YBlocks.CENTRIFUGE);
+	public static final BlockItem DOPPER = createNormalBlockItem(YBlocks.DOPPER);
+	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings().group(YItemGroups.MAIN));
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));

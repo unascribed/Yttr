@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "yttr:block/flopper",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "yttr:block/flopper"
+		},
+		"facing=south": {
+			"model": "yttr:block/flopper",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "yttr:block/flopper",
+			"y": 270
+		},
+		"facing=down": {
+			"model": "minecraft:missingno"
+		}
+	}
+}

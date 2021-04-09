@@ -94,13 +94,6 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 				if (m.isClogged()) {
 					return false;
 				}
-				if (m == Mode.DROP && scanDir == Direction.DOWN) {
-					if (!simulate) dropItem(world, mut, stack, -0.3, -1);
-					return true;
-				} else if (m == Mode.LEVITATE_DROP && scanDir == Direction.UP) {
-					if (!simulate) dropItem(world, mut, stack, 1, 1);
-					return true;
-				}
 			} else {
 				BlockEntity be = world.getBlockEntity(mut);
 				if (be instanceof Inventory) {
@@ -128,6 +121,26 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 						return true;
 					}
 				} else {
+					Direction redir = ChuteBlock.getStairRedirection(scanDir, there);
+					if (redir != null) {
+						if (!simulate) {
+							double x = mut.getX()+0.5;
+							double y = mut.getY();
+							double z = mut.getZ()+0.5;
+							if (scanDir == Direction.DOWN) {
+								y += 0.5;
+							}
+							x += redir.getOffsetX()*0.2;
+							z += redir.getOffsetZ()*0.2;
+							ItemEntity ent = new ItemEntity(world, x, y, z, stack);
+							double velX = redir.getOffsetX()*0.2;
+							double velY = scanDir == Direction.DOWN && world.getFluidState(mut).isIn(FluidTags.WATER) ? -0.2 : 0;
+							double velZ = redir.getOffsetZ()*0.2;
+							ent.setVelocity(velX, velY, velZ);
+							world.spawnEntity(ent);
+						}
+						return true;
+					}
 					return false;
 				}
 			}

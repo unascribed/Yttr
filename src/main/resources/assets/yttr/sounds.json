@@ -130,5 +130,9 @@
 			"minecraft:block/furnace/fire_crackle5"
 		],
 		"subtitle": "subtitles.yttr.centrifuge_crackle"
+	},
+	"honk": {
+		"sounds": [ "yttr:honk" ],
+		"subtitle": "subtitles.yttr.honk"
 	}
 }

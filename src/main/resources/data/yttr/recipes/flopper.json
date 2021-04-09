@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+	"pattern": [
+		"H",
+		"c"
+	],
+	"key": {
+		"H": {
+			"item": "minecraft:hopper"
+		},
+		"c": {
+			"item": "yttr:chute"
+		}
+	},
+  "result": {
+    "item": "yttr:flopper"
+  }
+}

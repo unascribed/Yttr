@@ -8,6 +8,8 @@ import com.unascribed.yttr.block.entity.AwareHopperBlockEntity;
 import com.unascribed.yttr.block.entity.CentrifugeBlockEntity;
 import com.unascribed.yttr.block.entity.ChuteBlockEntity;
 import com.unascribed.yttr.block.entity.CleavedBlockEntity;
+import com.unascribed.yttr.block.entity.DopperBlockEntity;
+import com.unascribed.yttr.block.entity.FlopperBlockEntity;
 import com.unascribed.yttr.block.entity.LampBlockEntity;
 import com.unascribed.yttr.block.entity.LevitationChamberBlockEntity;
 import com.unascribed.yttr.block.entity.PowerMeterBlockEntity;
@@ -44,6 +46,8 @@ public class YBlockEntities {
 	@Renderer(CleavedBlockEntityRenderer.class)
 	public static final BlockEntityType<CleavedBlockEntity> CLEAVED_BLOCK = create(CleavedBlockEntity::new, YBlocks.CLEAVED_BLOCK);
 	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
+	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);
+	public static final BlockEntityType<FlopperBlockEntity> FLOPPER = create(FlopperBlockEntity::new, YBlocks.FLOPPER);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

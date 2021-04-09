@@ -20,6 +20,8 @@ nav:
     - Big Iron: big_iron.md
     - Yttrium Pressure Plates: yttrium_plates.md
     - Chute: chute.md
+    - Flopper: flopper.md
+    - Dopper: dopper.md
     - Glowdamp: glowdamp.md
     - Lamp: lamp.md
     - Fixture: fixture.md
@@ -42,8 +44,8 @@ plugins:
     - search
 extra:
     logo: img/logo.png
-    version: "0.3.4"
+    version: "0.3.5"
     article_nav_top: false
     article_nav_bottom: false
 extra_css:
-    - css/yttr.css?v=3
+    - css/yttr.css?v=5

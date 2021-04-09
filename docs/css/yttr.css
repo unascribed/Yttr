@@ -84,7 +84,7 @@ img.symbolic {
 .recipe .input.small {
 	width: 116px;
 }
-.recipe .input > a, .recipe .input > img {
+.recipe .input > a, .recipe .input > img, .recipe .input > .blank {
 	flex-basis: 58px;
 	position: relative;
 }

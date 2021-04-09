@@ -19,6 +19,10 @@ with something extremely slick...)
 Chutes may also be used in tandem with a [Levitation Chamber](../levitation_chamber) to send items
 upward.
 
+A stair may be placed at the end of a chute run to cause items to fall in the direction of the
+stair. Items spawned in a stair will have a very small and completely consistent amount of velocity
+just barely sufficient to allow them to leave the block space of the stair.
+
 ## Videos
 
 ### Using a chute as an item passthrough
@@ -26,6 +30,9 @@ upward.
 
 ### Using a chute as a dropper aligner
 <video src="../img/chute_aligner.mp4" controls></video>
+
+### Using stairs to redirect chutes
+<video src="../img/chute_stairs.mp4" controls></video>
 
 ## Recipes
 

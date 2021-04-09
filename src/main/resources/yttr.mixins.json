@@ -17,6 +17,7 @@
 	"glowing_gas.MixinGlassBottleDispenserBehavior",
 	"delicace.MixinHungerManager",
 	"delicace.MixinLivingEntity",
+	"flopper.MixinHopperBlockEntity",
 	"effector.MixinBlockCollisionSpliterator",
 	"effector.MixinEntity",
 	"effector.MixinRaycastContext",
@@ -31,7 +32,9 @@
 	"accessor.AccessorShapedRecipe",
 	"accessor.AccessorEntity",
 	"accessor.AccessorDyeColor",
-	"accessor.AccessorHorseBaseEntity"
+	"accessor.AccessorHorseBaseEntity",
+	"accessor.AccessorHopperBlockEntity",
+	"accessor.AccessorBlockEntity"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",

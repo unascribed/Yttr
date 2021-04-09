@@ -51,6 +51,8 @@
 	"block.yttr.heavy_yttrium_plate": "Heavy Yttrium Weighted Pressure Plate",
 	"block.yttr.light_yttrium_plate": "Light Yttrium Weighted Pressure Plate",
 	"block.yttr.centrifuge": "Centrifuge",
+	"block.yttr.dopper": "Dopper",
+	"block.yttr.flopper": "Flopper",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
@@ -89,6 +91,7 @@
 	"subtitles.yttr.effector_close": "Effector hole closes",
 	"subtitles.yttr.centrifuge": "Centrifuge clangs",
 	"subtitles.yttr.centrifuge_crackle": "Centrifuge crackles",
+	"subtitles.yttr.honk": "Honk",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

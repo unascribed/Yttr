@@ -8,6 +8,8 @@ import com.unascribed.yttr.block.CentrifugeBlock;
 import com.unascribed.yttr.block.ChuteBlock;
 import com.unascribed.yttr.block.CleavedBlock;
 import com.unascribed.yttr.block.DelicaceBlock;
+import com.unascribed.yttr.block.DopperBlock;
+import com.unascribed.yttr.block.FlopperBlock;
 import com.unascribed.yttr.block.LampBlock;
 import com.unascribed.yttr.block.LevitationChamberBlock;
 import com.unascribed.yttr.block.PowerMeterBlock;
@@ -177,6 +179,9 @@ public class YBlocks {
 	public static final YttriumPressurePlateBlock HEAVY_YTTRIUM_PLATE = new YttriumPressurePlateBlock(METALLIC_SETTINGS, 64);
 	
 	public static final CentrifugeBlock CENTRIFUGE = new CentrifugeBlock(METALLIC_SETTINGS);
+	
+	public static final DopperBlock DOPPER = new DopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER));
+	public static final FlopperBlock FLOPPER = new FlopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
