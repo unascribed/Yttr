@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.Renderer;
 import com.unascribed.yttr.block.entity.AwareHopperBlockEntity;
+import com.unascribed.yttr.block.entity.CentrifugeBlockEntity;
 import com.unascribed.yttr.block.entity.ChuteBlockEntity;
 import com.unascribed.yttr.block.entity.CleavedBlockEntity;
 import com.unascribed.yttr.block.entity.LampBlockEntity;
@@ -42,6 +43,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<LampBlockEntity> LAMP = create(LampBlockEntity::new, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
 	@Renderer(CleavedBlockEntityRenderer.class)
 	public static final BlockEntityType<CleavedBlockEntity> CLEAVED_BLOCK = create(CleavedBlockEntity::new, YBlocks.CLEAVED_BLOCK);
+	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

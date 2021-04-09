@@ -50,6 +50,7 @@
 	"block.yttr.glassy_void_pane": "Glassy Void Pane",
 	"block.yttr.heavy_yttrium_plate": "Heavy Yttrium Weighted Pressure Plate",
 	"block.yttr.light_yttrium_plate": "Light Yttrium Weighted Pressure Plate",
+	"block.yttr.centrifuge": "Centrifuge",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
@@ -86,6 +87,8 @@
 	"subtitles.yttr.void_hole": "Void hole opened",
 	"subtitles.yttr.effector_open": "Effector hole opens",
 	"subtitles.yttr.effector_close": "Effector hole closes",
+	"subtitles.yttr.centrifuge": "Centrifuge clangs",
+	"subtitles.yttr.centrifuge_crackle": "Centrifuge crackles",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

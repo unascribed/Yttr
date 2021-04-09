@@ -2,6 +2,7 @@ package com.unascribed.yttr.init;
 
 import com.google.gson.JsonObject;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 
 import net.minecraft.network.PacketByteBuf;
@@ -23,6 +24,8 @@ public class YRecipeSerializers {
 			return new LampRecipe(super.read(identifier, packetByteBuf));
 		}
 	};
+	
+	public static final CentrifugingRecipe.Serializer CENTRIFUGING = new CentrifugingRecipe.Serializer();
 
 	public static void init() {
 		Yttr.autoRegister(Registry.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);

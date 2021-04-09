@@ -29,6 +29,7 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YScreenTypes;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.RifleItem;
@@ -50,6 +51,7 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegi
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
@@ -196,6 +198,7 @@ public class YttrClient implements ClientModInitializer {
 				}
 			}
 		});
+		ScreenRegistry.register(YScreenTypes.CENTRIFUGE, CentrifugeScreen::new);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(RIFLE_BASE_MODEL);
 			out.accept(RIFLE_CHAMBER_MODEL);
@@ -410,15 +413,18 @@ public class YttrClient implements ClientModInitializer {
 				mut.set(pos);
 				EffectorItem.move(mut, axisX, x);
 				EffectorItem.move(mut, axisY, y);
-				ms.push();
-				ms.translate(mut.getX(), mut.getY(), mut.getZ());
 				int sky = w.getLightLevel(LightType.SKY, mut);
 				int block = w.getLightLevel(LightType.BLOCK, mut);
 				int light = LightmapTextureManager.pack(block, sky);
 				BlockState state = mc.world.getBlockState(mut);
 				BakedModel model = mc.getBlockRenderManager().getModel(state);
+				if (model == null) continue;
 				r.setSeed(42);
-				for (BakedQuad q : model.getQuads(state, dir.getOpposite(), r)) {
+				Iterable<BakedQuad> quads = model.getQuads(state, dir.getOpposite(), r);
+				if (quads == null) continue;
+				ms.push();
+				ms.translate(mut.getX(), mut.getY(), mut.getZ());
+				for (BakedQuad q : quads) {
 					int color = q.hasColor() ? mc.getBlockColors().getColor(state, w, pos, q.getColorIndex()) : -1;
 					bb.quad(ms.peek(), q, ((color >> 16)&0xFF)/255f, ((color >> 8)&0xFF)/255f, (color&0xFF)/255f, light, OverlayTexture.DEFAULT_UV);
 				}
@@ -452,10 +458,13 @@ public class YttrClient implements ClientModInitializer {
 		EffectorWorld ew = (EffectorWorld)w;
 		if (ew.yttr$isPhased(pos)) return;
 		if (w.isAir(pos.offset(face))) return;
+		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));
+		if (model == null) return;
+		Iterable<BakedQuad> quads = model.getQuads(null, face, mc.world.random);
+		if (quads == null) return;
 		ms.push();
 		ms.translate(pos.getX(), pos.getY(), pos.getZ());
-		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));
-		for (BakedQuad q : model.getQuads(null, face, mc.world.random)) {
+		for (BakedQuad q : quads) {
 			vc.quad(ms.peek(), q, 0, 0, 0, LightmapTextureManager.pack(0, 0), OverlayTexture.DEFAULT_UV);
 		}
 		ms.pop();

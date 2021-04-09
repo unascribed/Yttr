@@ -37,6 +37,8 @@ public class YSounds {
 	public static final SoundEvent VOID_HOLE = create("void_hole");
 	public static final SoundEvent EFFECTOR_OPEN = create("effector_open");
 	public static final SoundEvent EFFECTOR_CLOSE = create("effector_close");
+	public static final SoundEvent CENTRIFUGE = create("centrifuge");
+	public static final SoundEvent CENTRIFUGE_CRACKLE = create("centrifuge_crackle");
 	
 
 	public static void init() {

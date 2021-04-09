@@ -4,6 +4,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.RenderLayer;
 import com.unascribed.yttr.block.AwareHopperBlock;
 import com.unascribed.yttr.block.BedrockSmasherBlock;
+import com.unascribed.yttr.block.CentrifugeBlock;
 import com.unascribed.yttr.block.ChuteBlock;
 import com.unascribed.yttr.block.CleavedBlock;
 import com.unascribed.yttr.block.DelicaceBlock;
@@ -36,6 +37,13 @@ import net.minecraft.world.BlockView;
 
 public class YBlocks {
 
+	private static final FabricBlockSettings METALLIC_SETTINGS = FabricBlockSettings.of(Material.METAL)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1);
+	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
 			.strength(4)
 			.requiresTool()
@@ -43,20 +51,8 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
-	public static final Block YTTRIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
-		);
-	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
-		);
+	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
+	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
 	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
 				new FabricMaterialBuilder(MaterialColor.WATER)
 					.allowsMovement()
@@ -71,13 +67,7 @@ public class YBlocks {
 			.strength(100)
 			.dropsNothing()
 		);
-	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
-		);
+	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(METALLIC_SETTINGS);
 	@RenderLayer("cutout_mipped")
 	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(4)
@@ -167,13 +157,7 @@ public class YBlocks {
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES), 10, 6, 10);
-	public static final Block YTTRIUM_PLATING = new Block(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1)
-		);
+	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES)
@@ -188,19 +172,12 @@ public class YBlocks {
 	public static final CleavedBlock CLEAVED_BLOCK = new CleavedBlock(FabricBlockSettings.of(Material.PISTON)
 			.dynamicBounds());
 
-	public static final YttriumPressurePlateBlock LIGHT_YTTRIUM_PLATE = new YttriumPressurePlateBlock(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1), 15);
+	public static final YttriumPressurePlateBlock LIGHT_YTTRIUM_PLATE = new YttriumPressurePlateBlock(METALLIC_SETTINGS, 15);
 
-	public static final YttriumPressurePlateBlock HEAVY_YTTRIUM_PLATE = new YttriumPressurePlateBlock(FabricBlockSettings.of(Material.METAL)
-			.strength(4)
-			.requiresTool()
-			.sounds(BlockSoundGroup.METAL)
-			.breakByHand(false)
-			.breakByTool(FabricToolTags.PICKAXES, 1), 64);
+	public static final YttriumPressurePlateBlock HEAVY_YTTRIUM_PLATE = new YttriumPressurePlateBlock(METALLIC_SETTINGS, 64);
+	
+	public static final CentrifugeBlock CENTRIFUGE = new CentrifugeBlock(METALLIC_SETTINGS);
+	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
 	}

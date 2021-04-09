@@ -11,6 +11,7 @@ import com.unascribed.yttr.init.YCommands;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeSerializers;
+import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
@@ -52,6 +53,7 @@ public class Yttr implements ModInitializer {
 		YSounds.init();
 		YFluids.init();
 		YStatusEffects.init();
+		YRecipeTypes.init();
 		YRecipeSerializers.init();
 		YWorldGen.init();
 		YCommands.init();

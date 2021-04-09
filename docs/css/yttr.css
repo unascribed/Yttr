@@ -184,21 +184,24 @@ video {
 	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/fire.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(4) a:before { content: "";
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/github.svg);
-}
-.wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(5):before {
-	content: "Talk about it";
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/wrench.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(5) a:before { content: "";
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/discord.svg);
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/github.svg);
+}
+.wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(6):before {
+	content: "Talk about it";
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(6) a:before { content: "";
-	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/chat.svg);
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/discord.svg);
 }
 .wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(7) a:before { content: "";
+	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/chat.svg);
+}
+.wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(8) a:before { content: "";
 	background-image: url(https://cdn.jsdelivr.net/npm/@mdi/svg@5.9.55/svg/at.svg);
 }
-.wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(8):before {
+.wm-toc-pane > .wm-toctree > .wm-toc-li:nth-child(9):before {
 	content: "Learn about it";
 }
 

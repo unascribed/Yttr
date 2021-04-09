@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -40,7 +41,7 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	public static final EnumProperty<LampColor> COLOR = EnumProperty.of("color", LampColor.class);
 	
 	public LampBlock(Settings settings) {
-		super(settings
+		super(FabricBlockSettings.copyOf(settings)
 				.emissiveLighting((state, view, pos) -> state.get(LIT))
 				.luminance((state) -> state.get(LIT) ? 15 : 0));
 		setDefaultState(getDefaultState().with(INVERTED, false).with(LIT, false));

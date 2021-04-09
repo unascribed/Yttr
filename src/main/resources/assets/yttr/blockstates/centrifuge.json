@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"lit=false": {
+			"model": "yttr:block/centrifuge"
+		},
+		"lit=true": {
+			"model": "yttr:block/centrifuge_on"
+		}
+	}
+}
