@@ -12,7 +12,8 @@ indicating it has learned the recipe.
 
 Giving the Aware Hopper all the necessary ingredients for the learned recipe will result in it
 crafting it, and outputting it to the side it is pointed at. Remainder items can be pulled out of 
-any side of the Aware Hopper that isn't the top or the side its output is pointing. The vanilla way is to point the Aware Hopper to the side and put a normal Hopper underneath it; alternatively, you
+any side of the Aware Hopper that isn't the top or the side its output is pointing. The vanilla way 
+is to point the Aware Hopper to the side and put a normal Hopper underneath it; alternatively, you
 can use another mod's pipes or Yttr's own [Flopper](../flopper) to extract from a non-output side.
 
 If the Aware Hopper learns a new recipe while there are still items in its buffer, it will dump the

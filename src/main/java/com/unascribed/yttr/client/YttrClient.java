@@ -130,8 +130,6 @@ public class YttrClient implements ClientModInitializer {
 	private static final ModelIdentifier RIFLE_CHAMBER_MODEL = new ModelIdentifier("yttr:rifle_chamber#inventory");
 	private static final ModelIdentifier RIFLE_CHAMBER_GLASS_MODEL = new ModelIdentifier("yttr:rifle_chamber_glass#inventory");
 	
-	private static final ModelIdentifier VOID_HOLE_MODEL = new ModelIdentifier("yttr:block/void_hole");
-	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
 	private final UVObserver uvo = new UVObserver();
@@ -203,7 +201,6 @@ public class YttrClient implements ClientModInitializer {
 			out.accept(RIFLE_BASE_MODEL);
 			out.accept(RIFLE_CHAMBER_MODEL);
 			out.accept(RIFLE_CHAMBER_GLASS_MODEL);
-			out.accept(VOID_HOLE_MODEL);
 		});
 		registerFluidRenderers();
 		mc.send(() -> {
@@ -263,6 +260,7 @@ public class YttrClient implements ClientModInitializer {
 		});
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
+			if (mc.isPaused()) return;
 			Iterator<EffectorHole> iter = effectorHoles.iterator();
 			while (iter.hasNext()) {
 				if (iter.next().age++ > 150) {

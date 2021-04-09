@@ -48,7 +48,9 @@
 	"client.MixinMinecraftClient",
 	"accessor.client.AccessorEntityRendererDispatcher",
 	"accessor.client.AccessorEntityTrackingSoundInstance",
-	"accessor.client.AccessorRenderPhase"
+	"accessor.client.AccessorRenderPhase",
+	
+	"effector.caffeine.MixinWorldSlice"
   ],
   "injectors": {
     "defaultRequire": 1
