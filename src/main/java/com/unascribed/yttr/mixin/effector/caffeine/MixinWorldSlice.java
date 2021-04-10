@@ -1,6 +1,7 @@
 package com.unascribed.yttr.mixin.effector.caffeine;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,6 +22,7 @@ import net.minecraft.world.chunk.Palette;
 import net.minecraft.world.chunk.PalettedContainer;
 
 @Mixin(targets="me.jellysquid.mods.sodium.client.world.WorldSlice", remap=false)
+@Pseudo
 public abstract class MixinWorldSlice {
 
 	@Shadow

@@ -12,6 +12,7 @@ import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
+import com.unascribed.yttr.init.YScreenTypes;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
@@ -60,6 +61,7 @@ public class Yttr implements ModInitializer {
 		YWorldGen.init();
 		YCommands.init();
 		YTags.init();
+		YScreenTypes.init();
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "attack"), (server, player, handler, buf, responseSender) -> {
 			if (player != null && player.getMainHandStack().getItem() instanceof Attackable) {
