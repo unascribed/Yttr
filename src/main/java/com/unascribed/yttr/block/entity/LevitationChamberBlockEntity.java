@@ -1,5 +1,6 @@
 package com.unascribed.yttr.block.entity;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 
 import net.fabricmc.fabric.api.util.NbtType;
@@ -54,14 +55,14 @@ public class LevitationChamberBlockEntity extends BlockEntity implements Tickabl
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inv.readTags(tag.getList("Inventory", NbtType.COMPOUND));
+		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		cooldown = tag.getInt("Cooldown");
 	}
 	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag = super.toTag(tag);
-		tag.put("Inventory", inv.getTags());
+		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("Cooldown", cooldown);
 		return tag;
 	}

@@ -63,7 +63,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 		return outputs.get(0).copy();
 	}
 
-	private boolean canFitOutput(Inventory inv) {
+	public boolean canFitOutput(Inventory inv) {
 		for (int i = 0; i < outputs.size(); i++) {
 			ItemStack out = outputs.get(i);
 			ItemStack cur = inv.getStack(i+1);

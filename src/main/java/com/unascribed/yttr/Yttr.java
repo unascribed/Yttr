@@ -37,6 +37,8 @@ import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -155,6 +157,27 @@ public class Yttr implements ModInitializer {
 					throw new RuntimeException(e);
 				}
 			}
+		}
+	}
+
+	public static ListTag serializeInv(Inventory inv) {
+		ListTag out = new ListTag();
+		for (int i = 0; i < inv.size(); i++) {
+			ItemStack is = inv.getStack(i);
+			if (!is.isEmpty()) {
+				CompoundTag c = is.toTag(new CompoundTag());
+				c.putInt("Slot", i);
+				out.add(c);
+			}
+		}
+		return out;
+	}
+	
+	public static void deserializeInv(ListTag tag, Inventory inv) {
+		inv.clear();
+		for (int i = 0; i < tag.size(); i++) {
+			CompoundTag c = tag.getCompound(i);
+			inv.setStack(c.getInt("Slot"), ItemStack.fromTag(c));
 		}
 	}
 	

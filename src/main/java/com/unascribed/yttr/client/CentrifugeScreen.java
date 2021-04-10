@@ -33,10 +33,8 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
-		float prog = (System.currentTimeMillis()%4000)/4000f;
-		int p = (int)Math.ceil(45*prog);
-		// stick on "complete" for a moment
-		if (p > 41) p = 41;
+		float prog = handler.getSpinTime()/(float)handler.getMaxSpinTime();
+		int p = Math.round(41*prog);
 		int pr = 41-p;
 		int a = p-37;
 		int ar = 4-a;
@@ -52,7 +50,7 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 			drawShadowedTexture(matrices, x+98, y+82, 185, 41+(ar*9), 9, 9, 256, 256);
 			drawShadowedTexture(matrices, x+115, y+36, 194, 41+(ar*9), 9, 9, 256, 256);
 		}
-		float fuel = 1-(System.currentTimeMillis()%8000)/8000f;
+		float fuel = handler.getFuelTime()/(float)handler.getMaxFuelTime();
 		int h = (int)Math.ceil(fuel*14);
 		int ih = 14-h;
 		drawTexture(matrices, x+8, y+69+ih, 237, ih, 14, h, 256, 256);

@@ -3,6 +3,7 @@ package com.unascribed.yttr.block.entity;
 import java.util.List;
 import java.util.Optional;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.block.AwareHopperBlock;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
@@ -23,7 +24,6 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.CraftingRecipe;
@@ -178,16 +178,7 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 		tag.putFloat("Yaw", zendermieYaw);
 		tag.putFloat("Pitch", zendermiePitch);
 		if (recipe != null) tag.putString("Recipe", recipe.toString());
-		ListTag inv = new ListTag();
-		for (int i = 0; i < union.size(); i++) {
-			ItemStack is = union.getStack(i);
-			if (!is.isEmpty()) {
-				CompoundTag c = is.toTag(new CompoundTag());
-				c.putInt("Slot", i);
-				inv.add(c);
-			}
-		}
-		tag.put("Inventory", inv);
+		tag.put("Inventory", Yttr.serializeInv(union));
 		tag.putInt("CraftingTicks", craftingTicks);
 		tag.putInt("TransferCooldown", transferCooldown);
 		return tag;
@@ -199,12 +190,7 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 		zendermieYaw = prevZendermieYaw = tag.getFloat("Yaw");
 		zendermiePitch = prevZendermiePitch = tag.getFloat("Pitch");
 		recipe = tag.contains("Recipe", NbtType.STRING) ? Identifier.tryParse(tag.getString("Recipe")) : null;
-		ListTag inv = tag.getList("Inventory", NbtType.COMPOUND);
-		union.clear();
-		for (int i = 0; i < inv.size(); i++) {
-			CompoundTag c = inv.getCompound(i);
-			union.setStack(c.getInt("Slot"), ItemStack.fromTag(c));
-		}
+		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), union);
 		craftingTicks = tag.getInt("CraftingTicks");
 		transferCooldown = tag.getInt("TransferCooldown");
 	}
