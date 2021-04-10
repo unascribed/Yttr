@@ -1,0 +1,15 @@
+{
+	"type": "yttr:centrifuging",
+	"time": 100,
+	"ingredient": {
+		"item": "minecraft:gravel"
+	},
+	"results": [
+		{
+			"item": "minecraft:flint"
+		},
+		{
+			"item": "minecraft:sand"
+		}
+	]
+}

@@ -158,6 +158,11 @@ public class YItems {
 	
 	public static final EffectorItem EFFECTOR = new EffectorItem(new Item.Settings()
 			.group(YItemGroups.MAIN));
+	
+	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
+	public static final Item NEODYMIUM_DISC = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
 
 
 	public static void init() {

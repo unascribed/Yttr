@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"item": "yttr:neodymium_dust"
+	},
+	"result": "yttr:neodymium_disc",
+	"cookingtime": 800
+}

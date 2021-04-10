@@ -25,6 +25,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -98,6 +99,18 @@ public class CentrifugeBlock extends Block implements BlockEntityProvider {
 			});
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (!state.isOf(newState.getBlock())) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof CentrifugeBlockEntity) {
+				ItemScatterer.spawn(world, pos, (CentrifugeBlockEntity)be);
+			}
+
+			super.onStateReplaced(state, world, pos, newState, moved);
+		}
 	}
 
 }

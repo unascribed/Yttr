@@ -1,0 +1,23 @@
+{
+	"type": "yttr:centrifuging",
+	"ingredient": {
+		"item": "yttr:gadolinite"
+	},
+	"results": [
+		{
+			"item": "minecraft:iron_nugget",
+			"count": 25
+		},
+		{
+			"item": "yttr:yttrium_nugget",
+			"count": 8
+		},
+		{
+			"item": "minecraft:cobblestone"
+		},
+		{
+			"item": "yttr:neodymium_dust",
+			"count": 2
+		}
+	]
+}
