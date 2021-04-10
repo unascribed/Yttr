@@ -1,5 +1,6 @@
 package com.unascribed.yttr.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -32,17 +33,36 @@ public class CentrifugeScreen extends HandledScreen<CentrifugeScreenHandler> {
 		int x = (width-backgroundWidth)/2;
 		int y = (height-backgroundHeight)/2;
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
-		float prog = (System.currentTimeMillis()%2000)/2000f;
-		int p = (int)Math.ceil(41*prog);
+		float prog = (System.currentTimeMillis()%4000)/4000f;
+		int p = (int)Math.ceil(45*prog);
+		// stick on "complete" for a moment
+		if (p > 41) p = 41;
 		int pr = 41-p;
-		drawTexture(matrices, x+68, y+19+pr, 176, pr, 10, p, 256, 256);
-		drawTexture(matrices, x+98, y+51, 186, 0, 10, p, 256, 256);
-		drawTexture(matrices, x+84, y+35, 196, 0, p, 11, 256, 256);
-		drawTexture(matrices, x+51+pr, y+65, 196+pr, 11, p, 11, 256, 256);
+		int a = p-37;
+		int ar = 4-a;
+		if (p > 36) {
+			drawShadowedTexture(matrices, x+69, y+19, 176, 41+(a*9), 9, 9, 256, 256);
+			drawShadowedTexture(matrices, x+52, y+66, 203, 41+(a*9), 9, 9, 256, 256);
+		}
+		drawShadowedTexture(matrices, x+68, y+19+pr, 176, pr, 10, p, 256, 256);
+		drawShadowedTexture(matrices, x+98, y+51, 186, 0, 10, p, 256, 256);
+		drawShadowedTexture(matrices, x+84, y+35, 196, 0, p, 11, 256, 256);
+		drawShadowedTexture(matrices, x+51+pr, y+65, 196+pr, 11, p, 11, 256, 256);
+		if (p > 36) {
+			drawShadowedTexture(matrices, x+98, y+82, 185, 41+(ar*9), 9, 9, 256, 256);
+			drawShadowedTexture(matrices, x+115, y+36, 194, 41+(ar*9), 9, 9, 256, 256);
+		}
 		float fuel = 1-(System.currentTimeMillis()%8000)/8000f;
 		int h = (int)Math.ceil(fuel*14);
 		int ih = 14-h;
 		drawTexture(matrices, x+8, y+69+ih, 237, ih, 14, h, 256, 256);
+	}
+
+	private void drawShadowedTexture(MatrixStack matrices, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+		RenderSystem.color4f(0.4f, 0.4f, 0.4f, 1);
+		drawTexture(matrices, x, y+1, u, v, width, height, textureWidth, textureHeight);
+		RenderSystem.color4f(1, 1, 1, 1);
+		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 	
 }
