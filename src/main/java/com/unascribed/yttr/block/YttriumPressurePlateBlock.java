@@ -1,5 +1,6 @@
 package com.unascribed.yttr.block;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractPressurePlateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -19,7 +20,8 @@ public class YttriumPressurePlateBlock extends AbstractPressurePlateBlock {
 	private final int weight;
 
 	public YttriumPressurePlateBlock(Settings settings, int weight) {
-		super(settings);
+		super(FabricBlockSettings.copyOf(settings)
+				.noCollision());
 		setDefaultState(getDefaultState().with(POWER, 0));
 		this.weight = weight;
 	}
