@@ -9,6 +9,7 @@ import com.unascribed.yttr.rifle.RifleMode;
 import com.unascribed.yttr.rifle.Shootable;
 
 import com.google.common.base.Enums;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
 
 import io.netty.buffer.Unpooled;
@@ -40,6 +41,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -194,16 +196,24 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				}
 			}
 			if (world instanceof ServerWorld) {
+				Vec3d preStart = user.getCameraPosVec(0);
+				Vec3d preEnd = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(64));
 				Vec3d start = getMuzzlePos(user, false);
-				Vec3d end = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(256));
-				BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
-				EntityHitResult ehr = ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end), Predicates.alwaysTrue());
-				HitResult hr;
-				if (ehr != null) {
-					hr = new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).get());
-				} else {
-					hr = bhr;
+				Vec3d max = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(256));
+				Vec3d end = max;
+				BlockHitResult preBlock = world.raycast(new RaycastContext(preStart, preEnd, ShapeType.COLLIDER, FluidHandling.NONE, user));
+				EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
+				HitResult pre = MoreObjects.firstNonNull(preEnt, preBlock);
+				if (pre.getType() != Type.MISS && start.squaredDistanceTo(pre.getPos()) > 3*3) {
+					end = pre.getPos();
+					if (preEnt != null) {
+						// add a bit of extension to ensure the entity gets hit instead of just barely not being reached
+						end = end.add(preBlock.getPos().subtract(preEnt.getPos()).normalize());
+					}
 				}
+				BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
+				EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
+				HitResult hr = MoreObjects.firstNonNull(ehr, bhr);
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 				buf.writeInt(user.getEntityId());
 				int color = mode.color;
@@ -230,6 +240,11 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 	}
 	
+	private EntityHitResult correctEntityHit(EntityHitResult ehr, Vec3d start, Vec3d end) {
+		if (ehr == null) return null;
+		return new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).get());
+	}
+
 	public int calcAdjustedUseTime(ItemStack stack, int remainingUseTicks) {
 		return (int)calcAdjustedUseTime(stack, (float)remainingUseTicks);
 	}
@@ -356,11 +371,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		Vec3d right = ((AccessorEntity)entity).yttr$invokeGetRotationVector(0, entity.getYaw(0)+90);
 		Vec3d down = look.crossProduct(right);
 		if (arm == Arm.LEFT) right = right.multiply(-1);
-		if (firstPerson) {
-			return eyes.add(look.multiply(0.06)).add(right.multiply(0.0325)).add(down.multiply(0.0125));
-		} else {
-			return eyes.add(look.multiply(0.7)).add(right.multiply(0.25)).add(down.multiply(0.0125));
-		}
+		return eyes.add(look.multiply(0.5)).add(right.multiply(0.25)).add(down.multiply(0.075));
 	}
 
 	@Override
