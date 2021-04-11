@@ -3,7 +3,7 @@
 Void is a mysterious powerful volatile solvent that fills the entire underside of the Overworld.
 It's possible Bedrock is created by stone reacting with Void under pressure.
 
-Breaking a hole into the Void with a [Bedrock Smasher](/bedrock_smasher) allows you infinite access
+Breaking a hole into the Void with a [Bedrock Smasher](../bedrock_smasher) allows you infinite access
 to Void fluid, which has various uses in Yttr.
 
 Void fluid itself is extremely caustic and dangerous. It will instantly destroy items dropped in it,
