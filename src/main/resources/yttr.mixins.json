@@ -34,7 +34,10 @@
 	"accessor.AccessorDyeColor",
 	"accessor.AccessorHorseBaseEntity",
 	"accessor.AccessorHopperBlockEntity",
-	"accessor.AccessorBlockEntity"
+	"accessor.AccessorBlockEntity",
+	"diving.MixinLivingEntity",
+	"diving.MixinEntity",
+	"diving.MixinServerPlayerEntity"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",
@@ -49,7 +52,11 @@
 	"accessor.client.AccessorEntityRendererDispatcher",
 	"accessor.client.AccessorEntityTrackingSoundInstance",
 	"accessor.client.AccessorRenderPhase",
+	"diving.client.MixinSoundSystem",
+	"diving.client.MixinPlayerEntityRenderer",
+	"diving.client.MixinDeathScreen",
 	
+	"diving.client.MixinEarsFeatureRenderer",
 	"effector.caffeine.MixinWorldSlice"
   ],
   "injectors": {

@@ -1,26 +1,54 @@
 package com.unascribed.yttr.block.entity;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.apache.commons.lang3.mutable.MutableInt;
+
+import com.unascribed.yttr.DiverPlayer;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
-import com.unascribed.yttr.init.YSounds;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
+import io.netty.buffer.Unpooled;
+
+import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.world.Geyser;
+import com.unascribed.yttr.world.GeysersState;
+
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 
 	public int age;
+	
+	private UUID id = UUID.randomUUID();
+	private String name = "Unnamed";
+	
+	private final Map<UUID, MutableInt> sneakTimers = Maps.newHashMap();
+	private final Set<UUID> seen = Sets.newHashSet();
 	
 	public VoidGeyserBlockEntity() {
 		super(YBlockEntities.VOID_GEYSER);
@@ -35,6 +63,44 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 			world.setBlockState(pos, Blocks.VOID_AIR.getDefaultState());
 			return;
 		}
+		
+		if (world instanceof ServerWorld) {
+			GeysersState gs = GeysersState.get((ServerWorld)world);
+			Geyser g = gs.getGeyser(id);
+			if (g == null) {
+				g = new Geyser(id, pos, name);
+				gs.addGeyser(g);
+			}
+		}
+		
+		seen.clear();
+		for (ServerPlayerEntity p : world.getEntitiesByClass(ServerPlayerEntity.class, new Box(pos).expand(5), e -> e instanceof DiverPlayer)) {
+			Set<UUID> knownGeysers = ((DiverPlayer)p).yttr$getKnownGeysers();
+			if (knownGeysers.add(id)) {
+				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+				buf.writeString(name);
+				ServerPlayNetworking.send(p, new Identifier("yttr", "discovered_geyser"), buf);
+			}
+			if (Yttr.isWearingFullSuit(p) && p.isSneaking() && Yttr.isStandingOnDivingPlate(p)) {
+				if (sneakTimers.compute(p.getUuid(), (u, mi) -> {
+					if (mi != null) {
+						mi.increment();
+						return mi;
+					}
+					return new MutableInt(0);
+				}).intValue() > 40) {
+					p.playSound(YSounds.DIVE, 1, 1);
+					((DiverPlayer)p).yttr$setDiving(true);
+					p.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
+					p.setVelocity(0, 0, 0);
+					Yttr.syncDive(p);
+				} else {
+					seen.add(p.getUuid());
+				}
+			}
+		}
+		sneakTimers.keySet().retainAll(seen);
+		
 		int ticksPerUpdate = 2;
 		int gushHeight = 7;
 		int floodHeight = 3;
@@ -84,7 +150,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 		Block block = YBlocks.VOID;
 //		Block block = Blocks.GRAY_WOOL;
 		BlockState bs = world.getBlockState(pos);
-		if (!bs.isOf(block) && (bs.isAir() || bs.getHardness(world, pos) >= 0)) {
+		if (!bs.isOf(block) && !bs.isOf(YBlocks.DIVING_PLATE) && (bs.isAir() || bs.getHardness(world, pos) >= 0)) {
 			if (bs.getFluidState().isIn(FluidTags.LAVA)) {
 				world.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
 			} else {
@@ -98,6 +164,48 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 				world.getFluidTickScheduler().schedule(pos, YFluids.VOID, 1);
 			}
 		}
+	}
+	
+	public UUID getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+		if (world instanceof ServerWorld) {
+			GeysersState gs = GeysersState.get((ServerWorld)world);
+			Geyser g = gs.getGeyser(id);
+			if (g != null) {
+				g.name = name;
+				gs.markDirty();
+			}
+		}
+	}
+	
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		if (world instanceof ServerWorld) {
+			GeysersState.get((ServerWorld)world).markDirty();
+		}
+	}
+	
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putUuid("ID", id);
+		tag.putString("Name", name);
+		return super.toTag(tag);
+	}
+	
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		id = tag.containsUuid("ID") ? tag.getUuid("ID") : UUID.randomUUID();
+		name = tag.getString("Name");
 	}
 
 }

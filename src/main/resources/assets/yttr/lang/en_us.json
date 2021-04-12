@@ -22,6 +22,10 @@
 	"item.yttr.effector": "Void Effector",
 	"item.yttr.neodymium_dust": "Crumbled Neodymium",
 	"item.yttr.neodymium_disc": "Neodymium",
+	"item.yttr.suit_helmet": "Yttrium Fortress Helmet",
+	"item.yttr.suit_chestplate": "Yttrium Fortress Chestpiece",
+	"item.yttr.suit_leggings": "Yttrium Fortress Leggings",
+	"item.yttr.suit_boots": "Yttrium Fortress Boots",
 	
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
@@ -55,6 +59,7 @@
 	"block.yttr.centrifuge": "Centrifuge",
 	"block.yttr.dopper": "Dopper",
 	"block.yttr.flopper": "Flopper",
+	"block.yttr.diving_plate": "Diving Plate",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
@@ -102,12 +107,15 @@
 	"death.attack.yttr.scissors": "%s ran with scissors",
 	"death.attack.yttr.scissors.item": "%s ran with %3$s",
 	"death.attack.yttr.bleeding": "%s bled out",
+	"death.attack.yttr.suit_integrity_failure": "%s was denatured by the planet",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
 	"yttr.rifle_mode.explode": "Explode",
 	"yttr.rifle_mode.fire": "Fire",
 	"yttr.rifle_mode.void": "Void",
+	
+	"yttr.geyser_discovered": "Geyser Discovered",
 	
 	"tip.yttr.rifle_mode": "Mode: %s",
 	"tip.yttr.rifle_no_ammo": "Out of %s",
@@ -147,6 +155,8 @@
 	"color.yttr.green": "Green",
 	"color.yttr.red": "Red",
 	"color.yttr.black": "Black",
-	"color.yttr.teal": "Teal"
+	"color.yttr.teal": "Teal",
+	
+	"attribute.name.yttr.jump_height": "Jump Height"
 	
 }

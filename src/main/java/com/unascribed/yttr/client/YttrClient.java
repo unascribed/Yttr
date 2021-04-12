@@ -17,9 +17,12 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EffectorWorld;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.annotate.Renderer;
+import com.unascribed.yttr.block.DivingPlateBlock;
 import com.unascribed.yttr.block.LampBlock;
+import com.unascribed.yttr.block.entity.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.particle.VoidBallParticle;
 import com.unascribed.yttr.client.render.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
@@ -36,6 +39,7 @@ import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
+import com.unascribed.yttr.world.Geyser;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -48,8 +52,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
@@ -64,6 +70,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.options.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -85,16 +92,19 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.toast.Toast;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -137,6 +147,9 @@ public class YttrClient implements ClientModInitializer {
 	private final MinecraftClient mc = MinecraftClient.getInstance();
 	
 	private final List<EffectorHole> effectorHoles = Lists.newArrayList();
+	
+	private SuitRenderer diveReadyRenderer = new SuitRenderer();
+	private int diveReadyTime = 0;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -203,6 +216,8 @@ public class YttrClient implements ClientModInitializer {
 			out.accept(RIFLE_CHAMBER_GLASS_MODEL);
 		});
 		registerFluidRenderers();
+		ArmorRenderingRegistry.registerSimpleTexture(new Identifier("yttr", "suit"),
+				YItems.SUIT_HELMET, YItems.SUIT_CHESTPLATE, YItems.SUIT_LEGGINGS, YItems.SUIT_BOOTS);
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
@@ -252,6 +267,29 @@ public class YttrClient implements ClientModInitializer {
 				EffectorItem.effect(client.world, pos, dir, null, dist, false);
 			});
 		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive"), (client, handler, buf, responseSender) -> {
+			List<Geyser> geysers = Lists.newArrayList();
+			while (buf.isReadable()) {
+				geysers.add(Geyser.read(buf));
+			}
+			mc.send(() -> {
+				client.openScreen(new SuitScreen(geysers));
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "discovered_geyser"), (client, handler, buf, responseSender) -> {
+			String name = buf.readString();
+			mc.send(() -> {
+				client.getToastManager().add((matrices, manager, startTime) -> {
+					manager.getGame().getTextureManager().bindTexture(Toast.TEXTURE);
+					manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
+					manager.getGame().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
+					DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+					manager.getGame().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
+		            manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
+					return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+				});
+			});
+		});
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});
@@ -266,6 +304,31 @@ public class YttrClient implements ClientModInitializer {
 				if (iter.next().age++ > 150) {
 					iter.remove();
 				}
+			}
+			if (mc.player != null && Yttr.isWearingFullSuit(mc.player) && Yttr.isStandingOnDivingPlate(mc.player)) {
+				VoidGeyserBlockEntity geyser = DivingPlateBlock.findClosestGeyser(mc.world, mc.player.getBlockPos());
+				if (geyser != null && geyser.getPos().isWithinDistance(mc.player.getPos(), 5)) {
+					diveReadyTime++;
+					if (diveReadyRenderer != null) diveReadyRenderer.tick();
+				} else {
+					diveReadyTime = 0;
+					diveReadyRenderer = null;
+				}
+			} else {
+				diveReadyTime = 0;
+				diveReadyRenderer = null;
+			}
+		});
+		
+		HudRenderCallback.EVENT.register((matrices, delta) -> {
+			if (diveReadyTime > 0) {
+				if (diveReadyRenderer == null) {
+					diveReadyRenderer = new SuitRenderer();
+				}
+				diveReadyRenderer.setUp();
+				diveReadyRenderer.setColor(LampBlockItem.getColor(mc.player.getEquippedStack(EquipmentSlot.HEAD)));
+				diveReadyRenderer.drawText(matrices, "hold sneak to dive", mc.getWindow().getScaledWidth()-120, 12, delta);
+				diveReadyRenderer.tearDown();
 			}
 		});
 		

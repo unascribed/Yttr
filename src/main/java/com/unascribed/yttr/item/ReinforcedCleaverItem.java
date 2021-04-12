@@ -2,6 +2,7 @@ package com.unascribed.yttr.item;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.EquipmentSlots;
 import com.unascribed.yttr.init.YStatusEffects;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -11,7 +12,6 @@ import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.EquipmentSlot.Type;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -63,8 +63,8 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 		} else if (attacker.world.random.nextInt(3) == 0) {
 			target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, cur.getAmplifier(), false, false, true));
 		}
-		for (EquipmentSlot es : EquipmentSlot.values()) {
-			if (es.getType() == Type.ARMOR && attacker.world.random.nextInt(5) == 0) {
+		for (EquipmentSlot es : EquipmentSlots.ARMOR) {
+			if (attacker.world.random.nextInt(5) == 0) {
 				target.getEquippedStack(es).damage(4, target, (e) -> target.sendEquipmentBreakStatus(es));
 			}
 		}

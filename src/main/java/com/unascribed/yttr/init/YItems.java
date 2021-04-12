@@ -11,13 +11,17 @@ import com.unascribed.yttr.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.ShearsItem;
 import com.unascribed.yttr.item.SnareItem;
+import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.SwallowableItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.FoodComponent;
@@ -25,6 +29,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -53,6 +59,7 @@ public class YItems {
 	public static final BlockItem CENTRIFUGE = createNormalBlockItem(YBlocks.CENTRIFUGE);
 	public static final BlockItem DOPPER = createNormalBlockItem(YBlocks.DOPPER);
 	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings().group(YItemGroups.MAIN));
+	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
@@ -162,6 +169,66 @@ public class YItems {
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings()
 			.group(YItemGroups.MAIN));
 	public static final Item NEODYMIUM_DISC = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
+	
+	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
+
+		@Override
+		public int getDurability(EquipmentSlot slot) {
+			return ArmorMaterials.DIAMOND.getDurability(slot);
+		}
+
+		@Override
+		public int getProtectionAmount(EquipmentSlot slot) {
+			return ArmorMaterials.DIAMOND.getProtectionAmount(slot)+2;
+		}
+
+		@Override
+		public int getEnchantability() {
+			return 5;
+		}
+
+		@Override
+		public SoundEvent getEquipSound() {
+			return YSounds.EQUIP_SUIT;
+		}
+
+		@Override
+		public Ingredient getRepairIngredient() {
+			return Ingredient.ofItems(YItems.YTTRIUM_BLOCK);
+		}
+
+		@Override
+		public String getName() {
+			return "yttr_suit";
+		}
+
+		@Override
+		public float getToughness() {
+			return 6;
+		}
+
+		@Override
+		public float getKnockbackResistance() {
+			return 0.5f;
+		}
+		
+	};
+	
+	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.HEAD, new Item.Settings()
+			.fireproof()
+			.group(YItemGroups.MAIN));
+	
+	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.CHEST, new Item.Settings()
+			.fireproof()
+			.group(YItemGroups.MAIN));
+	
+	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.LEGS, new Item.Settings()
+			.fireproof()
+			.group(YItemGroups.MAIN));
+	
+	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
+			.fireproof()
 			.group(YItemGroups.MAIN));
 
 

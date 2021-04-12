@@ -8,6 +8,7 @@ import com.unascribed.yttr.block.CentrifugeBlock;
 import com.unascribed.yttr.block.ChuteBlock;
 import com.unascribed.yttr.block.CleavedBlock;
 import com.unascribed.yttr.block.DelicaceBlock;
+import com.unascribed.yttr.block.DivingPlateBlock;
 import com.unascribed.yttr.block.DopperBlock;
 import com.unascribed.yttr.block.FlopperBlock;
 import com.unascribed.yttr.block.LampBlock;
@@ -182,6 +183,8 @@ public class YBlocks {
 	
 	public static final DopperBlock DOPPER = new DopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER));
 	public static final FlopperBlock FLOPPER = new FlopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER));
+	
+	public static final DivingPlateBlock DIVING_PLATE = new DivingPlateBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

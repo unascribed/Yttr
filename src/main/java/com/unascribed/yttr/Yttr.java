@@ -5,6 +5,8 @@ import java.lang.reflect.Modifier;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCommands;
@@ -17,12 +19,17 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
+import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
+import com.unascribed.yttr.world.Geyser;
+import com.unascribed.yttr.world.GeysersState;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -40,11 +47,15 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class Yttr implements ModInitializer {
+	
+	public static final int DIVING_BLOCKS_PER_TICK = 4;
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
@@ -64,8 +75,23 @@ public class Yttr implements ModInitializer {
 		YScreenTypes.init();
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "attack"), (server, player, handler, buf, responseSender) -> {
-			if (player != null && player.getMainHandStack().getItem() instanceof Attackable) {
-				((Attackable)player.getMainHandStack().getItem()).attack(player);
+			server.execute(() -> {
+				if (player != null && player.getMainHandStack().getItem() instanceof Attackable) {
+					((Attackable)player.getMainHandStack().getItem()).attack(player);
+				}
+			});
+		});
+		
+		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_pos"), (server, player, handler, buf, responseSender) -> {
+			if (player != null && player instanceof DiverPlayer) {
+				int x = buf.readInt();
+				int y = buf.readInt();
+				int z = buf.readInt();
+				server.execute(() -> {
+					if (((DiverPlayer)player).yttr$isDiving()) {
+						
+					}
+				});
 			}
 		});
 		
@@ -182,5 +208,34 @@ public class Yttr implements ModInitializer {
 			inv.setStack(c.getInt("Slot"), ItemStack.fromTag(c));
 		}
 	}
+
+	public static boolean isWearingFullSuit(Entity entity) {
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity le = (LivingEntity)entity;
+		for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
+			if (!(le.getEquippedStack(slot).getItem() instanceof SuitArmorItem)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean isStandingOnDivingPlate(Entity e) {
+		return e.isOnGround() && e.world.getBlockState(e.getBlockPos().down()).isOf(YBlocks.DIVING_PLATE);
+	}
+
+	public static void syncDive(ServerPlayerEntity p) {
+		if (!(p instanceof DiverPlayer)) return;
+		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+		GeysersState gs = GeysersState.get(p.getServerWorld());
+		for (UUID u : ((DiverPlayer)p).yttr$getKnownGeysers()) {
+			Geyser g = gs.getGeyser(u);
+			if (g != null) {
+				g.write(buf);
+			}
+		}
+		ServerPlayNetworking.send(p, new Identifier("yttr", "dive"), buf);
+	}
+
 	
 }

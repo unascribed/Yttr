@@ -3,11 +3,11 @@ package com.unascribed.yttr.block;
 import java.util.Random;
 
 import com.unascribed.yttr.SolventDamageSource;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -45,6 +45,7 @@ public class VoidFluidBlock extends FluidBlock {
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isAlive()) return;
+		if (Yttr.isWearingFullSuit(entity)) return;
 		int i = 1;
 		if (entity instanceof LivingEntity) {
 			LivingEntity le = (LivingEntity)entity;

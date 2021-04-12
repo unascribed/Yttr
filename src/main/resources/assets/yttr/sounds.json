@@ -134,5 +134,56 @@
 	"honk": {
 		"sounds": [ "yttr:honk" ],
 		"subtitle": "subtitles.yttr.honk"
+	},
+	"dive": {
+		"sounds": [ "yttr:dive" ]
+	},
+	"danger": {
+		"sounds": [ "yttr:danger" ]
+	},
+	"equip_suit": {
+		"sounds": [
+			{
+				"name": "minecraft:item/armor/equip_netherite1",
+				"volume": 0.8,
+				"pitch": 0.7
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite2",
+				"volume": 0.8,
+				"pitch": 0.7
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite3",
+				"volume": 0.8,
+				"pitch": 0.7
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite4",
+				"volume": 0.8,
+				"pitch": 0.7
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite1",
+				"volume": 0.8,
+				"pitch": 0.6
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite2",
+				"volume": 0.8,
+				"pitch": 0.6
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite3",
+				"volume": 0.8,
+				"pitch": 0.6
+			},
+			{
+				"name": "minecraft:item/armor/equip_netherite4",
+				"volume": 0.8,
+				"pitch": 0.6
+			}
+		],
+		"subtitle": "subtitles.yttr.equip_suit"
 	}
 }

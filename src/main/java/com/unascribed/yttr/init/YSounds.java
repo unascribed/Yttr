@@ -40,6 +40,9 @@ public class YSounds {
 	public static final SoundEvent CENTRIFUGE = create("centrifuge");
 	public static final SoundEvent CENTRIFUGE_CRACKLE = create("centrifuge_crackle");
 	public static final SoundEvent HONK = create("honk");
+	public static final SoundEvent DIVE = create("dive");
+	public static final SoundEvent DANGER = create("danger");
+	public static final SoundEvent EQUIP_SUIT = create("equip_suit");
 	
 
 	public static void init() {

@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.unascribed.yttr.EquipmentSlots;
 import com.unascribed.yttr.SolventDamageSource;
 import com.unascribed.yttr.init.YSounds;
 
@@ -157,12 +158,10 @@ public class VoidLogic {
 					e.damage(new SolventDamageSource(0), dmg);
 					if (e instanceof LivingEntity) {
 						LivingEntity le = (LivingEntity)e;
-						for (EquipmentSlot es : EquipmentSlot.values()) {
-							if (es.getType() == EquipmentSlot.Type.ARMOR) {
-								le.getEquippedStack(es).damage((int)dmg, le, (blah) -> {
-									le.sendEquipmentBreakStatus(es);
-								});
-							}
+						for (EquipmentSlot es : EquipmentSlots.ARMOR) {
+							le.getEquippedStack(es).damage((int)dmg, le, (blah) -> {
+								le.sendEquipmentBreakStatus(es);
+							});
 						}
 					}
 				}
