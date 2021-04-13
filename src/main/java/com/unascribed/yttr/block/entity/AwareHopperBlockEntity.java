@@ -124,7 +124,13 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 					for (int i = 0; i < input.size(); i++) {
 						input.removeStack(i, 1);
 						if (i < remainders.size()) {
-							remainder.setStack(i, remainders.get(i));
+							ItemStack rem = remainders.get(i);
+							int index = remapInvIndexToRecipeIndex(r, i);
+							if (input.getStack(i).isEmpty() && r.getPreviewInputs().size() > index && r.getPreviewInputs().get(index).test(rem)) {
+								input.setStack(i, rem);
+							} else {
+								remainder.setStack(i, rem);
+							}
 						}
 					}
 					if (world instanceof ServerWorld) {
@@ -352,15 +358,7 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 		int smallestStack = -1;
 		int smallestStackCount = Integer.MAX_VALUE;
 		for (int i : candidates) {
-			int index;
-			if (recipe instanceof ShapedRecipe) {
-				ShapedRecipe sr = (ShapedRecipe)recipe;
-				int x = i%sr.getWidth();
-				int y = i/sr.getWidth();
-				index = (y*3)+x;
-			} else {
-				index = i;
-			}
+			int index = remapRecipeIndexToInvIndex(recipe, i);
 			int c = input.getStack(index).getCount();
 			if (c < smallestStackCount) {
 				smallestStack = index;
@@ -368,6 +366,26 @@ public class AwareHopperBlockEntity extends BlockEntity implements Tickable, Sid
 			}
 		}
 		return slot == smallestStack;
+	}
+
+	private int remapRecipeIndexToInvIndex(CraftingRecipe recipe, int i) {
+		if (recipe instanceof ShapedRecipe) {
+			ShapedRecipe sr = (ShapedRecipe)recipe;
+			int x = i%sr.getWidth();
+			int y = i/sr.getWidth();
+			return (y*3)+x;
+		}
+		return i;
+	}
+	
+	private int remapInvIndexToRecipeIndex(CraftingRecipe recipe, int i) {
+		if (recipe instanceof ShapedRecipe) {
+			ShapedRecipe sr = (ShapedRecipe)recipe;
+			int x = i%3;
+			int y = i/3;
+			return (y*sr.getWidth())+x;
+		}
+		return i;
 	}
 
 	@Override

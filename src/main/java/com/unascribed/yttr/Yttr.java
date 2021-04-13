@@ -263,7 +263,7 @@ public class Yttr implements ModInitializer {
 		
 	}
 
-	private Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {
+	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {
 		ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
 		if (!(is.getItem() instanceof SuitArmorItem)) return ImmutableMultiset.of();
 		SuitArmorItem sai = (SuitArmorItem)is.getItem();
@@ -274,11 +274,12 @@ public class Yttr implements ModInitializer {
 		return resourcesAvailable;
 	}
 
-	private Multiset<SuitResource> determineNeededResourcesForFastDive(double distance) {
+	public static Multiset<SuitResource> determineNeededResourcesForFastDive(double distance) {
 		int simulatedTicks = (int)(distance/DIVING_BLOCKS_PER_TICK);
 		int distanceI = (int)distance;
 		Multiset<SuitResource> resourcesNeeded = EnumMultiset.create(SuitResource.class);
 		for (SuitResource sr : SuitResource.VALUES) {
+			if (distance < 4 && sr == SuitResource.FUEL) continue;
 			resourcesNeeded.add(sr, sr.getConsumptionPerTick(900)*simulatedTicks);
 			resourcesNeeded.add(sr, sr.getConsumptionPerBlock(900)*distanceI);
 		}

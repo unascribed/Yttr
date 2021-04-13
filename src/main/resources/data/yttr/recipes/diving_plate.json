@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PP"
+  ],
+  "key": {
+    "P": { "item": "yttr:armor_plating" }
+  },
+  "result": {
+    "item": "yttr:diving_plate"
+  }
+}

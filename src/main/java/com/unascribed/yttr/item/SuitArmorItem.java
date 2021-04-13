@@ -56,7 +56,6 @@ public class SuitArmorItem extends ArmorItem {
 	
 	public void consumeResource(ItemStack stack, SuitResource resource, int amount) {
 		if (amount <= 0) return;
-		System.out.println("consume "+amount+" "+resource);
 		int amt = getResourceAmount(stack, resource);
 		amt -= amount;
 		setResourceAmount(stack, resource, Math.max(0, amt));

@@ -6,6 +6,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 
+import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
@@ -59,6 +61,7 @@ public class SuitScreen extends Screen {
 	private boolean holdingBack;
 	
 	private Geyser mouseOver;
+	private double mouseOverDist;
 	
 	private int errorId;
 	private int errorTicks;
@@ -180,7 +183,7 @@ public class SuitScreen extends Screen {
 		}
 		
 		if (error != null) {
-			if (errorTicks++ > 40) {
+			if (errorTicks++ > 80) {
 				error = null;
 			}
 		}
@@ -217,6 +220,10 @@ public class SuitScreen extends Screen {
 		
 		ItemStack chest = client.player.getEquippedStack(EquipmentSlot.CHEST);
 		if (chest.getItem() instanceof SuitArmorItem) {
+			Multiset<SuitResource> costs = null;
+			if (mouseOver != null) {
+				costs = Yttr.determineNeededResourcesForFastDive(mouseOverDist);
+			}
 			SuitArmorItem sai = (SuitArmorItem)chest.getItem();
 			int resourceBarY = (height-20)-(SuitResource.VALUES.size()*24);
 			float lowestResource = 1;
@@ -233,8 +240,20 @@ public class SuitScreen extends Screen {
 				float a = amt/res.getMaximum();
 				lowestResource = Math.min(a, lowestResource);
 				
+				if (a < 0.5f) {
+					sr.drawElement(matrices, "warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+				}
+				
 				sr.drawText(matrices, name, width-len-16, resourceBarY, delta);
 				sr.drawBar(matrices, name, width-96, resourceBarY+12, a, true, delta);
+				if (costs != null) {
+					int mainW = (int)(80*a);
+					int xo = 80-mainW;
+					float ca = costs.count(res)/(float)res.getMaximum();
+					RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ZERO, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
+					sr.drawElement(matrices, name+"-bar-cut", (width-97)+xo+2, resourceBarY+14, xo+2, 76, (int)(80*ca), 4, delta);
+					RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
+				}
 				resourceBarY += 24;
 			}
 			int blinkSpeed = -1;
@@ -278,9 +297,10 @@ public class SuitScreen extends Screen {
 			if (!fastDiving && mouseX >= x && mouseX < x+12 &&
 					mouseY >= y && mouseY < y+12) {
 				mouseOver = g;
-				int d = (int)Math.sqrt((dX * dX) + (dZ * dZ));
+				double d = Math.sqrt((dX * dX) + (dZ * dZ));
+				mouseOverDist = d;
 				sr.drawText(matrices, Ascii.toLowerCase(g.name), mouseX+10, mouseY+10, delta);
-				sr.drawText(matrices, "geyser-"+g.id+"-dist", "distance "+d, mouseX+10, mouseY+22, delta);
+				sr.drawText(matrices, "geyser-"+g.id+"-dist", "distance "+((int)d), mouseX+10, mouseY+22, delta);
 			}
 		}
 		
