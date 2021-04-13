@@ -43,6 +43,9 @@ public class YSounds {
 	public static final SoundEvent DIVE = create("dive");
 	public static final SoundEvent DANGER = create("danger");
 	public static final SoundEvent EQUIP_SUIT = create("equip_suit");
+	public static final SoundEvent DIVE_MONO = create("dive_mono");
+	public static final SoundEvent DIVE_THRUST = create("dive_thrust");
+	public static final SoundEvent DIVE_END = create("dive_end");
 	
 
 	public static void init() {

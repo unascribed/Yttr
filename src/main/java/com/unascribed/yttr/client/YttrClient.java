@@ -268,26 +268,61 @@ public class YttrClient implements ClientModInitializer {
 			});
 		});
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive"), (client, handler, buf, responseSender) -> {
+			int x = buf.readInt();
+			int z = buf.readInt();
 			List<Geyser> geysers = Lists.newArrayList();
 			while (buf.isReadable()) {
 				geysers.add(Geyser.read(buf));
 			}
 			mc.send(() -> {
-				client.openScreen(new SuitScreen(geysers));
+				client.openScreen(new SuitScreen(x, z, geysers));
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_pos"), (client, handler, buf, responseSender) -> {
+			int x = buf.readInt();
+			int z = buf.readInt();
+			mc.send(() -> {
+				if (client.currentScreen instanceof SuitScreen) {
+					((SuitScreen)client.currentScreen).setPos(x, z);
+				}
 			});
 		});
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "discovered_geyser"), (client, handler, buf, responseSender) -> {
-			String name = buf.readString();
+			Geyser g = Geyser.read(buf);
 			mc.send(() -> {
-				client.getToastManager().add((matrices, manager, startTime) -> {
-					manager.getGame().getTextureManager().bindTexture(Toast.TEXTURE);
-					manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
-					manager.getGame().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
-					DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
-					manager.getGame().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
-		            manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
-					return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
-				});
+				if (client.currentScreen instanceof SuitScreen) {
+					((SuitScreen)client.currentScreen).addGeyser(g);
+				} else {
+					String name = g.name;
+					client.getToastManager().add((matrices, manager, startTime) -> {
+						manager.getGame().getTextureManager().bindTexture(Toast.TEXTURE);
+						manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
+						manager.getGame().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
+						DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+						manager.getGame().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
+			            manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
+						return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+					});
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "animate_fastdive"), (client, handler, buf, responseSender) -> {
+			int integrityCost = buf.readInt();
+			int x = buf.readInt();
+			int z = buf.readInt();
+			int time = buf.readInt();
+			mc.send(() -> {
+				if (client.currentScreen instanceof SuitScreen) {
+					((SuitScreen)client.currentScreen).startFastDive(integrityCost, x, z, time);
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_end"), (client, handler, buf, responseSender) -> {
+			mc.send(() -> {
+				if (client.currentScreen instanceof SuitScreen) {
+					client.getSoundManager().play(new SuitSound(YSounds.DIVE_END));
+					client.openScreen(null);
+				}
 			});
 		});
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {

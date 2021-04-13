@@ -49,9 +49,9 @@ public class SuitRenderer extends DrawableHelper {
 	}
 	
 	public void setColor(float r, float g, float b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
+		this.r = r*0.65f;
+		this.g = g*0.65f;
+		this.b = b*0.65f;
 	}
 	
 	public void setUp() {

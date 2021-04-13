@@ -3,6 +3,7 @@ package com.unascribed.yttr.mixin.diving;
 import java.util.Set;
 import java.util.UUID;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,10 +12,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.DiverPlayer;
 import com.unascribed.yttr.EquipmentSlots;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.SuitArmorItem;
+import com.unascribed.yttr.math.Vec2i;
+import com.unascribed.yttr.world.Geyser;
+import com.unascribed.yttr.world.GeysersState;
 
 import com.google.common.collect.Sets;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.damage.DamageSource;
@@ -22,7 +30,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 @Mixin(ServerPlayerEntity.class)
 public class MixinServerPlayerEntity implements DiverPlayer {
@@ -30,6 +42,10 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 	private boolean yttr$isDiving = false;
 	private boolean yttr$isInvisibleFromDiving = false;
 	private boolean yttr$isNoGravityFromDiving = false;
+	private int yttr$lastDivePosUpdate;
+	private Vec2i yttr$divePos;
+	private int yttr$fastDiveTime;
+	private BlockPos yttr$fastDiveTarget;
 	
 	private final Set<UUID> yttr$knownGeysers = Sets.newHashSet();
 	
@@ -63,6 +79,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 					break;
 				}
 			}
+			self.fallDistance = 0;
 			if (fail) {
 				self.damage(new DamageSource("yttr.suit_integrity_failure") {{
 					setUnblockable();
@@ -70,22 +87,80 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 					setOutOfWorld();
 				}}, self.getHealth()*6);
 			} else {
-				while (true) {
-					EquipmentSlot slot = EquipmentSlots.ARMOR.get(self.world.random.nextInt(EquipmentSlots.ARMOR.size()));
-					ItemStack piece = self.getEquippedStack(slot);
-					SuitArmorItem sai = ((SuitArmorItem)piece.getItem());
-					if (sai.getIntegrityDamage(piece) < sai.getIntegrity(piece)) {
-						sai.damageIntegrity(piece, 1);
-						break;
+				if (yttr$fastDiveTarget != null) {
+					BlockPos pos = yttr$fastDiveTarget;
+					if (yttr$fastDiveTime > 0) {
+						yttr$fastDiveTime--;
+						// teleport prematurely to load chunks
+						self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
+					} else {
+						yttr$isDiving = false;
+						ServerPlayNetworking.send(self, new Identifier("yttr", "dive_end"), PacketByteBufs.empty());
+						self.playSound(YSounds.DIVE_END, 2, 1);
+						double closestDist = Double.POSITIVE_INFINITY;
+						BlockPos closestPad = null;
+						for (BlockPos bp : BlockPos.iterate(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
+							if (self.world.getBlockState(bp).isOf(YBlocks.DIVING_PLATE)) {
+								double dist = bp.getSquaredDistance(pos);
+								if (dist < closestDist && self.world.isAir(bp.up())) {
+									closestPad = bp.toImmutable();
+									closestDist = dist;
+								}
+							}
+						}
+						if (closestPad == null) {
+							self.teleport(pos.getX()+0.5, pos.getY()+4, pos.getZ()+0.5);
+							self.setVelocity(self.world.random.nextGaussian()/2, 1, self.world.random.nextGaussian()/2);
+							self.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(self));
+						} else {
+							self.teleport(closestPad.getX()+0.5, closestPad.getY()+1, closestPad.getZ()+0.5);
+						}
+					}
+				} else {
+					while (true) {
+						EquipmentSlot slot = EquipmentSlots.ARMOR.get(self.world.random.nextInt(EquipmentSlots.ARMOR.size()));
+						ItemStack piece = self.getEquippedStack(slot);
+						SuitArmorItem sai = ((SuitArmorItem)piece.getItem());
+						if (sai.getIntegrityDamage(piece) < sai.getIntegrity(piece)) {
+							sai.damageIntegrity(piece, 1);
+							break;
+						}
+					}
+					GeysersState gs = GeysersState.get(self.getServerWorld());
+					int cX = (int)(self.getX())/16;
+					int cZ = (int)(self.getZ())/16;
+					for (int cXo = -1; cXo <= 1; cXo++) {
+						for (int cZo = -1; cZo <= 1; cZo++) {
+							ChunkPos pos = new ChunkPos(cX, cZ);
+							for (Geyser g : gs.getGeysersInChunk(pos)) {
+								if (!yttr$knownGeysers.contains(g.id) && g.pos.getSquaredDistance(yttr$divePos.x, g.pos.getY(), yttr$divePos.z, true) < 32*32) {
+									Yttr.discoverGeyser(g.id, self);
+								}
+							}
+						}
 					}
 				}
 			}
 		} else {
 			if (yttr$isNoGravityFromDiving) {
 				self.setNoGravity(false);
+				yttr$isNoGravityFromDiving = false;
 			}
 			if (yttr$isInvisibleFromDiving) {
 				self.setInvisible(false);
+				yttr$isInvisibleFromDiving = false;
+			}
+			if (yttr$divePos != null) {
+				yttr$divePos = null;
+			}
+			if (yttr$lastDivePosUpdate != 0) {
+				yttr$lastDivePosUpdate = 0;
+			}
+			if (yttr$fastDiveTarget != null) {
+				yttr$fastDiveTarget = null;
+			}
+			if (yttr$fastDiveTime != 0) {
+				yttr$fastDiveTime = 0;
 			}
 		}
 	}
@@ -103,6 +178,9 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 		if (yttr$isDiving) tag.putBoolean("yttr:Diving", yttr$isDiving);
 		if (yttr$isInvisibleFromDiving) tag.putBoolean("yttr:InvisibleFromDiving", yttr$isInvisibleFromDiving);
 		if (yttr$isNoGravityFromDiving) tag.putBoolean("yttr:NoGravityFromDiving", yttr$isNoGravityFromDiving);
+		if (yttr$divePos != null) tag.put("yttr:DivePos", yttr$divePos.toTag());
+		if (yttr$fastDiveTarget != null) tag.put("yttr:FastDiveTarget", NbtHelper.fromBlockPos(yttr$fastDiveTarget));
+		if (yttr$fastDiveTime != 0) tag.putInt("yttr:FastDiveTime", yttr$fastDiveTime);
 		
 		if (!yttr$knownGeysers.isEmpty()) {
 			ListTag li = new ListTag();
@@ -115,10 +193,12 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 	
 	@Inject(at=@At("TAIL"), method="readCustomDataFromTag")
 	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-		System.out.println("read");
 		yttr$isDiving = tag.getBoolean("yttr:Diving");
 		yttr$isInvisibleFromDiving = tag.getBoolean("yttr:InvisibleFromDiving");
 		yttr$isNoGravityFromDiving = tag.getBoolean("yttr:NoGravityFromDiving");
+		yttr$divePos = Vec2i.fromTag(tag.get("yttr:DivePos"));
+		yttr$fastDiveTarget = tag.contains("yttr:FastDiveTarget", NbtType.COMPOUND) ? NbtHelper.toBlockPos(tag.getCompound("yttr:FastDiveTarget")) : null;
+		yttr$fastDiveTime = tag.getInt("yttr:FastDiveTime");
 		
 		yttr$knownGeysers.clear();
 		ListTag li = tag.getList("yttr:KnownGeysers", NbtType.INT_ARRAY);
@@ -157,6 +237,46 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 	@Override
 	public Set<UUID> yttr$getKnownGeysers() {
 		return yttr$knownGeysers;
+	}
+
+	@Override
+	public int yttr$getLastDivePosUpdate() {
+		return yttr$lastDivePosUpdate;
+	}
+
+	@Override
+	public void yttr$setLastDivePosUpdate(int i) {
+		yttr$lastDivePosUpdate = i;
+	}
+
+	@Override
+	public @Nullable Vec2i yttr$getDivePos() {
+		return yttr$divePos;
+	}
+
+	@Override
+	public void yttr$setDivePos(@Nullable Vec2i v) {
+		yttr$divePos = v;
+	}
+
+	@Override
+	public int yttr$getFastDiveTime() {
+		return yttr$fastDiveTime;
+	}
+
+	@Override
+	public void yttr$setFastDiveTime(int i) {
+		yttr$fastDiveTime = i;
+	}
+
+	@Override
+	public @Nullable BlockPos yttr$getFastDiveTarget() {
+		return yttr$fastDiveTarget;
+	}
+
+	@Override
+	public void yttr$setFastDiveTarget(@Nullable BlockPos g) {
+		yttr$fastDiveTarget = g;
 	}
 
 }

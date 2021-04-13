@@ -1,12 +1,15 @@
 package com.unascribed.yttr.world;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import net.fabricmc.fabric.api.util.NbtType;
@@ -14,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.PersistentState;
 
 public class GeysersState extends PersistentState {
@@ -21,6 +25,7 @@ public class GeysersState extends PersistentState {
 	private final Set<Geyser> geysers = Sets.newHashSet();
 	private final Map<UUID, Geyser> geysersById = Maps.newHashMap();
 	private final Map<BlockPos, Geyser> geysersByPos = Maps.newHashMap();
+	private final Multimap<ChunkPos, Geyser> geysersByChunk = HashMultimap.create();
 	
 	public GeysersState() {
 		super("yttr_geysers");
@@ -34,6 +39,7 @@ public class GeysersState extends PersistentState {
 		geysers.add(g);
 		geysersById.put(g.id, g);
 		geysersByPos.put(g.pos, g);
+		geysersByChunk.put(g.chunkPos, g);
 		markDirty();
 	}
 	
@@ -45,11 +51,16 @@ public class GeysersState extends PersistentState {
 		return geysersByPos.get(pos);
 	}
 	
+	public Collection<Geyser> getGeysersInChunk(ChunkPos pos) {
+		return geysersByChunk.get(pos);
+	}
+	
 	public void removeGeyser(UUID id) {
 		Geyser g = geysersById.remove(id);
 		if (g != null) {
 			geysers.remove(g);
 			geysersByPos.remove(g.pos, g);
+			geysersByChunk.remove(g.chunkPos, g);
 		}
 	}
 	
@@ -78,6 +89,7 @@ public class GeysersState extends PersistentState {
 		for (Geyser g : geysers) {
 			li.add(g.toTag());
 		}
+		tag.put("Geysers", li);
 		return tag;
 	}
 	

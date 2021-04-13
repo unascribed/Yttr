@@ -15,25 +15,21 @@ import com.unascribed.yttr.init.YFluids;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import io.netty.buffer.Unpooled;
-
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.FluidTags;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -75,12 +71,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 		
 		seen.clear();
 		for (ServerPlayerEntity p : world.getEntitiesByClass(ServerPlayerEntity.class, new Box(pos).expand(5), e -> e instanceof DiverPlayer)) {
-			Set<UUID> knownGeysers = ((DiverPlayer)p).yttr$getKnownGeysers();
-			if (knownGeysers.add(id)) {
-				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-				buf.writeString(name);
-				ServerPlayNetworking.send(p, new Identifier("yttr", "discovered_geyser"), buf);
-			}
+			Yttr.discoverGeyser(id, p);
 			if (Yttr.isWearingFullSuit(p) && p.isSneaking() && Yttr.isStandingOnDivingPlate(p)) {
 				if (sneakTimers.compute(p.getUuid(), (u, mi) -> {
 					if (mi != null) {
@@ -89,8 +80,10 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 					}
 					return new MutableInt(0);
 				}).intValue() > 40) {
-					p.playSound(YSounds.DIVE, 1, 1);
-					((DiverPlayer)p).yttr$setDiving(true);
+					p.playSound(YSounds.DIVE_MONO, 2, 1);
+					DiverPlayer diver = (DiverPlayer)p;
+					diver.yttr$setDiving(true);
+					diver.yttr$setDivePos(new Vec2i(pos.getX(), pos.getZ()));
 					p.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
 					p.setVelocity(0, 0, 0);
 					Yttr.syncDive(p);

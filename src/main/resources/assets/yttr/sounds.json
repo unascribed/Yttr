@@ -185,5 +185,14 @@
 			}
 		],
 		"subtitle": "subtitles.yttr.equip_suit"
+	},
+	"dive_mono": {
+		"sounds": [ "yttr:dive_mono" ]
+	},
+	"dive_thrust": {
+		"sounds": [ "yttr:dive_thrust" ]
+	},
+	"dive_end": {
+		"sounds": [ "yttr:dive_end" ]
 	}
 }

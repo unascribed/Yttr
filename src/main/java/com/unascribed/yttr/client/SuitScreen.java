@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,11 +16,15 @@ import com.unascribed.yttr.world.Geyser;
 import com.google.common.base.Ascii;
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class SuitScreen extends Screen {
@@ -35,6 +40,13 @@ public class SuitScreen extends Screen {
 	
 	private float posX, posZ;
 	
+	private boolean fastDiving = false;
+	private int fastDiveIntegrityCost;
+	private float fdStartX, fdStartZ;
+	private float fdTgtX, fdTgtZ;
+	private int fastDiveTime;
+	private int fastDiveTicks;
+	
 	private boolean holdingForward;
 	private boolean holdingLeft;
 	private boolean holdingRight;
@@ -42,13 +54,30 @@ public class SuitScreen extends Screen {
 	
 	private Geyser mouseOver;
 	
-	public SuitScreen(List<Geyser> geysers) {
+	public SuitScreen(int x, int z, List<Geyser> geysers) {
 		super(new LiteralText(""));
+		posX = x+0.5f;
+		posZ = z+0.5f;
 		this.geysers = Lists.newArrayList(geysers);
 	}
 	
 	public void addGeyser(Geyser g) {
 		geysers.add(g);
+	}
+	
+	public void setPos(int x, int z) {
+		posX = x+0.5f;
+		posZ = z+0.5f;
+	}
+
+	public void startFastDive(int integrityCost, int x, int z, int time) {
+		fastDiving = true;
+		fastDiveIntegrityCost = integrityCost;
+		fdStartX = posX;
+		fdStartZ = posZ;
+		fdTgtX = x+0.5f;
+		fdTgtZ = z+0.5f;
+		fastDiveTime = time;
 	}
 	
 	@Override
@@ -59,8 +88,6 @@ public class SuitScreen extends Screen {
 		}
 		if (client.player != null) {
 			sr.setColor(LampBlockItem.getColor(client.player.getEquippedStack(EquipmentSlot.HEAD)));
-			posX = (float)client.player.getX();
-			posZ = (float)client.player.getZ();
 		}
 	}
 	
@@ -68,34 +95,50 @@ public class SuitScreen extends Screen {
 	public void tick() {
 		if (ticks == 1) client.getSoundManager().play(new SuitSound(YSounds.DIVE));
 		ticks++;
+		if (!fastDiving && ticks % 5 == 0) {
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeInt((int)posX);
+			buf.writeInt((int)posZ);
+			ClientPlayNetworking.send(new Identifier("yttr", "dive_pos"), buf);
+		}
+		if (fastDiving) {
+			fastDiveTicks++;
+		}
 		sr.tick();
 		if (client.player != null) {
 			client.player.setPos(client.player.getPos().x, -12, client.player.getPos().z);
+			client.player.fallDistance = 0;
 			if (!Yttr.isWearingFullSuit(client.player)) {
 				client.openScreen(null);
 			}
 		}
-		
-		float movementX = 0;
-		float movementZ = 0;
-		if (holdingForward) {
-			movementZ++;
+		if (!fastDiving) {
+			float movementX = 0;
+			float movementZ = 0;
+			if (holdingForward) {
+				movementZ++;
+			}
+			if (holdingBack) {
+				movementZ--;
+			}
+			if (holdingLeft) {
+				movementX++;
+			}
+			if (holdingRight) {
+				movementX--;
+			}
+			float l = MathHelper.sqrt((movementX * movementX) + (movementZ * movementZ));
+			if (l > 1e-5) {
+				movementX /= l;
+				movementZ /= l;
+				posX += movementX*Yttr.DIVING_BLOCKS_PER_TICK;
+				posZ += movementZ*Yttr.DIVING_BLOCKS_PER_TICK;
+			}
 		}
-		if (holdingBack) {
-			movementZ--;
-		}
-		if (holdingLeft) {
-			movementX++;
-		}
-		if (holdingRight) {
-			movementX--;
-		}
-		float l = MathHelper.sqrt((movementX * movementX) + (movementZ * movementZ));
-		if (l > 1e-5) {
-			movementX /= l;
-			movementZ /= l;
-			posX += movementX*Yttr.DIVING_BLOCKS_PER_TICK;
-			posZ += movementZ*Yttr.DIVING_BLOCKS_PER_TICK;
+		if (fastDiving || holdingForward || holdingBack || holdingLeft || holdingRight) {
+			if (ThreadLocalRandom.current().nextInt(fastDiving ? 10 : 20) == 0) {
+				client.getSoundManager().play(new SuitSound(YSounds.DIVE_THRUST, 0.2f));
+			}
 		}
 	}
 	
@@ -115,6 +158,13 @@ public class SuitScreen extends Screen {
 		}
 		sr.drawText(matrices, "distance-num", Integer.toString(dist), 10, height-28, delta);
 		
+		float fastDiveT = fastDiving ? (fastDiveTicks+delta)/fastDiveTime : 0;
+		
+		if (fastDiving) {
+			posX = fdStartX+((fdTgtX-fdStartX)*fastDiveT);
+			posZ = fdStartZ+((fdTgtZ-fdStartZ)*fastDiveT);
+		}
+		
 		float integrity = 1;
 		if (client.player != null) {
 			int dmg = 0;
@@ -126,6 +176,9 @@ public class SuitScreen extends Screen {
 					dmg += sai.getIntegrityDamage(is);
 					integ += sai.getIntegrity(is);
 				}
+			}
+			if (fastDiving) {
+				dmg -= (fastDiveIntegrityCost*(1-fastDiveT));
 			}
 			integrity = 1-(dmg/(float)integ);
 		}
@@ -160,7 +213,7 @@ public class SuitScreen extends Screen {
 			int x = (int)(cX+(dX/50))-6;
 			int y = (int)(cY+(dZ/50))-6;
 			sr.drawElement(matrices, "geyser-"+g.id, x, y, 23, 18, 12, 12, delta);
-			if (mouseX >= x && mouseX < x+12 &&
+			if (!fastDiving && mouseX >= x && mouseX < x+12 &&
 					mouseY >= y && mouseY < y+12) {
 				mouseOver = g;
 				int d = (int)Math.sqrt((dX * dX) + (dZ * dZ));
@@ -170,6 +223,11 @@ public class SuitScreen extends Screen {
 		}
 		
 		sr.drawElement(matrices, "map-border", (width-200)/2, (height-200)/2, 80, 0, 200, 200, delta);
+		
+		if (fastDiving) {
+			sr.drawText(matrices, "navigating", 8, 8, delta);
+		}
+		
 		sr.tearDown();
 	}
 	
@@ -187,7 +245,9 @@ public class SuitScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (button == 0) {
 			if (mouseOver != null) {
-				System.out.println(mouseOver);
+				PacketByteBuf buf = PacketByteBufs.create();
+				buf.writeUuid(mouseOver.id);
+				ClientPlayNetworking.send(new Identifier("yttr", "dive_to"), buf);
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
@@ -226,5 +286,5 @@ public class SuitScreen extends Screen {
 		}
 		return super.keyReleased(keyCode, scanCode, modifiers);
 	}
-	
+
 }

@@ -6,16 +6,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
-public class Geyser {
+public final class Geyser {
 
 	public final UUID id;
 	public final BlockPos pos;
+	public transient final ChunkPos chunkPos;
 	public String name;
 	
 	public Geyser(UUID id, BlockPos pos, String name) {
 		this.id = id;
 		this.pos = pos.toImmutable();
+		this.chunkPos = new ChunkPos(pos);
 		this.name = name;
 	}
 	

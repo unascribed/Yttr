@@ -8,7 +8,11 @@ import net.minecraft.sound.SoundEvent;
 public class SuitSound extends PositionedSoundInstance {
 
 	public SuitSound(SoundEvent event) {
-		super(event, SoundCategory.MASTER, 5, 1, 0, 0, 0);
+		this(event, 5);
+	}
+	
+	public SuitSound(SoundEvent event, float volume) {
+		super(event, SoundCategory.MASTER, volume, 1, 0, 0, 0);
 		attenuationType = AttenuationType.NONE;
 	}
 	

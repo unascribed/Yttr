@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCommands;
@@ -20,6 +22,7 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.item.SuitArmorItem;
+import com.unascribed.yttr.math.Vec2i;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
@@ -32,6 +35,8 @@ import com.google.common.collect.Sets;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -84,12 +89,82 @@ public class Yttr implements ModInitializer {
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_pos"), (server, player, handler, buf, responseSender) -> {
 			if (player != null && player instanceof DiverPlayer) {
+				DiverPlayer diver = (DiverPlayer)player;
+				
 				int x = buf.readInt();
-				int y = buf.readInt();
 				int z = buf.readInt();
 				server.execute(() -> {
-					if (((DiverPlayer)player).yttr$isDiving()) {
-						
+					if (diver.yttr$isDiving()) {
+						int ticks = server.getTicks();
+						int lastUpdate = diver.yttr$getLastDivePosUpdate();
+						int diff = ticks-lastUpdate;
+						diver.yttr$setLastDivePosUpdate(ticks);
+						if (lastUpdate != 0 && diff < 4) {
+							LogManager.getLogger("Yttr").warn("{} is updating their dive pos too quickly!", player.getName().getString());
+							correctDivePos(diver, responseSender);
+							return;
+						}
+						Vec2i vec = new Vec2i(x, z);
+						int max = (DIVING_BLOCKS_PER_TICK+1)*diff;
+						if (vec.squaredDistanceTo(diver.yttr$getDivePos()) > max*max) {
+							LogManager.getLogger("Yttr").warn("{} dove too quickly! {}, {}", player.getName().getString(), x-diver.yttr$getDivePos().x, z-diver.yttr$getDivePos().z);
+							correctDivePos(diver, responseSender);
+							return;
+						}
+						diver.yttr$setDivePos(vec);
+					}
+				});
+			}
+		});
+		
+		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_to"), (server, player, handler, buf, responseSender) -> {
+			if (player != null && player instanceof DiverPlayer) {
+				DiverPlayer diver = (DiverPlayer)player;
+				
+				UUID id = buf.readUuid();
+				server.execute(() -> {
+					if (diver.yttr$isDiving() && diver.yttr$getFastDiveTarget() == null && diver.yttr$getKnownGeysers().contains(id)) {
+						Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
+						if (g != null) {
+							double distance = Math.sqrt(g.pos.getSquaredDistance(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z, true));
+							int integrityCost = (int)(distance/DIVING_BLOCKS_PER_TICK);
+							int integrityAvail = 0;
+							for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
+								ItemStack is = player.getEquippedStack(slot);
+								if (!(is.getItem() instanceof SuitArmorItem)) continue;
+								SuitArmorItem sai = (SuitArmorItem)is.getItem();
+								integrityAvail += sai.getIntegrity(is)-sai.getIntegrityDamage(is);
+							}
+							if (integrityAvail < integrityCost) {
+								informCantDive(responseSender, "not enough integrity");
+								return;
+							}
+							int time = (int)((distance/DIVING_BLOCKS_PER_TICK)/5);
+							diver.yttr$setFastDiveTarget(g.pos);
+							diver.yttr$setFastDiveTime(time);
+							PacketByteBuf res = PacketByteBufs.create();
+							res.writeInt(integrityCost);
+							res.writeInt(g.pos.getX());
+							res.writeInt(g.pos.getZ());
+							res.writeInt(time);
+							responseSender.sendPacket(new Identifier("yttr", "animate_fastdive"), res);
+							while (integrityCost > 0) {
+								for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
+									ItemStack is = player.getEquippedStack(slot);
+									if (!(is.getItem() instanceof SuitArmorItem)) continue;
+									SuitArmorItem sai = (SuitArmorItem)is.getItem();
+									int amt = Math.min((integrityCost+3)/4, sai.getIntegrity(is)-sai.getIntegrityDamage(is));
+									sai.damageIntegrity(is, amt);
+									integrityCost -= amt;
+								}
+							}
+						} else {
+							informCantDive(responseSender, "unknown geyser");
+							return;
+						}
+					} else {
+						informCantDive(responseSender, "bad state");
+						return;
 					}
 				});
 			}
@@ -176,6 +251,19 @@ public class Yttr implements ModInitializer {
 		
 	}
 
+	private void informCantDive(PacketSender responseSender, String msg) {
+		PacketByteBuf res = PacketByteBufs.create();
+		res.writeString(msg);
+		responseSender.sendPacket(new Identifier("yttr", "cant_dive"), res);
+	}
+
+	private void correctDivePos(DiverPlayer diver, PacketSender responseSender) {
+		PacketByteBuf resp = new PacketByteBuf(Unpooled.buffer(8));
+		resp.writeInt(diver.yttr$getDivePos().x);
+		resp.writeInt(diver.yttr$getDivePos().z);
+		responseSender.sendPacket(new Identifier("yttr", "dive_pos"), resp);
+	}
+
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		for (Field f : holder.getDeclaredFields()) {
 			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
@@ -227,6 +315,8 @@ public class Yttr implements ModInitializer {
 	public static void syncDive(ServerPlayerEntity p) {
 		if (!(p instanceof DiverPlayer)) return;
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+		buf.writeInt((int)p.getX());
+		buf.writeInt((int)p.getZ());
 		GeysersState gs = GeysersState.get(p.getServerWorld());
 		for (UUID u : ((DiverPlayer)p).yttr$getKnownGeysers()) {
 			Geyser g = gs.getGeyser(u);
@@ -235,6 +325,20 @@ public class Yttr implements ModInitializer {
 			}
 		}
 		ServerPlayNetworking.send(p, new Identifier("yttr", "dive"), buf);
+	}
+
+	public static void discoverGeyser(UUID id, ServerPlayerEntity player) {
+		if (!(player instanceof DiverPlayer)) return;
+		DiverPlayer diver = (DiverPlayer)player;
+		Set<UUID> knownGeysers = diver.yttr$getKnownGeysers();
+		if (!knownGeysers.contains(id)) {
+			Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
+			if (g == null) return;
+			knownGeysers.add(id);
+			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+			g.write(buf);
+			ServerPlayNetworking.send(player, new Identifier("yttr", "discovered_geyser"), buf);
+		}
 	}
 
 	
