@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EffectorWorld;
+import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.annotate.Renderer;
@@ -36,14 +38,18 @@ import com.unascribed.yttr.init.YScreenTypes;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.RifleItem;
+import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
 import com.unascribed.yttr.world.Geyser;
 
+import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
+import com.google.common.collect.Multiset;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -118,6 +124,7 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
@@ -307,13 +314,16 @@ public class YttrClient implements ClientModInitializer {
 			});
 		});
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "animate_fastdive"), (client, handler, buf, responseSender) -> {
-			int integrityCost = buf.readInt();
-			int x = buf.readInt();
-			int z = buf.readInt();
-			int time = buf.readInt();
+			Multiset<SuitResource> costs = EnumMultiset.create(SuitResource.class);
+			for (SuitResource sr : SuitResource.VALUES) {
+				costs.add(sr, buf.readVarInt());
+			}
+			int x = buf.readVarInt();
+			int z = buf.readVarInt();
+			int time = buf.readVarInt();
 			mc.send(() -> {
 				if (client.currentScreen instanceof SuitScreen) {
-					((SuitScreen)client.currentScreen).startFastDive(integrityCost, x, z, time);
+					((SuitScreen)client.currentScreen).startFastDive(costs, x, z, time);
 				}
 			});
 		});
@@ -325,6 +335,24 @@ public class YttrClient implements ClientModInitializer {
 				}
 			});
 		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_pressure"), (client, handler, buf, responseSender) -> {
+			int pressure = buf.readVarInt();
+			mc.send(() -> {
+				if (client.currentScreen instanceof SuitScreen) {
+					((SuitScreen)client.currentScreen).setPressure(pressure);
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "cant_dive"), (client, handler, buf, responseSender) -> {
+			String msg = buf.readString();
+			mc.send(() -> {
+				if (client.currentScreen instanceof SuitScreen) {
+					((SuitScreen)client.currentScreen).showError(msg);
+				}
+			});
+		});
+		
+		
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {
 			return stack.hasTag() && stack.getTag().contains("Contents") ? 1 : 0;
 		});
@@ -342,7 +370,7 @@ public class YttrClient implements ClientModInitializer {
 			}
 			if (mc.player != null && Yttr.isWearingFullSuit(mc.player) && Yttr.isStandingOnDivingPlate(mc.player)) {
 				VoidGeyserBlockEntity geyser = DivingPlateBlock.findClosestGeyser(mc.world, mc.player.getBlockPos());
-				if (geyser != null && geyser.getPos().isWithinDistance(mc.player.getPos(), 5)) {
+				if (geyser != null && mc.player.getBoundingBox().intersects(new Box(geyser.getPos()).expand(5))) {
 					diveReadyTime++;
 					if (diveReadyRenderer != null) diveReadyRenderer.tick();
 				} else {
@@ -362,7 +390,32 @@ public class YttrClient implements ClientModInitializer {
 				}
 				diveReadyRenderer.setUp();
 				diveReadyRenderer.setColor(LampBlockItem.getColor(mc.player.getEquippedStack(EquipmentSlot.HEAD)));
-				diveReadyRenderer.drawText(matrices, "hold sneak to dive", mc.getWindow().getScaledWidth()-120, 12, delta);
+				int width = mc.getWindow().getScaledWidth();
+				String text = "hold sneak to dive";
+				ItemStack chest = mc.player.getEquippedStack(EquipmentSlot.CHEST);
+				if (chest.getItem() instanceof SuitArmorItem) {
+					SuitArmorItem sai = (SuitArmorItem)chest.getItem();
+					int resourceBarY = 32;
+					for (SuitResource res : SuitResource.VALUES) {
+						int len = res.name().length()*6;
+						
+						String name = res.name().toLowerCase(Locale.ROOT);
+						
+						float amt = sai.getResourceAmount(chest, res);
+						float a = amt/res.getMaximum();
+						if (a < 0.5f) {
+							diveReadyRenderer.drawElement(matrices, "warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+						}
+						if (a <= 0 && res != SuitResource.FUEL) {
+							text = "hold sneak to die";
+						}
+						
+						diveReadyRenderer.drawText(matrices, name, width-len-16, resourceBarY, delta);
+						diveReadyRenderer.drawBar(matrices, name, width-96, resourceBarY+12, a, true, delta);
+						resourceBarY += 24;
+					}
+				}
+				diveReadyRenderer.drawText(matrices, text, width-16-(text.length()*6), 12, delta);
 				diveReadyRenderer.tearDown();
 			}
 		});

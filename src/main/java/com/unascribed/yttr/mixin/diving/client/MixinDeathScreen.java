@@ -9,10 +9,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.init.YItems;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DeathScreen;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 @Mixin(DeathScreen.class)
 public class MixinDeathScreen {
@@ -22,7 +25,8 @@ public class MixinDeathScreen {
 	
 	@Inject(at=@At(value="INVOKE", target="com/mojang/blaze3d/systems/RenderSystem.pushMatrix()V"), method="render")
 	public void render(CallbackInfo ci) {
-		if (message instanceof TranslatableText && "death.attack.yttr.suit_integrity_failure".equals(((TranslatableText)message).getKey())) {
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		if (player != null && player.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE && player.getY() < 0) {
 			RenderSystem.clearColor(0, 0, 0, 1);
 			RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 		}

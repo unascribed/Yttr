@@ -2,6 +2,8 @@ package com.unascribed.yttr.world;
 
 import java.util.UUID;
 
+import com.unascribed.yttr.math.Vec2i;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
@@ -13,12 +15,14 @@ public final class Geyser {
 	public final UUID id;
 	public final BlockPos pos;
 	public transient final ChunkPos chunkPos;
+	public transient final Vec2i regionPos;
 	public String name;
 	
 	public Geyser(UUID id, BlockPos pos, String name) {
 		this.id = id;
 		this.pos = pos.toImmutable();
 		this.chunkPos = new ChunkPos(pos);
+		this.regionPos = new Vec2i(pos.getX()/512, pos.getZ()/512);
 		this.name = name;
 	}
 	

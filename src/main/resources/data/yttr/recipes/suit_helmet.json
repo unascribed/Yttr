@@ -1,0 +1,16 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"PPP",
+		"PGP",
+		" F "
+	],
+	"key": {
+		"F": { "item": "yttr:fixture" },
+		"P": { "item": "yttr:armor_plating" },
+		"G": { "item": "yttr:glassy_void" }
+	},
+	"result": {
+		"item": "yttr:suit_helmet"
+	}
+}

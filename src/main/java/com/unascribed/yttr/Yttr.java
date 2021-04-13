@@ -28,10 +28,12 @@ import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
-
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -54,6 +56,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -105,13 +108,29 @@ public class Yttr implements ModInitializer {
 							return;
 						}
 						Vec2i vec = new Vec2i(x, z);
-						int max = (DIVING_BLOCKS_PER_TICK+1)*diff;
-						if (vec.squaredDistanceTo(diver.yttr$getDivePos()) > max*max) {
+						int dist = vec.squaredDistanceTo(diver.yttr$getDivePos());
+						if (dist == 0) return;
+						int moveSpeed = DIVING_BLOCKS_PER_TICK;
+						ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
+						if (!(is.getItem() instanceof SuitArmorItem)) return;
+						SuitArmorItem sai = (SuitArmorItem)is.getItem();
+						for (SuitResource sr : SuitResource.VALUES) {
+							moveSpeed /= sr.getSpeedDivider(sai.getResourceAmount(is, sr) <= 0);
+						}
+						int max = (moveSpeed+1)*diff;
+						if (dist > max*max) {
 							LogManager.getLogger("Yttr").warn("{} dove too quickly! {}, {}", player.getName().getString(), x-diver.yttr$getDivePos().x, z-diver.yttr$getDivePos().z);
 							correctDivePos(diver, responseSender);
 							return;
 						}
+						int pressure = calculatePressure(player.getServerWorld(), diver.yttr$getDivePos().x, diver.yttr$getDivePos().z);
+						for (SuitResource sr : SuitResource.VALUES) {
+							sai.consumeResource(is, sr, sr.getConsumptionPerBlock(pressure)*(int)Math.sqrt(dist));
+						}
 						diver.yttr$setDivePos(vec);
+						PacketByteBuf resp = new PacketByteBuf(Unpooled.buffer(8));
+						resp.writeVarInt(pressure);
+						responseSender.sendPacket(new Identifier("yttr", "dive_pressure"), resp);
 					}
 				});
 			}
@@ -127,37 +146,30 @@ public class Yttr implements ModInitializer {
 						Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
 						if (g != null) {
 							double distance = Math.sqrt(g.pos.getSquaredDistance(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z, true));
-							int integrityCost = (int)(distance/DIVING_BLOCKS_PER_TICK);
-							int integrityAvail = 0;
-							for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
-								ItemStack is = player.getEquippedStack(slot);
-								if (!(is.getItem() instanceof SuitArmorItem)) continue;
-								SuitArmorItem sai = (SuitArmorItem)is.getItem();
-								integrityAvail += sai.getIntegrity(is)-sai.getIntegrityDamage(is);
+							Multiset<SuitResource> resourcesNeeded = determineNeededResourcesForFastDive(distance);
+							Multiset<SuitResource> resourcesAvailable = determineAvailableResources(player);
+							for (SuitResource sr : SuitResource.VALUES) {
+								if (resourcesAvailable.count(sr) < resourcesNeeded.count(sr)) {
+									informCantDive(responseSender, "not enough "+sr.name().toLowerCase(Locale.ROOT));
+									return;
+								}
 							}
-							if (integrityAvail < integrityCost) {
-								informCantDive(responseSender, "not enough integrity");
-								return;
+							ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
+							SuitArmorItem sai = (SuitArmorItem)is.getItem();
+							for (SuitResource sr : SuitResource.VALUES) {
+								sai.consumeResource(is, sr, resourcesNeeded.count(sr));
 							}
 							int time = (int)((distance/DIVING_BLOCKS_PER_TICK)/5);
 							diver.yttr$setFastDiveTarget(g.pos);
 							diver.yttr$setFastDiveTime(time);
 							PacketByteBuf res = PacketByteBufs.create();
-							res.writeInt(integrityCost);
-							res.writeInt(g.pos.getX());
-							res.writeInt(g.pos.getZ());
-							res.writeInt(time);
-							responseSender.sendPacket(new Identifier("yttr", "animate_fastdive"), res);
-							while (integrityCost > 0) {
-								for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
-									ItemStack is = player.getEquippedStack(slot);
-									if (!(is.getItem() instanceof SuitArmorItem)) continue;
-									SuitArmorItem sai = (SuitArmorItem)is.getItem();
-									int amt = Math.min((integrityCost+3)/4, sai.getIntegrity(is)-sai.getIntegrityDamage(is));
-									sai.damageIntegrity(is, amt);
-									integrityCost -= amt;
-								}
+							for (SuitResource sr : SuitResource.VALUES) {
+								res.writeVarInt(resourcesNeeded.count(sr));
 							}
+							res.writeVarInt(g.pos.getX());
+							res.writeVarInt(g.pos.getZ());
+							res.writeVarInt(time);
+							responseSender.sendPacket(new Identifier("yttr", "animate_fastdive"), res);
 						} else {
 							informCantDive(responseSender, "unknown geyser");
 							return;
@@ -251,6 +263,28 @@ public class Yttr implements ModInitializer {
 		
 	}
 
+	private Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {
+		ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
+		if (!(is.getItem() instanceof SuitArmorItem)) return ImmutableMultiset.of();
+		SuitArmorItem sai = (SuitArmorItem)is.getItem();
+		Multiset<SuitResource> resourcesAvailable = EnumMultiset.create(SuitResource.class);
+		for (SuitResource sr : SuitResource.VALUES) {
+			resourcesAvailable.add(sr, sai.getResourceAmount(is, sr));
+		}
+		return resourcesAvailable;
+	}
+
+	private Multiset<SuitResource> determineNeededResourcesForFastDive(double distance) {
+		int simulatedTicks = (int)(distance/DIVING_BLOCKS_PER_TICK);
+		int distanceI = (int)distance;
+		Multiset<SuitResource> resourcesNeeded = EnumMultiset.create(SuitResource.class);
+		for (SuitResource sr : SuitResource.VALUES) {
+			resourcesNeeded.add(sr, sr.getConsumptionPerTick(900)*simulatedTicks);
+			resourcesNeeded.add(sr, sr.getConsumptionPerBlock(900)*distanceI);
+		}
+		return resourcesNeeded;
+	}
+
 	private void informCantDive(PacketSender responseSender, String msg) {
 		PacketByteBuf res = PacketByteBufs.create();
 		res.writeString(msg);
@@ -339,6 +373,26 @@ public class Yttr implements ModInitializer {
 			g.write(buf);
 			ServerPlayNetworking.send(player, new Identifier("yttr", "discovered_geyser"), buf);
 		}
+	}
+	
+	public static int calculatePressure(ServerWorld world, int x, int z) {
+		GeysersState gs = GeysersState.get(world);
+		int absoluteMin = 100;
+		int minPressure = 120;
+		int maxPressure = 1000;
+		int pressureGap = maxPressure-minPressure;
+		int maxPressureGap = pressureGap+(minPressure-absoluteMin);
+		int pressureEffect = 0;
+		int falloff = 1536;
+		int falloffSq = falloff*falloff;
+		for (Geyser g : gs.getGeysersInRange(x, z, falloff)) {
+			double distSq = g.pos.getSquaredDistance(x, g.pos.getY(), z, true);
+			if (distSq < falloffSq) {
+				double effect = (falloffSq-distSq)/falloffSq;
+				pressureEffect += pressureGap*effect;
+			}
+		}
+		return maxPressure-Math.min(maxPressureGap, pressureEffect);
 	}
 
 	

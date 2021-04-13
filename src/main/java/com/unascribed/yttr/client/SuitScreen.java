@@ -1,12 +1,13 @@
 package com.unascribed.yttr.client;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.EquipmentSlots;
+import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.SuitArmorItem;
@@ -14,7 +15,9 @@ import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.world.Geyser;
 
 import com.google.common.base.Ascii;
+import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -39,9 +42,12 @@ public class SuitScreen extends Screen {
 	private final List<Geyser> geysers;
 	
 	private float posX, posZ;
+	private int pressure = 120;
+	private int pressureLag = 120;
+	private int lastPressureLag = 120;
 	
 	private boolean fastDiving = false;
-	private int fastDiveIntegrityCost;
+	private Multiset<SuitResource> fdResourceCosts = EnumMultiset.create(SuitResource.class);
 	private float fdStartX, fdStartZ;
 	private float fdTgtX, fdTgtZ;
 	private int fastDiveTime;
@@ -53,6 +59,10 @@ public class SuitScreen extends Screen {
 	private boolean holdingBack;
 	
 	private Geyser mouseOver;
+	
+	private int errorId;
+	private int errorTicks;
+	private String error;
 	
 	public SuitScreen(int x, int z, List<Geyser> geysers) {
 		super(new LiteralText(""));
@@ -69,10 +79,21 @@ public class SuitScreen extends Screen {
 		posX = x+0.5f;
 		posZ = z+0.5f;
 	}
+	
+	public void setPressure(int pressure) {
+		this.pressure = pressure;
+	}
+	
+	public void showError(String msg) {
+		errorId++;
+		errorTicks = 0;
+		error = msg;
+	}
 
-	public void startFastDive(int integrityCost, int x, int z, int time) {
+	public void startFastDive(Multiset<SuitResource> costs, int x, int z, int time) {
 		fastDiving = true;
-		fastDiveIntegrityCost = integrityCost;
+		fdResourceCosts.clear();
+		fdResourceCosts.addAll(costs);
 		fdStartX = posX;
 		fdStartZ = posZ;
 		fdTgtX = x+0.5f;
@@ -131,13 +152,36 @@ public class SuitScreen extends Screen {
 			if (l > 1e-5) {
 				movementX /= l;
 				movementZ /= l;
-				posX += movementX*Yttr.DIVING_BLOCKS_PER_TICK;
-				posZ += movementZ*Yttr.DIVING_BLOCKS_PER_TICK;
+				int moveSpeed = Yttr.DIVING_BLOCKS_PER_TICK;
+				ItemStack is = client.player.getEquippedStack(EquipmentSlot.CHEST);
+				if (is.getItem() instanceof SuitArmorItem) {
+					SuitArmorItem sai = (SuitArmorItem)is.getItem();
+					for (SuitResource sr : SuitResource.VALUES) {
+						moveSpeed /= sr.getSpeedDivider(sai.getResourceAmount(is, sr) <= 0);
+					}
+				}
+				posX += movementX*moveSpeed;
+				posZ += movementZ*moveSpeed;
 			}
 		}
 		if (fastDiving || holdingForward || holdingBack || holdingLeft || holdingRight) {
 			if (ThreadLocalRandom.current().nextInt(fastDiving ? 10 : 20) == 0) {
 				client.getSoundManager().play(new SuitSound(YSounds.DIVE_THRUST, 0.2f));
+			}
+		}
+
+		lastPressureLag = pressureLag;
+		if (pressure != pressureLag) {
+			if (Math.abs(pressure-pressureLag) < 3) {
+				pressureLag = pressure;
+			} else {
+				pressureLag += (pressure-pressureLag)/3;
+			}
+		}
+		
+		if (error != null) {
+			if (errorTicks++ > 40) {
+				error = null;
 			}
 		}
 	}
@@ -148,15 +192,12 @@ public class SuitScreen extends Screen {
 		RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 		if (ticks < 40) return;
 		sr.setUp();
-		sr.drawText(matrices, "integrity", width-70, height-40, delta);
-		sr.drawElement(matrices, "integrity-backdrop", width-96, height-28, 0, 30, 80, 8, delta);
-		
-		sr.drawText(matrices, "distance", 10, height-40, delta);
+		sr.drawText(matrices, "distance", 10, height-78, delta);
 		int dist = 0;
 		if (client.player != null) {
 			dist = (int)MathHelper.sqrt(client.player.getPos().squaredDistanceTo(posX, client.player.getPos().y, posZ));
 		}
-		sr.drawText(matrices, "distance-num", Integer.toString(dist), 10, height-28, delta);
+		sr.drawText(matrices, "distance-num", dist+"m", 10, height-66, delta);
 		
 		float fastDiveT = fastDiving ? (fastDiveTicks+delta)/fastDiveTime : 0;
 		
@@ -165,53 +206,74 @@ public class SuitScreen extends Screen {
 			posZ = fdStartZ+((fdTgtZ-fdStartZ)*fastDiveT);
 		}
 		
-		float integrity = 1;
-		if (client.player != null) {
-			int dmg = 0;
-			int integ = 0;
-			for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
-				ItemStack is = client.player.getEquippedStack(slot);
-				if (is.getItem() instanceof SuitArmorItem) {
-					SuitArmorItem sai = (SuitArmorItem)is.getItem();
-					dmg += sai.getIntegrityDamage(is);
-					integ += sai.getIntegrity(is);
-				}
-			}
-			if (fastDiving) {
-				dmg -= (fastDiveIntegrityCost*(1-fastDiveT));
-			}
-			integrity = 1-(dmg/(float)integ);
+		float pressureA = (lastPressureLag+((pressureLag-lastPressureLag)*delta))/1000f;
+		
+		sr.drawText(matrices, "pressure", 10, height-46, delta);
+		sr.drawElement(matrices, "pressure-notches", 10, height-34, 0, 55, 81, 8, delta);
+		if (!fastDiving) {
+			sr.drawElement(matrices, "pressure-indicator", 9+((int)(pressureA*80)), height-25, 0, 63, 3, 6, delta);
+			sr.drawText(matrices, "pressure-num", pressureLag+"kpa", 10, height-16, delta);
 		}
 		
-		sr.drawElement(matrices, "integrity-bar", width-96, height-28, 0, 38, (int)(80*integrity), 8, delta);
-		int blinkSpeed = -1;
-		if (integrity < 0.1f) {
-			blinkSpeed = 3;
-		} else if (integrity < 0.3f) {
-			blinkSpeed = 6;
-		} else if (integrity < 0.5f) {
-			blinkSpeed = 12;
-		}
-		if (blinkSpeed != -1 && (ticks/blinkSpeed)%4 != 0) {
-			if (!hasDangered) {
-				hasDangered = true;
-				client.getSoundManager().play(new SuitSound(YSounds.DANGER));
+		ItemStack chest = client.player.getEquippedStack(EquipmentSlot.CHEST);
+		if (chest.getItem() instanceof SuitArmorItem) {
+			SuitArmorItem sai = (SuitArmorItem)chest.getItem();
+			int resourceBarY = (height-20)-(SuitResource.VALUES.size()*24);
+			float lowestResource = 1;
+			for (SuitResource res : SuitResource.VALUES) {
+				int len = res.name().length()*6;
+				
+				String name = res.name().toLowerCase(Locale.ROOT);
+				
+				float amt = sai.getResourceAmount(chest, res);
+				if (fastDiving && fdResourceCosts.contains(res)) {
+					amt += fdResourceCosts.count(res)*(1-fastDiveT);
+				}
+				
+				float a = amt/res.getMaximum();
+				lowestResource = Math.min(a, lowestResource);
+				
+				sr.drawText(matrices, name, width-len-16, resourceBarY, delta);
+				sr.drawBar(matrices, name, width-96, resourceBarY+12, a, true, delta);
+				resourceBarY += 24;
 			}
-			sr.drawElement(matrices, "warning", width-27, height-18, 0, 18, 11, 12, delta);
-		} else {
-			hasDangered = false;
+			int blinkSpeed = -1;
+			if (lowestResource < 0.1f) {
+				blinkSpeed = 3;
+			} else if (lowestResource < 0.3f) {
+				blinkSpeed = 6;
+			} else if (lowestResource < 0.5f) {
+				blinkSpeed = 12;
+			}
+			if (blinkSpeed != -1 && (ticks/blinkSpeed)%4 != 0) {
+				if (!hasDangered) {
+					hasDangered = true;
+					client.getSoundManager().play(new SuitSound(YSounds.DANGER));
+				}
+				sr.drawElement(matrices, "warning", width-27, height-18, 0, 18, 11, 12, delta);
+			} else {
+				hasDangered = false;
+			}
 		}
 		
 		
 		int cX = width/2;
 		int cY = height/2;
 		
+		sr.drawText(matrices, "n", cX-2, cY-95, delta);
+		sr.drawText(matrices, "e", cX+90, cY-4, delta);
+		sr.drawText(matrices, "s", cX-2, cY+83, delta);
+		sr.drawText(matrices, "w", cX-95, cY-4, delta);
+		
+		int scale = 50;
+		
 		mouseOver = null;
 		for (Geyser g : geysers) {
 			float dX = posX-g.pos.getX();
 			float dZ = posZ-g.pos.getZ();
-			int x = (int)(cX+(dX/50))-6;
-			int y = (int)(cY+(dZ/50))-6;
+			int x = (int)(cX+(dX/scale))-6;
+			int y = (int)(cY+(dZ/scale))-6;
+			if (x < cX-100 || x > cX+90 || y < cY-95 || y > cY+90) continue;
 			sr.drawElement(matrices, "geyser-"+g.id, x, y, 23, 18, 12, 12, delta);
 			if (!fastDiving && mouseX >= x && mouseX < x+12 &&
 					mouseY >= y && mouseY < y+12) {
@@ -222,10 +284,18 @@ public class SuitScreen extends Screen {
 			}
 		}
 		
-		sr.drawElement(matrices, "map-border", (width-200)/2, (height-200)/2, 80, 0, 200, 200, delta);
+		int cornerX = (width-200)/2;
+		int cornerY = (height-200)/2;
+		sr.drawElement(matrices, "map-border", cornerX, cornerY, 80, 0, 200, 200, delta);
+		sr.drawElement(matrices, "scale-indicator", cornerX+160, cornerY+185, 0, 69, 32, 6, delta);
+		sr.drawText(matrices, "scale-indicator=-num", (scale*32)+"m", cornerX+160, cornerY+173, delta);
 		
 		if (fastDiving) {
 			sr.drawText(matrices, "navigating", 8, 8, delta);
+		}
+		
+		if (error != null) {
+			sr.drawText(matrices, "error-"+errorId, error, (width-(error.length()*6))/2, 8, delta);
 		}
 		
 		sr.tearDown();

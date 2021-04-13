@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.DiverPlayer;
-import com.unascribed.yttr.EquipmentSlots;
+import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
@@ -25,7 +25,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -34,7 +33,6 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 
 @Mixin(ServerPlayerEntity.class)
 public class MixinServerPlayerEntity implements DiverPlayer {
@@ -66,78 +64,56 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 				}
 				self.setPos(self.getPos().x, -12, self.getPos().z);
 			}
-			boolean fail = true;
-			for (EquipmentSlot slot : EquipmentSlots.ARMOR) {
-				ItemStack is = self.getEquippedStack(slot);
-				if (is.getItem() instanceof SuitArmorItem) {
-					SuitArmorItem sai = ((SuitArmorItem)is.getItem());
-					if (sai.getIntegrityDamage(is) < sai.getIntegrity(is)) {
-						fail = false;
+			ItemStack chest = self.getEquippedStack(EquipmentSlot.CHEST);
+			if (Yttr.isWearingFullSuit(self)) {
+				SuitArmorItem sai = (SuitArmorItem)chest.getItem();
+				int pressure = Yttr.calculatePressure(self.getServerWorld(), yttr$divePos.x, yttr$divePos.z);
+				for (SuitResource sr : SuitResource.VALUES) {
+					int amt = sai.getResourceAmount(chest, sr);
+					if (amt <= 0) {
+						sr.applyDepletedEffect(self);
+					} else if (yttr$fastDiveTarget == null) {
+						sai.consumeResource(chest, sr, sr.getConsumptionPerTick(pressure));
 					}
-				} else {
-					fail = true;
-					break;
 				}
+			} else {
+				SuitResource.INTEGRITY.applyDepletedEffect(self);
 			}
 			self.fallDistance = 0;
-			if (fail) {
-				self.damage(new DamageSource("yttr.suit_integrity_failure") {{
-					setUnblockable();
-					setBypassesArmor();
-					setOutOfWorld();
-				}}, self.getHealth()*6);
-			} else {
-				if (yttr$fastDiveTarget != null) {
-					BlockPos pos = yttr$fastDiveTarget;
-					if (yttr$fastDiveTime > 0) {
-						yttr$fastDiveTime--;
-						// teleport prematurely to load chunks
-						self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
-					} else {
-						yttr$isDiving = false;
-						ServerPlayNetworking.send(self, new Identifier("yttr", "dive_end"), PacketByteBufs.empty());
-						self.playSound(YSounds.DIVE_END, 2, 1);
-						double closestDist = Double.POSITIVE_INFINITY;
-						BlockPos closestPad = null;
-						for (BlockPos bp : BlockPos.iterate(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
-							if (self.world.getBlockState(bp).isOf(YBlocks.DIVING_PLATE)) {
-								double dist = bp.getSquaredDistance(pos);
-								if (dist < closestDist && self.world.isAir(bp.up())) {
-									closestPad = bp.toImmutable();
-									closestDist = dist;
-								}
-							}
-						}
-						if (closestPad == null) {
-							self.teleport(pos.getX()+0.5, pos.getY()+4, pos.getZ()+0.5);
-							self.setVelocity(self.world.random.nextGaussian()/2, 1, self.world.random.nextGaussian()/2);
-							self.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(self));
-						} else {
-							self.teleport(closestPad.getX()+0.5, closestPad.getY()+1, closestPad.getZ()+0.5);
-						}
-					}
+			if (yttr$fastDiveTarget != null) {
+				BlockPos pos = yttr$fastDiveTarget;
+				if (yttr$fastDiveTime > 0) {
+					yttr$fastDiveTime--;
+					// teleport prematurely to load chunks
+					self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
 				} else {
-					while (true) {
-						EquipmentSlot slot = EquipmentSlots.ARMOR.get(self.world.random.nextInt(EquipmentSlots.ARMOR.size()));
-						ItemStack piece = self.getEquippedStack(slot);
-						SuitArmorItem sai = ((SuitArmorItem)piece.getItem());
-						if (sai.getIntegrityDamage(piece) < sai.getIntegrity(piece)) {
-							sai.damageIntegrity(piece, 1);
-							break;
-						}
-					}
-					GeysersState gs = GeysersState.get(self.getServerWorld());
-					int cX = (int)(self.getX())/16;
-					int cZ = (int)(self.getZ())/16;
-					for (int cXo = -1; cXo <= 1; cXo++) {
-						for (int cZo = -1; cZo <= 1; cZo++) {
-							ChunkPos pos = new ChunkPos(cX, cZ);
-							for (Geyser g : gs.getGeysersInChunk(pos)) {
-								if (!yttr$knownGeysers.contains(g.id) && g.pos.getSquaredDistance(yttr$divePos.x, g.pos.getY(), yttr$divePos.z, true) < 32*32) {
-									Yttr.discoverGeyser(g.id, self);
-								}
+					yttr$isDiving = false;
+					ServerPlayNetworking.send(self, new Identifier("yttr", "dive_end"), PacketByteBufs.empty());
+					self.playSound(YSounds.DIVE_END, 2, 1);
+					double closestDist = Double.POSITIVE_INFINITY;
+					BlockPos closestPad = null;
+					for (BlockPos bp : BlockPos.iterate(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
+						if (self.world.getBlockState(bp).isOf(YBlocks.DIVING_PLATE)) {
+							double dist = bp.getSquaredDistance(pos);
+							if (dist < closestDist && self.world.isAir(bp.up())) {
+								closestPad = bp.toImmutable();
+								closestDist = dist;
 							}
 						}
+					}
+					if (closestPad == null) {
+						self.teleport(pos.getX()+0.5, pos.getY()+4, pos.getZ()+0.5);
+						self.setVelocity(self.world.random.nextGaussian()/2, 1, self.world.random.nextGaussian()/2);
+						self.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(self));
+					} else {
+						self.teleport(closestPad.getX()+0.5, closestPad.getY()+1, closestPad.getZ()+0.5);
+					}
+				}
+			} else {
+				GeysersState gs = GeysersState.get(self.getServerWorld());
+				for (Geyser g : gs.getGeysersInRange(yttr$divePos.x, yttr$divePos.z, 64)) {
+					if (!yttr$knownGeysers.contains(g.id)) {
+						Yttr.discoverGeyser(g.id, self);
 					}
 				}
 			}

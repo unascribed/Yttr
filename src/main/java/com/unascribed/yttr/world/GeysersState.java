@@ -1,13 +1,17 @@
 package com.unascribed.yttr.world;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.math.Vec2i;
+
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -26,6 +30,7 @@ public class GeysersState extends PersistentState {
 	private final Map<UUID, Geyser> geysersById = Maps.newHashMap();
 	private final Map<BlockPos, Geyser> geysersByPos = Maps.newHashMap();
 	private final Multimap<ChunkPos, Geyser> geysersByChunk = HashMultimap.create();
+	private final Multimap<Vec2i, Geyser> geysersByRegion = HashMultimap.create();
 	
 	public GeysersState() {
 		super("yttr_geysers");
@@ -40,6 +45,7 @@ public class GeysersState extends PersistentState {
 		geysersById.put(g.id, g);
 		geysersByPos.put(g.pos, g);
 		geysersByChunk.put(g.chunkPos, g);
+		geysersByRegion.put(g.regionPos, g);
 		markDirty();
 	}
 	
@@ -55,12 +61,55 @@ public class GeysersState extends PersistentState {
 		return geysersByChunk.get(pos);
 	}
 	
+	public Collection<Geyser> getGeysersInRegion(int x, int z) {
+		return geysersByRegion.get(new Vec2i(x, z));
+	}
+	
+	public Collection<Geyser> getGeysersInRange(int x, int z, int range) {
+		if (range <= 0) return Collections.emptyList();
+		int rangeSq = range*range;
+		int chunkRadius = ((range+15)/16)+1;
+		if (chunkRadius > 16) {
+			Collection<Geyser> out = Collections.emptyList();
+			int regionRadius = ((range+511)/512)+1;
+			int rX = x/512;
+			int rZ = z/512;
+			for (int rXo = -regionRadius; rXo <= regionRadius; rXo++) {
+				for (int rZo = -regionRadius; rZo <= regionRadius; rZo++) {
+					for (Geyser g : getGeysersInRegion(rX+rXo, rZ+rZo)) {
+						if (g.pos.getSquaredDistance(x, g.pos.getY(), z, true) < rangeSq) {
+							if (out.isEmpty()) out = Lists.newArrayList();
+							out.add(g);
+						}
+					}
+				}
+			}
+			return out;
+		} else {
+			Collection<Geyser> out = Collections.emptyList();
+			int cX = x/16;
+			int cZ = z/16;
+			for (int cXo = -chunkRadius; cXo <= chunkRadius; cXo++) {
+				for (int cZo = -chunkRadius; cZo <= chunkRadius; cZo++) {
+					for (Geyser g : getGeysersInChunk(new ChunkPos(cX+cXo, cZ+cZo))) {
+						if (g.pos.getSquaredDistance(x, g.pos.getY(), z, true) < rangeSq) {
+							if (out.isEmpty()) out = Lists.newArrayList();
+							out.add(g);
+						}
+					}
+				}
+			}
+			return out;
+		}
+	}
+	
 	public void removeGeyser(UUID id) {
 		Geyser g = geysersById.remove(id);
 		if (g != null) {
 			geysers.remove(g);
 			geysersByPos.remove(g.pos, g);
 			geysersByChunk.remove(g.chunkPos, g);
+			geysersByRegion.remove(g.regionPos, g);
 		}
 	}
 	
@@ -69,6 +118,8 @@ public class GeysersState extends PersistentState {
 		if (g != null) {
 			geysers.remove(g);
 			geysersById.remove(g.id, g);
+			geysersByChunk.remove(g.chunkPos, g);
+			geysersByRegion.remove(g.regionPos, g);
 		}
 	}
 
@@ -77,6 +128,8 @@ public class GeysersState extends PersistentState {
 		geysers.clear();
 		geysersById.clear();
 		geysersByPos.clear();
+		geysersByChunk.clear();
+		geysersByRegion.clear();
 		ListTag li = tag.getList("Geysers", NbtType.COMPOUND);
 		for (int i = 0; i < li.size(); i++) {
 			addGeyser(Geyser.fromTag(li.getCompound(i)));
@@ -92,7 +145,5 @@ public class GeysersState extends PersistentState {
 		tag.put("Geysers", li);
 		return tag;
 	}
-	
-	
 
 }

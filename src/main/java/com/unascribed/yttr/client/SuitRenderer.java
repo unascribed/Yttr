@@ -20,7 +20,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class SuitRenderer extends DrawableHelper {
+public class SuitRenderer {
 
 	public static final Identifier SUIT_TEX = new Identifier("yttr", "textures/gui/suit.png");
 	public static final int SUIT_TEX_WIDTH = 280;
@@ -137,11 +137,18 @@ public class SuitRenderer extends DrawableHelper {
 		RenderSystem.color4f(r, g, b, a * 0.1f);
 		for (int xo = -1; xo <= 1; xo++) {
 			for (int yo = -1; yo <= 1; yo++) {
-				drawTexture(matrices, x+xo, y+yo, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+				DrawableHelper.drawTexture(matrices, x+xo, y+yo, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 			}
 		}
 		RenderSystem.color4f(r, g, b, a);
-		drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+		DrawableHelper.drawTexture(matrices, x, y, u, v, (int)(w*wA), (int)(h*hA), SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
+	}
+
+	public void drawBar(MatrixStack matrices, String id, int x, int y, float value, boolean flip, float delta) {
+		int w = (int)(80*value);
+		int xo = (flip?80-w:0);
+		drawElement(matrices, id+"-backdrop", x, y, 0, 30, 80, 8, delta);
+		drawElement(matrices, id+"-bar", x+xo, y, xo, 38, w, 8, delta);
 	}
 
 }

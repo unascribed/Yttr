@@ -1,0 +1,15 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"P P",
+		"PCP",
+		"PPP"
+	],
+	"key": {
+		"C": { "item": "minecraft:compass" },
+		"P": { "item": "yttr:armor_plating" }
+	},
+	"result": {
+		"item": "yttr:suit_chestplate"
+	}
+}

@@ -230,6 +230,9 @@ public class YItems {
 	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
 			.fireproof()
 			.group(YItemGroups.MAIN));
+	
+	public static final Item ARMOR_PLATING = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
 
 
 	public static void init() {

@@ -26,6 +26,7 @@
 	"item.yttr.suit_chestplate": "Yttrium Fortress Chestpiece",
 	"item.yttr.suit_leggings": "Yttrium Fortress Leggings",
 	"item.yttr.suit_boots": "Yttrium Fortress Boots",
+	"item.yttr.armor_plating": "Bedrock-Reinforced Armor Plating",
 	
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
@@ -108,6 +109,7 @@
 	"death.attack.yttr.scissors.item": "%s ran with %3$s",
 	"death.attack.yttr.bleeding": "%s bled out",
 	"death.attack.yttr.suit_integrity_failure": "%s was denatured by the planet",
+	"death.attack.yttr.suit_suffocation": "%s ran out of oxygen",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",

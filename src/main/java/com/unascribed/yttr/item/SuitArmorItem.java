@@ -3,12 +3,11 @@ package com.unascribed.yttr.item;
 import java.util.UUID;
 
 import com.unascribed.yttr.FakeEntityAttribute;
+import com.unascribed.yttr.SuitResource;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -24,8 +23,6 @@ public class SuitArmorItem extends ArmorItem {
 	
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 	
-	private static final int DEFAULT_INTEGRITY = 1500;
-
 	public SuitArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
 		super(material, slot, settings);
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
@@ -46,18 +43,23 @@ public class SuitArmorItem extends ArmorItem {
 		return slot == this.slot ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
 	
-	public int getIntegrityDamage(ItemStack stack) {
-		return stack.hasTag() ? stack.getTag().getInt("IntegrityDamage") : 0;
+	public int getResourceAmount(ItemStack stack, SuitResource resource) {
+//		setResourceAmount(stack, resource, resource.getMaximum());
+		CompoundTag resources = stack.getSubTag("Resources");
+		if (resources == null || !resources.contains(resource.name())) return resource.getDefaultAmount();
+		return resources.getInt(resource.name());
 	}
 	
-	public int getIntegrity(ItemStack stack) {
-		return (int)(DEFAULT_INTEGRITY*((EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)/4f)+1));
+	public void setResourceAmount(ItemStack stack, SuitResource resource, int amount) {
+		stack.getOrCreateSubTag("Resources").putInt(resource.name(), amount);
 	}
 	
-	public void damageIntegrity(ItemStack stack, int amount) {
-		if (!stack.hasTag()) stack.setTag(new CompoundTag());
-		int dmg = getIntegrityDamage(stack);
-		stack.getTag().putInt("IntegrityDamage", dmg+amount);
+	public void consumeResource(ItemStack stack, SuitResource resource, int amount) {
+		if (amount <= 0) return;
+		System.out.println("consume "+amount+" "+resource);
+		int amt = getResourceAmount(stack, resource);
+		amt -= amount;
+		setResourceAmount(stack, resource, Math.max(0, amt));
 	}
 
 }
