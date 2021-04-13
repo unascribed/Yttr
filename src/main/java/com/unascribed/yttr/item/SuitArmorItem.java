@@ -60,5 +60,12 @@ public class SuitArmorItem extends ArmorItem {
 		amt -= amount;
 		setResourceAmount(stack, resource, Math.max(0, amt));
 	}
+	
+	public void replenishResource(ItemStack stack, SuitResource resource, int amount) {
+		if (amount <= 0) return;
+		int amt = getResourceAmount(stack, resource);
+		amt += amount;
+		setResourceAmount(stack, resource, Math.min(resource.getMaximum(), amt));
+	}
 
 }

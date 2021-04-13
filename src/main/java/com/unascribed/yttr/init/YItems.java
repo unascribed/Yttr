@@ -60,6 +60,7 @@ public class YItems {
 	public static final BlockItem DOPPER = createNormalBlockItem(YBlocks.DOPPER);
 	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings().group(YItemGroups.MAIN));
 	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
+	public static final BlockItem SUIT_STATION = createNormalBlockItem(YBlocks.SUIT_STATION);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));

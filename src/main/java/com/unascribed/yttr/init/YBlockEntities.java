@@ -14,6 +14,7 @@ import com.unascribed.yttr.block.entity.LampBlockEntity;
 import com.unascribed.yttr.block.entity.LevitationChamberBlockEntity;
 import com.unascribed.yttr.block.entity.PowerMeterBlockEntity;
 import com.unascribed.yttr.block.entity.SqueezedLeavesBlockEntity;
+import com.unascribed.yttr.block.entity.SuitStationBlockEntity;
 import com.unascribed.yttr.block.entity.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.render.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.render.CleavedBlockEntityRenderer;
@@ -48,6 +49,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
 	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);
 	public static final BlockEntityType<FlopperBlockEntity> FLOPPER = create(FlopperBlockEntity::new, YBlocks.FLOPPER);
+	public static final BlockEntityType<SuitStationBlockEntity> SUIT_STATION = create(SuitStationBlockEntity::new, YBlocks.SUIT_STATION);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);
