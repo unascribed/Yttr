@@ -4,6 +4,7 @@ import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.item.SuitArmorItem;
 
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 
@@ -75,7 +77,10 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 
 	@Override
 	public void tick() {
-		if (fuelTime > 0) fuelTime--;
+		if (fuelTime > 0) {
+			if (world.random.nextInt(140) == 0) world.playSound(null, pos, YSounds.SUIT_STATION_CRACKLE, SoundCategory.BLOCKS, 1, 1);
+			fuelTime--;
+		}
 		boolean entireSuitPresent = true;
 		for (int i = 0; i < 4; i++) {
 			if (!(getStack(i).getItem() instanceof SuitArmorItem)) {
@@ -97,6 +102,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 					if (meltedGlowstoneLeft <= 0) {
 						if (getStack(4).getItem() == Items.GLOWSTONE_DUST) {
 							removeStack(4, 1);
+							world.playSound(null, pos, YSounds.SUIT_STATION_MELT, SoundCategory.BLOCKS, 1, 2);
 							meltedGlowstoneLeft = 500;
 						}
 					} else {
@@ -113,23 +119,27 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 					fluxLeft = 100;
 					maxFluxLeft = fluxLeft;
 				}
-				boolean canRepair = true;
-				if (pct < 75) {
-					if (armorPlatingLeft <= 0) {
-						if (getStack(6).getItem() == YItems.ARMOR_PLATING) {
-							removeStack(6, 1);
-							armorPlatingLeft = 305;
+				if (fluxLeft > 0) {
+					boolean canRepair = true;
+					if (pct < 75) {
+						if (armorPlatingLeft <= 0) {
+							if (getStack(6).getItem() == YItems.ARMOR_PLATING) {
+								removeStack(6, 1);
+								world.playSound(null, pos, YSounds.SUIT_STATION_USE_PLATE, SoundCategory.BLOCKS, 1, 1);
+								armorPlatingLeft = 305;
+							}
+						}
+						if (armorPlatingLeft > 0) {
+							armorPlatingLeft--;
+						} else {
+							canRepair = false;
 						}
 					}
-					if (armorPlatingLeft > 0) {
-						armorPlatingLeft--;
-					} else {
-						canRepair = false;
+					if (canRepair) {
+						if (world.random.nextInt(120) == 0) world.playSound(null, pos, YSounds.SUIT_STATION_WELD, SoundCategory.BLOCKS, 0.3f, 0.8f+((world.random.nextFloat()*0.4f)));
+						fluxLeft--;
+						sai.replenishResource(chest, SuitResource.INTEGRITY, 50);
 					}
-				}
-				if (fluxLeft > 0 && canRepair) {
-					fluxLeft--;
-					sai.replenishResource(chest, SuitResource.INTEGRITY, 50);
 				}
 			}
 		}

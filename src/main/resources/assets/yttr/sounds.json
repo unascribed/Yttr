@@ -194,5 +194,27 @@
 	},
 	"dive_end": {
 		"sounds": [ "yttr:dive_end" ]
+	},
+	"suit_station_crackle": {
+		"sounds": [
+			"minecraft:block/furnace/fire_crackle1",
+			"minecraft:block/furnace/fire_crackle2",
+			"minecraft:block/furnace/fire_crackle3",
+			"minecraft:block/furnace/fire_crackle4",
+			"minecraft:block/furnace/fire_crackle5"
+		],
+		"subtitle": "subtitles.yttr.suit_station_crackle"
+	},
+	"suit_station_weld": {
+		"sounds": [ "yttr:weld1", "yttr:weld2" ],
+		"subtitle": "subtitles.yttr.suit_station_weld"
+	},
+	"suit_station_melt": {
+		"sounds": [ "yttr:melt_glowstone" ],
+		"subtitle": "subtitles.yttr.suit_station_melt"
+	},
+	"suit_station_use_plate": {
+		"sounds": [ "yttr:use_plate" ],
+		"subtitle": "subtitles.yttr.suit_station_use_plate"
 	}
 }

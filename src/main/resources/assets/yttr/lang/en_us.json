@@ -101,6 +101,11 @@
 	"subtitles.yttr.centrifuge": "Centrifuge clangs",
 	"subtitles.yttr.centrifuge_crackle": "Centrifuge crackles",
 	"subtitles.yttr.honk": "Honk",
+	"subtitles.yttr.equip_suit": "Diving Suit equips",
+	"subtitles.yttr.suit_station_crackle": "Suit Station crackles",
+	"subtitles.yttr.suit_station_weld": "Suit Station welds",
+	"subtitles.yttr.suit_station_melt": "Suit Station melts",
+	"subtitles.yttr.suit_station_use_plate": "Suit Station clangs",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
