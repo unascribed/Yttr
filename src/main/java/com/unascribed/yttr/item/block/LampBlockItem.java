@@ -2,7 +2,7 @@ package com.unascribed.yttr.item.block;
 
 import java.util.Locale;
 
-import com.unascribed.yttr.LampColor;
+import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.base.Enums;
 

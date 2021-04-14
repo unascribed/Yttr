@@ -2,7 +2,7 @@ package com.unascribed.yttr.client.util;
 
 import java.io.IOException;
 
-import com.unascribed.yttr.repackage.de.androidpit.colorthief.ColorThiefMC;
+import com.unascribed.yttr.util.math.colorthief.ColorThiefMC;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

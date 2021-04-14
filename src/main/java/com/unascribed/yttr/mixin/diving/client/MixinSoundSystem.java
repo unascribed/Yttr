@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.client.SuitScreen;
-import com.unascribed.yttr.client.SuitSound;
+import com.unascribed.yttr.client.screen.SuitScreen;
+import com.unascribed.yttr.client.suit.SuitSound;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;

@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.Attackable;
-import com.unascribed.yttr.NBTUtils;
-import com.unascribed.yttr.block.entity.CleavedBlockEntity;
+import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.math.partitioner.DEdge;
-import com.unascribed.yttr.math.partitioner.Plane;
-import com.unascribed.yttr.math.partitioner.Polygon;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
+import com.unascribed.yttr.util.Attackable;
+import com.unascribed.yttr.util.NBTUtils;
+import com.unascribed.yttr.util.math.partitioner.DEdge;
+import com.unascribed.yttr.util.math.partitioner.Plane;
+import com.unascribed.yttr.util.math.partitioner.Polygon;
 
 import com.google.common.collect.Lists;
 

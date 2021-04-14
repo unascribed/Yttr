@@ -9,13 +9,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.unascribed.yttr.DiverPlayer;
-import com.unascribed.yttr.SuitResource;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.math.Vec2i;
+import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 

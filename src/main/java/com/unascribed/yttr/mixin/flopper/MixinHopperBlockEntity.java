@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.block.FlopperBlock;
-import com.unascribed.yttr.block.entity.FlopperBlockEntity;
+import com.unascribed.yttr.block.mechanism.FlopperBlock;
+import com.unascribed.yttr.block.mechanism.FlopperBlockEntity;
 
 @Mixin(HopperBlockEntity.class)
 public class MixinHopperBlockEntity {

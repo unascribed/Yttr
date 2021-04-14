@@ -2,7 +2,7 @@ package com.unascribed.yttr.world;
 
 import java.util.UUID;
 
-import com.unascribed.yttr.math.Vec2i;
+import com.unascribed.yttr.util.math.Vec2i;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.math.Vec2i;
+import com.unascribed.yttr.util.math.Vec2i;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;

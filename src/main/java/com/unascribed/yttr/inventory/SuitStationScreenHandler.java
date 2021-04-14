@@ -1,7 +1,7 @@
 package com.unascribed.yttr.inventory;
 
 import com.mojang.datafixers.util.Pair;
-import com.unascribed.yttr.block.entity.SuitStationBlockEntity;
+import com.unascribed.yttr.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YScreenTypes;
 import com.unascribed.yttr.init.YTags;

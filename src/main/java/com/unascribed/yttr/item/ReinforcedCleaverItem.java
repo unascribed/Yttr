@@ -2,8 +2,8 @@ package com.unascribed.yttr.item;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.EquipmentSlots;
 import com.unascribed.yttr.init.YStatusEffects;
+import com.unascribed.yttr.util.EquipmentSlots;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;

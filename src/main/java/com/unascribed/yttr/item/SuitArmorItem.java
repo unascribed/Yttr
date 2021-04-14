@@ -2,8 +2,8 @@ package com.unascribed.yttr.item;
 
 import java.util.UUID;
 
-import com.unascribed.yttr.FakeEntityAttribute;
-import com.unascribed.yttr.SuitResource;
+import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.util.FakeEntityAttribute;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;

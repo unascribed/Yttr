@@ -1,7 +1,7 @@
 package com.unascribed.yttr.init;
 
-import com.unascribed.yttr.client.CentrifugeScreen;
-import com.unascribed.yttr.client.SuitStationScreen;
+import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
+import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
 

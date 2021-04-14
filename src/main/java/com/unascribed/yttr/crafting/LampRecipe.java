@@ -2,9 +2,9 @@ package com.unascribed.yttr.crafting;
 
 import java.util.Locale;
 
-import com.unascribed.yttr.LampColor;
-import com.unascribed.yttr.block.LampBlock;
+import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.item.block.LampBlockItem;
+import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 
 import com.google.common.base.Enums;

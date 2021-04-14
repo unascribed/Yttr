@@ -3,7 +3,6 @@ package com.unascribed.yttr.init;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.annotate.ConstantColor;
 import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.HornItem;
@@ -15,6 +14,7 @@ import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.SwallowableItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
+import com.unascribed.yttr.util.annotate.ConstantColor;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;

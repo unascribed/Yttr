@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.EffectorWorld;
 import com.unascribed.yttr.init.YTags;
+import com.unascribed.yttr.mixinsupport.EffectorWorld;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

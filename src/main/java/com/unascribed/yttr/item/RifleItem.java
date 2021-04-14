@@ -2,11 +2,11 @@ package com.unascribed.yttr.item;
 
 import java.util.Locale;
 
-import com.unascribed.yttr.Attackable;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.mechanics.rifle.RifleMode;
+import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
-import com.unascribed.yttr.rifle.RifleMode;
-import com.unascribed.yttr.rifle.Shootable;
+import com.unascribed.yttr.util.Attackable;
 
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;

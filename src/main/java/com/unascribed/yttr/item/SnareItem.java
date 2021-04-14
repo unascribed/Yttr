@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.client.SnareEntityTextureCache;
+import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;

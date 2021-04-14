@@ -22,8 +22,12 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.math.Vec2i;
+import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
+import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.util.Attackable;
+import com.unascribed.yttr.util.EquipmentSlots;
+import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
