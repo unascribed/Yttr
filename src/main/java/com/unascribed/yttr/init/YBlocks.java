@@ -19,6 +19,7 @@ import com.unascribed.yttr.block.SqueezeLogBlock;
 import com.unascribed.yttr.block.SqueezeSaplingBlock;
 import com.unascribed.yttr.block.SqueezedLeavesBlock;
 import com.unascribed.yttr.block.SuitStationBlock;
+import com.unascribed.yttr.block.TableBlock;
 import com.unascribed.yttr.block.VoidFluidBlock;
 import com.unascribed.yttr.block.VoidGeyserBlock;
 import com.unascribed.yttr.block.WallLampBlock;
@@ -188,6 +189,8 @@ public class YBlocks {
 	public static final DivingPlateBlock DIVING_PLATE = new DivingPlateBlock(METALLIC_SETTINGS);
 	
 	public static final SuitStationBlock SUIT_STATION = new SuitStationBlock(METALLIC_SETTINGS);
+	
+	public static final TableBlock TABLE = new TableBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
