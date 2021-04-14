@@ -1,0 +1,16 @@
+{
+	"type": "yttr:lamp_crafting",
+	"pattern": [
+		"YYY",
+		"CCC",
+		"YFY"
+	],
+	"key": {
+		"Y": { "item": "yttr:yttrium_ingot" },
+		"C": { "item": "yttr:chute" },
+		"F": { "item": "minecraft:furnace" }
+	},
+	"result": {
+		"item": "yttr:suit_station"
+	}
+}

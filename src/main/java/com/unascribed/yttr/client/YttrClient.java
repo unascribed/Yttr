@@ -217,6 +217,7 @@ public class YttrClient implements ClientModInitializer {
 			}
 		});
 		ScreenRegistry.register(YScreenTypes.CENTRIFUGE, CentrifugeScreen::new);
+		ScreenRegistry.register(YScreenTypes.SUIT_STATION, SuitStationScreen::new);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(RIFLE_BASE_MODEL);
 			out.accept(RIFLE_CHAMBER_MODEL);
@@ -404,7 +405,7 @@ public class YttrClient implements ClientModInitializer {
 						float amt = sai.getResourceAmount(chest, res);
 						float a = amt/res.getMaximum();
 						if (a < 0.5f) {
-							diveReadyRenderer.drawElement(matrices, "warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+							diveReadyRenderer.drawElement(matrices, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
 						}
 						if (a <= 0 && res != SuitResource.FUEL) {
 							text = "hold sneak to die";

@@ -241,7 +241,7 @@ public class SuitScreen extends Screen {
 				lowestResource = Math.min(a, lowestResource);
 				
 				if (a < 0.5f) {
-					sr.drawElement(matrices, "warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
+					sr.drawElement(matrices, name+"-warning", width-96, resourceBarY-2, 0, 18, 11, 12, delta);
 				}
 				
 				sr.drawText(matrices, name, width-len-16, resourceBarY, delta);
