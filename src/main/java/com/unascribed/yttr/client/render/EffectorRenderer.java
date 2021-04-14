@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.mixinsupport.EffectorWorld;
 import com.unascribed.yttr.util.math.Interp;
@@ -18,7 +19,6 @@ import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -41,10 +41,8 @@ import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
-public class EffectorRenderer {
+public class EffectorRenderer extends IHasAClient {
 
-	private static final MinecraftClient mc = MinecraftClient.getInstance();
-	
 	public static final List<EffectorHole> effectorHoles = Lists.newArrayList();
 	
 	public static void render(WorldRenderContext wrc) {

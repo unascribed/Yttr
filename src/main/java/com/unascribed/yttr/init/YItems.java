@@ -166,6 +166,7 @@ public class YItems {
 			.group(YItemGroups.MAIN));
 	
 	public static final EffectorItem EFFECTOR = new EffectorItem(new Item.Settings()
+			.maxCount(1)
 			.group(YItemGroups.MAIN));
 	
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings()
