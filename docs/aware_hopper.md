@@ -16,6 +16,12 @@ any side of the Aware Hopper that isn't the top or the side its output is pointi
 is to point the Aware Hopper to the side and put a normal Hopper underneath it; alternatively, you
 can use another mod's pipes or Yttr's own [Flopper](../flopper) to extract from a non-output side.
 
+*(0.4.0)*
+Remainder items that are still valid inputs for their slot will remain in the crafting grid instead
+of being kicked out to the remainder buffer to be piped out. This means that recipes involving
+tools that take damage, or similar situations, don't need a loop piping remainder items back into
+the Aware Hopper.
+
 If the Aware Hopper learns a new recipe while there are still items in its buffer, it will dump the
 remaining inputs into an alternate storage that can be extracted from, in order to avoid clogging
 the buffer.
@@ -31,10 +37,6 @@ control your item input.
 Once an Aware Hopper has all necessary inputs to craft something, it will take 5 seconds to craft,
 followed by a 1 second "rest" if it still has enough ingredients. It cannot craft while there is
 anything in its output slot, so make sure to extract the output or point it at a chest.
-
-*Note:* As of Yttr 0.3.4, the Aware Hopper has a debug GUI accessed by right-clicking with an empty
-hand when it's not wearing a pumpkin. This GUI will not be present once the Aware Hopper is
-considered stable.
 
 ## Video
 <video src="../img/aware_hopper.mp4" controls></video>

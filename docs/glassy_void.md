@@ -76,3 +76,22 @@ harvested and retrieved without Silk Touch.
 		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
 	</div>
 </div>
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Diving Helmet
+<div class="recipe" title="Namespaced ID: yttr:suit_helmet">
+	<a href="../diving" class="output">
+		<img title="Diving Helmet" src="../img/item/suit_helmet.png"/>
+	</a>
+	<div class="input">
+		<a href="../diving"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
+		<a href="../diving"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
+		<a href="../diving"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
+		<a href="../diving"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
+		<a href="#"><img title="Glassy Void" src="../img/item/glassy_void.png"/></a>
+		<a href="../diving"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
+		<a href="#"><img src="../img/item/air.png"/></a>
+		<a href="../fixture"><img title="[any fixture]" src="../img/item/fixture_cycle_all.png"/></a>
+		<a href="#"><img src="../img/item/air.png"/></a>
+	</div>
+</div>
+The color of the fixture decides the color of the HUD.

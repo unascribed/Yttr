@@ -53,3 +53,46 @@ just barely sufficient to allow them to leave the block space of the stair.
 		<a href="https://minecraft.fandom.com/wiki/Iron_Ingot"><img title="Iron Ingot" src="../img/item/iron_ingot.png"/></a>
 	</div>
 </div>
+
+## Recipe Usages
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Flopper
+<div class="recipe" title="Namespaced ID: yttr:flopper">
+	<a href="../flopper" class="output">
+		<img title="Flopper" src="../img/item/flopper.png"/>
+	</a>
+	<div class="input small">
+		<a href="https://minecraft.fandom.com/wiki/Hopper"><img title="Hopper" src="../img/item/hopper.png"/></a>
+		<div class="blank"></div>
+		<a href="#"><img title="Chute" src="../img/item/chute.png"/></a>
+	</div>
+</div>
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Dopper
+<div class="recipe" title="Namespaced ID: yttr:dopper">
+	<a href="../dopper" class="output">
+		<img title="Dopper" src="../img/item/dopper.png"/>
+	</a>
+	<div class="input small">
+		<a href="https://minecraft.fandom.com/wiki/Hopper"><img title="Hopper" src="../img/item/hopper.png"/></a>
+		<a href="#"><img title="Chute" src="../img/item/chute.png"/></a>
+	</div>
+</div>
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Suit Station
+<div class="recipe" title="Namespaced ID: yttr:suit_station">
+	<a href="../diving" class="output">
+		<img title="Suit Station" src="../img/item/suit_station.png"/>
+	</a>
+	<div class="input">
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Chute" src="../img/item/chute.png"/></a>
+		<a href="#"><img title="Chute" src="../img/item/chute.png"/></a>
+		<a href="#"><img title="Chute" src="../img/item/chute.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Furnace"><img title="Furnace" src="../img/item/furnace.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+	</div>
+</div>

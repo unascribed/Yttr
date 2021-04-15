@@ -1,7 +1,7 @@
 <img class="infobox" src="../img/item/skeletal_sorter.png">
 
 <span class="aside">Namespaced ID: <span>yttr:skeletal_sorter</span></span><br/>
-# Skeletal Sorter
+# Skeletal Sorter *(0.4.0)*
 The Skeletal Sorter is a slightly-less-horrifying abomination than the Aware Hopper. It can separate
 a certain item out of an unsorted input, including items that cannot be stacked.
 

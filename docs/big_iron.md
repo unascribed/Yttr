@@ -8,7 +8,7 @@ one item in 1.16, like they could in Forge 1.12. It means we get to have an item
 so it's not all bad.
 
 It's produced by smelting Gadolinite in a furnace. Blasting Gadolinite in a blast furnace produces
-[Yttrium](/yttrium) instead.
+[Yttrium](../yttrium) instead.
 
 Big Iron gives you an alternative use for Gadolinite if you already have enough Yttrium.
 

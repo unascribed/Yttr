@@ -78,3 +78,17 @@ The snares contain a Zombie and an Enderman.
 	</div>
 </div>
 The snare contains a Shulker bullet.
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Skeletal Sorter
+<div class="recipe horrible" title="Namespaced ID: yttr:skeletal_sorter_left_handed &amp; yttr:skeletal_sorter_right_handed">
+	<a href="../skeletal_sorter" class="output">
+		<img title="Skeletal Sorter" src="../img/item/skeletal_sorter.png"/>
+	</a>
+	<div class="input small">
+		<a href="#"><img title="Snare (Skeleton)" src="../img/item/snare_skeleton.png"/></a>
+		<div class="blank"></div>
+		<a href="../table"><img title="Table" src="../img/item/table.png"/></a>
+	</div>
+</div>
+
+The snare contains a Skeleton. The skeleton's handedness (right or left) will be remembered.

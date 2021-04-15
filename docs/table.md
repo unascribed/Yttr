@@ -1,7 +1,7 @@
 <img class="infobox" src="../img/item/table.png">
 
 <span class="aside">Namespaced ID: <span>yttr:table</span></span><br/>
-# Table
+# Table *(0.4.0)*
 A simple wooden table.
 
 ## Recipe

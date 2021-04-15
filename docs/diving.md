@@ -1,4 +1,4 @@
-# Void Diving
+# Void Diving *(0.4.0)*
 
 Void Diving is a form of fast travel between Void Geysers. With Void Diving, you can move up to
 400m/s to any discovered location. You can also explore in the Void at 80m/s for geysers you've not
@@ -155,7 +155,7 @@ save you, and no way to retrieve your items...
 		<a href="../glassy_void"><img title="Glassy Void" src="../img/item/glassy_void.png"/></a>
 		<a href="#"><img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/></a>
 		<a href="#"><img src="../img/item/air.png"/></a>
-		<a href="../yttrium"><img title="[any fixture]" src="../img/item/fixture_cycle_all.png"/></a>
+		<a href="../fixture"><img title="[any fixture]" src="../img/item/fixture_cycle_all.png"/></a>
 		<a href="#"><img src="../img/item/air.png"/></a>
 	</div>
 </div>
