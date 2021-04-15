@@ -164,6 +164,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		registerFluidRenderers();
 		ArmorRenderingRegistry.registerSimpleTexture(new Identifier("yttr", "suit"),
 				YItems.SUIT_HELMET, YItems.SUIT_CHESTPLATE, YItems.SUIT_LEGGINGS, YItems.SUIT_BOOTS);
+		ArmorRenderingRegistry.registerSimpleTexture(new Identifier("yttr", "goggles"),
+				YItems.GOGGLES);
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))

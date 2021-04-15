@@ -33,8 +33,8 @@ import net.minecraft.world.RaycastContext.ShapeType;
 
 public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity implements BlockEntityClientSerializable {
 
-	public static final int THINK_TIME = 80;
-	public static final int STOW_TIME = 30;
+	public static final int THINK_TIME = 42;
+	public static final int STOW_TIME = 18;
 	
 	public ItemStack heldItemMainHand = ItemStack.EMPTY;
 	public ItemStack heldItemOffHand = ItemStack.EMPTY;
@@ -120,7 +120,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 			}
 		} else if (thinkTicks > 0) {
 			if (thinkTicks < THINK_TIME) {
-				if (thinkTicks < 20) {
+				if (thinkTicks < 10) {
 					newAccessingInventory = facing;
 				} else {
 					newAccessingInventory = null;
@@ -128,7 +128,14 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 				thinkTicks++;
 			} else {
 				thinkTicks = 0;
-				if (ItemStack.areItemsEqualIgnoreDamage(itemFrame.getHeldItemStack(), heldItemMainHand)) {
+				ItemStack templ = itemFrame.getHeldItemStack();
+				boolean matches;
+				if (getCachedState().get(SkeletalSorterBlock.ENGOGGLED)) {
+					matches = ItemStack.areItemsEqual(templ, heldItemMainHand) && ItemStack.areTagsEqual(templ, heldItemMainHand);
+				} else {
+					matches = ItemStack.areItemsEqualIgnoreDamage(templ, heldItemMainHand);
+				}
+				if (matches) {
 					stowing = Hand.MAIN_HAND;
 					stowTicks = 1;
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 1);

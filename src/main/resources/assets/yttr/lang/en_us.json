@@ -27,11 +27,19 @@
 	"item.yttr.suit_leggings": "Diving Leggings",
 	"item.yttr.suit_boots": "Diving Boots",
 	"item.yttr.armor_plating": "Bedrock-Reinforced Armor Plating",
+	"item.yttr.goggles": "F3 Goggles",
 	
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
 	
 	"item.yttr.effector.tip.1": "§7A portable hole-making device.",
+	
+	"item.yttr.goggles.tip.1": "§7§oFine Feature Focusing§7 Goggles",
+	"item.yttr.goggles.tip.2": "§5§oReveals§5 details to mobs that",
+	"item.yttr.goggles.tip.3": "§5normally only players can see.",
+	"item.yttr.goggles.tip.4": "",
+	"item.yttr.goggles.tip.5": "§7(Equip a Skeletal Sorter with",
+	"item.yttr.goggles.tip.6": "§7these to filter by NBT.)",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Yttrium Block",

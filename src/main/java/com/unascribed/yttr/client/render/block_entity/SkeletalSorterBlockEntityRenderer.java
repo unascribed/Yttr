@@ -27,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<SkeletalSorterBlockEntity> {
 
 	private static final Identifier SKELETON_TEXTURE = new Identifier("minecraft", "textures/entity/skeleton/skeleton.png");
+	private static final Identifier GOGGLES_TEXTURE = new Identifier("yttr", "textures/models/armor/goggles_layer_1.png");
 	
 	private final SkeletonEntityModel<SkeletonEntity> skeletonModel = new SkeletonEntityModel<>();
 	
@@ -58,19 +59,25 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 		matrices.translate(0, -0.5, 0);
 		matrices.translate(0, 0, -1/16f);
 		skeletonModel.child = false;
+		
 		skeletonModel.torso.visible = true;
 		skeletonModel.torso.pivotX = -3;
 		skeletonModel.torso.pivotY = 13.9f;
 		skeletonModel.torso.pivotZ = -6;
 		skeletonModel.torso.pitch = (float)Math.PI/2;
 		skeletonModel.torso.yaw = (float)Math.PI/6;
+		
 		skeletonModel.leftLeg.visible = false;
 		skeletonModel.rightLeg.visible = false;
+		
+		skeletonModel.rightArm.visible = true;
 		skeletonModel.rightArm.pivotY = -1;
 		skeletonModel.rightArm.pivotX = -6;
 		skeletonModel.rightArm.pivotZ = -6;
 		skeletonModel.rightArm.pitch = -(float)Math.PI/2;
 		skeletonModel.rightArm.yaw = 0;
+		
+		skeletonModel.leftArm.visible = true;
 		skeletonModel.leftArm.pivotY = -1;
 		skeletonModel.leftArm.pivotX = 6;
 		skeletonModel.leftArm.pivotZ = -6;
@@ -121,6 +128,17 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 		skeletonModel.rightArm.pitch += -MathHelper.cos(t)/40;
 		
 		skeletonModel.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(SKELETON_TEXTURE)), light, overlay, 1, 1, 1, 1);
+		
+		if (entity.getCachedState().get(SkeletalSorterBlock.ENGOGGLED)) {
+			matrices.push();
+			matrices.scale(1.25f, 1.25f, 1.25f);
+			matrices.translate(0, 1/16f, 0);
+			skeletonModel.torso.visible = false;
+			skeletonModel.leftArm.visible = false;
+			skeletonModel.rightArm.visible = false;
+			skeletonModel.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(GOGGLES_TEXTURE)), light, overlay, 1, 1, 1, 1);
+			matrices.pop();
+		}
 		
 		MinecraftClient mc = MinecraftClient.getInstance();
 		

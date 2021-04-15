@@ -19,12 +19,17 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
+import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -49,15 +54,17 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 	public static final EnumProperty<StateableArm> MAIN_HAND = EnumProperty.of("main_hand", StateableArm.class);
+	public static final BooleanProperty ENGOGGLED = BooleanProperty.of("engoggled");
 	
 	public SkeletalSorterBlock(Settings settings) {
 		super(settings);
+		setDefaultState(getDefaultState().with(ENGOGGLED, false));
 	}
 	
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(FACING, MAIN_HAND);
+		builder.add(FACING, MAIN_HAND, ENGOGGLED);
 	}
 	
 	private ItemStack getDrop(BlockState state) {
@@ -101,6 +108,34 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
 		super.afterBreak(world, player, pos, state, blockEntity, stack);
 		world.playSound(null, pos, YSounds.SKELETAL_SORTER_HURT, SoundCategory.BLOCKS, 1, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
+	}
+	
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		ItemStack stack = player.getStackInHand(hand);
+		if (state.get(ENGOGGLED)) {
+			if (player.abilities.creativeMode) {
+				// always succeed
+			} else if (stack.isEmpty()) {
+				player.setStackInHand(hand, new ItemStack(YItems.GOGGLES));
+			} else {
+				return ActionResult.CONSUME;
+			}
+			world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1.2f);
+			world.setBlockState(pos, state.with(ENGOGGLED, false));
+			return ActionResult.SUCCESS;
+		} else {
+			if (stack.getItem() == YItems.GOGGLES) {
+				if (!player.abilities.creativeMode) {
+					stack.decrement(1);
+					player.setStackInHand(hand, stack);
+				}
+				world.setBlockState(pos, state.with(ENGOGGLED, true));
+				world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1);
+				return ActionResult.SUCCESS;
+			}
+		}
+		return ActionResult.PASS;
 	}
 	
 }

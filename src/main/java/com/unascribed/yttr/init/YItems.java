@@ -17,10 +17,16 @@ import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.item.block.SkeletalSorterBlockItem;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.BlockItem;
@@ -32,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -243,6 +250,58 @@ public class YItems {
 	
 	public static final Item ARMOR_PLATING = new Item(new Item.Settings()
 			.group(YItemGroups.MAIN));
+	
+	public static final ArmorItem GOGGLES = new ArmorItem(new ArmorMaterial() {
+		
+		@Override
+		public float getToughness() {
+			return 0;
+		}
+		
+		@Override
+		public Ingredient getRepairIngredient() {
+			return Ingredient.ofItems(YItems.YTTRIUM_NUGGET);
+		}
+		
+		@Override
+		public int getProtectionAmount(EquipmentSlot slot) {
+			return 0;
+		}
+		
+		@Override
+		public String getName() {
+			return "yttr_goggles";
+		}
+		
+		@Override
+		public float getKnockbackResistance() {
+			return 0;
+		}
+		
+		@Override
+		public SoundEvent getEquipSound() {
+			return SoundEvents.ITEM_ARMOR_EQUIP_IRON;
+		}
+		
+		@Override
+		public int getEnchantability() {
+			return 0;
+		}
+		
+		@Override
+		public int getDurability(EquipmentSlot slot) {
+			return 32;
+		}
+	}, EquipmentSlot.HEAD, new Item.Settings()
+			.group(YItemGroups.MAIN)) {
+
+
+		@Override
+		public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+			return ImmutableMultimap.of();
+		}
+		
+	};
 
 
 	public static void init() {
