@@ -17,6 +17,12 @@ the one in the item frame will be placed in the right chest, and anything that d
 be placed into the left chest. For left-handed skeletons, this is inverted, with matches going into
 the left chest.
 
+*(0.4.1)*
+Normally, items are just matched by their type; e.g. two stone swords with different amounts of
+damage, or two differently named pieces of cobblestone, will both be sorted the same. You may craft
+a pair of Fine Feature Focusing Goggles (F3 Goggles for short) and equip the Skeletal Sorter with
+them to do exact NBT-inclusive matches instead.
+
 Every sorting operation can move up to 8 items.
 
 ## Screenshots
@@ -26,8 +32,12 @@ An example right-handed sorter. Any diamonds found in the open chest will be pla
 marked in green (the right chest), and anything else found in the open chest will be placed into
 the chest marked in red (the left chest).
 
+![](../img/sorter2.png)
+
+The previous sorter, equipped with F3 Goggles.
+
 ## Video
-<video src="../img/sorter.mp4" controls></video>
+<video src="../img/sorter.mp4?v=2" controls></video>
 
 ## Recipe
 
@@ -44,3 +54,24 @@ the chest marked in red (the left chest).
 </div>
 
 The snare contains a Skeleton. The skeleton's handedness (right or left) will be remembered.
+
+
+
+<span class="aside">Namespaced ID: <span>yttr:goggles</span></span>
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> F3 Goggles
+<div class="recipe" title="Namespaced ID: yttr:goggles">
+	<a href="#" class="output">
+		<img title="F3 Goggles" src="../img/item/goggles.png"/>
+	</a>
+	<div class="input">
+		<a href="../yttrium"><img title="Yttrium Nugget" src="../img/item/yttrium_nugget.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Gold_Ingot"><img title="Gold Ingot" src="../img/item/gold_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Nugget" src="../img/item/yttrium_nugget.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Nugget" src="../img/item/yttrium_nugget.png"/></a>
+		<a href="#"><img src="../img/item/air.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Nugget" src="../img/item/yttrium_nugget.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Ender_Pearl"><img title="Ender Pearl" src="../img/item/ender_pearl.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Gold_Ingot"><img title="Gold Ingot" src="../img/item/gold_ingot.png"/></a>
+		<a href="https://minecraft.fandom.com/wiki/Ender_Pearl"><img title="Ender Pearl" src="../img/item/ender_pearl.png"/></a>
+	</div>
+</div>

@@ -47,7 +47,7 @@ plugins:
     - search
 extra:
     logo: img/logo.png
-    version: "0.4.0"
+    version: "0.4.1"
     article_nav_top: false
     article_nav_bottom: false
 extra_css:
