@@ -202,7 +202,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 		RaycastContext ctx = new RaycastContext(getHeadPos(), frame.getBoundingBox().getCenter(), ShapeType.VISUAL, FluidHandling.NONE, frame) {
 			@Override
 			public VoxelShape getBlockShape(BlockState state, BlockView world, BlockPos pos) {
-				if (state.shouldBlockVision(world, pos)) return super.getBlockShape(state, world, pos);
+				if (!state.isTranslucent(world, pos)) return super.getBlockShape(state, world, pos);
 				return VoxelShapes.empty();
 			}
 		};
@@ -224,15 +224,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 	}
 
 	private Inventory obtainInventory(Direction dir) {
-		boolean validState = false;
 		BlockPos pos = this.pos.offset(dir);
-		BlockState bs = world.getBlockState(pos);
-		if (bs.getBlock() instanceof ChestBlock && bs.contains(ChestBlock.FACING) && bs.get(ChestBlock.FACING).getOpposite() == dir) {
-			validState = true;
-		} else {
-			validState = true;
-		}
-		if (!validState) return null;
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof Inventory) {
 			return (Inventory)be;

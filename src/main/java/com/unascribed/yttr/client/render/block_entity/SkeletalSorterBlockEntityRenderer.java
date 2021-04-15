@@ -60,7 +60,7 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 		skeletonModel.child = false;
 		skeletonModel.torso.visible = true;
 		skeletonModel.torso.pivotX = -3;
-		skeletonModel.torso.pivotY = 12;
+		skeletonModel.torso.pivotY = 13.9f;
 		skeletonModel.torso.pivotZ = -6;
 		skeletonModel.torso.pitch = (float)Math.PI/2;
 		skeletonModel.torso.yaw = (float)Math.PI/6;

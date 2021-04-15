@@ -2,7 +2,7 @@
 
 <span class="aside">Namespaced ID: <span>yttr:aware_hopper</span></span><br/>
 # Aware Hopper
-The Aware Hopper is a horrifying monstrosity, consisting of an enchanted Enderman and Zombie bound
+The Aware Hopper is a horrifying abomination, consisting of an enchanted Enderman and Zombie bound
 together along with a Hopper and Crafting Table, that happens to be able to craft items.
 
 Should you make this thing and place it in the world, you'll notice it watches you when you are

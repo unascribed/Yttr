@@ -36,3 +36,22 @@ to create [Glassy Void](../glassy_void), or smithed onto any damageable item to 
 		<a href="#"><img title="Bedrock Shard" src="../img/item/bedrock_shard.png"/></a>
 	</div>
 </div>
+
+### <img class="symbolic" title="Crafting Table" src="../img/symbolic/crafting_table.png"/> Bedrock-Reinforced Armor Plating
+<div class="recipe" title="Namespaced ID: yttr:armor_plating">
+	<a href="../void_diving" class="output">
+		<img title="Bedrock-Reinforced Armor Plating" src="../img/item/armor_plating.png"/>
+		<span class="quantity">4</span>
+	</a>
+	<div class="input">
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="#"><img title="Bedrock Shard" src="../img/item/bedrock_shard.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+		<a href="../yttrium"><img title="Yttrium Ingot" src="../img/item/yttrium_ingot.png"/></a>
+	</div>
+</div>
