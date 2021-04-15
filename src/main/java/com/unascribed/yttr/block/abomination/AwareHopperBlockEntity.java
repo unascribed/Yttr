@@ -35,6 +35,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
@@ -48,8 +49,6 @@ import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
 
 public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity implements Tickable, SidedInventory, DelegatingInventory {
-	
-	private int sayTicks = -60;
 	
 	private Identifier recipe;
 	private CraftingInventory input = new CraftingInventory(new ScreenHandler(ScreenHandlerType.CRAFTING, -1) {
@@ -74,10 +73,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 
 	@Override
 	public void tick() {
-		age++;
+		super.tick();
 		boolean blind = isBlind();
-		this.prevHeadYaw = headYaw;
-		this.prevHeadPitch = headPitch;
 		if (!blind) {
 			Vec3d head = getHeadPos();
 			PlayerEntity player = world.getClosestPlayer(head.x, head.y, head.z, 4, false);
@@ -98,13 +95,6 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 		}
 		if (!world.isClient) {
 			boolean suffocating = isSuffocating();
-			if (age % 20 == 0 && suffocating) {
-				sayTicks = -60;
-				world.playSound(null, pos, YSounds.AWARE_HOPPER_BREAK, SoundCategory.BLOCKS, blind ? 0.6f : 1f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
-			} else if (world.random.nextInt(1000) < sayTicks++ && !blind) {
-				sayTicks = -60;
-				world.playSound(null, pos, YSounds.AWARE_HOPPER_AMBIENT, SoundCategory.BLOCKS, 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
-			}
 			CraftingRecipe r = getRecipe();
 			if (!suffocating && r != null && r.matches(input, world) && output.isEmpty() && remainder.isEmpty()) {
 				if (craftingTicks == 0) {
@@ -169,6 +159,21 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 			world.addParticle(ParticleTypes.PORTAL,
 					pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, (world.random.nextDouble() - 0.5) * 2, -world.random.nextDouble(), (world.random.nextDouble() - 0.5) * 2);
 		}
+	}
+	
+	@Override
+	public boolean canSay() {
+		return !isBlind();
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return YSounds.AWARE_HOPPER_AMBIENT;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound() {
+		return YSounds.AWARE_HOPPER_BREAK;
 	}
 	
 	@Override

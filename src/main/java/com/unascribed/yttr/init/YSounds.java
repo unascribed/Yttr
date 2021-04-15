@@ -50,6 +50,8 @@ public class YSounds {
 	public static final SoundEvent SUIT_STATION_WELD = create("suit_station_weld");
 	public static final SoundEvent SUIT_STATION_MELT = create("suit_station_melt");
 	public static final SoundEvent SUIT_STATION_USE_PLATE = create("suit_station_use_plate");
+	public static final SoundEvent SKELETAL_SORTER_AMBIENT = create("skeletal_sorter_ambient");
+	public static final SoundEvent SKELETAL_SORTER_HURT = create("skeletal_sorter_hurt");
 	
 
 	public static void init() {

@@ -1,0 +1,40 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "yttr:item/skeletal_sorter",
+	"yttr:inherit_elements": true,
+	"elements": [
+		{
+			"from": [1, 16, -5.76745],
+			"to": [3, 18, 6.23255],
+			"rotation": {"angle": 0, "axis": "x", "origin": [2, 15, 6]},
+			"faces": {
+				"north": {"uv": [1.5, 8, 1, 9], "rotation": 180, "texture": "#skeleton"},
+				"east": {"uv": [0, 9, 0.5, 15], "rotation": 270, "texture": "#skeleton"},
+				"south": {"uv": [1, 9, 0.5, 8], "texture": "#skeleton"},
+				"west": {"uv": [1, 9, 1.5, 15], "rotation": 90, "texture": "#skeleton"},
+				"up": {"uv": [0.5, 9, 1, 15], "rotation": 180, "texture": "#skeleton"},
+				"down": {"uv": [1.5, 9, 2, 15], "texture": "#skeleton"}
+			}
+		},
+		{
+			"from": [13, 14.93434, -5.38476],
+			"to": [15, 16.93434, 6.61524],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [2, 16, 6]},
+			"faces": {
+				"north": {"uv": [11.5, 8, 11, 9], "rotation": 180, "texture": "#skeleton"},
+				"east": {"uv": [10, 9, 10.5, 15], "rotation": 270, "texture": "#skeleton"},
+				"south": {"uv": [11, 9, 10.5, 8], "texture": "#skeleton"},
+				"west": {"uv": [11, 9, 11.5, 15], "rotation": 90, "texture": "#skeleton"},
+				"up": {"uv": [10.5, 9, 11, 15], "rotation": 180, "texture": "#skeleton"},
+				"down": {"uv": [11.5, 9, 12, 15], "texture": "#skeleton"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [30, -135, 0],
+			"translation": [0, -1.25, 0],
+			"scale": [0.49219, 0.49219, 0.49219]
+		}
+	}
+}

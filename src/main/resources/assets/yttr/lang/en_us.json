@@ -63,6 +63,7 @@
 	"block.yttr.diving_plate": "Diving Plate",
 	"block.yttr.suit_station": "Suit Station",
 	"block.yttr.table": "Table",
+	"block.yttr.skeletal_sorter": "Skeletal Sorter",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
@@ -107,6 +108,8 @@
 	"subtitles.yttr.suit_station_weld": "Suit Station welds",
 	"subtitles.yttr.suit_station_melt": "Suit Station melts",
 	"subtitles.yttr.suit_station_use_plate": "Suit Station clangs",
+	"subtitles.yttr.skeletal_sorter_ambient": "Skeletal Sorter rattles",
+	"subtitles.yttr.skeletal_sorter_hurt": "Skeletal Sorter hurts",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

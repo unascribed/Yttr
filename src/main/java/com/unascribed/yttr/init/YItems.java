@@ -14,6 +14,7 @@ import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.SwallowableItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
+import com.unascribed.yttr.item.block.SkeletalSorterBlockItem;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
 import net.minecraft.block.Block;
@@ -34,6 +35,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
@@ -76,6 +78,11 @@ public class YItems {
 			.group(YItemGroups.MAIN).maxCount(1));
 
 	public static final BlockItem LEVITATION_CHAMBER = new LevitationChamberBlockItem(YBlocks.LEVITATION_CHAMBER, new Item.Settings()
+			.group(YItemGroups.MAIN));
+	
+	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings()
+			.group(YItemGroups.MAIN));
+	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings()
 			.group(YItemGroups.MAIN));
 
 	private static BlockItem createNormalBlockItem(Block block) {

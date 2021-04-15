@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.block.abomination.AwareHopperBlockEntity;
+import com.unascribed.yttr.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.block.decor.LampBlockEntity;
 import com.unascribed.yttr.block.device.CentrifugeBlockEntity;
@@ -20,6 +21,7 @@ import com.unascribed.yttr.client.render.block_entity.CleavedBlockEntityRenderer
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
+import com.unascribed.yttr.client.render.block_entity.SkeletalSorterBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.util.annotate.Renderer;
 
@@ -50,6 +52,8 @@ public class YBlockEntities {
 	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);
 	public static final BlockEntityType<FlopperBlockEntity> FLOPPER = create(FlopperBlockEntity::new, YBlocks.FLOPPER);
 	public static final BlockEntityType<SuitStationBlockEntity> SUIT_STATION = create(SuitStationBlockEntity::new, YBlocks.SUIT_STATION);
+	@Renderer(SkeletalSorterBlockEntityRenderer.class)
+	public static final BlockEntityType<SkeletalSorterBlockEntity> SKELETAL_SORTER = create(SkeletalSorterBlockEntity::new, YBlocks.SKELETAL_SORTER);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

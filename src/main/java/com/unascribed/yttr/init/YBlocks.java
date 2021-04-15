@@ -2,6 +2,7 @@ package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.block.abomination.AwareHopperBlock;
+import com.unascribed.yttr.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.block.decor.CleavedBlock;
 import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.block.decor.TableBlock;
@@ -191,6 +192,8 @@ public class YBlocks {
 	public static final SuitStationBlock SUIT_STATION = new SuitStationBlock(METALLIC_SETTINGS);
 	
 	public static final TableBlock TABLE = new TableBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
+	
+	public static final SkeletalSorterBlock SKELETAL_SORTER = new SkeletalSorterBlock(FabricBlockSettings.copyOf(TABLE));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

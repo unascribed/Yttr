@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"S",
+		"T"
+	],
+	"key": {
+		"S": {
+			"yttr:entity": "minecraft:skeleton",
+			"yttr:main_hand": "right"
+		},
+		"T": { "item": "yttr:table" }
+	},
+	"yttr:sound": "minecraft:entity.skeleton.death",
+	"result": {
+		"item": "yttr:skeletal_sorter_right_handed"
+	}
+}

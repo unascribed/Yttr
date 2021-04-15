@@ -216,5 +216,22 @@
 	"suit_station_use_plate": {
 		"sounds": [ "yttr:use_plate" ],
 		"subtitle": "subtitles.yttr.suit_station_use_plate"
+	},
+	"skeletal_sorter_ambient": {
+		"sounds": [
+			"minecraft:mob/skeleton/say1",
+			"minecraft:mob/skeleton/say2",
+			"minecraft:mob/skeleton/say3"
+		],
+		"subtitle": "subtitles.yttr.skeletal_sorter_ambient"
+	},
+	"skeletal_sorter_hurt": {
+		"sounds": [
+			"minecraft:mob/skeleton/hurt1",
+			"minecraft:mob/skeleton/hurt2",
+			"minecraft:mob/skeleton/hurt3",
+			"minecraft:mob/skeleton/hurt4"
+		],
+		"subtitle": "subtitles.yttr.skeletal_sorter_hurt"
 	}
 }

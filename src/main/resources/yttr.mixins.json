@@ -37,7 +37,8 @@
 	"accessor.AccessorBlockEntity",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
-	"diving.MixinServerPlayerEntity"
+	"diving.MixinServerPlayerEntity",
+	"sorter.MixinChestBlockEntity"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",
@@ -49,6 +50,9 @@
 	"effector.client.MixinInGameOverlayRenderer",
 	"effector.client.MixinItemRenderer",
 	"client.MixinMinecraftClient",
+	"client.MixinJsonUnbakedModel",
+	"client.MixinJsonUnbakedModelDeserializer",
+	"client.MixinModelElementDeserializer",
 	"accessor.client.AccessorEntityRendererDispatcher",
 	"accessor.client.AccessorEntityTrackingSoundInstance",
 	"accessor.client.AccessorRenderPhase",

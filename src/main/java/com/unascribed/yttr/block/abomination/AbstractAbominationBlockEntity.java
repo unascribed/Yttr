@@ -4,12 +4,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public abstract class AbstractAbominationBlockEntity extends BlockEntity implements Tickable {
 
+	protected int sayTicks = -60;
+	
 	public int age;
 	
 	public float headYaw;
@@ -29,10 +33,27 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	
 	public abstract Vec3d getHeadPos();
 	
+	protected abstract SoundEvent getHurtSound();
+	protected abstract SoundEvent getAmbientSound();
+	
+	public boolean canSay() {
+		return true;
+	}
+	
 	@Override
 	public void tick() {
 		age++;
 		
+		if (age % 20 == 0 && isSuffocating()) {
+			sayTicks = -60;
+			world.playSound(null, pos, getHurtSound(), SoundCategory.BLOCKS, canSay() ? 1 : 0.6f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
+		} else if (world.random.nextInt(1000) < sayTicks++ && canSay()) {
+			sayTicks = -60;
+			world.playSound(null, pos, getAmbientSound(), SoundCategory.BLOCKS, 0.7f, (world.random.nextFloat()-world.random.nextFloat())*0.2f + 1);
+		}
+		
+		prevHeadYaw = headYaw;
+		prevHeadPitch = headPitch;
 	}
 
 	@Override
