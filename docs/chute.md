@@ -40,6 +40,7 @@ just barely sufficient to allow them to leave the block space of the stair.
 <div class="recipe" title="Namespaced ID: yttr:chute">
 	<div class="output">
 		<img title="Chute" src="../img/item/chute.png"/>
+		<span class="quantity">8</span>
 	</div>
 	<div class="input">
 		<a href="https://minecraft.fandom.com/wiki/Iron_Ingot"><img title="Iron Ingot" src="../img/item/iron_ingot.png"/></a>
