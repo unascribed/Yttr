@@ -36,6 +36,7 @@ public class ReplicatorItemRenderer extends IHasAClient {
 		RenderSystem.depthMask(false);
 		ReplicatorRenderer.render(matrices, mc.world == null ? 0 : mc.getTickDelta(), seed, item, BlockPos.ORIGIN, mc.world == null ? 0 : (int)mc.world.getTime(), null, 1);
 		RenderSystem.depthMask(true);
+		RenderSystem.disableLighting();
 	}
 	
 }
