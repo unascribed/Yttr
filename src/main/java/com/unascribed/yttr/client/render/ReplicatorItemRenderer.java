@@ -15,7 +15,7 @@ public class ReplicatorItemRenderer extends IHasAClient {
 	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		CompoundTag entityTag = stack.getSubTag("BlockEntityTag");
 		ItemStack item = ItemStack.EMPTY;
-		int seed = stack.hashCode();
+		int seed = 100;
 		if (entityTag != null) {
 			item = ItemStack.fromTag(entityTag.getCompound("Item"));
 			seed = entityTag.getInt("Seed");

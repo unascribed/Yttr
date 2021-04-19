@@ -236,6 +236,7 @@ public class ReplicatorRenderer extends IHasAClient {
 	}
 	
 	public static void render(WorldRenderContext wrc) {
+		wrc.profiler().swap("yttr:replicators");
 		List<ReplicatorBlockEntity> replicators = Collections.emptyList();
 		for (BlockEntity be : wrc.world().blockEntities) {
 			if (be instanceof ReplicatorBlockEntity) {
@@ -283,6 +284,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			matrices.pop();
 			RenderSystem.popMatrix();
 		}
+		wrc.profiler().swap("weather");
 	}
 	
 	public static void tick() {
