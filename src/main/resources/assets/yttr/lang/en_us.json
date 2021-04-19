@@ -82,6 +82,8 @@
 	"block.yttr.cage_lamp.inverted": "Inverted %s Cage Lamp",
 	"block.yttr.fixture.inverted": "Inverted %s Lamp Fixture",
 	
+	"block.yttr.replicator.holding": "%s §7in %s",
+	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
 	

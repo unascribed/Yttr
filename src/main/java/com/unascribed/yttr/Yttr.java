@@ -22,7 +22,9 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.item.SuitArmorItem;
+import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.mixin.accessor.AccessorDispenserBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.util.Attackable;
@@ -44,6 +46,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -85,6 +89,15 @@ public class Yttr implements ModInitializer {
 		YCommands.init();
 		YTags.init();
 		YScreenTypes.init();
+		
+		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
+			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);
+			Block b = pointer.getBlockState().getBlock();
+			if (b instanceof AccessorDispenserBlock) {
+				((AccessorDispenserBlock)b).yttr$getBehaviorForItem(inside).dispense(pointer, inside);
+			}
+			return stack;
+		});
 		
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "attack"), (server, player, handler, buf, responseSender) -> {
 			server.execute(() -> {
@@ -399,6 +412,5 @@ public class Yttr implements ModInitializer {
 		}
 		return maxPressure-Math.min(maxPressureGap, pressureEffect);
 	}
-
 	
 }

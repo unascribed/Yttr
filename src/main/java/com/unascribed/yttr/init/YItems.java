@@ -15,6 +15,7 @@ import com.unascribed.yttr.item.SwallowableItem;
 import com.unascribed.yttr.item.VoidBucketItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
+import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.item.block.SkeletalSorterBlockItem;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
@@ -71,7 +72,6 @@ public class YItems {
 	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
 	public static final BlockItem SUIT_STATION = createNormalBlockItem(YBlocks.SUIT_STATION);
 	public static final BlockItem TABLE = createNormalBlockItem(YBlocks.TABLE);
-	public static final BlockItem REPLICATOR = createNormalBlockItem(YBlocks.REPLICATOR);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
@@ -91,6 +91,9 @@ public class YItems {
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings()
 			.group(YItemGroups.MAIN));
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings()
+			.group(YItemGroups.MAIN));
+	
+	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings()
 			.group(YItemGroups.MAIN));
 
 	private static BlockItem createNormalBlockItem(Block block) {

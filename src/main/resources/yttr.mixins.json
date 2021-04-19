@@ -35,10 +35,12 @@
 	"accessor.AccessorHorseBaseEntity",
 	"accessor.AccessorHopperBlockEntity",
 	"accessor.AccessorBlockEntity",
+	"accessor.AccessorDispenserBlock",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
-	"sorter.MixinChestBlockEntity"
+	"sorter.MixinChestBlockEntity",
+	"replicator.MixinDropperBlock"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",
