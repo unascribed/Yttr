@@ -56,6 +56,7 @@ public class YSounds {
 	public static final SoundEvent REPLICATOR_DISAPPEAR = create("replicator_disappear");
 	public static final SoundEvent REPLICATOR_UPDATE = create("replicator_update");
 	public static final SoundEvent REPLICATOR_REFUSE = create("replicator_refuse");
+	public static final SoundEvent REPLICATOR_VEND = create("replicator_vend");
 	public static final SoundEvent SILENCE = create("silence");
 	
 

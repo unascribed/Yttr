@@ -250,6 +250,10 @@
 		"sounds": [ "yttr:replicator_update" ],
 		"subtitle": "subtitles.yttr.replicator_refuse"
 	},
+	"replicator_vend": {
+		"sounds": [ "yttr:replicator_vend" ],
+		"subtitle": "subtitles.yttr.replicator_vend"
+	},
 	"silence": {
 		"sounds": ["yttr:silence"]
 	}

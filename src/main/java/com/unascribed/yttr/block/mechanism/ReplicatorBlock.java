@@ -41,8 +41,12 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
 			ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
-			if (player.isCreative() || player.getUuid().equals(rbe.owner)) {
-				ItemStack held = player.getStackInHand(hand);
+			ItemStack held = player.getStackInHand(hand);
+			if (player.isSneaking() && held.isEmpty()) {
+				player.setStackInHand(hand, rbe.getStack(0));
+				world.playSound(null, pos, YSounds.REPLICATOR_VEND, SoundCategory.BLOCKS, 1, 1);
+				return ActionResult.SUCCESS;
+			} else if (player.isCreative() || player.getUuid().equals(rbe.owner)) {
 				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areTagsEqual(held, rbe.item)) {
 					rbe.item = held.copy();
 					world.playSound(null, pos, YSounds.REPLICATOR_UPDATE, SoundCategory.BLOCKS, 1, rbe.item.isEmpty() ? 1f : 1.25f);
