@@ -33,7 +33,7 @@ public class RifleItemRenderer extends IHasAClient {
 	
 	private static final UVObserver uvo = new UVObserver();
 
-	public static void renderRifle(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		float tickDelta = mc.getTickDelta();
 		matrices.pop();
 		boolean fp = mode == Mode.FIRST_PERSON_LEFT_HAND || mode == Mode.FIRST_PERSON_RIGHT_HAND;

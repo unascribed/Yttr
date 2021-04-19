@@ -1,4 +1,4 @@
-package com.unascribed.yttr;
+package com.unascribed.yttr.block;
 
 import com.unascribed.yttr.init.YFluids;
 

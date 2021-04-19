@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.client.YttrClient;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
@@ -25,7 +26,6 @@ public class VoidBallParticle extends BillboardParticle {
 	private static final Identifier TEXTURE = new Identifier("yttr", "textures/particle/void_ball.png");
 	
 	private static VertexBuffer buf1, buf2, buf3;
-	private static int buf1c, buf2c, buf3c;
 	
 	public VoidBallParticle(ClientWorld world, double x, double y, double z, float r) {
 		super(world, x, y, z);
@@ -56,7 +56,6 @@ public class VoidBallParticle extends BillboardParticle {
 			buf1 = new VertexBuffer(VertexFormats.POSITION);
 			buf2 = new VertexBuffer(VertexFormats.POSITION);
 			buf3 = new VertexBuffer(VertexFormats.POSITION);
-			buf1c = buf2c = buf3c = 0;
 			BufferBuilder bb = Tessellator.getInstance().getBuffer();
 			
 			final float PI = (float)Math.PI;
@@ -79,14 +78,12 @@ public class VoidBallParticle extends BillboardParticle {
 			// draw +Z end as a triangle fan
 			bb.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);
 			bb.vertex(0.0f, 0.0f, nsign * radius).next();
-			buf1c++;
 			for (j = 0; j <= slices; j++) {
 				theta = (j == slices) ? 0.0f : j * dtheta;
 				x = -MathHelper.sin(theta) * MathHelper.sin(drho);
 				y = MathHelper.cos(theta) * MathHelper.sin(drho);
 				z = nsign * MathHelper.cos(drho);
 				bb.vertex(x * radius, y * radius, z * radius).next();
-				buf1c++;
 			}
 			bb.end();
 			buf1.upload(bb);
@@ -104,12 +101,10 @@ public class VoidBallParticle extends BillboardParticle {
 					y = MathHelper.cos(theta) * MathHelper.sin(rho);
 					z = nsign * MathHelper.cos(rho);
 					bb.vertex(x * radius, y * radius, z * radius).next();
-					buf2c++;
 					x = -MathHelper.sin(theta) * MathHelper.sin(rho + drho);
 					y = MathHelper.cos(theta) * MathHelper.sin(rho + drho);
 					z = nsign * MathHelper.cos(rho + drho);
 					bb.vertex(x * radius, y * radius, z * radius).next();
-					buf2c++;
 				}
 			}
 			bb.end();
@@ -118,7 +113,6 @@ public class VoidBallParticle extends BillboardParticle {
 			// draw -Z end as a triangle fan
 			bb.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);
 			bb.vertex(0.0f, 0.0f, -radius * nsign).next();
-			buf3c++;
 			rho = PI - drho;
 			for (j = slices; j >= 0; j--) {
 				theta = (j == slices) ? 0.0f : j * dtheta;
@@ -126,7 +120,6 @@ public class VoidBallParticle extends BillboardParticle {
 				y = MathHelper.cos(theta) * MathHelper.sin(rho);
 				z = nsign * MathHelper.cos(rho);
 				bb.vertex(x * radius, y * radius, z * radius).next();
-				buf3c++;
 			}
 			bb.end();
 			buf3.upload(bb);
@@ -146,17 +139,17 @@ public class VoidBallParticle extends BillboardParticle {
 		
 		buf1.bind();
 		VertexFormats.POSITION.startDrawing(0);
-		RenderSystem.drawArrays(GL11.GL_TRIANGLE_FAN, 0, buf1c);
+		YttrClient.drawBufferWithoutClobberingGLMatrix(buf1, null, GL11.GL_TRIANGLE_FAN);
 		VertexFormats.POSITION.endDrawing();
 		
 		buf2.bind();
 		VertexFormats.POSITION.startDrawing(0);
-		RenderSystem.drawArrays(GL11.GL_QUAD_STRIP, 0, buf2c);
+		YttrClient.drawBufferWithoutClobberingGLMatrix(buf2, null, GL11.GL_QUAD_STRIP);
 		VertexFormats.POSITION.endDrawing();
 		
 		buf3.bind();
 		VertexFormats.POSITION.startDrawing(0);
-		RenderSystem.drawArrays(GL11.GL_TRIANGLE_FAN, 0, buf3c);
+		YttrClient.drawBufferWithoutClobberingGLMatrix(buf3, null, GL11.GL_TRIANGLE_FAN);
 		VertexFormats.POSITION.endDrawing();
 		
 		VertexBuffer.unbind();

@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Map;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.particle.VoidBallParticle;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.client.render.LampItemRenderer;
+import com.unascribed.yttr.client.render.ReplicatorItemRenderer;
+import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleItemRenderer;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.screen.SuitScreen;
@@ -33,6 +36,7 @@ import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
+import com.unascribed.yttr.mixin.accessor.client.AccessorVertexBuffer;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.unascribed.yttr.util.annotate.Renderer;
 import com.unascribed.yttr.world.Geyser;
@@ -68,6 +72,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.options.Perspective;
@@ -99,6 +104,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
@@ -113,12 +119,13 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onInitializeClient() {
-		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE, RifleItemRenderer::renderRifle);
-		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_REINFORCED, RifleItemRenderer::renderRifle);
-		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_OVERCLOCKED, RifleItemRenderer::renderRifle);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.LAMP, LampItemRenderer::renderLamp);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.FIXTURE, LampItemRenderer::renderLamp);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.CAGE_LAMP, LampItemRenderer::renderLamp);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE, RifleItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_REINFORCED, RifleItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_OVERCLOCKED, RifleItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.LAMP, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.FIXTURE, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.CAGE_LAMP, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.REPLICATOR, ReplicatorItemRenderer::render);
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
@@ -251,7 +258,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 						manager.getGame().getTextureManager().bindTexture(SuitRenderer.SUIT_TEX);
 						DrawableHelper.drawTexture(matrices, 4, 4, 23, 18, 12, 12, SuitRenderer.SUIT_TEX_WIDTH, SuitRenderer.SUIT_TEX_HEIGHT);
 						manager.getGame().textRenderer.draw(matrices, "§l"+I18n.translate("yttr.geyser_discovered"), 30, 7, -1);
-			            manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
+						manager.getGame().textRenderer.draw(matrices, name, 30, 18, -1);
 						return startTime >= 5000 ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
 					});
 				}
@@ -313,7 +320,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(SuitHUDRenderer::render);
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
+		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
+		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
 	}
 
 	private void registerFluidRenderers() {
@@ -404,5 +413,16 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	}
 	
 	public static boolean retrievingHalo = false;
+
+	public static void drawBufferWithoutClobberingGLMatrix(VertexBuffer buf, Matrix4f mat, int mode) {
+		if (mat != null) {
+			RenderSystem.pushMatrix();
+			RenderSystem.multMatrix(mat);
+		}
+		RenderSystem.drawArrays(mode, 0, ((AccessorVertexBuffer)buf).yttr$getVertexCount());
+		if (mat != null) {
+			RenderSystem.popMatrix();
+		}
+	}
 	
 }

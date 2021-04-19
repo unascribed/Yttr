@@ -14,6 +14,7 @@ import com.unascribed.yttr.block.mechanism.ChuteBlockEntity;
 import com.unascribed.yttr.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.FlopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.LevitationChamberBlockEntity;
+import com.unascribed.yttr.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.block.squeeze.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
@@ -21,6 +22,7 @@ import com.unascribed.yttr.client.render.block_entity.CleavedBlockEntityRenderer
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
+import com.unascribed.yttr.client.render.block_entity.ReplicatorBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.SkeletalSorterBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.util.annotate.Renderer;
@@ -54,6 +56,8 @@ public class YBlockEntities {
 	public static final BlockEntityType<SuitStationBlockEntity> SUIT_STATION = create(SuitStationBlockEntity::new, YBlocks.SUIT_STATION);
 	@Renderer(SkeletalSorterBlockEntityRenderer.class)
 	public static final BlockEntityType<SkeletalSorterBlockEntity> SKELETAL_SORTER = create(SkeletalSorterBlockEntity::new, YBlocks.SKELETAL_SORTER);
+	@Renderer(ReplicatorBlockEntityRenderer.class)
+	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

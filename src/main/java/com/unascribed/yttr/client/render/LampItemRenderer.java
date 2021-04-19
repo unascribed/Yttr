@@ -20,7 +20,7 @@ public class LampItemRenderer extends IHasAClient {
 	
 	private static final LampBlockEntityRenderer lampItemGlow = new LampBlockEntityRenderer(null);
 	
-	public static void renderLamp(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public static void render(ItemStack stack, Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState()
 				.with(LampBlock.LIT, LampBlockItem.isInverted(stack))
 				.with(LampBlock.COLOR, LampBlockItem.getColor(stack));

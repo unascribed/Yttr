@@ -1,6 +1,6 @@
 package com.unascribed.yttr.block.void_;
 
-import com.unascribed.yttr.Voidloggable;
+import com.unascribed.yttr.block.Voidloggable;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YTags;
 
