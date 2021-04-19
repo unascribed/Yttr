@@ -61,13 +61,31 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-		ItemStack stack = super.getPickStack(world, pos, state);
+	public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
+		if (!player.isCreative()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof ReplicatorBlockEntity) {
+				ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+				if (player.getUuid().equals(rbe.owner)) {
+					return 1;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	private ItemStack getStack(BlockView world, BlockPos pos) {
+		ItemStack stack = new ItemStack(this);
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
 			stack.putSubTag("BlockEntityTag", be.toTag(new CompoundTag()));
 		}
 		return stack;
+	}
+	
+	@Override
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		return getStack(world, pos);
 	}
 	
 	@Override
@@ -83,6 +101,9 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		world.playSound(player, pos, YSounds.REPLICATOR_DISAPPEAR, SoundCategory.BLOCKS, 1, 1);
+		if (!player.isCreative()) {
+			dropStack(world, pos, getStack(world, pos));
+		}
 	}
 
 }
