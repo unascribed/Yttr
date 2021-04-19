@@ -15,6 +15,7 @@ import com.unascribed.yttr.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.FlopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.LevitationChamberBlockEntity;
 import com.unascribed.yttr.block.mechanism.ReplicatorBlockEntity;
+import com.unascribed.yttr.block.mechanism.VoidCauldronBlockEntity;
 import com.unascribed.yttr.block.squeeze.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
@@ -58,6 +59,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<SkeletalSorterBlockEntity> SKELETAL_SORTER = create(SkeletalSorterBlockEntity::new, YBlocks.SKELETAL_SORTER);
 	@Renderer(ReplicatorBlockEntityRenderer.class)
 	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
+	public static final BlockEntityType<VoidCauldronBlockEntity> VOID_CAULDRON = create(VoidCauldronBlockEntity::new, YBlocks.VOID_CAULDRON);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

@@ -15,6 +15,7 @@ import com.unascribed.yttr.block.mechanism.DopperBlock;
 import com.unascribed.yttr.block.mechanism.FlopperBlock;
 import com.unascribed.yttr.block.mechanism.LevitationChamberBlock;
 import com.unascribed.yttr.block.mechanism.ReplicatorBlock;
+import com.unascribed.yttr.block.mechanism.VoidCauldronBlock;
 import com.unascribed.yttr.block.mechanism.YttriumPressurePlateBlock;
 import com.unascribed.yttr.block.squeeze.DelicaceBlock;
 import com.unascribed.yttr.block.squeeze.SqueezeLeavesBlock;
@@ -197,6 +198,8 @@ public class YBlocks {
 	public static final SkeletalSorterBlock SKELETAL_SORTER = new SkeletalSorterBlock(FabricBlockSettings.copyOf(TABLE));
 	
 	public static final ReplicatorBlock REPLICATOR = new ReplicatorBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque().noCollision());
+	
+	public static final VoidCauldronBlock VOID_CAULDRON = new VoidCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

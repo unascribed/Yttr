@@ -12,6 +12,7 @@ import com.unascribed.yttr.item.ShearsItem;
 import com.unascribed.yttr.item.SnareItem;
 import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.SwallowableItem;
+import com.unascribed.yttr.item.VoidBucketItem;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.item.block.SkeletalSorterBlockItem;
@@ -30,7 +31,6 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -107,7 +107,7 @@ public class YItems {
 			.maxCount(16)
 			.group(YItemGroups.MAIN));
 	
-	public static final BucketItem VOID_BUCKET = new BucketItem(YFluids.VOID, new Item.Settings()
+	public static final VoidBucketItem VOID_BUCKET = new VoidBucketItem(new Item.Settings()
 			.recipeRemainder(Items.BUCKET)
 			.maxCount(1)
 			.group(YItemGroups.MAIN));

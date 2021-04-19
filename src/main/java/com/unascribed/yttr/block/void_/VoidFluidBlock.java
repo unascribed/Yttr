@@ -27,7 +27,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class VoidFluidBlock extends FluidBlock {
-	private static final DustParticleEffect BLACK_DUST = new DustParticleEffect(0, 0, 0, 1);
+	public static final DustParticleEffect BLACK_DUST = new DustParticleEffect(0, 0, 0, 1);
 	
 	public VoidFluidBlock(FlowableFluid fluid, Settings settings) {
 		super(fluid, settings);
