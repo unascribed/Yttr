@@ -2,14 +2,18 @@ package com.unascribed.yttr.item.block;
 
 import java.util.List;
 
+import com.unascribed.yttr.init.YSounds;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Rarity;
@@ -36,6 +40,11 @@ public class ReplicatorBlockItem extends BlockItem {
 	@Override
 	public Rarity getRarity(ItemStack stack) {
 		return Rarity.RARE;
+	}
+	
+	@Override
+	protected SoundEvent getPlaceSound(BlockState state) {
+		return YSounds.SILENCE;
 	}
 	
 	public static ItemStack getHeldItem(ItemStack stack) {

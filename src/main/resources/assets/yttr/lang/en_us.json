@@ -121,6 +121,10 @@
 	"subtitles.yttr.suit_station_use_plate": "Suit Station clangs",
 	"subtitles.yttr.skeletal_sorter_ambient": "Skeletal Sorter rattles",
 	"subtitles.yttr.skeletal_sorter_hurt": "Skeletal Sorter hurts",
+	"subtitles.yttr.replicator_appear": "Replicator appears",
+	"subtitles.yttr.replicator_disappear": "Replicator disappears",
+	"subtitles.yttr.replicator_update": "Replicator changed",
+	"subtitles.yttr.replicator_refuse": "Replicator refuses",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

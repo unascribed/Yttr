@@ -3,9 +3,12 @@ package com.unascribed.yttr.block.mechanism;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.util.SideyInventory;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,10 +25,33 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	
 	public double distTmp;
 	
+	public int clientAge = 0;
+	public int removedTicks = 0;
+	
 	public ReplicatorBlockEntity() {
 		super(YBlockEntities.REPLICATOR);
 	}
 	
+	public void clientTick() {
+		clientAge++;
+		if (isRemoved()) {
+			removedTicks++;
+		}
+	}
+	
+	@Override
+	public void markRemoved() {
+		super.markRemoved();
+		if (world.isClient) {
+			removeClient();
+		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	private void removeClient() {
+		ReplicatorRenderer.removing.add(this);
+	}
+
 	@Override
 	public void fromClientTag(CompoundTag tag) {
 		seed = tag.getInt("Seed");

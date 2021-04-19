@@ -1,6 +1,7 @@
 package com.unascribed.yttr.client.render;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +16,7 @@ import com.unascribed.yttr.client.ReplicatorShapes;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.collect.Lists;
 
@@ -49,6 +51,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class ReplicatorRenderer extends IHasAClient {
 
+	public static final List<ReplicatorBlockEntity> removing = Lists.newArrayList();
+	
 	private static final Screen dummyScreen = new Screen(new LiteralText("")) {};
 	private static final Random rand = new Random();
 	
@@ -56,13 +60,19 @@ public class ReplicatorRenderer extends IHasAClient {
 		if (boc.blockState().isOf(YBlocks.REPLICATOR)) {
 			BlockEntity be = wrc.world().getBlockEntity(boc.blockPos());
 			if (be instanceof ReplicatorBlockEntity) {
+				ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
 				MatrixStack matrices = wrc.matrixStack();
 				matrices.push();
 				matrices.translate(boc.blockPos().getX()-boc.cameraX(), boc.blockPos().getY()-boc.cameraY(), boc.blockPos().getZ()-boc.cameraZ());
 				matrices.translate(0.5, 0.5, 0.5);
 				rand.setSeed(((ReplicatorBlockEntity) be).seed);
 				
-				float t = rand.nextInt(200)+wrc.world().getTime()+wrc.tickDelta();
+				if (rbe.clientAge+wrc.tickDelta() < 5) {
+					float a = Interp.sCurve5((rbe.clientAge+wrc.tickDelta())/5f);
+					matrices.scale(a, a, a);
+				}
+				
+				float t = rand.nextInt(200)+rbe.clientAge+wrc.tickDelta();
 				
 				int shape = rand.nextInt(ReplicatorShapes.ALL.size());
 				rand.nextInt(ReplicatorShapes.ALL.size());
@@ -97,6 +107,10 @@ public class ReplicatorRenderer extends IHasAClient {
 		if (pass < 2 || pass == -1) {
 			matrices.push();
 			matrices.translate(0.5, 0.5, 0.5);
+			if (ticks+tickDelta < 5) {
+				float a = Interp.sCurve5((ticks+tickDelta)/5f);
+				matrices.scale(a, a, a);
+			}
 			
 			rand.setSeed(seed);
 			
@@ -226,6 +240,7 @@ public class ReplicatorRenderer extends IHasAClient {
 		for (BlockEntity be : wrc.world().blockEntities) {
 			if (be instanceof ReplicatorBlockEntity) {
 				ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+				if (rbe.clientAge < 1) continue;
 				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos(), false);
 				if (dist < 64*64 && wrc.frustum().isVisible(new Box(rbe.getPos()))) {
 					rbe.distTmp = dist;
@@ -233,6 +248,10 @@ public class ReplicatorRenderer extends IHasAClient {
 					replicators.add(rbe);
 				}
 			}
+		}
+		if (!removing.isEmpty()) {
+			if (replicators.isEmpty()) replicators = Lists.newArrayList();
+			replicators.addAll(removing);
 		}
 		if (!replicators.isEmpty()) {
 			Collections.sort(replicators, (a, b) -> Double.compare(b.distTmp, a.distTmp));
@@ -249,13 +268,40 @@ public class ReplicatorRenderer extends IHasAClient {
 				for (ReplicatorBlockEntity rbe : replicators) {
 					matrices.push();
 					matrices.translate(rbe.getPos().getX(), rbe.getPos().getY(), rbe.getPos().getZ());
-					render(matrices, wrc.tickDelta(), rbe.seed, rbe.item, rbe.getPos(), (int)wrc.world().getTime(), wrc.camera(), pass);
+					if (rbe.isRemoved()) {
+						float a = Interp.sCurve5(Math.max(0, 1-((rbe.removedTicks+wrc.tickDelta())/10f)));
+						matrices.translate(0.5, 0.5, 0.5);
+						matrices.scale(a, a, a);
+						matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(a*720));
+						matrices.translate(-0.5, -0.5, -0.5);
+					}
+					render(matrices, wrc.tickDelta(), rbe.seed, rbe.item, rbe.getPos(), rbe.clientAge, wrc.camera(), pass);
 					matrices.pop();
 				}
 				RenderSystem.depthMask(true);
 			}
 			matrices.pop();
 			RenderSystem.popMatrix();
+		}
+	}
+	
+	public static void tick() {
+		if (mc.world != null) {
+			for (BlockEntity be : mc.world.blockEntities) {
+				if (be instanceof ReplicatorBlockEntity) {
+					ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+					rbe.clientTick();
+				}
+			}
+		}
+		Iterator<ReplicatorBlockEntity> iter = removing.iterator();
+		while (iter.hasNext()) {
+			ReplicatorBlockEntity rbe = iter.next();
+			rbe.clientTick();
+			if (!rbe.isRemoved() || rbe.removedTicks > 10) {
+				rbe.removedTicks = 0;
+				iter.remove();
+			}
 		}
 	}
 

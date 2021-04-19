@@ -1,5 +1,7 @@
 package com.unascribed.yttr.block.mechanism;
 
+import com.unascribed.yttr.init.YSounds;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
@@ -9,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -38,10 +41,20 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
 			ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
-			if (player.isCreative() || player.hasPermissionLevel(2) || player.getUuid().equals(rbe.owner)) {
-				rbe.item = player.getStackInHand(hand).copy();
-				rbe.sync();
-				return ActionResult.SUCCESS;
+			if (player.isCreative() || player.getUuid().equals(rbe.owner)) {
+				ItemStack held = player.getStackInHand(hand);
+				if (!ItemStack.areItemsEqual(held, rbe.item) || !ItemStack.areTagsEqual(held, rbe.item)) {
+					rbe.item = held.copy();
+					world.playSound(null, pos, YSounds.REPLICATOR_UPDATE, SoundCategory.BLOCKS, 1, rbe.item.isEmpty() ? 1f : 1.25f);
+					rbe.sync();
+					return ActionResult.SUCCESS;
+				} else {
+					return ActionResult.CONSUME;
+				}
+			} else {
+				world.playSound(null, pos, YSounds.REPLICATOR_REFUSE, SoundCategory.BLOCKS, 1, 0.75f);
+				world.playSound(null, pos, YSounds.REPLICATOR_REFUSE, SoundCategory.BLOCKS, 1, 0.6f);
+				return ActionResult.CONSUME;
 			}
 		}
 		return ActionResult.FAIL;
@@ -61,14 +74,15 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, pos, state, placer, itemStack);
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof ReplicatorBlockEntity) {
+		if (be instanceof ReplicatorBlockEntity && placer instanceof PlayerEntity && !((PlayerEntity)placer).isCreative()) {
 			((ReplicatorBlockEntity)be).owner = placer.getUuid();
 		}
+		world.playSound(placer instanceof PlayerEntity ? ((PlayerEntity)placer) : null, pos, YSounds.REPLICATOR_APPEAR, SoundCategory.BLOCKS, 1, 1);
 	}
 	
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		// prevent sending of break particle event
+		world.playSound(player, pos, YSounds.REPLICATOR_DISAPPEAR, SoundCategory.BLOCKS, 1, 1);
 	}
 
 }

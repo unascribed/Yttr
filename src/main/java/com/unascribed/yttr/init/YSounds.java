@@ -52,6 +52,11 @@ public class YSounds {
 	public static final SoundEvent SUIT_STATION_USE_PLATE = create("suit_station_use_plate");
 	public static final SoundEvent SKELETAL_SORTER_AMBIENT = create("skeletal_sorter_ambient");
 	public static final SoundEvent SKELETAL_SORTER_HURT = create("skeletal_sorter_hurt");
+	public static final SoundEvent REPLICATOR_APPEAR = create("replicator_appear");
+	public static final SoundEvent REPLICATOR_DISAPPEAR = create("replicator_disappear");
+	public static final SoundEvent REPLICATOR_UPDATE = create("replicator_update");
+	public static final SoundEvent REPLICATOR_REFUSE = create("replicator_refuse");
+	public static final SoundEvent SILENCE = create("silence");
 	
 
 	public static void init() {

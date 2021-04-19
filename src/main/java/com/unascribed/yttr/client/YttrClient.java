@@ -315,6 +315,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (mc.isPaused()) return;
 			EffectorRenderer.tick();
 			SuitHUDRenderer.tick();
+			ReplicatorRenderer.tick();
 		});
 		
 		HudRenderCallback.EVENT.register(SuitHUDRenderer::render);

@@ -233,5 +233,24 @@
 			"minecraft:mob/skeleton/hurt4"
 		],
 		"subtitle": "subtitles.yttr.skeletal_sorter_hurt"
+	},
+	"replicator_appear": {
+		"sounds": [ "yttr:replicator_appear" ],
+		"subtitle": "subtitles.yttr.replicator_appear"
+	},
+	"replicator_disappear": {
+		"sounds": [ "yttr:replicator_disappear" ],
+		"subtitle": "subtitles.yttr.replicator_disappear"
+	},
+	"replicator_update": {
+		"sounds": [ "yttr:replicator_update" ],
+		"subtitle": "subtitles.yttr.replicator_update"
+	},
+	"replicator_refuse": {
+		"sounds": [ "yttr:replicator_update" ],
+		"subtitle": "subtitles.yttr.replicator_refuse"
+	},
+	"silence": {
+		"sounds": ["yttr:silence"]
 	}
 }
