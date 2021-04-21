@@ -250,6 +250,11 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 	}
 	
 	@Override
+	public boolean canSay() {
+		return !getCachedState().get(SkeletalSorterBlock.MUTED);
+	}
+	
+	@Override
 	public boolean onSyncedBlockEvent(int type, int data) {
 		if (!world.isClient) return false;
 		if (type == 0) {

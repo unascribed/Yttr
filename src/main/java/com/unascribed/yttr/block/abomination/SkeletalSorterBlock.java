@@ -25,6 +25,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -55,16 +56,17 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 	public static final EnumProperty<StateableArm> MAIN_HAND = EnumProperty.of("main_hand", StateableArm.class);
 	public static final BooleanProperty ENGOGGLED = BooleanProperty.of("engoggled");
+	public static final BooleanProperty MUTED = BooleanProperty.of("muted");
 	
 	public SkeletalSorterBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(ENGOGGLED, false));
+		setDefaultState(getDefaultState().with(ENGOGGLED, false).with(MUTED, false));
 	}
 	
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(FACING, MAIN_HAND, ENGOGGLED);
+		builder.add(FACING, MAIN_HAND, ENGOGGLED, MUTED);
 	}
 	
 	private ItemStack getDrop(BlockState state) {
@@ -113,25 +115,31 @@ public class SkeletalSorterBlock extends TableBlock implements BlockEntityProvid
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
-		if (state.get(ENGOGGLED)) {
-			if (player.abilities.creativeMode) {
-				// always succeed
-			} else if (stack.isEmpty()) {
-				player.setStackInHand(hand, new ItemStack(YItems.GOGGLES));
-			} else {
-				return ActionResult.CONSUME;
+		if (stack.getItem().isIn(ItemTags.WOOL) && !state.get(MUTED)) {
+			world.playSound(player, pos, SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 1, 1.2f);
+			world.setBlockState(pos, state.with(MUTED, true));
+			return ActionResult.SUCCESS;
+		} else if (stack.getItem() == YItems.GOGGLES && !state.get(ENGOGGLED)) {
+			if (!player.abilities.creativeMode) {
+				stack.decrement(1);
+				player.setStackInHand(hand, stack);
 			}
-			world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1.2f);
-			world.setBlockState(pos, state.with(ENGOGGLED, false));
+			world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1);
+			world.setBlockState(pos, state.with(ENGOGGLED, true));
 			return ActionResult.SUCCESS;
 		} else {
-			if (stack.getItem() == YItems.GOGGLES) {
-				if (!player.abilities.creativeMode) {
-					stack.decrement(1);
-					player.setStackInHand(hand, stack);
+			if (state.get(ENGOGGLED) && !stack.getItem().isIn(ItemTags.WOOL)) {
+				if (stack.isEmpty()) {
+					player.setStackInHand(hand, new ItemStack(YItems.GOGGLES));
+				} else {
+					player.inventory.offerOrDrop(world, new ItemStack(YItems.GOGGLES));
 				}
-				world.setBlockState(pos, state.with(ENGOGGLED, true));
-				world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1);
+				world.playSound(player, pos, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.BLOCKS, 1, 1.2f);
+				world.setBlockState(pos, state.with(ENGOGGLED, false));
+				return ActionResult.SUCCESS;
+			} else if (state.get(MUTED)) {
+				world.playSound(player, pos, SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 1, 0.8f);
+				world.setBlockState(pos, state.with(MUTED, false));
 				return ActionResult.SUCCESS;
 			}
 		}
