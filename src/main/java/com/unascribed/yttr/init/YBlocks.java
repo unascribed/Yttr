@@ -39,6 +39,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
@@ -136,7 +137,7 @@ public class YBlocks {
 		);
 	@RenderLayer("cutout_mipped")
 	public static final Block SQUEEZED_LEAVES = new SqueezedLeavesBlock(FabricBlockSettings.copyOf(SQUEEZE_LEAVES)
-			.dropsLike(SQUEEZE_LEAVES)
+			.drops(new Identifier("yttr", "blocks/squeeze_leaves"))
 			.dynamicBounds()
 		);
 	@RenderLayer("cutout_mipped")
