@@ -33,8 +33,8 @@ import net.minecraft.world.RaycastContext.ShapeType;
 
 public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity implements BlockEntityClientSerializable {
 
-	public static final int THINK_TIME = 42;
-	public static final int STOW_TIME = 18;
+	public static final int THINK_TIME = 30;
+	public static final int STOW_TIME = 15;
 	
 	public ItemStack heldItemMainHand = ItemStack.EMPTY;
 	public ItemStack heldItemOffHand = ItemStack.EMPTY;
@@ -101,18 +101,24 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 		if (stowTicks == 0 && heldItemMainHand.isEmpty()) {
 			thinkTicks = 0;
 			newAccessingInventory = facing;
-			ItemStack stack = ItemStack.EMPTY;
+			float largestStackSize = 0;
+			int largestStackSlot = -1;
+			int largestStackCount = 0;
 			for (int i = 0; i < input.size(); i++) {
 				ItemStack inSlot = input.getStack(i);
 				if (inSlot.isEmpty()) continue;
 				if (input instanceof SidedInventory) {
 					if (!((SidedInventory)input).canExtract(i, inSlot, Direction.UP)) continue;
 				}
-				stack = input.removeStack(i, Math.min(inSlot.getCount(), 8));
-				break;
+				float size = inSlot.getCount()/(float)inSlot.getMaxCount();
+				if (size > largestStackSize) {
+					largestStackSize = size;
+					largestStackSlot = i;
+					largestStackCount = inSlot.getCount();
+				}
 			}
-			if (!stack.isEmpty()) {
-				heldItemMainHand = stack;
+			if (largestStackSlot != -1) {
+				heldItemMainHand = input.removeStack(largestStackSlot, Math.min(8, largestStackCount));
 				newAccessingInventory = null;
 				sync();
 				world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 1, 0);
