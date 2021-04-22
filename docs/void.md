@@ -11,4 +11,8 @@ and deals damage that causes extra armor damage and bypasses armor damage reduct
 fluid damage multiple times in a row will do more damage every time, making it an extremely deadly
 substance.
 
+*(0.4.2)*
+A cauldron can be filled with a bucket of Void fluid, creating a Void Cauldron that works as an
+inventory that destroys anything added to it, such as via hopper or right-click.
+
 Submerging yourself in Void fluid will [greatly increase your FPS](../img/fps.mp4).

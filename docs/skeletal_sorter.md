@@ -23,6 +23,12 @@ damage, or two differently named pieces of cobblestone, will both be sorted the 
 a pair of Fine Feature Focusing Goggles (F3 Goggles for short) and equip the Skeletal Sorter with
 them to do exact NBT-inclusive matches instead.
 
+*(0.4.2)*
+If you're tired of the clanking noises made by the skeleton, you can right-click a sorter with a
+piece of wool to quiet it down. The wool will not be consumed, and if you change your mind and want
+to be annoyed by clanking once again, you can right-click with an empty hand to unequip goggles and
+wool, in that order.
+
 Every sorting operation can move up to 8 items.
 
 ## Screenshots

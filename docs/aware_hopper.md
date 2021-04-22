@@ -38,6 +38,13 @@ Once an Aware Hopper has all necessary inputs to craft something, it will take 5
 followed by a 1 second "rest" if it still has enough ingredients. It cannot craft while there is
 anything in its output slot, so make sure to extract the output or point it at a chest.
 
+Aware Hoppers make an attempt to round-robin items inserted into them to ensure recipes can be
+crafted without needing to buffer full stacks, but it will not split input stacks. For example, if
+your input is a Skeletal Sorter, input items will likely come in groups of 8, so the Aware Hopper
+will insert the entire 8 stack into its first round-robin slot, meaning it won't seem to craft
+anything until it receives 8x what it needs, but it will then craft 8 items. To avoid this, you can
+send your inputs through a Hopper or Levitation Chamber to split the stack up into singles.
+
 ## Video
 <video src="../img/aware_hopper.mp4" controls></video>
 

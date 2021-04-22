@@ -15,7 +15,7 @@ nav:
     - Matrix: https://matrix.to/#/#unascribed:sleeping.town
     - E-Mail Me: mailto:me@unascribed.com
     - Home: index.md
-    - "[NEW] Table": table.md
+    - "[0.4.0] Table": table.md
     - Gadolinite: gadolinite.md
     - Yttrium: yttrium.md
     - Big Iron: big_iron.md
@@ -32,7 +32,7 @@ nav:
     - Bedrock Smasher: bedrock_smasher.md
     - Bedrock Shard: bedrock_shard.md
     - Void: void.md
-    - "[NEW] Void Diving": diving.md
+    - "[0.4.0] Void Diving": diving.md
     - Glassy Void: glassy_void.md
     - Void Effector: effector.md
     - Void Cleaver: cleaver.md
@@ -42,12 +42,13 @@ nav:
     - Levitation Chamber: levitation_chamber.md
     - Surgical Shears: shears.md
     - Aware Hopper: aware_hopper.md
-    - "[NEW] Skeletal Sorter": skeletal_sorter.md
+    - "[0.4.0] Skeletal Sorter": skeletal_sorter.md
+    - "[0.4.2] Replicator": replicator.md
 plugins:
     - search
 extra:
     logo: img/logo.png
-    version: "0.4.1"
+    version: "0.4.2"
     article_nav_top: false
     article_nav_bottom: false
 extra_css:
