@@ -34,6 +34,11 @@ public class VoidCauldronBlock extends Block implements FluidDrainable, BlockEnt
 	}
 
 	@Override
+	public String getTranslationKey() {
+		return Blocks.CAULDRON.getTranslationKey();
+	}
+	
+	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new VoidCauldronBlockEntity();
 	}

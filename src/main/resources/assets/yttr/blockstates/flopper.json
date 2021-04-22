@@ -16,7 +16,7 @@
 			"y": 270
 		},
 		"facing=down": {
-			"model": "minecraft:missingno"
+			"model": "minecraft:builtin/entity"
 		}
 	}
 }

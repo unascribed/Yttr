@@ -8,9 +8,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.client.particle.VoidBallParticle;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
@@ -66,6 +70,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
@@ -91,8 +96,13 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -107,6 +117,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockRenderView;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
@@ -115,6 +126,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
+	
+	private boolean hasCheckedRegistry = false;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -312,6 +325,35 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
+			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
+					Logger log = LogManager.getLogger("YttrRegistryCheck");
+					hasCheckedRegistry = true;
+					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
+						if (en.getKey().getValue().getNamespace().equals("yttr")) {
+							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+							if (en.getValue() instanceof ReplicatorBlock) continue;
+							if (!mc.getServer().getLootManager().getTableIds().contains(en.getValue().getLootTableId())) {
+								if (en.getValue().getDroppedStacks(en.getValue().getDefaultState(), new LootContext.Builder(mc.getServer().getOverworld())
+										.parameter(LootContextParameters.TOOL, new ItemStack(Items.APPLE))
+										.parameter(LootContextParameters.ORIGIN, Vec3d.ZERO)).isEmpty()) {
+									log.error("Block "+en.getKey().getValue()+" is missing a loot table and doesn't seem to have custom drops");
+								}
+							}
+						}
+					}
+					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
+						if (en.getKey().getValue().getNamespace().equals("yttr")) {
+							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+						}
+					}
+					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
+						if (en.getKey().getValue().getNamespace().equals("yttr")) {
+							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+						}
+					}
+				}
+			}
 			if (mc.isPaused()) return;
 			EffectorRenderer.tick();
 			SuitHUDRenderer.tick();
@@ -324,6 +366,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
+	}
+
+	private void checkTranslation(Logger log, Identifier id, String key) {
+		if (!I18n.hasTranslation(key)) {
+			log.error("Translation "+key+" is missing for "+id);
+		}
 	}
 
 	private void registerFluidRenderers() {

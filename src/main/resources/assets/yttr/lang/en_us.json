@@ -73,6 +73,7 @@
 	"block.yttr.table": "Table",
 	"block.yttr.skeletal_sorter": "Skeletal Sorter",
 	"block.yttr.replicator": "Replicator",
+	"block.yttr.cleaved_block": "Cleaved Block",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
