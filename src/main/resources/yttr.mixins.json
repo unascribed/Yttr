@@ -62,6 +62,7 @@
 	"diving.client.MixinSoundSystem",
 	"diving.client.MixinPlayerEntityRenderer",
 	"diving.client.MixinDeathScreen",
+	"cleaver.client.MixinParticleManager",
 	
 	"diving.client.MixinEarsFeatureRenderer",
 	"effector.caffeine.MixinWorldSlice"

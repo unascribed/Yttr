@@ -19,7 +19,6 @@ import com.unascribed.yttr.block.mechanism.VoidCauldronBlockEntity;
 import com.unascribed.yttr.block.squeeze.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.CleavedBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
@@ -49,7 +48,6 @@ public class YBlockEntities {
 	public static final BlockEntityType<SqueezedLeavesBlockEntity> SQUEEZED_LEAVES = create(SqueezedLeavesBlockEntity::new, YBlocks.SQUEEZED_LEAVES);
 	@Renderer(LampBlockEntityRenderer.class)
 	public static final BlockEntityType<LampBlockEntity> LAMP = create(LampBlockEntity::new, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
-	@Renderer(CleavedBlockEntityRenderer.class)
 	public static final BlockEntityType<CleavedBlockEntity> CLEAVED_BLOCK = create(CleavedBlockEntity::new, YBlocks.CLEAVED_BLOCK);
 	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
 	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);

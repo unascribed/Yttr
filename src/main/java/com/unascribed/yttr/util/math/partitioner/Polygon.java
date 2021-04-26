@@ -22,6 +22,20 @@ public class Polygon implements Iterable<DEdge> {
 	private int     nDEdges;		// Number of DEdges in loop...
 	private DEdge      anchor;		// Edge Loop
 
+	public Polygon copy() {
+		DEdge first = null;
+		DEdge last = null;
+		for (DEdge de : this) {
+			if (first == null) {
+				first = last = new DEdge(de.sP);
+			} else {
+				last = new DEdge(de.sP, last);
+			}
+		}
+		DEdge.closeCycle(first, last);
+		return new Polygon(first, supportPlane);
+	}
+	
 	public int    nPoints( ) { return nDEdges; }
 	public Plane plane( ) { return supportPlane; }
 	public DEdge       first( ) { return anchor; }

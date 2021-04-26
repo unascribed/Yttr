@@ -3,6 +3,9 @@ package com.unascribed.yttr.block.decor;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 import com.unascribed.yttr.util.math.partitioner.Where;
@@ -10,11 +13,15 @@ import com.unascribed.yttr.util.math.partitioner.Where;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,10 +32,11 @@ import net.minecraft.util.shape.BitSetVoxelSet;
 import net.minecraft.util.shape.SimpleVoxelShape;
 import net.minecraft.util.shape.VoxelShape;
 
-public class CleavedBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class CleavedBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity {
 
 	public static List<Polygon> cube() {
-		return Lists.newArrayList(new Polygon(
+		return Lists.newArrayList(
+			new Polygon(
 				new Vec3d(0, 0, 0),
 				new Vec3d(1, 0, 0),
 				new Vec3d(1, 0, 1),
@@ -76,6 +84,7 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	private BlockState donor = Blocks.AIR.getDefaultState();
 	
 	public Object clientCacheData;
+	
 	
 	private VoxelShape cachedShape;
 	
@@ -155,8 +164,14 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		donor = NbtHelper.toBlockState(tag.getCompound("Donor"));
 		clientCacheData = null;
 		cachedShape = null;
+		if (world != null && world.isClient) scheduleRerender();
 	}
 	
+	@Environment(EnvType.CLIENT)
+	private void scheduleRerender() {
+		((ClientWorld)world).scheduleBlockRenders(pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	public CompoundTag toTagInner(CompoundTag tag) {
 		ListTag li = new ListTag();
 		for (Polygon poly : polygons) {
@@ -208,6 +223,12 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	public CompoundTag toClientTag(CompoundTag tag) {
 		toTagInner(tag);
 		return tag;
+	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public @Nullable Object getRenderAttachmentData() {
+		return CleavedBlockMeshes.getMesh(this);
 	}
 	
 

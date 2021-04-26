@@ -5,7 +5,7 @@ import net.minecraft.util.math.Vec3d;
 //Gems V: Spatial Partitioning of a Polygon by a Plane
 //by George Vanecek Jr, Sept. 1994
 //https://github.com/erich666/GraphicsGems/tree/9632659c0e3592d8cecf8866fcc34498a85c8d22/gemsv/ch7-4
-public class DEdge {
+public class DEdge implements Cloneable {
 
 	DEdge      nxt;		// Next DEdge on cycle
 	DEdge      prv;		// Previous DEdge on cycle
@@ -27,6 +27,7 @@ public class DEdge {
 		last.nxt = this;
 		prv = last;
 	}
+	
 	public static void closeCycle( DEdge first, DEdge last )
 	{
 		first.prv = last;

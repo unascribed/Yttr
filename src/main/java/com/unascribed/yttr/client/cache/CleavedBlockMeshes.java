@@ -1,15 +1,15 @@
 package com.unascribed.yttr.client.cache;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
+import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.block.decor.CleavedBlockEntity;
+import com.unascribed.yttr.client.util.UVObserver;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
@@ -19,26 +19,84 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.BasicBakedModel;
-import net.minecraft.client.render.model.json.ModelOverrideList;
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-public class CleavedBlockModels {
+public class CleavedBlockMeshes {
 
-	public static BakedModel getModel(CleavedBlockEntity entity) {
-		if (entity.clientCacheData instanceof BakedModel) return (BakedModel)entity.clientCacheData;
+	private static final MatrixStack IDENTITY = new MatrixStack();
+	
+	private static final UVObserver uvo = new UVObserver();
+	
+	private static class DummySprite extends Sprite {
+
+		private float minU, minV, maxU, maxV;
+		
+		protected DummySprite() {
+			super(null, new Info(null, 0, 0, null), 0, 0, 0, 0, 0, null);
+			// NOT CALLED
+		}
+		
+		public static DummySprite create(float minU, float minV, float maxU, float maxV) {
+			try {
+				DummySprite ds = UnsafeAllocator.create().newInstance(DummySprite.class);
+				ds.minU = minU;
+				ds.minV = minV;
+				ds.maxU = maxU;
+				ds.maxV = maxV;
+				return ds;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		@Override
+		public float getMinU() {
+			return minU;
+		}
+		
+		@Override
+		public float getMinV() {
+			return minV;
+		}
+		
+		@Override
+		public float getMaxU() {
+			return maxU;
+		}
+		
+		@Override
+		public float getMaxV() {
+			return maxV;
+		}
+		
+	}
+	
+	public static Mesh getMesh(CleavedBlockEntity entity) {
+		if (entity.clientCacheData instanceof Mesh) return (Mesh)entity.clientCacheData;
 		if (!RendererAccess.INSTANCE.hasRenderer()) return null;
 		MinecraftClient.getInstance().getProfiler().push("yttr:cleaved_modelgen");
 		BakedModel donor = MinecraftClient.getInstance().getBlockRenderManager().getModel(entity.getDonor());
 		Renderer r = RendererAccess.INSTANCE.getRenderer();
 		MeshBuilder bldr = r.meshBuilder();
 		QuadEmitter qe = bldr.getEmitter();
-		// TODO use face-specific sprites instead of just grabbing the particle sprite
-		Sprite sprite = donor.getSprite();
+		Random rand = new Random(7);
+		BakedQuad firstNullQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), null, rand), null);
+		Sprite particle = donor.getSprite();
 		for (Polygon p : entity.getPolygons()) {
+			Plane plane = p.plane();
+			Direction face = findClosestFace(plane.normal());
+			BakedQuad firstQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), face, rand), firstNullQuad);
+			Sprite sprite;
+			if (firstQuad == null) {
+				sprite = particle;
+			} else {
+				uvo.reset();
+				uvo.quad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
+				sprite = DummySprite.create(uvo.getMinU(), uvo.getMinV(), uvo.getMaxU(), uvo.getMaxV());
+			}
 			if (p.nPoints() <= 2) {
 				// ???
 			} else if (p.nPoints() == 3) {
@@ -51,8 +109,6 @@ public class CleavedBlockModels {
 				// worst case: need to triangulate
 				// this isn't Optimal™, it's a trivial convex-only triangulation
 				// but hey, it works, and doesn't make my head hurt
-				Plane plane = p.plane();
-				Direction face = findClosestFace(plane.normal());
 				Vec3d origin = p.first().srcPoint();
 				int c = -1;//0x0000FF;
 				for (DEdge de : p) {
@@ -73,18 +129,18 @@ public class CleavedBlockModels {
 				}
 			}
 		}
-		List<BakedQuad> quads = Lists.newArrayList();
 		Mesh mesh = bldr.build();
-		mesh.forEach((qv) -> quads.add(qv.toBakedQuad(0, sprite, false)));
-		Map<Direction, List<BakedQuad>> directions = Maps.newHashMap();
-		for (Direction d : Direction.values()) {
-			// TODO determine if any polygons entirely touch a face so they can be culled
-			directions.put(d, Lists.newArrayList());
-		}
-		BasicBakedModel model = new BasicBakedModel(quads, directions, false, false, true, sprite, ModelTransformation.NONE, ModelOverrideList.EMPTY);
-		entity.clientCacheData = model;
+//		List<BakedQuad> quads = Lists.newArrayList();
+//		mesh.forEach((qv) -> quads.add(qv.toBakedQuad(0, sprite, false)));
+//		Map<Direction, List<BakedQuad>> directions = Maps.newHashMap();
+//		for (Direction d : Direction.values()) {
+//			// TODO determine if any polygons entirely touch a face so they can be culled
+//			directions.put(d, Lists.newArrayList());
+//		}
+//		BasicBakedModel model = new BasicBakedModel(quads, directions, false, false, true, sprite, ModelTransformation.NONE, ModelOverrideList.EMPTY);
+//		entity.clientCacheData = model;
 		MinecraftClient.getInstance().getProfiler().pop();
-		return model;
+		return mesh;
 	}
 
 	private static void buildTrivial(Sprite sprite, QuadEmitter qe, Polygon p, boolean invert) {

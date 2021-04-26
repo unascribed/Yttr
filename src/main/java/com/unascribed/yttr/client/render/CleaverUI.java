@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.block.decor.CleavedBlockEntity;
+import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
@@ -15,7 +16,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -24,31 +24,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class CleaverUI {
+public class CleaverUI extends IHasAClient {
 
-	private static final MinecraftClient mc = MinecraftClient.getInstance();
-	
 	public static boolean render(WorldRenderContext wrc, BlockOutlineContext boc) {
 		ItemStack held = mc.player.getStackInHand(Hand.MAIN_HAND);
-		if (boc.blockState().getBlock() == YBlocks.CLEAVED_BLOCK) {
-			BlockEntity be = wrc.world().getBlockEntity(boc.blockPos());
-			if (be instanceof CleavedBlockEntity) {
-				wrc.matrixStack().push();
-				BlockPos pos = boc.blockPos();
-				wrc.matrixStack().translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-				List<Polygon> polys = ((CleavedBlockEntity)be).getPolygons();
-				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
-				// TODO why does the line happen? is the joiner polygon invalid?
-				for (Polygon pg : polys.subList(0, polys.size()-1)) {
-					pg.forEachDEdge((de) -> {
-						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
-						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
-					});
-				}
-				wrc.matrixStack().pop();
-				return false;
-			}
-		} else if (held.getItem() instanceof CleaverItem) {
+		if (held.getItem() instanceof CleaverItem) {
 			CleaverItem ci = (CleaverItem)held.getItem();
 			HitResult tgt = mc.crosshairTarget;
 			if (tgt instanceof BlockHitResult && (!ci.requiresSneaking() || boc.entity().isSneaking())) {
@@ -56,7 +36,7 @@ public class CleaverUI {
 				if (cleaving == null && tgt.getPos().squaredDistanceTo(boc.cameraX(), boc.cameraY(), boc.cameraZ()) > 2*2) return true;
 				BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
 				BlockState bs = wrc.world().getBlockState(pos);
-				if (bs.isSolidBlock(wrc.world(), pos)) {
+				if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
 					GlStateManager.pushMatrix();
 					GlStateManager.multMatrix(wrc.matrixStack().peek().getModel());
 					GlStateManager.translated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
@@ -131,7 +111,8 @@ public class CleaverUI {
 						GlStateManager.enableDepthTest();
 						GlStateManager.enablePolygonOffset();
 						GlStateManager.polygonOffset(-3, -3);
-						List<Polygon> cleave = CleaverItem.performCleave(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ), CleavedBlockEntity.cube(), true);
+						List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
+						List<Polygon> cleave = CleaverItem.performCleave(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ), shape, true);
 						for (Polygon polygon : cleave) {
 							GL11.glBegin(GL11.GL_POLYGON);
 							polygon.forEachDEdge((de) -> {
@@ -155,6 +136,26 @@ public class CleaverUI {
 					GlStateManager.popMatrix();
 					GlStateManager.enableTexture();
 				}
+			}
+		}
+		if (boc.blockState().getBlock() == YBlocks.CLEAVED_BLOCK) {
+			if (mc.options.debugEnabled) return true;
+			BlockEntity be = wrc.world().getBlockEntity(boc.blockPos());
+			if (be instanceof CleavedBlockEntity) {
+				wrc.matrixStack().push();
+				BlockPos pos = boc.blockPos();
+				wrc.matrixStack().translate(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
+				List<Polygon> polys = ((CleavedBlockEntity)be).getPolygons();
+				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
+				// TODO why does the line happen? is the joiner polygon invalid?
+				for (Polygon pg : polys.subList(0, polys.size()-1)) {
+					pg.forEachDEdge((de) -> {
+						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
+						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
+					});
+				}
+				wrc.matrixStack().pop();
+				return false;
 			}
 		}
 		return true;

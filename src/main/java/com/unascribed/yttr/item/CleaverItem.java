@@ -16,10 +16,12 @@ import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,9 +32,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
@@ -66,7 +65,7 @@ public class CleaverItem extends Item implements Attackable {
 			BlockPos expected = getCleaveBlock(stack);
 			if (expected == null) {
 				BlockState state = world.getBlockState(pos);
-				if (!state.isSolidBlock(world, pos) || state.getOutlineShape(world, pos) != VoxelShapes.fullCube()) return ActionResult.FAIL;
+				if (!canCleave(world, pos, state)) return ActionResult.FAIL;
 				Vec3d point = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
 				if (point == null) return ActionResult.FAIL;
 				setCleaveCorner(stack, null);
@@ -81,39 +80,55 @@ public class CleaverItem extends Item implements Attackable {
 			} else {
 				if (world.isClient) return ActionResult.CONSUME;
 				
-				BlockPos block = getCleaveBlock(stack);
+				pos = getCleaveBlock(stack);
 				Vec3d start = getCleaveStart(stack);
 				Vec3d corner = getCleaveCorner(stack);
-				setCleaveBlock(stack, null);
-				setCleaveStart(stack, null);
-				setCleaveCorner(stack, null);
 				
-				BlockState state = world.getBlockState(block);
-				if (!state.isSolidBlock(world, block) || state.getOutlineShape(world, block) != VoxelShapes.fullCube()) return ActionResult.FAIL;
+				BlockState state = world.getBlockState(pos);
+				if (!canCleave(world, pos, state)) return ActionResult.FAIL;
 				
-				HitResult hr = player.raycast(2, 1, false);
-				if (hr.getType() == Type.BLOCK) {
-					BlockHitResult bhr = (BlockHitResult)hr;
-					Vec3d end = findCutPoint(bhr.getPos().subtract(Vec3d.of(block)));
-					if (end == null) return ActionResult.FAIL;
-					System.out.println(start+" - "+corner+" - "+end);
-					List<Polygon> result = performCleave(start, corner, end, CleavedBlockEntity.cube(), false);
-					if (!result.isEmpty()) {
-						world.playSound(null, block, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
-						SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
-						if (breakSound != null) {
-							world.playSound(null, block, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
-						}
-						world.setBlockState(block, YBlocks.CLEAVED_BLOCK.getDefaultState());
-						CleavedBlockEntity cbe = ((CleavedBlockEntity)world.getBlockEntity(block));
-						cbe.setDonor(state);
-						cbe.setPolygons(result);
-						stack.damage(1, player, (e) -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+				Vec3d end = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
+				if (end == null) return ActionResult.FAIL;
+				List<Polygon> shape = getShape(world, pos);
+				List<Polygon> result = performCleave(start, corner, end, shape, false);
+				if (!result.isEmpty()) {
+					world.playSound(null, pos, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
+					SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
+					if (breakSound != null) {
+						world.playSound(null, pos, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
 					}
+					BlockEntity be = world.getBlockEntity(pos);
+					CleavedBlockEntity cbe;
+					if (be instanceof CleavedBlockEntity) {
+						cbe = (CleavedBlockEntity)be;
+					} else {
+						world.setBlockState(pos, YBlocks.CLEAVED_BLOCK.getDefaultState());
+						cbe = ((CleavedBlockEntity)world.getBlockEntity(pos));
+						cbe.setDonor(state);
+					}
+					cbe.setPolygons(result);
+					stack.damage(1, player, (e) -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+					setCleaveBlock(stack, null);
+					setCleaveStart(stack, null);
+					setCleaveCorner(stack, null);
 				}
 			}
 		}
 		return ActionResult.PASS;
+	}
+
+	public static boolean canCleave(World world, BlockPos pos, BlockState state) {
+		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
+		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
+		return state.isSolidBlock(world, pos) && !state.getBlock().hasBlockEntity() && state.getOutlineShape(world, pos) == VoxelShapes.fullCube();
+	}
+
+	public static List<Polygon> getShape(World world, BlockPos pos) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CleavedBlockEntity) {
+			return Lists.newArrayList(Iterables.transform(((CleavedBlockEntity)be).getPolygons(), Polygon::copy));
+		}
+		return CleavedBlockEntity.cube();
 	}
 
 	private Vec3d findCutPoint(Vec3d hit) {

@@ -366,6 +366,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
+		CleavedBlockModelProvider.init();
 	}
 
 	private void checkTranslation(Logger log, Identifier id, String key) {
