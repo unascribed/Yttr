@@ -10,6 +10,7 @@ import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.item.CleaverItem;
+import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
@@ -33,108 +34,110 @@ public class CleaverUI extends IHasAClient {
 			HitResult tgt = mc.crosshairTarget;
 			if (tgt instanceof BlockHitResult && (!ci.requiresSneaking() || boc.entity().isSneaking())) {
 				BlockPos cleaving = ci.getCleaveBlock(held);
-				if (cleaving == null && tgt.getPos().squaredDistanceTo(boc.cameraX(), boc.cameraY(), boc.cameraZ()) > 2*2) return true;
-				BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
-				BlockState bs = wrc.world().getBlockState(pos);
-				if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
-					GlStateManager.pushMatrix();
-					GlStateManager.multMatrix(wrc.matrixStack().peek().getModel());
-					GlStateManager.translated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
-					GlStateManager.disableTexture();
-					RenderSystem.defaultBlendFunc();
-					GlStateManager.enableBlend();
-					GL11.glEnable(GL11.GL_POINT_SMOOTH);
-					GL11.glEnable(GL11.GL_LINE_SMOOTH);
-					float scale = (float)mc.getWindow().getScaleFactor();
-					int sd = CleaverItem.SUBDIVISIONS;
-					Vec3d cleaveStart = ci.getCleaveStart(held);
-					Vec3d cleaveCorner = ci.getCleaveCorner(held);
-					boolean anySelected = false;
-					float selectedX = 0;
-					float selectedY = 0;
-					float selectedZ = 0;
-					for (int x = 0; x <= sd; x++) {
-						for (int y = 0; y <= sd; y++) {
-							for (int z = 0; z <= sd; z++) {
-								if ((x > 0 && x < sd) &&
-										(y > 0 && y < sd) &&
-										(z > 0 && z < sd)) {
-									continue;
+				if (cleaving != null || tgt.getPos().squaredDistanceTo(boc.cameraX(), boc.cameraY(), boc.cameraZ()) <= 2*2) {
+					BlockPos pos = cleaving == null ? boc.blockPos() : cleaving;
+					BlockState bs = wrc.world().getBlockState(pos);
+					if (CleaverItem.canCleave(wrc.world(), pos, bs)) {
+						GlStateManager.pushMatrix();
+						GlStateManager.multMatrix(wrc.matrixStack().peek().getModel());
+						GlStateManager.translated(pos.getX()-boc.cameraX(), pos.getY()-boc.cameraY(), pos.getZ()-boc.cameraZ());
+						GlStateManager.disableTexture();
+						RenderSystem.defaultBlendFunc();
+						GlStateManager.enableBlend();
+						GL11.glEnable(GL11.GL_POINT_SMOOTH);
+						GL11.glEnable(GL11.GL_LINE_SMOOTH);
+						float scale = (float)mc.getWindow().getScaleFactor();
+						int sd = CleaverItem.SUBDIVISIONS;
+						Vec3d cleaveStart = ci.getCleaveStart(held);
+						Vec3d cleaveCorner = ci.getCleaveCorner(held);
+						boolean anySelected = false;
+						float selectedX = 0;
+						float selectedY = 0;
+						float selectedZ = 0;
+						for (int x = 0; x <= sd; x++) {
+							for (int y = 0; y <= sd; y++) {
+								for (int z = 0; z <= sd; z++) {
+									if ((x > 0 && x < sd) &&
+											(y > 0 && y < sd) &&
+											(z > 0 && z < sd)) {
+										continue;
+									}
+									
+									float wX = x/(float)sd;
+									float wY = y/(float)sd;
+									float wZ = z/(float)sd;
+									boolean highlight = (cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05) || (cleaveCorner != null && cleaveCorner.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05);
+									boolean selected = false;
+									float a;
+									if (!highlight) {
+										double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
+										final double maxDist = 0.75;
+										if (dist > maxDist*maxDist) continue;
+										selected = dist < 0.1*0.1;
+										double distSq = Math.sqrt(dist);
+										a = (float)((maxDist-distSq)/maxDist);
+									} else {
+										a = 1;
+									}
+									float r = 1;
+									float g = 1;
+									float b = 1;
+									float size = a*10;
+									if (highlight) {
+										size = 8;
+										g = 0;
+										b = 0;
+									} else if (selected) {
+										size = 15;
+										b = 0;
+										anySelected = true;
+										selectedX = wX;
+										selectedY = wY;
+										selectedZ = wZ;
+									}
+									GL11.glPointSize(size*scale);
+									GlStateManager.color4f(r, g, b, a);
+									GL11.glBegin(GL11.GL_POINTS);
+									GL11.glVertex3f(wX, wY, wZ);
+									GL11.glEnd();
 								}
-								
-								float wX = x/(float)sd;
-								float wY = y/(float)sd;
-								float wZ = z/(float)sd;
-								boolean highlight = (cleaveStart != null && cleaveStart.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05) || (cleaveCorner != null && cleaveCorner.squaredDistanceTo(wX, wY, wZ) < 0.05*0.05);
-								boolean selected = false;
-								float a;
-								if (!highlight) {
-									double dist = tgt.getPos().squaredDistanceTo(pos.getX()+wX, pos.getY()+wY, pos.getZ()+wZ);
-									final double maxDist = 0.75;
-									if (dist > maxDist*maxDist) continue;
-									selected = dist < 0.1*0.1;
-									double distSq = Math.sqrt(dist);
-									a = (float)((maxDist-distSq)/maxDist);
-								} else {
-									a = 1;
-								}
-								float r = 1;
-								float g = 1;
-								float b = 1;
-								float size = a*10;
-								if (highlight) {
-									size = 8;
-									g = 0;
-									b = 0;
-								} else if (selected) {
-									size = 15;
-									b = 0;
-									anySelected = true;
-									selectedX = wX;
-									selectedY = wY;
-									selectedZ = wZ;
-								}
-								GL11.glPointSize(size*scale);
-								GlStateManager.color4f(r, g, b, a);
-								GL11.glBegin(GL11.GL_POINTS);
-								GL11.glVertex3f(wX, wY, wZ);
-								GL11.glEnd();
 							}
 						}
-					}
-					if (anySelected && cleaveStart != null && cleaveCorner != null) {
-						final float TAU = (float)(Math.PI*2);
-						float t = (wrc.world().getTime()+wrc.tickDelta())/5;
-						float a = (MathHelper.sin(t%TAU)+1)/2;
-						GlStateManager.color4f(1, 0.25f, 0, 0.1f+(a*0.3f));
-						GlStateManager.disableCull();
-						GlStateManager.enableDepthTest();
-						GlStateManager.enablePolygonOffset();
-						GlStateManager.polygonOffset(-3, -3);
-						List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
-						List<Polygon> cleave = CleaverItem.performCleave(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ), shape, true);
-						for (Polygon polygon : cleave) {
-							GL11.glBegin(GL11.GL_POLYGON);
-							polygon.forEachDEdge((de) -> {
-								GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
-							});
-							GL11.glEnd();
+						if (anySelected && cleaveStart != null && cleaveCorner != null) {
+							final float TAU = (float)(Math.PI*2);
+							float t = (wrc.world().getTime()+wrc.tickDelta())/5;
+							float a = (MathHelper.sin(t%TAU)+1)/2;
+							GlStateManager.color4f(1, 0.25f, 0, 0.1f+(a*0.3f));
+							GlStateManager.disableCull();
+							GlStateManager.enableDepthTest();
+							GlStateManager.enablePolygonOffset();
+							GlStateManager.polygonOffset(-3, -3);
+							List<Polygon> shape = CleaverItem.getShape(wrc.world(), pos);
+							Plane plane = new Plane(cleaveStart, cleaveCorner, new Vec3d(selectedX, selectedY, selectedZ));
+							List<Polygon> cleave = CleaverItem.performCleave(plane, shape, true);
+							for (Polygon polygon : cleave) {
+								GL11.glBegin(GL11.GL_POLYGON);
+								polygon.forEachDEdge((de) -> {
+									GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+								});
+								GL11.glEnd();
+							}
+							GlStateManager.disablePolygonOffset();
+							GlStateManager.color4f(1, 0.25f, 0, 0.05f+(a*0.1f));
+							GlStateManager.disableDepthTest();
+							for (Polygon polygon : cleave) {
+								GL11.glBegin(GL11.GL_POLYGON);
+								polygon.forEachDEdge((de) -> {
+									GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
+								});
+								GL11.glEnd();
+							}
+							GlStateManager.enableCull();
 						}
-						GlStateManager.disablePolygonOffset();
-						GlStateManager.color4f(1, 0.25f, 0, 0.05f+(a*0.1f));
-						GlStateManager.disableDepthTest();
-						for (Polygon polygon : cleave) {
-							GL11.glBegin(GL11.GL_POLYGON);
-							polygon.forEachDEdge((de) -> {
-								GL11.glVertex3d(de.srcPoint().x, de.srcPoint().y, de.srcPoint().z);
-							});
-							GL11.glEnd();
-						}
-						GlStateManager.enableCull();
+						GlStateManager.disableBlend();
+						GlStateManager.popMatrix();
+						GlStateManager.enableTexture();
 					}
-					GlStateManager.disableBlend();
-					GlStateManager.popMatrix();
-					GlStateManager.enableTexture();
 				}
 			}
 		}

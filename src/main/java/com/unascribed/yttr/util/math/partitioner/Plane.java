@@ -76,10 +76,16 @@ public class Plane {
 			eps = d;
 	}
 	
-	public Plane(Vec3d v, double x) {
-		n = v;
-		d = x;
-		eps = 0;
+	public Plane(Vec3d v, double d) {
+		this.n = v;
+		this.d = d;
+		this.eps = 0;
+	}
+	
+	public Plane(Vec3d v, double d, double eps) {
+		this.n = v;
+		this.d = d;
+		this.eps = eps;
 	}
 	
 	public Plane(Plane p) {
@@ -89,6 +95,8 @@ public class Plane {
 	}
 	
 	public Vec3d normal( ) { return n; }
+	public double distance( ) { return d; }
+	public double epsilon( ) { return eps; }
 
 	// Signed distance from the point to the plane.
 	public double      sDistance( Vec3d p ) { return p.dotProduct(n) + d; }

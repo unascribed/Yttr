@@ -161,6 +161,11 @@
 	
 	"tip.yttr.effector.no_fuel": "Out of Void",
 	
+	"tip.yttr.cleaver.repeat_cut": "Left click another block to repeat this cut",
+	"tip.yttr.cleaver.repeat_cut.post": "Left click to repeat last cut",
+	"tip.yttr.cleaver.repeat_cut_sneak": "Sneak left click another block to repeat this cut",
+	"tip.yttr.cleaver.repeat_cut_sneak.post": "Sneak left click to repeat last cut",
+	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
 	"commands.yttr.void_undo.not_found": "No undo files could be found matching your request",

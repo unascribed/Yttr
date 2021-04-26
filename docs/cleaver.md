@@ -6,9 +6,6 @@ The Void Cleaver allows making arbitrary cuts in any solid block. The extremely 
 Glassy Void blade can cut through just about anything, obsidian included. However, it's very
 fragile, so it cannot be used to break blocks or as a weapon.
 
-*Note:* As of Yttr 0.3.4, the Void Cleaver is very unfinished and "cleaved" blocks have a lot of
-bugs and limitations.
-
 ## Video
 <video src="../img/cleaver.mp4" controls></video>
 

@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,13 +30,17 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import net.minecraft.world.RaycastContext.FluidHandling;
 
 public class CleaverItem extends Item implements Attackable {
 
@@ -89,28 +94,13 @@ public class CleaverItem extends Item implements Attackable {
 				
 				Vec3d end = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
 				if (end == null) return ActionResult.FAIL;
-				List<Polygon> shape = getShape(world, pos);
-				List<Polygon> result = performCleave(start, corner, end, shape, false);
-				if (!result.isEmpty()) {
-					world.playSound(null, pos, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
-					SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
-					if (breakSound != null) {
-						world.playSound(null, pos, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
-					}
-					BlockEntity be = world.getBlockEntity(pos);
-					CleavedBlockEntity cbe;
-					if (be instanceof CleavedBlockEntity) {
-						cbe = (CleavedBlockEntity)be;
-					} else {
-						world.setBlockState(pos, YBlocks.CLEAVED_BLOCK.getDefaultState());
-						cbe = ((CleavedBlockEntity)world.getBlockEntity(pos));
-						cbe.setDonor(state);
-					}
-					cbe.setPolygons(result);
-					stack.damage(1, player, (e) -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+				Plane plane = new Plane(start, corner, end);
+				if (performWorldCleave(world, pos, stack, player, plane)) {
+					setLastCut(stack, plane);
 					setCleaveBlock(stack, null);
 					setCleaveStart(stack, null);
 					setCleaveCorner(stack, null);
+					player.sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
 				}
 			}
 		}
@@ -120,7 +110,22 @@ public class CleaverItem extends Item implements Attackable {
 	public static boolean canCleave(World world, BlockPos pos, BlockState state) {
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
 		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
-		return state.isSolidBlock(world, pos) && !state.getBlock().hasBlockEntity() && state.getOutlineShape(world, pos) == VoxelShapes.fullCube();
+		return !state.getBlock().hasBlockEntity() && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
+	}
+	
+	@Override
+	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+		if (entity instanceof PlayerEntity && stack.hasTag()) {
+			boolean wasSelected = stack.getTag().getBoolean("Selected");
+			if (selected && !wasSelected) {
+				if (stack.getTag().contains("LastCut")) {
+					((PlayerEntity)entity).sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")+".post"), true);
+				}
+				stack.getTag().putBoolean("Selected", true);
+			} else if (!selected && wasSelected) {
+				stack.getTag().putBoolean("Selected", false);
+			}
+		}
 	}
 
 	public static List<Polygon> getShape(World world, BlockPos pos) {
@@ -144,7 +149,16 @@ public class CleaverItem extends Item implements Attackable {
 	@Override
 	public void attack(PlayerEntity user) {
 		ItemStack stack = user.getMainHandStack();
-		if (getCleaveCorner(stack) != null) {
+		if (getCleaveBlock(stack) == null) {
+			if (requiresSneaking() && !user.isSneaking()) return;
+			Plane p = getLastCut(stack);
+			if (p != null) {
+				BlockHitResult bhr = raycast(user.world, user, FluidHandling.NONE);
+				if (bhr.getType() != Type.MISS && canCleave(user.world, bhr.getBlockPos(), user.world.getBlockState(bhr.getBlockPos()))) {
+					performWorldCleave(user.world, bhr.getBlockPos(), stack, user, p);
+				}
+			}
+		} else if (getCleaveCorner(stack) != null) {
 			setCleaveCorner(stack, null);
 		} else {
 			setCleaveBlock(stack, null);
@@ -152,8 +166,33 @@ public class CleaverItem extends Item implements Attackable {
 		}
 	}
 	
-	public static List<Polygon> performCleave(Vec3d start, Vec3d corner, Vec3d end, List<Polygon> polygonsIn, boolean invert) {
-		Plane plane = new Plane(start, corner, end);
+	private boolean performWorldCleave(World world, BlockPos pos, ItemStack stack, PlayerEntity player, Plane plane) {
+		BlockState state = world.getBlockState(pos);
+		List<Polygon> shape = getShape(world, pos);
+		List<Polygon> result = performCleave(plane, shape, false);
+		if (!result.isEmpty()) {
+			world.playSound(null, pos, YSounds.CLEAVER, SoundCategory.BLOCKS, 1, 1.5f);
+			SoundEvent breakSound = ((AccessorBlockSoundGroup)state.getSoundGroup()).yttr$getBreakSound();
+			if (breakSound != null) {
+				world.playSound(null, pos, breakSound, SoundCategory.BLOCKS, 0.5f, 1f);
+			}
+			BlockEntity be = world.getBlockEntity(pos);
+			CleavedBlockEntity cbe;
+			if (be instanceof CleavedBlockEntity) {
+				cbe = (CleavedBlockEntity)be;
+			} else {
+				world.setBlockState(pos, YBlocks.CLEAVED_BLOCK.getDefaultState());
+				cbe = ((CleavedBlockEntity)world.getBlockEntity(pos));
+				cbe.setDonor(state);
+			}
+			cbe.setPolygons(result);
+			stack.damage(1, player, (e) -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+			return true;
+		}
+		return false;
+	}
+	
+	public static List<Polygon> performCleave(Plane plane, List<Polygon> polygonsIn, boolean invert) {
 		List<Polygon> above = Lists.newArrayList();
 		List<Polygon> on = Lists.newArrayList();
 		List<Polygon> below = Lists.newArrayList();
@@ -223,6 +262,18 @@ public class CleaverItem extends Item implements Attackable {
 		return null;
 	}
 	
+	public @Nullable Plane getLastCut(ItemStack stack) {
+		if (stack.hasTag() && stack.getTag().contains("LastCut", NbtType.COMPOUND)) {
+			CompoundTag tag = stack.getTag().getCompound("LastCut");
+			Vec3d normal = NBTUtils.listToVec(tag.getList("Normal", NbtType.DOUBLE));
+			if (normal == null) return null;
+			double distance = tag.getDouble("Distance");
+			double epsilon = tag.getDouble("Epsilon");
+			return new Plane(normal, distance, epsilon);
+		}
+		return null;
+	}
+	
 	public void setCleaveBlock(ItemStack stack, @Nullable BlockPos pos) {
 		if (!stack.hasTag()) {
 			if (pos == null) return;
@@ -241,6 +292,22 @@ public class CleaverItem extends Item implements Attackable {
 	
 	public void setCleaveCorner(ItemStack stack, @Nullable Vec3d pos) {
 		setVec(stack, "CleaveCorner", pos);
+	}
+	
+	public void setLastCut(ItemStack stack, @Nullable Plane plane) {
+		if (!stack.hasTag()) {
+			if (plane == null) return;
+			stack.setTag(new CompoundTag());
+		}
+		if (plane == null) {
+			stack.getTag().remove("LastCut");
+		} else {
+			CompoundTag tag = new CompoundTag();
+			tag.put("Normal", NBTUtils.vecToList(plane.normal()));
+			tag.putDouble("Distance", plane.distance());
+			tag.putDouble("Epsilon", plane.epsilon());
+			stack.getTag().put("LastCut", tag);
+		}
 	}
 
 	private void setVec(ItemStack stack, String key, @Nullable Vec3d pos) {

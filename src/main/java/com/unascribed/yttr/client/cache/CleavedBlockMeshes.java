@@ -13,10 +13,13 @@ import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.texture.Sprite;
@@ -78,8 +81,10 @@ public class CleavedBlockMeshes {
 		if (entity.clientCacheData instanceof Mesh) return (Mesh)entity.clientCacheData;
 		if (!RendererAccess.INSTANCE.hasRenderer()) return null;
 		MinecraftClient.getInstance().getProfiler().push("yttr:cleaved_modelgen");
+		BlendMode bm = BlendMode.fromRenderLayer(RenderLayers.getBlockLayer(entity.getDonor()));
 		BakedModel donor = MinecraftClient.getInstance().getBlockRenderManager().getModel(entity.getDonor());
 		Renderer r = RendererAccess.INSTANCE.getRenderer();
+		RenderMaterial mat = r.materialFinder().blendMode(0, bm).find();
 		MeshBuilder bldr = r.meshBuilder();
 		QuadEmitter qe = bldr.getEmitter();
 		Random rand = new Random(7);
@@ -102,9 +107,13 @@ public class CleavedBlockMeshes {
 			} else if (p.nPoints() == 3) {
 				// trivial case: triangle. make a degenerate quad
 				buildTrivial(sprite, qe, p, false);
+				qe.material(mat);
+				qe.emit();
 			} else if (p.nPoints() == 4) {
 				// ideal case: it's already a quad
 				buildTrivial(sprite, qe, p, false);
+				qe.material(mat);
+				qe.emit();
 			} else {
 				// worst case: need to triangulate
 				// this isn't Optimal™, it's a trivial convex-only triangulation
@@ -125,6 +134,7 @@ public class CleavedBlockMeshes {
 					}
 					qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 					qe.spriteColor(0, c, c, c, c);
+					qe.material(mat);
 					qe.emit();
 				}
 			}
@@ -157,7 +167,6 @@ public class CleavedBlockMeshes {
 		qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 		int c = -1;//p.nPoints() == 3 ? 0x00FFFF : 0x00FF00;
 		qe.spriteColor(0, c, c, c, c);
-		qe.emit();
 	}
 
 	private static void emit(Sprite sprite, QuadEmitter qe, Plane plane, DEdge de, int i) {
