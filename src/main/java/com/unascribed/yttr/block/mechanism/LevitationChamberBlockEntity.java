@@ -86,7 +86,7 @@ public class LevitationChamberBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return dir != Direction.UP;
+		return true;
 	}
 	
 	@Override

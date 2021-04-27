@@ -5,6 +5,15 @@ edit_uri: edit/trunk/docs/
 site_description: Yttr is a Fabric mod for Minecraft 1.16.5 with no particular focus.
 copyright: "Copyright &copy; 2021 Una Thompson"
 theme: windmill
+plugins:
+    - search
+extra:
+    logo: img/logo.png
+    version: "0.4.3"
+    article_nav_top: false
+    article_nav_bottom: false
+extra_css:
+    - css/yttr.css?v=5
 nav:
     - Support Me: https://donate.unascribed.com/?project=14
     - GitHub: https://github.com/unascribed/Yttr
@@ -44,12 +53,3 @@ nav:
     - Aware Hopper: aware_hopper.md
     - "[0.4.0] Skeletal Sorter": skeletal_sorter.md
     - "[0.4.2] Replicator": replicator.md
-plugins:
-    - search
-extra:
-    logo: img/logo.png
-    version: "0.4.2"
-    article_nav_top: false
-    article_nav_bottom: false
-extra_css:
-    - css/yttr.css?v=5
