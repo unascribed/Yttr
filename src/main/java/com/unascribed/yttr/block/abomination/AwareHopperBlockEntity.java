@@ -63,7 +63,30 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	private SimpleInventory output = new SimpleInventory(1);
 	
 	// :)
-	private DoubleInventory union = new DoubleInventory(input, new DoubleInventory(new DoubleInventory(remainder, eject), output));
+	private DoubleInventory union = new DoubleInventory(input, new DoubleInventory(new DoubleInventory(remainder, eject), output)) {
+		@Override
+		public void setStack(int slot, ItemStack stack) {
+			super.setStack(slot, stack);
+			AwareHopperBlockEntity.this.markDirty();
+		}
+		@Override
+		public ItemStack removeStack(int slot) {
+			ItemStack rtrn = super.removeStack(slot);
+			AwareHopperBlockEntity.this.markDirty();
+			return rtrn;
+		}
+		@Override
+		public void clear() {
+			super.clear();
+			AwareHopperBlockEntity.this.markDirty();
+		}
+		@Override
+		public ItemStack removeStack(int slot, int amount) {
+			ItemStack rtrn = super.removeStack(slot, amount);
+			AwareHopperBlockEntity.this.markDirty();
+			return rtrn;
+		}
+	};
 	
 	public int craftingTicks = 0;
 	public int transferCooldown = 0;
@@ -141,11 +164,16 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 						}
 					}
 				}
+				markDirty();
 			} else if (craftingTicks > 0) {
 				if (craftingTicks != 0) {
 					world.addSyncedBlockEvent(pos, getCachedState().getBlock(), 0, 0);
+					markDirty();
 				}
 				craftingTicks = 0;
+			}
+			if (transferCooldown > 0) {
+				markDirty();
 			}
 			transferCooldown--;
 			if (!output.isEmpty() && transferCooldown <= 0) {

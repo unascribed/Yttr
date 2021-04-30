@@ -71,6 +71,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 	
 	public SuitStationBlockEntity() {
 		super(YBlockEntities.SUIT_STATION);
+		inv.addListener(i -> markDirty());
 	}
 	
 	public PropertyDelegate getProperties() {

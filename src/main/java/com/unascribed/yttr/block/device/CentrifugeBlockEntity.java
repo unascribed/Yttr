@@ -65,7 +65,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	
 	public CentrifugeBlockEntity() {
 		super(YBlockEntities.CENTRIFUGE);
-		
+		inv.addListener(i -> markDirty());
 	}
 	
 	public PropertyDelegate getProperties() {
