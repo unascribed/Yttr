@@ -2,6 +2,8 @@ package com.unascribed.yttr;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.AbstractList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -411,6 +413,45 @@ public class Yttr implements ModInitializer {
 			}
 		}
 		return maxPressure-Math.min(maxPressureGap, pressureEffect);
+	}
+
+	public static List<ItemStack> asList(Inventory inv) {
+		return asListExcluding(inv, -1);
+	}
+		
+	public static List<ItemStack> asListExcluding(Inventory inv, int exclude) {
+		return new AbstractList<ItemStack>() {
+			
+			@Override
+			public ItemStack get(int index) {
+				return index == exclude ? ItemStack.EMPTY : inv.getStack(index);
+			}
+
+			@Override
+			public int size() {
+				return inv.size();
+			}
+			
+			@Override
+			public ItemStack remove(int index) {
+				if (index == exclude) return ItemStack.EMPTY;
+				return inv.removeStack(index);
+			}
+			
+			@Override
+			public void clear() {
+				inv.clear();
+			}
+
+			@Override
+			public ItemStack set(int index, ItemStack element) {
+				if (index == exclude) return ItemStack.EMPTY;
+				ItemStack old = inv.getStack(index);
+				inv.setStack(index, element);
+				return old;
+			}
+			
+		};
 	}
 	
 }

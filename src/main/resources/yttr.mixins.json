@@ -40,7 +40,20 @@
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
 	"sorter.MixinChestBlockEntity",
-	"replicator.MixinDropperBlock"
+	"replicator.MixinDropperBlock",
+	
+	"aware_hopper.recipe.MixinArmorDyeRecipe",
+	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
+	"aware_hopper.recipe.MixinBookCloningRecipe",
+	"aware_hopper.recipe.MixinFireworkRocketRecipe",
+	"aware_hopper.recipe.MixinFireworkStarFadeRecipe",
+	"aware_hopper.recipe.MixinFireworkStarRecipe",
+	"aware_hopper.recipe.MixinMapCloningRecipe",
+	"aware_hopper.recipe.MixinRepairItemRecipe",
+	"aware_hopper.recipe.MixinShieldDecorationRecipe",
+	"aware_hopper.recipe.MixinShulkerBoxColoringRecipe",
+	"aware_hopper.recipe.MixinSuspiciousStewRecipe",
+	"aware_hopper.recipe.MixinTippedArrowRecipe"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",

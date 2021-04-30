@@ -7,6 +7,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.mechanics.SpecialInputsRecipe;
 import com.unascribed.yttr.util.DelegatingInventory;
 
 import com.google.common.base.Objects;
@@ -109,11 +110,17 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 						if (i < remainders.size()) {
 							ItemStack rem = remainders.get(i);
 							int index = remapInvIndexToRecipeIndex(r, i);
-							if (input.getStack(i).isEmpty() && r.getPreviewInputs().size() > index && r.getPreviewInputs().get(index).test(rem)) {
-								input.setStack(i, rem);
-							} else {
-								remainder.setStack(i, rem);
+							Inventory tgt = remainder;
+							if (input.getStack(i).isEmpty()) {
+								if (r instanceof SpecialInputsRecipe) {
+									if (((SpecialInputsRecipe)r).yttr$isInputValid(input, index, rem)) {
+										tgt = input;
+									}
+								} else if (r.getPreviewInputs().size() > index && r.getPreviewInputs().get(index).test(rem)) {
+									tgt = input;
+								}
 							}
+							tgt.setStack(i, rem);
 						}
 					}
 					if (world instanceof ServerWorld) {
@@ -313,8 +320,12 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 		if (recipe == null) return false;
 		DefaultedList<Ingredient> inputs = recipe.getPreviewInputs();
 		List<Integer> candidates = Lists.newArrayList();
-		for (int i = 0; i < inputs.size(); i++) {
-			if (inputs.get(i).test(stack)) {
+		for (int i = 0; i < (recipe instanceof SpecialInputsRecipe ? 9 : inputs.size()); i++) {
+			if (recipe instanceof SpecialInputsRecipe) {
+				if (((SpecialInputsRecipe)recipe).yttr$isInputValid(input, i, stack)) {
+					candidates.add(i);
+				}
+			} else if (inputs.get(i).test(stack)) {
 				candidates.add(i);
 			}
 		}
