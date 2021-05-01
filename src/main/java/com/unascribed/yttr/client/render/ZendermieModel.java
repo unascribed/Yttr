@@ -2,6 +2,8 @@
 
 package com.unascribed.yttr.client.render;
 
+import com.unascribed.yttr.Yttr;
+
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -56,7 +58,11 @@ public class ZendermieModel extends EntityModel<Entity> {
 	@Override
 	public void setAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		float t = (ageInTicks/20)%((float)Math.PI*2);
-		jaw.roll = -0.0873f+MathHelper.sin(t)*0.05f;
+		if (Yttr.lessCreepyAwareHopper) {
+			jaw.roll = 0;
+		} else {
+			jaw.roll = -0.0873f+MathHelper.sin(t)*0.05f;
+		}
 		jaw.pitch = 0.1745f+MathHelper.cos(t)*0.045f;
 		head.yaw = (float)Math.toRadians(netHeadYaw);
 		head.pitch = (float)Math.toRadians(headPitch);

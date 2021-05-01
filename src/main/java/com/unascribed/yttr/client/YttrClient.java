@@ -8,12 +8,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.EmbeddedResourcePack;
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.client.particle.VoidBallParticle;
 import com.unascribed.yttr.client.render.CleaverUI;
@@ -40,6 +45,7 @@ import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
+import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorVertexBuffer;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.unascribed.yttr.util.annotate.Renderer;
@@ -50,6 +56,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -108,8 +115,16 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourcePack;
+import net.minecraft.resource.ResourcePackProfile;
+import net.minecraft.resource.ResourcePackProvider;
+import net.minecraft.resource.ResourcePackSource;
+import net.minecraft.resource.ResourcePackProfile.Factory;
+import net.minecraft.resource.ResourcePackProfile.InsertionPosition;
+import net.minecraft.resource.metadata.PackResourceMetadata;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -196,7 +211,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					}
 				}
 			});
-			((ReloadableResourceManager)mc.getResourceManager()).registerListener(new SimpleSynchronousResourceReloadListener() {
+			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
+			rm.registerListener(new SimpleSynchronousResourceReloadListener() {
 
 				@Override
 				public Identifier getFabricId() {
@@ -208,6 +224,19 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					TextureColorThief.clearCache();
 				}
 			});
+			rm.registerListener(new SimpleSynchronousResourceReloadListener() {
+
+				@Override
+				public Identifier getFabricId() {
+					return new Identifier("yttr", "detect_lcah");
+				}
+
+				@Override
+				public void apply(ResourceManager manager) {
+					Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"));
+				}
+			});
+			Yttr.lessCreepyAwareHopper = rm.containsResource(new Identifier("yttr", "lcah-marker"));
 		});
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "beam"), this::handleBeamPacket);
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "void_ball"), (client, handler, buf, responseSender) -> {
@@ -367,6 +396,26 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
 		CleavedBlockModelProvider.init();
+		
+		ResourcePackProvider prov = new ResourcePackProvider() {
+			@Override
+			public void register(Consumer<ResourcePackProfile> consumer, Factory factory) {
+				Supplier<ResourcePack> f = () -> new EmbeddedResourcePack("lcah");
+				consumer.accept(factory.create("", false, f, f.get(),
+						new PackResourceMetadata(new LiteralText("Makes the Aware Hopper less creepy."), 6),
+						InsertionPosition.TOP, ResourcePackSource.method_29486("Yttr built-in")));
+			}
+		};
+		
+		AccessorResourcePackManager arpm = ((AccessorResourcePackManager)MinecraftClient.getInstance().getResourcePackManager());
+		Set<ResourcePackProvider> providers = arpm.yttr$getProviders();
+		try {
+			providers.add(prov);
+		} catch (UnsupportedOperationException e) {
+			providers = Sets.newHashSet(providers);
+			providers.add(prov);
+			arpm.yttr$setProviders(providers);
+		}
 	}
 
 	private void checkTranslation(Logger log, Identifier id, String key) {

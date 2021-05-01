@@ -72,10 +72,12 @@
 	"accessor.client.AccessorEntityTrackingSoundInstance",
 	"accessor.client.AccessorRenderPhase",
 	"accessor.client.AccessorVertexBuffer",
+	"accessor.client.AccessorResourcePackManager",
 	"diving.client.MixinSoundSystem",
 	"diving.client.MixinPlayerEntityRenderer",
 	"diving.client.MixinDeathScreen",
 	"cleaver.client.MixinParticleManager",
+	"aware_hopper.client.MixinSoundSystem",
 	
 	"diving.client.MixinEarsFeatureRenderer",
 	"effector.caffeine.MixinWorldSlice"

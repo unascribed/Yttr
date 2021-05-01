@@ -18,6 +18,7 @@ import net.minecraft.util.math.MathHelper;
 public class AwareHopperBlockEntityRenderer extends BlockEntityRenderer<AwareHopperBlockEntity> {
 
 	private static final Identifier ZENDERMIE_TEX = new Identifier("yttr", "textures/entity/zendermie.png");
+	private static final Identifier ENDERMAN_TEX = new Identifier("minecraft", "textures/entity/enderman/enderman.png");
 	private static final Identifier EYES_TEX = new Identifier("minecraft", "textures/entity/enderman/enderman_eyes.png");
 	
 	private final ZendermieModel zendermie = new ZendermieModel();

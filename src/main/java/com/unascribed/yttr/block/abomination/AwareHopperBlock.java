@@ -133,6 +133,11 @@ public class AwareHopperBlock extends Block implements BlockEntityProvider {
 			return NORMAL_SHAPES.getOrDefault(state.get(FACING), BASE_SHAPE);
 		}
 	}
+	
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return BASE_SHAPES.getOrDefault(state.get(FACING), BASE_SHAPE);
+	}
 
 	@Override
 	public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {

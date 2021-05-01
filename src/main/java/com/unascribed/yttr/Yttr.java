@@ -77,6 +77,8 @@ public class Yttr implements ModInitializer {
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
+	public static boolean lessCreepyAwareHopper;
+	
 	@Override
 	public void onInitialize() {
 		YBlocks.init();

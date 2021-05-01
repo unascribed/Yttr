@@ -7,5 +7,6 @@ accessible method net/minecraft/client/texture/Sprite <init> (Lnet/minecraft/cli
 
 mutable field net/minecraft/world/World isClient Z
 mutable field net/minecraft/world/World random Ljava/util/Random;
+mutable field net/minecraft/resource/ResourcePackManager providers Ljava/util/Set;
 
 accessible class net/minecraft/recipe/Ingredient$Entry
