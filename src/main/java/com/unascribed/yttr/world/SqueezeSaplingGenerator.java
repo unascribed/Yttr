@@ -4,7 +4,7 @@ import java.awt.geom.Path2D;
 import java.util.Map;
 import java.util.Random;
 
-import com.unascribed.yttr.block.squeeze.SqueezeLogBlock;
+import com.unascribed.yttr.block.natural.SqueezeLogBlock;
 import com.unascribed.yttr.init.YBlocks;
 
 import com.google.common.collect.Maps;

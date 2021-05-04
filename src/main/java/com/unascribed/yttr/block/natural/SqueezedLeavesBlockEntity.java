@@ -1,4 +1,4 @@
-package com.unascribed.yttr.block.squeeze;
+package com.unascribed.yttr.block.natural;
 
 import java.util.Iterator;
 import java.util.List;

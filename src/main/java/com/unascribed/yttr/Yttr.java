@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCommands;
+import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeSerializers;
@@ -93,6 +94,7 @@ public class Yttr implements ModInitializer {
 		YCommands.init();
 		YTags.init();
 		YScreenTypes.init();
+		YEnchantments.init();
 		
 		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
 			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);

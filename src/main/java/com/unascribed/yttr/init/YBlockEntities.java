@@ -16,7 +16,7 @@ import com.unascribed.yttr.block.mechanism.FlopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.LevitationChamberBlockEntity;
 import com.unascribed.yttr.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.block.mechanism.VoidCauldronBlockEntity;
-import com.unascribed.yttr.block.squeeze.SqueezedLeavesBlockEntity;
+import com.unascribed.yttr.block.natural.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;

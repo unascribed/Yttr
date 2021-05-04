@@ -91,6 +91,9 @@
 	"effect.yttr.delicaceness": "Delicaceness",
 	"effect.yttr.bleeding": "Bleeding",
 	
+	"enchantment.yttr.disjunction": "Disjunction",
+	"enchantment.yttr.vorpal": "Vorpal",
+	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
 	"subtitles.yttr.rifle_fire": "Yttric Rifle fires",
@@ -137,6 +140,8 @@
 	"death.attack.yttr.bleeding": "%s bled out",
 	"death.attack.yttr.suit_integrity_failure": "%s was denatured by the planet",
 	"death.attack.yttr.suit_suffocation": "%s ran out of oxygen",
+	"death.attack.yttr.vorpal": "%s was fairly slain by %s",
+	"death.attack.yttr.vorpal.item": "%s was fairly slain by %s using %s",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
