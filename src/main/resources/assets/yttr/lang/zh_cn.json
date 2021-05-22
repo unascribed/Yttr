@@ -35,8 +35,8 @@
 	"item.yttr.effector.tip.1": "§7一个可随身携带的隧道制造机",
 	
 	"item.yttr.goggles.tip.1": "§7可以看到§7§o“好康的”§7的眼镜",
-	"item.yttr.goggles.tip.2": "§5§o揭示§5一般来说只有",
-	"item.yttr.goggles.tip.3": "§5玩家看得到的生物细节",
+	"item.yttr.goggles.tip.2": "§5向生物§5§o揭示§5一般来说只有",
+	"item.yttr.goggles.tip.3": "§5玩家看得到的细节",
 	"item.yttr.goggles.tip.4": "",
 	"item.yttr.goggles.tip.5": "§7(将此装配到骷髅分类机上",
 	"item.yttr.goggles.tip.6": "§7以通过NBT来分类物品。)",
@@ -68,7 +68,7 @@
 	"block.yttr.centrifuge": "离心机",
 	"block.yttr.dopper": "双漏斗",
 	"block.yttr.flopper": "侧漏斗",
-	"block.yttr.diving_plate": "潜水板",
+	"block.yttr.diving_plate": "潜泳板",
 	"block.yttr.suit_station": "装甲站",
 	"block.yttr.table": "桌子",
 	"block.yttr.skeletal_sorter": "骷髅分类机",
@@ -151,20 +151,20 @@
 	
 	"yttr.geyser_discovered": "涌泉已发现",
 	
-	"tip.yttr.rifle_mode": "模式：%s",
+	"tip.yttr.rifle_mode": "模式： %s",
 	"tip.yttr.rifle_no_ammo": "缺少%s",
 	"tip.yttr.rifle_no_ammo_multi": "需要%s %s",
 	
-	"tip.yttr.snare.stable": "保护壳稳定",
-	"tip.yttr.snare.unstable": "保护壳在%s:%s失效了",
-	"tip.yttr.snare.failed": "保护壳失效",
+	"tip.yttr.snare.stable": "罗网稳定",
+	"tip.yttr.snare.unstable": "罗网将于%s:%s失效",
+	"tip.yttr.snare.failed": "罗网已失效",
 	
 	"tip.yttr.delicace_bonus_1": "+40% 食物价值",
 	"tip.yttr.delicace_bonus_2": "+20% 饱和度",
 	"tip.yttr.delicace_bonus_3": "+40% 增益效果持续时间",
 	"tip.yttr.delicace_bonus_4": "-40% 负面效果持续时间",
 	
-	"tip.yttr.effector.no_fuel": "缺少虚空",
+	"tip.yttr.effector.no_fuel": "缺少（液态）虚空",
 	
 	"tip.yttr.cleaver.repeat_cut": "左键点击另一个方块以重复此次切削",
 	"tip.yttr.cleaver.repeat_cut.post": "左键点击以重复上一次切削",
