@@ -159,9 +159,13 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			registry.register(VOID_STILL);
 		});
 		Map<String, RenderLayer> renderLayers = Maps.newHashMap();
-		for (RenderLayer layer : RenderLayer.getBlockLayers()) {
-			renderLayers.put(((AccessorRenderPhase)layer).yttr$getName(), layer);
-		}
+		//for (RenderLayer layer : RenderLayer.getBlockLayers()) {
+		//	renderLayers.put(((AccessorRenderPhase)layer).yttr$getName(), layer);
+		//}
+		// Iris does something unspeakable to render layers. Hardcode it.
+		renderLayers.put("cutout", RenderLayer.getCutout());
+		renderLayers.put("cutout_mipped", RenderLayer.getCutoutMipped());
+		renderLayers.put("translucent", RenderLayer.getTranslucent());
 		eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
 			if (b instanceof BlockColorProvider) ColorProviderRegistry.BLOCK.register((BlockColorProvider)b, b);
 			if (ann != null) {
