@@ -58,9 +58,6 @@
 	"block.yttr.squeeze_sapling": "Deep-Sea Squeeze Sapling",
 	"block.yttr.squeezed_leaves": "Squeezed Deep-Sea Squeeze Leaves",
 	"block.yttr.delicace": "Delicace",
-	"block.yttr.lamp": "Lamp",
-	"block.yttr.fixture": "Lamp Fixture",
-	"block.yttr.cage_lamp": "Cage Lamp",
 	"block.yttr.yttrium_plating": "Yttrium Plating",
 	"block.yttr.glassy_void_pane": "Glassy Void Pane",
 	"block.yttr.heavy_yttrium_plate": "Heavy Yttrium Weighted Pressure Plate",
@@ -75,13 +72,21 @@
 	"block.yttr.replicator": "Replicator",
 	"block.yttr.cleaved_block": "Cleaved Block",
 	
+	"block.yttr.lamp": "Lamp",
+	"block.yttr.fixture": "Lamp Fixture",
+	"block.yttr.cage_lamp": "Cage Lamp",
+	
+	"block.yttr.lamp.inverted": "Inverted Lamp",
+	"block.yttr.fixture.inverted": "Inverted Lamp Fixture",
+	"block.yttr.cage_lamp.inverted": "Inverted Cage Lamp",
+	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
 	"block.yttr.fixture.colored": "%s Lamp Fixture",
 	
-	"block.yttr.lamp.inverted": "Inverted %s Lamp",
-	"block.yttr.cage_lamp.inverted": "Inverted %s Cage Lamp",
-	"block.yttr.fixture.inverted": "Inverted %s Lamp Fixture",
+	"block.yttr.lamp.colored.inverted": "Inverted %s Lamp",
+	"block.yttr.cage_lamp.colored.inverted": "Inverted %s Cage Lamp",
+	"block.yttr.fixture.colored.inverted": "Inverted %s Lamp Fixture",
 	
 	"block.yttr.replicator.holding": "%s §7in %s",
 	

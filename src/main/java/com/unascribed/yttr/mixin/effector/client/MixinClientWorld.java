@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 @Mixin(ClientWorld.class)
-public abstract class MixinClientWorld extends World implements EffectorWorld {
+public abstract class MixinClientWorld extends World implements YttrWorld {
 
 	protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, DimensionType dimensionType, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
 		super(properties, registryRef, dimensionType, profiler, isClient, debugWorld, seed);

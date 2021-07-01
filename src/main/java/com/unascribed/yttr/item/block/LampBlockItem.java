@@ -26,13 +26,17 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		return new TranslatableText(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "inverted" : "colored"),
-				new TranslatableText("color.yttr."+LampBlockItem.getColor(stack).asString()));
+		LampColor c = LampBlockItem.getColor(stack);
+		if (c == LampColor.COLORLESS) {
+			return new TranslatableText(getBlock().getTranslationKey()+(LampBlockItem.isInverted(stack) ? ".inverted" : ""));
+		}
+		return new TranslatableText(getBlock().getTranslationKey()+"."+(LampBlockItem.isInverted(stack) ? "colored.inverted" : "colored"),
+				new TranslatableText("color.yttr."+c.asString()));
 	}
 
 	public static LampColor getColor(ItemStack stack) {
-		if (!stack.hasTag()) return LampColor.WHITE;
-		return Enums.getIfPresent(LampColor.class, stack.getTag().getString("LampColor").toUpperCase(Locale.ROOT)).or(LampColor.WHITE);
+		if (!stack.hasTag()) return LampColor.COLORLESS;
+		return Enums.getIfPresent(LampColor.class, stack.getTag().getString("LampColor").toUpperCase(Locale.ROOT)).or(LampColor.COLORLESS);
 	}
 
 	public static boolean isInverted(ItemStack stack) {

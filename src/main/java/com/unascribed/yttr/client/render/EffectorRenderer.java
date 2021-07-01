@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.item.EffectorItem;
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.collect.Iterables;
@@ -48,8 +48,8 @@ public class EffectorRenderer extends IHasAClient {
 	public static void render(WorldRenderContext wrc) {
 		if (effectorHoles.isEmpty()) return;
 		ClientWorld w = wrc.world();
-		if (!(w instanceof EffectorWorld)) return;
-		EffectorWorld ew = (EffectorWorld)w;
+		if (!(w instanceof YttrWorld)) return;
+		YttrWorld ew = (YttrWorld)w;
 		Vec3d cam = wrc.camera().getPos();
 		MatrixStack ms = new MatrixStack();
 		ms.translate(-cam.x, -cam.y, -cam.z);
@@ -220,7 +220,7 @@ public class EffectorRenderer extends IHasAClient {
 	}
 	
 	private static void drawVoidFace(World w, MatrixStack ms, VertexConsumer vc, BlockPos pos, Direction face) {
-		EffectorWorld ew = (EffectorWorld)w;
+		YttrWorld ew = (YttrWorld)w;
 		if (ew.yttr$isPhased(pos)) return;
 		if (w.isAir(pos.offset(face))) return;
 		BakedModel model = mc.getBlockRenderManager().getModel(mc.world.getBlockState(pos));

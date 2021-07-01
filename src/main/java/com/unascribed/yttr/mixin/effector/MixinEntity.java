@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -52,7 +52,7 @@ public abstract class MixinEntity {
 			ordinal=0, method="checkBlockCollision")
 	public BlockState replaceBlockState(BlockState in) {
 		if (yttr$currentlyCollidingPos == null) return in;
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
 			return Blocks.VOID_AIR.getDefaultState();
 		}
 		return in;
@@ -62,7 +62,7 @@ public abstract class MixinEntity {
 			ordinal=0, method="updateSubmergedInWaterState")
 	public FluidState replaceFluidStateForSubmerge(FluidState in) {
 		if (in.isEmpty()) return in;
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(new BlockPos(getX(), getEyeY()-0.1111111119389534, getZ()))) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(new BlockPos(getX(), getEyeY()-0.1111111119389534, getZ()))) {
 			return Fluids.EMPTY.getDefaultState();
 		}
 		return in;
@@ -84,7 +84,7 @@ public abstract class MixinEntity {
 			ordinal=0, method="updateMovementInFluid")
 	public FluidState replaceFluidStateForTouch(FluidState in) {
 		if (in.isEmpty()) return in;
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
 			return Fluids.EMPTY.getDefaultState();
 		}
 		return in;

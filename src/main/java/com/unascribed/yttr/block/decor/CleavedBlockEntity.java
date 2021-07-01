@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.client.cache.CleavedBlockMeshes;
 import com.unascribed.yttr.init.YBlockEntities;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 import com.unascribed.yttr.util.math.partitioner.Where;
 
@@ -21,7 +22,6 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -164,14 +164,9 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		donor = NbtHelper.toBlockState(tag.getCompound("Donor"));
 		clientCacheData = null;
 		cachedShape = null;
-		if (world != null && world.isClient) scheduleRerender();
+		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);
 	}
 	
-	@Environment(EnvType.CLIENT)
-	private void scheduleRerender() {
-		((ClientWorld)world).scheduleBlockRenders(pos.getX(), pos.getY(), pos.getZ());
-	}
-
 	public CompoundTag toTagInner(CompoundTag tag) {
 		ListTag li = new ListTag();
 		for (Polygon poly : polygons) {

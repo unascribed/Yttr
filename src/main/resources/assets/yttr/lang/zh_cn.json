@@ -58,9 +58,6 @@
 	"block.yttr.squeeze_sapling": "深海泵水树树苗",
 	"block.yttr.squeezed_leaves": "被挤压的深海泵水树树叶",
 	"block.yttr.delicace": "食欲凝胶",
-	"block.yttr.lamp": "灯",
-	"block.yttr.fixture": "壁灯",
-	"block.yttr.cage_lamp": "格栅灯",
 	"block.yttr.yttrium_plating": "Yttrium金属板",
 	"block.yttr.glassy_void_pane": "玻化虚空板",
 	"block.yttr.heavy_yttrium_plate": "重质Yttrium金属压力板",
@@ -75,13 +72,21 @@
 	"block.yttr.replicator": "复制器",
 	"block.yttr.cleaved_block": "被削去一部分的方块",
 	
+	"block.yttr.lamp": "灯",
+	"block.yttr.cage_lamp": "格栅灯",
+	"block.yttr.fixture": "壁灯",
+	
+	"block.yttr.lamp.inverted": "点亮的灯",
+	"block.yttr.cage_lamp.inverted": "点亮的格栅灯",
+	"block.yttr.fixture.inverted": "点亮的壁灯",
+	
 	"block.yttr.lamp.colored": "%s灯",
 	"block.yttr.cage_lamp.colored": "%s格栅灯",
 	"block.yttr.fixture.colored": "%s壁灯",
 	
-	"block.yttr.lamp.inverted": "点亮的%s灯",
-	"block.yttr.cage_lamp.inverted": "点亮的%s格栅灯",
-	"block.yttr.fixture.inverted": "点亮的%s壁灯",
+	"block.yttr.lamp.colored.inverted": "点亮的%s灯",
+	"block.yttr.cage_lamp.colored.inverted": "点亮的%s格栅灯",
+	"block.yttr.fixture.colored.inverted": "点亮的%s壁灯",
 	
 	"block.yttr.replicator.holding": "%s §7在 %s §7里面",
 	

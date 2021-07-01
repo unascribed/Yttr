@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -46,8 +46,8 @@ public abstract class MixinWorldSlice {
 	@Inject(at=@At("TAIL"), method="populateBlockArrays", locals=LocalCapture.CAPTURE_FAILHARD)
 	private void populateBlockArrays(int sectionIdx, ChunkSectionPos pos, Chunk chunk, CallbackInfo ci,
 			ChunkSection section, PalettedContainer<BlockState> container, PackedIntegerArray intArray, Palette<BlockState> palette, BlockState[] dst) {
-		if (world instanceof EffectorWorld) {
-			EffectorWorld ew = (EffectorWorld)world;
+		if (world instanceof YttrWorld) {
+			YttrWorld ew = (YttrWorld)world;
 			
 			int minBlockX = Math.max(this.minX, pos.getMinX());
 			int maxBlockX = Math.min(this.maxX, pos.getMaxX());

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
@@ -20,14 +20,14 @@ public class MixinRaycastContext {
 
 	@Inject(at=@At("HEAD"), method="getBlockShape", cancellable=true)
 	public void getBlockShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> ci) {
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(pos)) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(pos)) {
 			ci.setReturnValue(VoxelShapes.empty());
 		}
 	}
 	
 	@Inject(at=@At("HEAD"), method="getFluidShape", cancellable=true)
 	public void getFluidShape(FluidState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> ci) {
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(pos)) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(pos)) {
 			ci.setReturnValue(VoxelShapes.empty());
 		}
 	}

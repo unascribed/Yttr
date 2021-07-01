@@ -25,7 +25,8 @@ public enum LampColor implements StringIdentifiable {
 	RED(DyeColor.RED),
 	BLACK(DyeColor.BLACK, 0x222222),
 	
-	TEAL(0x1ABC9A, 0x00DB8D)
+	TEAL(0x1ABC9A, 0x00DB8D),
+	COLORLESS(0xFFF3E0, 0xFFB74D),
 	;
 	
 	public final int baseLitColor;

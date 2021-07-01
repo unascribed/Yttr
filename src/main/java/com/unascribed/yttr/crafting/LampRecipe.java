@@ -64,7 +64,7 @@ public class LampRecipe extends ShapedRecipe {
 			}
 		}
 		LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
-		LampBlockItem.setColor(stack, color == null ? inputLampColor == null ? LampColor.WHITE : inputLampColor : color);
+		LampBlockItem.setColor(stack, color == null ? inputLampColor == null ? LampColor.COLORLESS : inputLampColor : color);
 		return stack;
 	}
 

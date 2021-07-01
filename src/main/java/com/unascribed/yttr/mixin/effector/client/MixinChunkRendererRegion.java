@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -28,8 +28,8 @@ public abstract class MixinChunkRendererRegion {
 	
 	@Inject(at=@At("TAIL"), method="<init>")
 	public void construct(World world, int chunkX, int chunkZ, WorldChunk[][] chunks, BlockPos startPos, BlockPos endPos, CallbackInfo ci) {
-		if (world instanceof EffectorWorld) {
-			EffectorWorld ew = (EffectorWorld)world;
+		if (world instanceof YttrWorld) {
+			YttrWorld ew = (YttrWorld)world;
 			for (BlockPos pos : BlockPos.iterate(startPos, endPos)) {
 				if (ew.yttr$isPhased(pos)) {
 					int idx = getIndex(pos);

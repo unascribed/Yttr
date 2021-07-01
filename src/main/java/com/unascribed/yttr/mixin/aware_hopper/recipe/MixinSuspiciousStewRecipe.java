@@ -15,7 +15,8 @@ public class MixinSuspiciousStewRecipe implements SpecialInputsRecipe {
 	@Override
 	public boolean yttr$isInputValid(Inventory inv, int slot, ItemStack input) {
 		if (slot == 0) return input.getItem() == Items.BOWL;
-		if (slot == 1 || slot == 2) return input.getItem() == Items.BROWN_MUSHROOM || input.getItem() == Items.RED_MUSHROOM;
+		if (slot == 1) return input.getItem() == Items.BROWN_MUSHROOM;
+		if (slot == 2) return input.getItem() == Items.RED_MUSHROOM;
 		if (slot == 3) return input.getItem().isIn(ItemTags.SMALL_FLOWERS);
 		return false;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.init.YTags;
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -107,8 +107,8 @@ public class EffectorItem extends Item {
 	}
 	
 	public static int effect(World world, BlockPos pos, Direction dir, @Nullable ItemStack stack, int distance, boolean server) {
-		if (!(world instanceof EffectorWorld)) return 0;
-		EffectorWorld ew = (EffectorWorld)world;
+		if (!(world instanceof YttrWorld)) return 0;
+		YttrWorld ew = (YttrWorld)world;
 		BlockPos.Mutable cursor = pos.mutableCopy();
 		BlockPos.Mutable outerCursor = new BlockPos.Mutable();
 		Axis axisZ = dir.getAxis();

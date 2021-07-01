@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.mixinsupport.EffectorWorld;
+import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -38,7 +38,7 @@ public class MixinInGameOverlayRenderer {
 	private static BlockState replaceBlockState(BlockState in) {
 		if (yttr$currentlyCollidingPos == null) return in;
 		World world = MinecraftClient.getInstance().world;
-		if (world instanceof EffectorWorld && ((EffectorWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
+		if (world instanceof YttrWorld && ((YttrWorld)world).yttr$isPhased(yttr$currentlyCollidingPos)) {
 			return Blocks.VOID_AIR.getDefaultState();
 		}
 		return in;
