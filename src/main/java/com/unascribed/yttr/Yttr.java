@@ -27,6 +27,7 @@ import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.mechanics.TicksAlwaysItem;
 import com.unascribed.yttr.mixin.accessor.AccessorDispenserBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
@@ -212,8 +213,8 @@ public class Yttr implements ModInitializer {
 					Inventory inv = (Inventory)be;
 					for (int i = 0; i < inv.size(); i++) {
 						ItemStack is = inv.getStack(i);
-						if (is.getItem() == YItems.SNARE) {
-							YItems.SNARE.blockInventoryTick(is, world, be.getPos(), i);
+						if (is.getItem() instanceof TicksAlwaysItem) {
+							((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
 							inv.setStack(i, is);
 						}
 					}
@@ -224,8 +225,8 @@ public class Yttr implements ModInitializer {
 					EnderChestInventory inv = ((PlayerEntity) e).getEnderChestInventory();
 					for (int i = 0; i < inv.size(); i++) {
 						ItemStack is = inv.getStack(i);
-						if (is.getItem() == YItems.SNARE) {
-							YItems.SNARE.inventoryTick(is, world, e, i, false);
+						if (is.getItem() instanceof TicksAlwaysItem) {
+							((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
 							inv.setStack(i, is);
 						}
 					}
@@ -233,16 +234,16 @@ public class Yttr implements ModInitializer {
 				}
 				if (e instanceof ItemEntity) {
 					ItemStack is = ((ItemEntity) e).getStack();
-					if (is.getItem() == YItems.SNARE) {
-						YItems.SNARE.inventoryTick(is, world, e, 0, false);
+					if (is.getItem() instanceof TicksAlwaysItem) {
+						((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, 0, false);
 						if (is.isEmpty()) e.remove();
 					}
 					continue;
 				}
 				if (e instanceof ItemFrameEntity) {
 					ItemStack is = ((ItemFrameEntity) e).getHeldItemStack();
-					if (is.getItem() == YItems.SNARE) {
-						YItems.SNARE.inventoryTick(is, world, e, 0, false);
+					if (is.getItem() instanceof TicksAlwaysItem) {
+						((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, 0, false);
 						if (is.isEmpty()) {
 							((ItemFrameEntity) e).setHeldItemStack(ItemStack.EMPTY, true);
 						}
@@ -255,8 +256,8 @@ public class Yttr implements ModInitializer {
 						SimpleInventory inv = ((AccessorHorseBaseEntity)e).yttr$getItems();
 						for (int i = 0; i < inv.size(); i++) {
 							ItemStack is = inv.getStack(i);
-							if (is.getItem() == YItems.SNARE && seen.add(is)) {
-								YItems.SNARE.inventoryTick(is, world, e, i, false);
+							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
+								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
 								inv.setStack(i, is);
 							}
 						}
@@ -264,8 +265,8 @@ public class Yttr implements ModInitializer {
 					if (e instanceof LivingEntity) {
 						for (EquipmentSlot slot : EquipmentSlot.values()) {
 							ItemStack is = ((LivingEntity) e).getEquippedStack(slot);
-							if (is.getItem() == YItems.SNARE && seen.add(is)) {
-								YItems.SNARE.inventoryTick(is, world, e, slot.getEntitySlotId(), false);
+							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
+								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, slot.getEntitySlotId(), false);
 								e.equipStack(slot, is);
 							}
 						}
@@ -274,8 +275,8 @@ public class Yttr implements ModInitializer {
 						Inventory inv = (Inventory)e;
 						for (int i = 0; i < inv.size(); i++) {
 							ItemStack is = inv.getStack(i);
-							if (is.getItem() == YItems.SNARE && seen.add(is)) {
-								YItems.SNARE.inventoryTick(is, world, e, i, false);
+							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
+								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
 								inv.setStack(i, is);
 							}
 						}

@@ -10,6 +10,7 @@ import com.unascribed.yttr.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.item.ShearsItem;
 import com.unascribed.yttr.item.SnareItem;
+import com.unascribed.yttr.item.SpectralAxeItem;
 import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.SwallowableItem;
 import com.unascribed.yttr.item.VoidBucketItem;
@@ -306,6 +307,8 @@ public class YItems {
 		}
 		
 	};
+	
+	public static final SpectralAxeItem SPECTRAL_AXE = new SpectralAxeItem();
 
 
 	public static void init() {

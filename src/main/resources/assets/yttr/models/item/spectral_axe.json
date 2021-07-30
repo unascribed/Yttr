@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "yttr:item/spectral_axe"
+  },
+  "display": {
+  	"ground": { "scale": [0, 0, 0] },
+  	"fixed": { "scale": [0, 0, 0] },
+  	"head": { "scale": [0, 0, 0] },
+  	"thirdperson_righthand": { "scale": [0, 0, 0] },
+  	"thirdperson_lefthand": { "scale": [0, 0, 0] }
+  }
+}
