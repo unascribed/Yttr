@@ -109,8 +109,9 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 								inv.setStack(tgt, copy);
 							}
 						}
+						return true;
 					}
-					return true;
+					return false;
 				} else if (there.getCollisionShape(world, mut).isEmpty()) {
 					if (scanDir == Direction.DOWN) {
 						if (!simulate) dropItem(world, mut, stack, 0.7, -1);
