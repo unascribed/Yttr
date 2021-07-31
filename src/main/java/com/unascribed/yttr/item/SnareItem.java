@@ -11,6 +11,7 @@ import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
+import com.unascribed.yttr.mechanics.TicksAlwaysItem;
 import com.unascribed.yttr.mixin.accessor.AccessorLivingEntity;
 import com.unascribed.yttr.mixin.accessor.AccessorMobEntity;
 import com.google.common.base.Charsets;
@@ -78,7 +79,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.RaycastContext.FluidHandling;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class SnareItem extends Item implements ItemColorProvider {
+public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysItem {
 
 	public SnareItem(Settings settings) {
 		super(settings);
@@ -364,6 +365,7 @@ public class SnareItem extends Item implements ItemColorProvider {
 		}
 	}
 	
+	@Override
 	public void blockInventoryTick(ItemStack stack, World world, BlockPos pos, int slot) {
 		handleAmbientSound(stack, world, Vec3d.ofCenter(pos), false);
 		int dmg = calculateDamageRate(world, stack);
