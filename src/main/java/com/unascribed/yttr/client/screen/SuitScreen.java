@@ -286,7 +286,7 @@ public class SuitScreen extends Screen {
 		sr.drawText(matrices, "s", cX-2, cY+83, delta);
 		sr.drawText(matrices, "w", cX-95, cY-4, delta);
 		
-		int scale = 50;
+		int scale = 25;
 		
 		mouseOver = null;
 		for (Geyser g : geysers) {

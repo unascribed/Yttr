@@ -75,7 +75,7 @@ import net.minecraft.util.registry.Registry;
 
 public class Yttr implements ModInitializer {
 	
-	public static final int DIVING_BLOCKS_PER_TICK = 4;
+	public static final int DIVING_BLOCKS_PER_TICK = 2;
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
@@ -408,7 +408,7 @@ public class Yttr implements ModInitializer {
 		int pressureGap = maxPressure-minPressure;
 		int maxPressureGap = pressureGap+(minPressure-absoluteMin);
 		int pressureEffect = 0;
-		int falloff = 1536;
+		int falloff = 768;
 		int falloffSq = falloff*falloff;
 		for (Geyser g : gs.getGeysersInRange(x, z, falloff)) {
 			double distSq = g.pos.getSquaredDistance(x, g.pos.getY(), z, true);
