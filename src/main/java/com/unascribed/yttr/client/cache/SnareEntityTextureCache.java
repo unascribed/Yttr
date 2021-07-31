@@ -67,7 +67,7 @@ public class SnareEntityTextureCache {
 					try {
 						textureCache.put(data, renderer.getTexture(YItems.SNARE.createEntity(dummyWorld.get(), stack)));
 					} catch (Throwable e) {
-						LogManager.getLogger("Yttr").warn("Failed to determine color for entity", e);
+						LogManager.getLogger("Yttr").debug("Failed to determine color for entity", e);
 						textureCache.put(data, TextureColorThief.MISSINGNO);
 					}
 				}
