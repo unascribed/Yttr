@@ -8,6 +8,7 @@ import com.google.common.base.Objects;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -94,9 +95,8 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 					return false;
 				}
 			} else {
-				BlockEntity be = world.getBlockEntity(mut);
-				if (be instanceof Inventory) {
-					Inventory inv = (Inventory) be;
+				Inventory inv = HopperBlockEntity.getInventoryAt(world, mut);
+				if (inv != null) {
 					int tgt = findSlot(scanDir.getOpposite(), inv, stack);
 					if (tgt != -1) {
 						if (!simulate) {

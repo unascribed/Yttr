@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
+import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
@@ -238,11 +238,7 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 
 	private Inventory obtainInventory(Direction dir) {
 		BlockPos pos = this.pos.offset(dir);
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof Inventory) {
-			return (Inventory)be;
-		}
-		return null;
+		return HopperBlockEntity.getInventoryAt(world, pos);
 	}
 
 	@Override
