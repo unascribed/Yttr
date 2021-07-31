@@ -41,8 +41,11 @@ public class TextureColorThief {
 			try {
 				NativeImage ni = data.getImage();
 				int[][] colors = ColorThiefMC.getPalette(ni, 5, 5, false);
-				pri = pack(colors[0]);
-				sec = pack(colors[1]);
+				if (colors != null) {
+					// colors will be null when the texture is too small
+					pri = pack(colors[0]);
+					sec = pack(colors[1]);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
