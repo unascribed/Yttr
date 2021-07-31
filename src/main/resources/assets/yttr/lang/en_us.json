@@ -136,6 +136,7 @@
 	"subtitles.yttr.replicator_update": "Replicator changed",
 	"subtitles.yttr.replicator_refuse": "Replicator refuses",
 	"subtitles.yttr.replicator_vend": "Replicator vends",
+	"subtitles.yttr.spectral_axe_disappear": "Spectral axe dispels",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

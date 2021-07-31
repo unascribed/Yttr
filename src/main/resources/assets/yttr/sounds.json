@@ -256,5 +256,9 @@
 	},
 	"silence": {
 		"sounds": ["yttr:silence"]
+	},
+	"spectral_axe_disappear": {
+		"sounds": ["yttr:spectral_axe_disappear"],
+		"subtitle": "subtitles.yttr.spectral_axe_disappear"
 	}
 }
