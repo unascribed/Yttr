@@ -7,6 +7,13 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
+if (version.contains("{COMMIT}")) {
+	def dirty = !'git diff-index HEAD'.execute().in.text.trim().isEmpty()
+	version = version.replace("{COMMIT}", 'git rev-parse --short HEAD'.execute().getText().trim()+(dirty ? '-dirty' : ''))
+}
+if (version.contains("{COMMITNUM}")) {
+	version = version.replace("{COMMITNUM}", 'git rev-list --count HEAD'.execute().getText().trim())
+}
 group = project.maven_group
 
 repositories {
