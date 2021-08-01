@@ -80,8 +80,7 @@
 	"cleaver.client.MixinParticleManager",
 	"aware_hopper.client.MixinSoundSystem",
 	
-	"diving.client.MixinEarsFeatureRenderer",
-	"effector.caffeine.MixinWorldSlice"
+	"diving.client.MixinEarsFeatureRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
