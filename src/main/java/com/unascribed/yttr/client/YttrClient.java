@@ -44,7 +44,6 @@ import com.unascribed.yttr.item.EffectorItem;
 import com.unascribed.yttr.item.RifleItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
-import com.unascribed.yttr.mixin.accessor.client.AccessorRenderPhase;
 import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorVertexBuffer;
 import com.unascribed.yttr.util.annotate.ConstantColor;
@@ -195,6 +194,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
+		
 		ScreenRegistry.register(YScreenTypes.CENTRIFUGE, CentrifugeScreen::new);
 		ScreenRegistry.register(YScreenTypes.SUIT_STATION, SuitStationScreen::new);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
@@ -268,7 +268,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_OPEN, SoundCategory.BLOCKS, 0.4f, 1, endPos));
 				client.getSoundManager().play(new PositionedSoundInstance(YSounds.EFFECTOR_CLOSE, SoundCategory.BLOCKS, 0.4f, 1, endPos), 130);
 				EffectorRenderer.addHole(pos, dir, dist);
-				EffectorItem.effect(client.world, pos, dir, null, dist, false);
+				EffectorItem.effect(client.world, pos, dir, null, null, dist, false);
 			});
 		});
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive"), (client, handler, buf, responseSender) -> {

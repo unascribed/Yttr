@@ -2,9 +2,12 @@ package com.unascribed.yttr.mixin.effector;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,14 +16,23 @@ import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.mixinsupport.PhaseQueueEntry;
 
 import com.google.common.collect.Maps;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Mixin(World.class)
-public class MixinWorld implements YttrWorld {
+public abstract class MixinWorld implements YttrWorld {
 
 	private final Map<BlockPos, MutableInt> yttr$phase = Maps.newHashMap();
+	private final Map<BlockPos, UUID> yttr$phaseOwners = Maps.newHashMap();
 	private final Map<BlockPos, PhaseQueueEntry> yttr$phaseQueue = Maps.newHashMap();
+	
+	
+	@Shadow
+	public abstract BlockState getBlockState(BlockPos pos);
+	@Shadow
+	public abstract void updateListeners(BlockPos pos, BlockState oldState, BlockState newState, int flags);
 
 	@Inject(at=@At("HEAD"), method="tickBlockEntities()V")
 	public void tickBlockEntities(CallbackInfo ci) {
@@ -30,6 +42,7 @@ public class MixinWorld implements YttrWorld {
 				Map.Entry<BlockPos, MutableInt> en = iter.next();
 				if (en.getValue().decrementAndGet() <= 0) {
 					iter.remove();
+					yttr$phaseOwners.remove(en.getKey());
 					yttr$scheduleRenderUpdate(en.getKey());
 				}
 			}
@@ -40,7 +53,7 @@ public class MixinWorld implements YttrWorld {
 				Map.Entry<BlockPos, PhaseQueueEntry> en = iter.next();
 				if (en.getValue().delayLeft-- <= 0) {
 					iter.remove();
-					yttr$addPhaseBlock(en.getKey(), en.getValue().lifetime, -1);
+					yttr$addPhaseBlock(en.getKey(), en.getValue().lifetime, -1, en.getValue().owner);
 				}
 			}
 		}
@@ -54,14 +67,21 @@ public class MixinWorld implements YttrWorld {
 	public boolean yttr$isPhased(BlockPos pos) {
 		return yttr$phase.containsKey(pos);
 	}
+	
+	@Override
+	public @Nullable UUID yttr$getPhaser(BlockPos pos) {
+		return yttr$phaseOwners.get(pos);
+	}
 
 	@Override
-	public void yttr$addPhaseBlock(BlockPos pos, int lifetime, int delay) {
+	public void yttr$addPhaseBlock(BlockPos pos, int lifetime, int delay, UUID owner) {
+		BlockPos imm = pos.toImmutable();
 		if (delay <= 0) {
-			yttr$phase.put(pos.toImmutable(), new MutableInt(lifetime));
+			yttr$phase.put(imm, new MutableInt(lifetime));
+			if (owner != null) yttr$phaseOwners.put(imm, owner);
 			yttr$scheduleRenderUpdate(pos);
 		} else {
-			yttr$phaseQueue.put(pos.toImmutable(), new PhaseQueueEntry(lifetime, delay));
+			yttr$phaseQueue.put(imm, new PhaseQueueEntry(lifetime, delay, owner));
 		}
 	}
 

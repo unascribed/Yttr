@@ -2,6 +2,7 @@
 	"itemGroup.yttr.main": "Yttr",
 	"itemGroup.yttr.snare": "Yttr Snares",
 	"itemGroup.yttr.lamp": "Yttr Lamps",
+	"itemGroup.yttr.potion": "Yttr Mercurial Potions",
 	
 	"item.yttr.rifle": "Yttric Rifle",
 	"item.yttr.rifle_reinforced": "Bedrock-Reinforced Rifle",
@@ -29,6 +30,20 @@
 	"item.yttr.armor_plating": "Bedrock-Reinforced Armor Plating",
 	"item.yttr.goggles": "F3 Goggles",
 	"item.yttr.spectral_axe": "Spectral Axe",
+	"item.yttr.ultrapure_carbon": "Ultrapure Carbon",
+	"item.yttr.ultrapure_cinnabar": "Ultrapure Cinnabar",
+	"item.yttr.ultrapure_gold": "Ultrapure Gold",
+	"item.yttr.ultrapure_iron": "Ultrapure Iron",
+	"item.yttr.ultrapure_lazurite": "Ultrapure Lazurite",
+	"item.yttr.ultrapure_silica": "Ultrapure Silica",
+	"item.yttr.ultrapure_yttrium": "Ultrapure Yttrium",
+	"item.yttr.ultrapure_neodymium": "Ultrapure Neodymium",
+	"item.yttr.ultrapure_copper": "Ultrapure Copper",
+	"item.yttr.quicksilver": "Quicksilver",
+	"item.yttr.mercurial_potion": "Mercurial Potion",
+	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
+	
+	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
@@ -96,6 +111,7 @@
 	
 	"effect.yttr.delicaceness": "Delicaceness",
 	"effect.yttr.bleeding": "Bleeding",
+	"effect.yttr.potion_sickness": "Potion Sickness",
 	
 	"enchantment.yttr.disjunction": "Disjunction",
 	"enchantment.yttr.vorpal": "Vorpal",
@@ -149,6 +165,9 @@
 	"death.attack.yttr.suit_suffocation": "%s ran out of oxygen",
 	"death.attack.yttr.vorpal": "%s was fairly slain by %s",
 	"death.attack.yttr.vorpal.item": "%s was fairly slain by %s using %s",
+	"death.attack.yttr.effector_fall": "%s had the rug pulled out from under them by %s",
+	"death.attack.yttr.void_rifle": "%s was erased by %s",
+	"death.attack.yttr.void_rifle.item": "%s was erased by %s using %s",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
@@ -203,6 +222,16 @@
 	"color.yttr.black": "Black",
 	"color.yttr.teal": "Teal",
 	
-	"attribute.name.yttr.jump_height": "Jump Height"
+	"attribute.name.yttr.jump_height": "Jump Height",
+	
+	"potion.potency.6": "VII",
+	"potion.potency.7": "VIII",
+	"potion.potency.8": "IX",
+	"potion.potency.9": "X",
+	"potion.potency.10": "XI",
+	"potion.potency.11": "XII",
+	"potion.potency.12": "XIII",
+	"potion.potency.13": "XIV",
+	"potion.potency.14": "XV"
 	
 }

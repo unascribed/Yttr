@@ -28,6 +28,7 @@ import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TicksAlwaysItem;
+import com.unascribed.yttr.mixin.accessor.AccessorBrewingRecipeRegistry;
 import com.unascribed.yttr.mixin.accessor.AccessorDispenserBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
@@ -64,6 +65,7 @@ import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.PacketByteBuf;
@@ -96,6 +98,11 @@ public class Yttr implements ModInitializer {
 		YTags.init();
 		YScreenTypes.init();
 		YEnchantments.init();
+		
+		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.POTION, YItems.QUICKSILVER, YItems.MERCURIAL_POTION);
+		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
+		
+		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
 			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);

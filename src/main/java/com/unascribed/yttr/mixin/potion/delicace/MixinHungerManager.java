@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.delicace;
+package com.unascribed.yttr.mixin.potion.delicace;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

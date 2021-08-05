@@ -27,6 +27,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -154,7 +155,7 @@ public class VoidLogic {
 				double d = _pos.squaredDistanceTo(e.getPos());
 				if (d < r*r) {
 					float dmg = (float) ((r*r)-d);
-					e.damage(new SolventDamageSource(0), dmg);
+					e.damage(new EntityDamageSource("yttr.void_rifle", user), dmg);
 					if (e instanceof LivingEntity) {
 						LivingEntity le = (LivingEntity)e;
 						for (EquipmentSlot es : EquipmentSlots.ARMOR) {

@@ -18,6 +18,8 @@ import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.item.block.SkeletalSorterBlockItem;
+import com.unascribed.yttr.item.potion.MercurialPotionItem;
+import com.unascribed.yttr.item.potion.MercurialSplashPotionItem;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -46,6 +48,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -309,6 +312,34 @@ public class YItems {
 	};
 	
 	public static final SpectralAxeItem SPECTRAL_AXE = new SpectralAxeItem();
+	
+	private static final Item.Settings UP_SETTINGS = new Item.Settings()
+			.group(YItemGroups.MAIN)
+			.rarity(Rarity.UNCOMMON);
+	
+	public static final Item ULTRAPURE_CARBON = new Item(UP_SETTINGS);
+//	public static final Item ULTRAPURE_HYDROGEN = new Item(UP_SETTINGS);
+//	public static final Item ULTRAPURE_ICED_COFFEES = new Item(UP_SETTINGS);
+	
+	public static final Item ULTRAPURE_CINNABAR = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_GOLD = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_IRON = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_LAZURITE = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_SILICA = new Item(UP_SETTINGS);
+	
+	public static final Item ULTRAPURE_YTTRIUM = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_NEODYMIUM = new Item(UP_SETTINGS);
+	
+	public static final Item ULTRAPURE_COPPER = new Item(UP_SETTINGS);
+	
+	public static final Item QUICKSILVER = new Item(UP_SETTINGS);
+	
+	public static final MercurialPotionItem MERCURIAL_POTION = new MercurialPotionItem(new Item.Settings()
+			.maxCount(Items.POTION.getMaxCount())
+			.group(YItemGroups.POTION));
+	public static final MercurialSplashPotionItem MERCURIAL_SPLASH_POTION = new MercurialSplashPotionItem(new Item.Settings()
+			.maxCount(Items.SPLASH_POTION.getMaxCount())
+			.group(YItemGroups.POTION));
 
 
 	public static void init() {

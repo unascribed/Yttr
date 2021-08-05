@@ -2,6 +2,7 @@ package com.unascribed.yttr.item;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +54,7 @@ public class EffectorItem extends Item {
 		BlockHitResult hr = raycast(world, user, FluidHandling.SOURCE_ONLY);
 		if (hr.getType() == Type.BLOCK) {
 			BlockState bs = world.getBlockState(hr.getBlockPos());
-			if (bs.getBlock() instanceof FluidDrainable) {
+			if (bs.getBlock() instanceof FluidDrainable && bs.getFluidState().getFluid().isIn(YTags.Fluid.VOID)) {
 				Fluid fluid = ((FluidDrainable)bs.getBlock()).tryDrainFluid(world, hr.getBlockPos(), bs);
 				if (fluid.isIn(YTags.Fluid.VOID)) {
 					user.playSound(SoundEvents.ITEM_BUCKET_FILL, 1, 1);
@@ -83,7 +84,7 @@ public class EffectorItem extends Item {
 			context.getPlayer().sendMessage(new TranslatableText("tip.yttr.effector.no_fuel"), true);
 			return ActionResult.FAIL;
 		}
-		int amt = effect(world, pos, dir, stack, Math.min(fuel, 32), true);
+		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);
 		if (!context.getPlayer().abilities.creativeMode) setFuel(stack, fuel-amt);
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(pos);
@@ -106,7 +107,7 @@ public class EffectorItem extends Item {
 		void scheduleRenderUpdate(int x, int y, int z);
 	}
 	
-	public static int effect(World world, BlockPos pos, Direction dir, @Nullable ItemStack stack, int distance, boolean server) {
+	public static int effect(World world, BlockPos pos, Direction dir, @Nullable ItemStack stack, @Nullable UUID owner, int distance, boolean server) {
 		if (!(world instanceof YttrWorld)) return 0;
 		YttrWorld ew = (YttrWorld)world;
 		BlockPos.Mutable cursor = pos.mutableCopy();
@@ -127,7 +128,7 @@ public class EffectorItem extends Item {
 					BlockState bs = world.getBlockState(outerCursor);
 					if (bs.getHardness(world, outerCursor) < 0) continue;
 					if (!bs.isAir()) everythingWasUnpassable = false;
-					ew.yttr$addPhaseBlock(outerCursor, 150, 0);
+					ew.yttr$addPhaseBlock(outerCursor, 150, 0, owner);
 				}
 			}
 			if (z >= 0 && server && everythingWasUnpassable) {

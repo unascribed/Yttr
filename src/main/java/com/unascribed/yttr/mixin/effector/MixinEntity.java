@@ -26,6 +26,9 @@ import net.minecraft.world.World;
 public abstract class MixinEntity {
 
 	@Shadow
+	public boolean onGround;
+	
+	@Shadow
 	public World world;
 	
 	@Shadow
