@@ -14,4 +14,9 @@ public interface AccessorBrewingRecipeRegistry {
 		throw new AbstractMethodError();
 	}
 	
+	@Invoker("registerPotionType")
+	static void registerPotionType(Item potion) {
+		throw new AbstractMethodError();
+	}
+	
 }

@@ -100,12 +100,18 @@ public class Yttr implements ModInitializer {
 		YScreenTypes.init();
 		YEnchantments.init();
 		
+		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_POTION);
+		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_SPLASH_POTION);
+		
 		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.POTION, YItems.QUICKSILVER, YItems.MERCURIAL_POTION);
 		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON, 1800);
+		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON_BLOCK, 18000);
+		FuelRegistry.INSTANCE.add(YItems.COMPRESSED_ULTRAPURE_CARBON, 20000);
+		FuelRegistry.INSTANCE.add(YItems.COMPRESSED_ULTRAPURE_CARBON_BLOCK, 200000);
 		
 		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
 			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);
