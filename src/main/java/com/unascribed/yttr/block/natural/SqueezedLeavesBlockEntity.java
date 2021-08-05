@@ -88,8 +88,10 @@ public class SqueezedLeavesBlockEntity extends BlockEntity {
 			}
 			return false;
 		}
+		int i = 0;
 		Iterator<BlockPos> iter = queue.iterator();
 		while (iter.hasNext()) {
+			if (i++ > 50) break;
 			BlockPos bp = iter.next();
 			scannedThisLayer.add(bp);
 			iter.remove();
