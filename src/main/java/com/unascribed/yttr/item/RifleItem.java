@@ -205,11 +205,8 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				EntityHitResult preEnt = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, preStart, preBlock.getPos(), new Box(preStart, preEnd).expand(0.3), Predicates.alwaysTrue()), preStart, preEnd);
 				HitResult pre = MoreObjects.firstNonNull(preEnt, preBlock);
 				if (pre.getType() != Type.MISS && start.squaredDistanceTo(pre.getPos()) > 3*3) {
-					end = pre.getPos();
-					if (preEnt != null) {
-						// add a bit of extension to ensure the entity gets hit instead of just barely not being reached
-						end = end.add(preBlock.getPos().subtract(preEnt.getPos()).normalize());
-					}
+					// add a bit of extension to ensure the block/entity gets hit instead of just barely not being reached
+					end = pre.getPos().add(preBlock.getPos().subtract(start).normalize());
 				}
 				BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
 				EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
