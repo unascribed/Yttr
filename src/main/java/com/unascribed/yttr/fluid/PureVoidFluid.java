@@ -88,7 +88,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 	
 	@Override
 	protected void onRandomTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (state.isStill() && random.nextInt(800) == 0) {
+		if (state.isStill() && random.nextInt(100) == 0) {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
 		Direction dir = Direction.byId(random.nextInt(5)+1);

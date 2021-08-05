@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 @Mixin(targets="net/minecraft/screen/BrewingStandScreenHandler$PotionSlot")
 public class MixinPotionSlot {
 
-	@Inject(at=@At("HEAD"), method="matches", cancellable=true)
+	@Inject(at=@At("HEAD"), method="matches(Lnet/minecraft/item/ItemStack;)Z", cancellable=true)
 	private static void matches(ItemStack stack, CallbackInfoReturnable<Boolean> ci) {
 		if (stack.getItem() == YItems.MERCURIAL_POTION || stack.getItem() == YItems.MERCURIAL_SPLASH_POTION) {
 			ci.setReturnValue(true);
