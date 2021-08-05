@@ -9,10 +9,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -56,7 +59,7 @@ public class MixinArmorFeatureRenderer {
 					stack.getItem() == Items.DIAMOND_LEGGINGS ||
 					stack.getItem() == Items.DIAMOND_BOOTS
 				))) {
-			return RenderLayer.getEntityTranslucent(getArmorTexture(yttr$armorItem, yttr$secondLayer, yttr$model));
+			return YRenderLayers.getArmorTranslucentNoCull(getArmorTexture(yttr$armorItem, yttr$secondLayer, yttr$model));
 		}
 		return orig;
 	}

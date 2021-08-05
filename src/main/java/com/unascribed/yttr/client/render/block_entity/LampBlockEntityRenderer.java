@@ -2,29 +2,23 @@ package com.unascribed.yttr.client.render.block_entity;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.block.decor.LampBlockEntity;
 import com.unascribed.yttr.block.decor.WallLampBlock;
 import com.unascribed.yttr.client.YttrClient;
+import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
@@ -34,19 +28,6 @@ import net.minecraft.world.World;
 
 public class LampBlockEntityRenderer extends BlockEntityRenderer<LampBlockEntity> {
 
-	private static final RenderPhase.Transparency ADDITIVE_WITH_ALPHA = new RenderPhase.Transparency("yttr_additive_transparency_with_alpha", () -> {
-	      RenderSystem.enableBlend();
-	      RenderSystem.blendFuncSeparate(SrcFactor.SRC_ALPHA, DstFactor.ONE, SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
-	   }, () -> {
-	      RenderSystem.disableBlend();
-	      RenderSystem.defaultBlendFunc();
-	   });
-	private static final RenderLayer HALO_LAYER = RenderLayer.of("yttr_lamp_halo", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder()
-			.texture(new RenderPhase.Texture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, false, true))
-			.transparency(ADDITIVE_WITH_ALPHA)
-			.writeMaskState(new RenderPhase.WriteMaskState(true, false))
-			.build(false));
-	
 	public LampBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
 	}
@@ -62,7 +43,7 @@ public class LampBlockEntityRenderer extends BlockEntityRenderer<LampBlockEntity
 	public void render(World world, @Nullable BlockPos pos, BlockState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		MinecraftClient.getInstance().getProfiler().push("yttr:lamp");
 		if (state.getBlock() instanceof LampBlock && state.get(LampBlock.LIT)) {
-			VertexConsumer vc = vertexConsumers.getBuffer(HALO_LAYER);
+			VertexConsumer vc = vertexConsumers.getBuffer(YRenderLayers.getLampHalo());
 			int color = state.get(LampBlock.COLOR).glowColor;
 			if (color == 0) color = 0x222222;
 			float r = ((color >> 16)&0xFF)/255f;
