@@ -32,6 +32,7 @@
 	"ultrapure_bonus.MixinSmithingScreenHandler",
 	"ultrapure_bonus.MixinItemStack",
 	"ultrapure_bonus.MixinShapedRecipe",
+	"ultrapure_bonus.MixinShapelessRecipe",
 	"accessor.AccessorBlockSoundGroup",
 	"accessor.AccessorLivingEntity",
 	"accessor.AccessorStatusEffectInstance",
