@@ -51,6 +51,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -103,6 +104,8 @@ public class Yttr implements ModInitializer {
 		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
+		
+		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON, 1800);
 		
 		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
 			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);

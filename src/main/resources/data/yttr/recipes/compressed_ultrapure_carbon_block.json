@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": { "item": "yttr:compressed_ultrapure_carbon" }
+  },
+  "result": {
+    "item": "yttr:compressed_ultrapure_carbon_block"
+  }
+}

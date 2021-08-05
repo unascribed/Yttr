@@ -76,6 +76,8 @@ public class YItems {
 	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
 	public static final BlockItem SUIT_STATION = createNormalBlockItem(YBlocks.SUIT_STATION);
 	public static final BlockItem TABLE = createNormalBlockItem(YBlocks.TABLE);
+	public static final BlockItem ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
+	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
@@ -332,7 +334,11 @@ public class YItems {
 	
 	public static final Item ULTRAPURE_COPPER = new Item(UP_SETTINGS);
 	
+	public static final Item ULTRAPURE_DIAMOND = new Item(UP_SETTINGS);
+	
 	public static final Item QUICKSILVER = new Item(UP_SETTINGS);
+	
+	public static final Item COMPRESSED_ULTRAPURE_CARBON = new Item(UP_SETTINGS);
 	
 	public static final MercurialPotionItem MERCURIAL_POTION = new MercurialPotionItem(new Item.Settings()
 			.maxCount(Items.POTION.getMaxCount())

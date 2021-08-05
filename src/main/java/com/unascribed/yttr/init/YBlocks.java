@@ -32,7 +32,6 @@ import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.fabricmc.fabric.impl.tool.attribute.ToolManagerImpl;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -207,6 +206,22 @@ public class YBlocks {
 	
 	public static final VoidCauldronBlock VOID_CAULDRON = new VoidCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON)
 			.dropsLike(Blocks.CAULDRON));
+	
+	public static final Block ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.STONE)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
+	
+	public static final Block COMPRESSED_ULTRAPURE_CARBON_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+			.strength(6)
+			.requiresTool()
+			.sounds(BlockSoundGroup.STONE)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 2)
+		);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

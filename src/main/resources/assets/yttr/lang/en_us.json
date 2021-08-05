@@ -39,6 +39,8 @@
 	"item.yttr.ultrapure_yttrium": "Ultrapure Yttrium",
 	"item.yttr.ultrapure_neodymium": "Ultrapure Neodymium",
 	"item.yttr.ultrapure_copper": "Ultrapure Copper",
+	"item.yttr.ultrapure_diamond": "Ultrapure Diamond",
+	"item.yttr.compressed_ultrapure_carbon": "Compressed Ultrapure Carbon",
 	"item.yttr.quicksilver": "Quicksilver",
 	"item.yttr.mercurial_potion": "Mercurial Potion",
 	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
@@ -87,6 +89,8 @@
 	"block.yttr.skeletal_sorter": "Skeletal Sorter",
 	"block.yttr.replicator": "Replicator",
 	"block.yttr.cleaved_block": "Cleaved Block",
+	"block.yttr.ultrapure_carbon_block": "Block of Ultrapure Carbon",
+	"block.yttr.compressed_ultrapure_carbon_block": "Block of Compressed Ultrapure Carbon",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

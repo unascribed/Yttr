@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"item": "yttr:ultrapure_cinnabar"
+	},
+	"result": "yttr:quicksilver",
+	"experience": 0,
+	"cookingtime": 100
+}

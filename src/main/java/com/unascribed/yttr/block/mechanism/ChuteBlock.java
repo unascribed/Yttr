@@ -3,6 +3,7 @@ package com.unascribed.yttr.block.mechanism;
 import java.util.List;
 import java.util.Locale;
 
+import com.unascribed.yttr.Substitutes;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
 
@@ -115,7 +116,7 @@ public class ChuteBlock extends Block implements BlockEntityProvider, Waterlogga
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack stack = player.getStackInHand(hand);
 		if (!state.get(PLATED)) {
-			if (stack.getItem() == Items.IRON_INGOT) {
+			if (stack.getItem() == Items.IRON_INGOT || Substitutes.getPrime(stack.getItem()) == Items.IRON_INGOT) {
 				if (!player.abilities.creativeMode) {
 					stack.decrement(1);
 					player.setStackInHand(hand, stack);
