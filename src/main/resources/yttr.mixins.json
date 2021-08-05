@@ -48,6 +48,9 @@
 	"sorter.MixinChestBlockEntity",
 	"replicator.MixinDropperBlock",
 	"disjunction.MixinLivingEntity",
+	"substitute.MixinIngredient",
+	"substitute.MixinIngredientStackEntry",
+	"substitute.MixinSetTag",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
