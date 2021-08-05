@@ -80,6 +80,7 @@
 	"client.MixinJsonUnbakedModel",
 	"client.MixinJsonUnbakedModelDeserializer",
 	"client.MixinModelElementDeserializer",
+	"client.MixinArmorFeatureRenderer",
 	"accessor.client.AccessorEntityRendererDispatcher",
 	"accessor.client.AccessorEntityTrackingSoundInstance",
 	"accessor.client.AccessorRenderPhase",

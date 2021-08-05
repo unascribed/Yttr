@@ -211,6 +211,15 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				YItems.SUIT_HELMET, YItems.SUIT_CHESTPLATE, YItems.SUIT_LEGGINGS, YItems.SUIT_BOOTS);
 		ArmorRenderingRegistry.registerSimpleTexture(new Identifier("yttr", "goggles"),
 				YItems.GOGGLES);
+		ArmorRenderingRegistry.registerTexture((entity, stack, slot, secondLayer, suffix, defaultTexture) -> {
+			String namespace = "minecraft";
+			String name = "diamond";
+			if (stack.hasTag() && stack.getTag().getInt("yttr:DurabilityBonus") > 0) {
+				namespace = "yttr";
+				name = "ultrapure_diamond";
+			}
+			return new Identifier(namespace, "textures/models/armor/" + name + "_layer_" + (secondLayer ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png");
+		}, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS);
 		mc.send(() -> {
 			mc.getSoundManager().registerListener((sound, soundSet) -> {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
