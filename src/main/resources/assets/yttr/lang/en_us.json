@@ -40,12 +40,15 @@
 	"item.yttr.ultrapure_neodymium": "Ultrapure Neodymium",
 	"item.yttr.ultrapure_copper": "Ultrapure Copper",
 	"item.yttr.ultrapure_diamond": "Ultrapure Diamond",
+	"item.yttr.ultrapure_wolfram": "Ultrapure Wolfram",
+	"item.yttr.ultrapure_netherite": "Ultrapure Netherite",
 	"item.yttr.compressed_ultrapure_carbon": "Compressed Ultrapure Carbon",
 	"item.yttr.quicksilver": "Quicksilver",
 	"item.yttr.mercurial_potion": "Mercurial Potion",
 	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
+	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
 	
 	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",

@@ -12,7 +12,6 @@ public class YTags {
 
 		public static final Tag<net.minecraft.item.Item> UNSNAREABLE_ITEM = TagRegistry.item(new Identifier("yttr", "unsnareable"));
 		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
-		public static final Tag<net.minecraft.item.Item> CANNOT_UNBREAKABLE = TagRegistry.item(new Identifier("yttr", "cannot_unbreakable"));
 		public static final Tag<net.minecraft.item.Item> FLUXES = TagRegistry.item(new Identifier("yttr", "fluxes"));
 		
 		private static void init() {}

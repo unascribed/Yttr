@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "netherite_ingot",
+  "ingredients": [
+    {
+      "item": "yttr:ultrapure_wolfram"
+    },
+    {
+      "item": "yttr:ultrapure_wolfram"
+    },
+    {
+      "item": "yttr:ultrapure_wolfram"
+    },
+    {
+      "item": "yttr:ultrapure_wolfram"
+    },
+    {
+      "item": "yttr:ultrapure_gold"
+    },
+    {
+      "item": "yttr:ultrapure_gold"
+    },
+    {
+      "item": "yttr:ultrapure_gold"
+    },
+    {
+      "item": "yttr:ultrapure_gold"
+    }
+  ],
+  "result": {
+    "item": "yttr:ultrapure_netherite"
+  }
+}

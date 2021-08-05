@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/diamond_hoe"
+  },
+  "overrides": [
+    {
+      "predicate": { "yttr:durability_bonus": 1 },
+      "model": "yttr:item/ultrapure_diamond_hoe"
+    }
+  ]
+}

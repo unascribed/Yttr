@@ -24,6 +24,8 @@ public class Substitutes {
 			.put(YItems.ULTRAPURE_YTTRIUM, YItems.YTTRIUM_INGOT)
 			.put(YItems.ULTRAPURE_NEODYMIUM, YItems.NEODYMIUM_DISC)
 			.put(YItems.ULTRAPURE_DIAMOND, Items.DIAMOND)
+			.put(YItems.ULTRAPURE_WOLFRAM, Items.NETHERITE_SCRAP)
+			.put(YItems.ULTRAPURE_NETHERITE, Items.NETHERITE_INGOT)
 			.build();
 	
 	public static Set<Item> allPrimes() {

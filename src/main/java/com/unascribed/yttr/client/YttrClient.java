@@ -362,6 +362,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		FabricModelPredicateProviderRegistry.register(Blocks.AIR.asItem(), new Identifier("yttr", "halo"), (stack, world, entity) -> {
 			return retrievingHalo ? 1 : 0;
 		});
+		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity) -> {
+			return stack.hasTag() ? stack.getTag().getInt("yttr:DurabilityBonus") : 0;
+		});
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

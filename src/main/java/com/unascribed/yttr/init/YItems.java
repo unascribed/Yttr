@@ -335,6 +335,8 @@ public class YItems {
 	public static final Item ULTRAPURE_COPPER = new Item(UP_SETTINGS);
 	
 	public static final Item ULTRAPURE_DIAMOND = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_WOLFRAM = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_NETHERITE = new Item(UP_SETTINGS);
 	
 	public static final Item QUICKSILVER = new Item(UP_SETTINGS);
 	
