@@ -32,6 +32,7 @@ public class YTags {
 	public static class Fluid {
 
 		public static final Tag<net.minecraft.fluid.Fluid> VOID = AccessorFluidTags.getRequiredTags().add("yttr:void");
+		public static final Tag<net.minecraft.fluid.Fluid> PURE_VOID = AccessorFluidTags.getRequiredTags().add("yttr:pure_void");
 		
 		private static void init() {}
 		

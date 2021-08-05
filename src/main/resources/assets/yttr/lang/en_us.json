@@ -91,6 +91,7 @@
 	"block.yttr.cleaved_block": "Cleaved Block",
 	"block.yttr.ultrapure_carbon_block": "Block of Ultrapure Carbon",
 	"block.yttr.compressed_ultrapure_carbon_block": "Block of Compressed Ultrapure Carbon",
+	"block.yttr.pure_void": "Purified Void",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
@@ -112,6 +113,8 @@
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
+	"fluid.yttr.pure_void": "Purified Void",
+	"fluid.yttr.flowing_pure_void": "Purified Void",
 	
 	"effect.yttr.delicaceness": "Delicaceness",
 	"effect.yttr.bleeding": "Bleeding",

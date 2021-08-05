@@ -139,6 +139,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	private static final Identifier VOID_FLOW = new Identifier("yttr", "block/void_flow");
 	private static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
 	
+	private static final Identifier PURE_VOID_FLOW = new Identifier("yttr", "block/pure_void_flow");
+	private static final Identifier PURE_VOID_STILL = new Identifier("yttr", "block/pure_void_still");
+	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
 	private boolean hasCheckedRegistry = false;
@@ -156,6 +159,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);
+			registry.register(PURE_VOID_FLOW);
+			registry.register(PURE_VOID_STILL);
 		});
 		Map<String, RenderLayer> renderLayers = Maps.newHashMap();
 		//for (RenderLayer layer : RenderLayer.getBlockLayers()) {
@@ -194,6 +199,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			}
 		});
+		BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), YFluids.PURE_VOID, YFluids.FLOWING_PURE_VOID);
 		
 		ScreenRegistry.register(YScreenTypes.CENTRIFUGE, CentrifugeScreen::new);
 		ScreenRegistry.register(YScreenTypes.SUIT_STATION, SuitStationScreen::new);
@@ -444,6 +450,22 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		};
 		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.VOID, voidRenderHandler);
 		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.FLOWING_VOID, voidRenderHandler);
+		
+		FluidRenderHandler pureVoidRenderHandler = new FluidRenderHandler() {
+			@Override
+			public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				return new Sprite[] {
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(PURE_VOID_STILL),
+					mc.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(PURE_VOID_FLOW)
+				};
+			}
+			@Override
+			public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+				return 0xFFFFFFFF;
+			}
+		};
+		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.PURE_VOID, pureVoidRenderHandler);
+		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.FLOWING_PURE_VOID, pureVoidRenderHandler);
 	}
 
 	private <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {

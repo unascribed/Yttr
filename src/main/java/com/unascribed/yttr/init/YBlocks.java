@@ -24,6 +24,7 @@ import com.unascribed.yttr.block.natural.SqueezeSaplingBlock;
 import com.unascribed.yttr.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.block.void_.DivingPlateBlock;
+import com.unascribed.yttr.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.block.void_.VoidGeyserBlock;
 import com.unascribed.yttr.util.annotate.RenderLayer;
@@ -63,19 +64,32 @@ public class YBlocks {
 	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
 	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
-				new FabricMaterialBuilder(MaterialColor.WATER)
-					.allowsMovement()
-					.lightPassesThrough()
-					.notSolid()
-					.destroyedByPiston()
-					.replaceable()
-					.liquid()
-					.build()
-				)
-			.noCollision()
-			.strength(100)
-			.dropsNothing()
-		);
+			new FabricMaterialBuilder(MaterialColor.WATER)
+				.allowsMovement()
+				.lightPassesThrough()
+				.notSolid()
+				.destroyedByPiston()
+				.replaceable()
+				.liquid()
+				.build()
+			)
+		.noCollision()
+		.strength(100)
+		.dropsNothing()
+	);
+	@RenderLayer("translucent")
+	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of(
+			new FabricMaterialBuilder(MaterialColor.WATER)
+				.allowsMovement()
+				.lightPassesThrough()
+				.notSolid()
+				.liquid()
+				.build()
+			)
+		.noCollision()
+		.strength(100)
+		.dropsNothing()
+	);
 	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(METALLIC_SETTINGS);
 	@RenderLayer("cutout_mipped")
 	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
