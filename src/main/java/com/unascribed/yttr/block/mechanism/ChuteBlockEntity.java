@@ -29,6 +29,7 @@ public class ChuteBlockEntity extends BlockEntity implements SidedInventory, Tic
 	
 	@Override
 	public void tick() {
+		if (world.isClient) return;
 		if (getMode() == Mode.TAKE) {
 			Box box = new Box(pos.getX(), pos.getY()+1, pos.getZ(), pos.getX()+1, pos.getY()+1.25, pos.getZ()+1);
 			if (!getCachedState().get(ChuteBlock.PLATED)) {

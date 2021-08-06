@@ -16,6 +16,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -57,7 +59,14 @@ public abstract class MixinLivingEntity extends Entity {
 			Entity owner = world.getPlayerByUuid(yttr$effectorOwner);
 			
 			if (owner != null) {
-				return new EntityDamageSource("yttr.effector_fall", owner);
+				return new EntityDamageSource("yttr.effector_fall", owner) {
+					@Override
+					public Text getDeathMessage(LivingEntity entity) {
+						// no .item support
+						String string = "death.attack." + this.name;
+						return new TranslatableText(string, entity.getDisplayName(), this.source.getDisplayName());
+					}
+				};
 			}
 		}
 		return src;

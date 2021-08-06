@@ -10,3 +10,4 @@ mutable field net/minecraft/world/World random Ljava/util/Random;
 mutable field net/minecraft/resource/ResourcePackManager providers Ljava/util/Set;
 
 accessible class net/minecraft/recipe/Ingredient$Entry
+accessible class net/minecraft/village/TradeOffers$SellItemFactory

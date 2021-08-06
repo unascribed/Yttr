@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 
 import com.unascribed.yttr.init.YBlockEntities;
@@ -75,6 +76,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.village.TradeOffers;
+import net.minecraft.village.VillagerProfession;
 
 public class Yttr implements ModInitializer {
 	
@@ -107,6 +110,10 @@ public class Yttr implements ModInitializer {
 		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
+		
+		TradeOffers.Factory[] clericOffers = TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.CLERIC).get(2);
+		clericOffers = ArrayUtils.add(clericOffers, new TradeOffers.SellItemFactory(YItems.QUICKSILVER, 8, 1, 2));
+		TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.CLERIC).put(2, clericOffers);
 		
 		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON, 1800);
 		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON_BLOCK, 18000);

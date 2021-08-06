@@ -79,13 +79,24 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	
 	@Override
 	public int getMiningLevel(ItemStack stack, @Nullable LivingEntity user) {
-		return 1;
+		return 2;
 	}
 	
 	@Override
 	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, @Nullable LivingEntity user) {
-		return 1;
+		if (tag == FabricToolTags.SWORDS) return 4;
+		// any normal vanilla tool type
+		if (tag == FabricToolTags.PICKAXES ||
+				tag == FabricToolTags.AXES ||
+				tag == FabricToolTags.HOES ||
+				tag == FabricToolTags.SHOVELS ||
+				tag == FabricToolTags.SHEARS) {
+			return 2;
+		}
+		return 0;
 	}
+	
+	
 	
 	@Override
 	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, @Nullable LivingEntity user) {
