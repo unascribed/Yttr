@@ -42,7 +42,7 @@ public class VoidGeyserBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, pos, newState, moved);
-		if (world instanceof ServerWorld) {
+		if (state.isOf(this) && !newState.isOf(this) && world instanceof ServerWorld) {
 			GeysersState.get((ServerWorld)world).removeGeyser(pos);
 		}
 	}

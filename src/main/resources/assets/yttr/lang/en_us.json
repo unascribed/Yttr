@@ -95,6 +95,8 @@
 	"block.yttr.ultrapure_carbon_block": "Block of Ultrapure Carbon",
 	"block.yttr.compressed_ultrapure_carbon_block": "Block of Compressed Ultrapure Carbon",
 	"block.yttr.pure_void": "Purified Void",
+	"block.yttr.void_filter": "Void Filter",
+	"block.yttr.encased_void_filter": "Encased Void Filter",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

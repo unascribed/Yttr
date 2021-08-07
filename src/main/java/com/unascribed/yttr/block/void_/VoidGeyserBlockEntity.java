@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
@@ -24,16 +25,22 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
@@ -52,13 +59,16 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
-		age++;
-		if (world.isClient) return;
 		if (pos.getY() != 0 && !world.getBlockState(pos.down()).isOf(Blocks.BEDROCK)) {
 			world.createExplosion(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 4, DestructionType.NONE);
 			world.setBlockState(pos, Blocks.VOID_AIR.getDefaultState());
 			return;
 		}
+		if (world.getBlockState(pos.up()).isOf(YBlocks.VOID_FILTER)) return;
+		
+		age++;
+		
+		if (world.isClient) return;
 		
 		if (world instanceof ServerWorld) {
 			GeysersState gs = GeysersState.get((ServerWorld)world);
@@ -174,9 +184,9 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 			Geyser g = gs.getGeyser(id);
 			if (g != null) {
 				g.name = name;
-				gs.markDirty();
 			}
 		}
+		markDirty();
 	}
 	
 	@Override
@@ -199,6 +209,15 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 		super.fromTag(state, tag);
 		id = tag.containsUuid("ID") ? tag.getUuid("ID") : UUID.randomUUID();
 		name = tag.getString("Name");
+	}
+
+	public static void setDefaultName(World world, BlockPos pos, @Nullable LivingEntity creator) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof VoidGeyserBlockEntity) {
+			Biome b = world.getBiome(pos);
+			Identifier biomeId = world.getRegistryManager().get(Registry.BIOME_KEY).getId(b);
+			((VoidGeyserBlockEntity)be).setName((creator == null ? "" : creator.getName().getString()+"'s ")+Language.getInstance().get("biome."+biomeId.getNamespace()+"."+biomeId.getPath()));
+		}
 	}
 
 }

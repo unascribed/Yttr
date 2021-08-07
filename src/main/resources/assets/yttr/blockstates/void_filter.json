@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "enabled=false": {
+      "model": "yttr:block/void_filter"
+    },
+    "enabled=true": {
+      "model": "yttr:block/void_filter_on"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/cube_bottom_top",
+	"textures": {
+		"top": "yttr:block/void_filter_top",
+		"side": "yttr:block/void_filter_side",
+		"bottom": "yttr:block/void_filter_top"
+	}
+}

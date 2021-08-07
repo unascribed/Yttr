@@ -78,6 +78,8 @@ public class YItems {
 	public static final BlockItem TABLE = createNormalBlockItem(YBlocks.TABLE);
 	public static final BlockItem ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
 	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
+	public static final BlockItem ENCASED_VOID_FILTER = createNormalBlockItem(YBlocks.ENCASED_VOID_FILTER);
+	public static final BlockItem VOID_FILTER = createNormalBlockItem(YBlocks.VOID_FILTER);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));

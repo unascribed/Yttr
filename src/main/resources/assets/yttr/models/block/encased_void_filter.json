@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/cube_bottom_top",
+	"textures": {
+		"top": "yttr:block/obsidian_piston",
+		"side": "yttr:block/void_filter_encased",
+		"bottom": "yttr:block/obsidian_piston"
+	}
+}

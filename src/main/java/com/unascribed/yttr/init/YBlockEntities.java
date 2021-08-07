@@ -10,6 +10,7 @@ import com.unascribed.yttr.block.decor.LampBlockEntity;
 import com.unascribed.yttr.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.block.device.SuitStationBlockEntity;
+import com.unascribed.yttr.block.device.VoidFilterBlockEntity;
 import com.unascribed.yttr.block.mechanism.ChuteBlockEntity;
 import com.unascribed.yttr.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.block.mechanism.FlopperBlockEntity;
@@ -58,6 +59,7 @@ public class YBlockEntities {
 	@Renderer(ReplicatorBlockEntityRenderer.class)
 	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
 	public static final BlockEntityType<VoidCauldronBlockEntity> VOID_CAULDRON = create(VoidCauldronBlockEntity::new, YBlocks.VOID_CAULDRON);
+	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

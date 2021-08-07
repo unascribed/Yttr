@@ -8,8 +8,10 @@ import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.block.decor.TableBlock;
 import com.unascribed.yttr.block.decor.WallLampBlock;
 import com.unascribed.yttr.block.device.CentrifugeBlock;
+import com.unascribed.yttr.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.block.device.PowerMeterBlock;
 import com.unascribed.yttr.block.device.SuitStationBlock;
+import com.unascribed.yttr.block.device.VoidFilterBlock;
 import com.unascribed.yttr.block.mechanism.ChuteBlock;
 import com.unascribed.yttr.block.mechanism.DopperBlock;
 import com.unascribed.yttr.block.mechanism.FlopperBlock;
@@ -236,6 +238,9 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 2)
 		);
+	
+	public static final EncasedVoidFilterBlock ENCASED_VOID_FILTER = new EncasedVoidFilterBlock(FabricBlockSettings.copyOf(BEDROCK_SMASHER));
+	public static final VoidFilterBlock VOID_FILTER = new VoidFilterBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

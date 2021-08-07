@@ -31,6 +31,7 @@ import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
 import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
+import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.client.suit.SuitSound;
 import com.unascribed.yttr.client.util.TextureColorThief;
@@ -136,11 +137,11 @@ import net.minecraft.world.BlockRenderView;
 
 public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
-	private static final Identifier VOID_FLOW = new Identifier("yttr", "block/void_flow");
-	private static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
+	public static final Identifier VOID_FLOW = new Identifier("yttr", "block/void_flow");
+	public static final Identifier VOID_STILL = new Identifier("yttr", "block/void_still");
 	
-	private static final Identifier PURE_VOID_FLOW = new Identifier("yttr", "block/pure_void_flow");
-	private static final Identifier PURE_VOID_STILL = new Identifier("yttr", "block/pure_void_still");
+	public static final Identifier PURE_VOID_FLOW = new Identifier("yttr", "block/pure_void_flow");
+	public static final Identifier PURE_VOID_STILL = new Identifier("yttr", "block/pure_void_still");
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
@@ -203,6 +204,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		ScreenRegistry.register(YScreenTypes.CENTRIFUGE, CentrifugeScreen::new);
 		ScreenRegistry.register(YScreenTypes.SUIT_STATION, SuitStationScreen::new);
+		ScreenRegistry.register(YScreenTypes.VOID_FILTER, VoidFilterScreen::new);
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			RifleItemRenderer.registerModels(out);
 		});
