@@ -18,7 +18,7 @@ public abstract class MixinEnchantmentLapisSlot extends Slot {
 		super(inventory, index, x, y);
 	}
 
-	@Inject(at=@At("HEAD"), method="canInsert", cancellable=true)
+	@Inject(at=@At("HEAD"), method="canInsert(Lnet/minecraft/item/ItemStack;)Z", cancellable=true)
 	public void canInsert(ItemStack stack, CallbackInfoReturnable<Boolean> ci) {
 		if (stack.getItem() == YItems.ULTRAPURE_LAZURITE) {
 			ci.setReturnValue(true);
