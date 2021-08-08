@@ -37,6 +37,7 @@ public class YStats {
 	public static final Identifier FILTERS_INSTALLED = new Identifier("yttr", "filters_installed");
 	@FormattedAs("time")
 	public static final Identifier TIME_IN_VOID = new Identifier("yttr", "time_in_void");
+	public static final Identifier BLOCKS_VOIDED = new Identifier("yttr", "blocks_voided");
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented

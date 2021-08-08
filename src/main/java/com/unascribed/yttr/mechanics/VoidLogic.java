@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.apache.logging.log4j.LogManager;
 
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.util.EquipmentSlots;
 
 import com.google.common.base.Predicates;
@@ -137,6 +138,7 @@ public class VoidLogic {
 			}
 			NbtIo.writeCompressed(data, out.toFile());
 			NbtIo.writeCompressed(index, indexFile.toFile());
+			int blocksVoidedStat = 0;
 			for (int y = -r; y <= r; y++) {
 				for (int x = -r; x <= r; x++) {
 					for (int z = -r; z <= r; z++) {
@@ -144,12 +146,16 @@ public class VoidLogic {
 						if (pos.getSquaredDistance(bp.getX(), bp.getY(), bp.getZ(), true) < r*r) {
 							BlockState bs = world.getBlockState(bp);
 							if (bs.getHardness(world, bp) < 0) continue;
+							if (!bs.isAir()) {
+								blocksVoidedStat++;
+							}
 							world.removeBlockEntity(bp);
 							world.setBlockState(bp, Blocks.VOID_AIR.getDefaultState());
 						}
 					}
 				}
 			}
+			YStats.add(user, YStats.BLOCKS_VOIDED, blocksVoidedStat);
 			Box box = new Box(_pos.x-r, _pos.y-r, _pos.z-r, _pos.x+r, _pos.y+r, _pos.z+r);
 			for (Entity e : world.getEntitiesByClass(Entity.class, box, Predicates.alwaysTrue())) {
 				double d = _pos.squaredDistanceTo(e.getPos());
