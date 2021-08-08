@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
@@ -52,6 +53,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 		ServerPlayerEntity self = (ServerPlayerEntity)(Object)this;
 		if (!self.isAlive()) return;
 		if (yttr$isDiving) {
+			YStats.add(self, YStats.TIME_IN_VOID, 1);
 			if (self.getPos().y > 0) {
 				yttr$isDiving = false;
 			} else {

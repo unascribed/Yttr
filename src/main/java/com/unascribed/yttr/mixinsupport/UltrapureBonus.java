@@ -31,6 +31,7 @@ public class UltrapureBonus {
 				out.setTag(new CompoundTag());
 			}
 			out.getTag().putInt("yttr:DurabilityBonus", out.getTag().getInt("yttr:DurabilityBonus")+1);
+			out.getTag().putBoolean("yttr:Ultrapure", true);
 		}
 	}
 	

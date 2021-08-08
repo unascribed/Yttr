@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 
@@ -85,6 +86,7 @@ public class EffectorItem extends Item {
 			return ActionResult.FAIL;
 		}
 		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);
+		YStats.add(context.getPlayer(), YStats.BLOCKS_EFFECTED, amt*100);
 		if (!context.getPlayer().abilities.creativeMode) setFuel(stack, fuel-amt);
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(pos);

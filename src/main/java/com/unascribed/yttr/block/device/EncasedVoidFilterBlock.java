@@ -3,6 +3,7 @@ package com.unascribed.yttr.block.device;
 import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 
@@ -42,6 +43,7 @@ public class EncasedVoidFilterBlock extends Block implements Shootable {
 				if (world instanceof ServerWorld) {
 					((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION, down.getX()+0.5, down.getY()+1, down.getZ()+0.5, 8, 1, 1, 1, 0);
 				}
+				YStats.add(user, YStats.FILTERS_INSTALLED, 1);
 				user.world.createExplosion(null, DamageSource.explosion(user), null, bhr.getPos().x, bhr.getPos().y, bhr.getPos().z, 3.3f, false, DestructionType.NONE);
 				return true;
 			}

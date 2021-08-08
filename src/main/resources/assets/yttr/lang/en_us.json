@@ -246,6 +246,19 @@
 	"potion.potency.11": "XII",
 	"potion.potency.12": "XIII",
 	"potion.potency.13": "XIV",
-	"potion.potency.14": "XV"
+	"potion.potency.14": "XV",
+	
+	"stat.yttr.time_in_void": "[Yttr] Time Spent In Void",
+	"stat.yttr.blocks_dove": "[Yttr] Blocks Dove",
+	"stat.yttr.blocks_effected": "[Yttr] Blocks Effected",
+	"stat.yttr.glowdamp_collected": "[Yttr] Glowdamp Collected",
+	"stat.yttr.rifle_charging_time": "[Yttr] Time Spent Charging Rifle",
+	"stat.yttr.rifle_shots_backfired": "[Yttr] Times Rifle Backfired",
+	"stat.yttr.rifle_shots_fired": "[Yttr] Times Rifle Fired",
+	"stat.yttr.rifle_shots_overcharged": "[Yttr] Times Rifle Overcharged",
+	"stat.yttr.ultrapure_items_crafted": "[Yttr] Ultrapure Items Crafted",
+	"stat.yttr.geysers_opened": "[Yttr] Geysers Opened",
+	"stat.yttr.bedrock_broken": "[Yttr] Bedrock Broken",
+	"stat.yttr.filters_installed": "[Yttr] Filters Installed"
 	
 }

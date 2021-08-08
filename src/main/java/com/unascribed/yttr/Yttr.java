@@ -1,5 +1,6 @@
 package com.unascribed.yttr;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractList;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
@@ -22,6 +24,7 @@ import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.init.YScreenTypes;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
@@ -75,6 +78,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
@@ -102,6 +106,7 @@ public class Yttr implements ModInitializer {
 		YTags.init();
 		YScreenTypes.init();
 		YEnchantments.init();
+		YStats.init();
 		
 		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_POTION);
 		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_SPLASH_POTION);
@@ -155,8 +160,8 @@ public class Yttr implements ModInitializer {
 							return;
 						}
 						Vec2i vec = new Vec2i(x, z);
-						int dist = vec.squaredDistanceTo(diver.yttr$getDivePos());
-						if (dist == 0) return;
+						int distSq = vec.squaredDistanceTo(diver.yttr$getDivePos());
+						if (distSq == 0) return;
 						int moveSpeed = DIVING_BLOCKS_PER_TICK;
 						ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
 						if (!(is.getItem() instanceof SuitArmorItem)) return;
@@ -165,15 +170,17 @@ public class Yttr implements ModInitializer {
 							moveSpeed /= sr.getSpeedDivider(sai.getResourceAmount(is, sr) <= 0);
 						}
 						int max = (moveSpeed+1)*diff;
-						if (dist > max*max) {
+						if (distSq > max*max) {
 							LogManager.getLogger("Yttr").warn("{} dove too quickly! {}, {}", player.getName().getString(), x-diver.yttr$getDivePos().x, z-diver.yttr$getDivePos().z);
 							correctDivePos(diver, responseSender);
 							return;
 						}
+						double dist = MathHelper.sqrt(distSq);
 						int pressure = calculatePressure(player.getServerWorld(), diver.yttr$getDivePos().x, diver.yttr$getDivePos().z);
 						for (SuitResource sr : SuitResource.VALUES) {
-							sai.consumeResource(is, sr, sr.getConsumptionPerBlock(pressure)*(int)Math.sqrt(dist));
+							sai.consumeResource(is, sr, sr.getConsumptionPerBlock(pressure)*(int)dist);
 						}
+						YStats.add(player, YStats.BLOCKS_DOVE, (int)(dist*100));
 						diver.yttr$setDivePos(vec);
 						PacketByteBuf resp = new PacketByteBuf(Unpooled.buffer(8));
 						resp.writeVarInt(pressure);
@@ -211,6 +218,7 @@ public class Yttr implements ModInitializer {
 							int time = (int)((distance/DIVING_BLOCKS_PER_TICK)/5);
 							diver.yttr$setFastDiveTarget(g.pos);
 							diver.yttr$setFastDiveTime(time);
+							YStats.add(player, YStats.BLOCKS_DOVE, (int)(distance*100));
 							PacketByteBuf res = PacketByteBufs.create();
 							for (SuitResource sr : SuitResource.VALUES) {
 								res.writeVarInt(resourcesNeeded.count(sr));
@@ -348,16 +356,22 @@ public class Yttr implements ModInitializer {
 		responseSender.sendPacket(new Identifier("yttr", "dive_pos"), resp);
 	}
 
-	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
+	public static <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {
 		for (Field f : holder.getDeclaredFields()) {
 			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
 				try {
-					Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)f.get(null));
+					cb.accept(f, (T)f.get(null), anno == null ? null : f.getAnnotation(anno));
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			}
 		}
+	}
+
+	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
+		eachRegisterableField(holder, type, null, (f, v, na) -> {
+			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);
+		});
 	}
 
 	public static ListTag serializeInv(Inventory inv) {

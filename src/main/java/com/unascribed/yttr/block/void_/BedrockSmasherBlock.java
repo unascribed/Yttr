@@ -2,6 +2,7 @@ package com.unascribed.yttr.block.void_;
 
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 
@@ -46,10 +47,12 @@ public class BedrockSmasherBlock extends Block implements Shootable {
 					world.setBlockState(down, YBlocks.VOID_GEYSER.getDefaultState());
 					VoidGeyserBlockEntity.setDefaultName(world, down, user);
 					world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.VOID_HOLE, SoundCategory.BLOCKS, 1, 0.5f);
+					YStats.add(user, YStats.GEYSERS_OPENED, 1);
 				} else {
 					world.setBlockState(down, YBlocks.RUINED_BEDROCK.getDefaultState());
 					world.breakBlock(down.north(), true, user);
 					world.breakBlock(down.south(), true, user);
+					YStats.add(user, YStats.BEDROCK_BROKEN, 1);
 				}
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				world.playSound(null, down.getX()+0.5, down.getY()+0.5, down.getZ()+0.5, YSounds.SNAP, SoundCategory.BLOCKS, 1, 2);

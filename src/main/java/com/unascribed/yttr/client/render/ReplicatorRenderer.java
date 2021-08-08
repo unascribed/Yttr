@@ -292,6 +292,9 @@ public class ReplicatorRenderer extends IHasAClient {
 					rbe.clientTick();
 				}
 			}
+		} else {
+			replicators.clear();
+			removing.clear();
 		}
 		Iterator<ReplicatorBlockEntity> iter = removing.iterator();
 		while (iter.hasNext()) {

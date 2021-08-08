@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.GlowingGasLogic;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +24,7 @@ public abstract class MixinGlassBottleItem {
 	public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (GlowingGasLogic.consumeGasCloud(world, user.getBoundingBox().expand(2))) {
+			YStats.add(user, YStats.GLOWDAMP_COLLECTED, 1);
 			ci.setReturnValue(TypedActionResult.success(fill(stack, user, new ItemStack(YItems.GLOWING_GAS)), world.isClient()));
 		}
 	}

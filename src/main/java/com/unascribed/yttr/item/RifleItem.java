@@ -3,6 +3,7 @@ package com.unascribed.yttr.item;
 import java.util.Locale;
 
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
@@ -232,6 +233,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 						}
 					}
 				}
+				YStats.add(user, YStats.RIFLE_SHOTS_FIRED, 1);
+				if (power > 1.1) {
+					YStats.add(user, YStats.RIFLE_SHOTS_OVERCHARGED, 1);
+				}
 				mode.handleFire(user, stack, power, hr);
 			}
 		}
@@ -321,6 +326,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (!world.isClient) {
 			getMode(stack).handleBackfire(user, stack);
 		}
+		YStats.add(user, YStats.RIFLE_SHOTS_BACKFIRED, 1);
 		if (user instanceof PlayerEntity) {
 			((PlayerEntity) user).getItemCooldownManager().set(this, (int)(160*speedMod));
 		}
@@ -329,6 +335,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	
 	@Override
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+		YStats.add(user, YStats.RIFLE_CHARGING_TIME, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
 		if (remainingUseTicks%5 == 0) {
 			user.playSound(YSounds.RIFLE_CHARGE_CONTINUE, 1, 1);

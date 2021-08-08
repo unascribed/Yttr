@@ -1,11 +1,8 @@
 package com.unascribed.yttr.client;
 
-import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +11,6 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EmbeddedResourcePack;
@@ -171,18 +167,18 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		renderLayers.put("cutout", RenderLayer.getCutout());
 		renderLayers.put("cutout_mipped", RenderLayer.getCutoutMipped());
 		renderLayers.put("translucent", RenderLayer.getTranslucent());
-		eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
+		Yttr.eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
 			if (b instanceof BlockColorProvider) ColorProviderRegistry.BLOCK.register((BlockColorProvider)b, b);
 			if (ann != null) {
 				if (!renderLayers.containsKey(ann.value())) throw new RuntimeException("YBlocks."+f.getName()+" has an unknown @RenderLayer: "+ann.value());
 				BlockRenderLayerMap.INSTANCE.putBlocks(renderLayers.get(ann.value()), b);
 			}
 		});
-		eachRegisterableField(YItems.class, Item.class, ConstantColor.class, (f, i, ann) -> {
+		Yttr.eachRegisterableField(YItems.class, Item.class, ConstantColor.class, (f, i, ann) -> {
 			if (i instanceof ItemColorProvider) ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
 			if (ann != null) ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ann.value(), i);
 		});
-		eachRegisterableField(YBlockEntities.class, BlockEntityType.class, Renderer.class, (f, type, ann) -> {
+		Yttr.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(ann.value(), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
@@ -480,18 +476,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		};
 		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.PURE_VOID, pureVoidRenderHandler);
 		FluidRenderHandlerRegistry.INSTANCE.register(YFluids.FLOWING_PURE_VOID, pureVoidRenderHandler);
-	}
-
-	private <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {
-		for (Field f : holder.getDeclaredFields()) {
-			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
-				try {
-					cb.accept(f, (T)f.get(null), anno == null ? null : f.getAnnotation(anno));
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
 	}
 
 	private void handleBeamPacket(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
