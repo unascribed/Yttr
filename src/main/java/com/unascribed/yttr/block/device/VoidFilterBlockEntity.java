@@ -1,5 +1,6 @@
 package com.unascribed.yttr.block.device;
 
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.Yttr;
@@ -9,7 +10,9 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multiset;
 
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
@@ -21,8 +24,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 
 public class VoidFilterBlockEntity extends BlockEntity implements Tickable, DelegatingInventory, SideyInventory {
 	
@@ -30,9 +37,9 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		public final Item item;
 		public final float chance;
 		
-		public OutputEntry(Item item, float chance) {
+		public OutputEntry(Item item, double chance) {
 			this.item = item;
-			this.chance = chance;
+			this.chance = (float)chance;
 		}
 	}
 	
@@ -40,21 +47,24 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
 	
 	private static final ImmutableList<OutputEntry> OUTPUTS = ImmutableList.of(
-				new OutputEntry(YItems.ULTRAPURE_SILICA, 0.5f),
-				new OutputEntry(YItems.ULTRAPURE_CARBON, 0.25f+0.0055f),
-				new OutputEntry(YItems.ULTRAPURE_CINNABAR, 0.25f),
-				new OutputEntry(YItems.ULTRAPURE_IRON, 0.15f),
-				new OutputEntry(YItems.ULTRAPURE_LAZURITE, 0.045f),
-				new OutputEntry(YItems.ULTRAPURE_YTTRIUM, 0.03f),
-				new OutputEntry(YItems.ULTRAPURE_NEODYMIUM, 0.02f),
-				new OutputEntry(YItems.ULTRAPURE_GOLD, 0.015f),
-				new OutputEntry(YItems.ULTRAPURE_WOLFRAM, 0.0001f)
+				new OutputEntry(   YItems.ULTRAPURE_SILICA, 5.500),
+				new OutputEntry(   YItems.ULTRAPURE_CARBON, 3.000),
+				new OutputEntry( YItems.ULTRAPURE_CINNABAR, 2.000),
+				new OutputEntry(     YItems.ULTRAPURE_IRON, 1.500),
+				new OutputEntry( YItems.ULTRAPURE_LAZURITE, 0.450),
+				new OutputEntry(  YItems.ULTRAPURE_YTTRIUM, 0.300),
+				new OutputEntry(YItems.ULTRAPURE_NEODYMIUM, 0.200),
+				new OutputEntry(     YItems.ULTRAPURE_GOLD, 0.175),
+				new OutputEntry(  YItems.ULTRAPURE_WOLFRAM, 0.025)
 			);
+	
+	private static final Multiset<Item> statQueue = HashMultiset.create();
 	
 	private final SimpleInventory inv = new SimpleInventory(9);
 	private int tockProgress = 0;
 	private int opTocks = 0;
 	private int maxOpTocks = TOCKS_PER_OP;
+	private UUID owner;
 	
 	private final PropertyDelegate properties = new PropertyDelegate() {
 		@Override
@@ -89,13 +99,13 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	@Override
 	public void tick() {
 		if (world.isClient) return;
+		if (!getCachedState().get(VoidFilterBlock.ENABLED)) return;
 		if (tockProgress++ >= TICKS_PER_TOCK) {
 			tockProgress = 0;
 		} else {
 			return;
 		}
 		if (!world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) && !world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER)) return;
-		if (!getCachedState().get(VoidFilterBlock.ENABLED)) return;
 		boolean invFull = true;
 		for (int i = 0; i < size(); i++) {
 			if (getStack(i).isEmpty()) {
@@ -106,8 +116,19 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		if (!invFull && opTocks++ >= maxOpTocks) {
 			opTocks = 0;
 			for (OutputEntry oe : OUTPUTS) {
-				if (ThreadLocalRandom.current().nextFloat()*10 < oe.chance) {
-					inv.addStack(new ItemStack(oe.item));
+				if (ThreadLocalRandom.current().nextFloat()*100 < oe.chance) {
+					if (inv.addStack(new ItemStack(oe.item)).isEmpty()) {
+						statQueue.add(oe.item);
+					}
+				}
+			}
+			if (!statQueue.isEmpty() && owner != null) {
+				ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(owner);
+				if (player != null) {
+					for (Multiset.Entry<Item> en : statQueue.entrySet()) {
+						player.getStatHandler().increaseStat(player, Stats.CRAFTED.getOrCreateStat(en.getElement()), en.getCount());
+					}
+					statQueue.clear();
 				}
 			}
 		}
@@ -123,6 +144,12 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		tag = super.toTag(tag);
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("OpTocks", opTocks);
+		if (owner != null) tag.putUuid("Owner", owner);
+		CompoundTag statQTag = new CompoundTag();
+		for (Multiset.Entry<Item> en : statQueue.entrySet()) {
+			statQTag.putInt(Registry.ITEM.getId(en.getElement()).toString(), en.getCount());
+		}
+		tag.put("StatQueue", statQTag);
 		return tag;
 	}
 	
@@ -131,6 +158,15 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		opTocks = tag.getInt("OpTocks");
+		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
+		statQueue.clear();
+		CompoundTag statQTag = tag.getCompound("StatQueue");
+		for (String key : statQTag.getKeys()) {
+			Item i = Registry.ITEM.getOrEmpty(Identifier.tryParse(key)).orElse(null);
+			if (i != null) {
+				statQueue.add(i, statQTag.getInt(key));
+			}
+		}
 	}
 
 	@Override
@@ -156,6 +192,15 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	@Override
 	public Inventory getDelegateInv() {
 		return inv;
+	}
+	
+	@Override
+	public void onOpen(PlayerEntity player) {
+		DelegatingInventory.super.onOpen(player);
+		if (owner == null) {
+			owner = player.getUuid();
+			markDirty();
+		}
 	}
 
 }

@@ -61,6 +61,8 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 		}
 		
 		addProperties(properties);
+		
+		voidFilter.onOpen(playerInv.player);
 	}
 
 	@Override
