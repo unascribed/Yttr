@@ -195,10 +195,12 @@ public class Yttr implements ModInitializer {
 							double distance = Math.sqrt(g.pos.getSquaredDistance(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z, true));
 							Multiset<SuitResource> resourcesNeeded = determineNeededResourcesForFastDive(distance);
 							Multiset<SuitResource> resourcesAvailable = determineAvailableResources(player);
-							for (SuitResource sr : SuitResource.VALUES) {
-								if (resourcesAvailable.count(sr) < resourcesNeeded.count(sr)) {
-									informCantDive(responseSender, "not enough "+sr.name().toLowerCase(Locale.ROOT));
-									return;
+							if (!player.isCreative()) {
+								for (SuitResource sr : SuitResource.VALUES) {
+									if (resourcesAvailable.count(sr) < resourcesNeeded.count(sr)) {
+										informCantDive(responseSender, "not enough "+sr.name().toLowerCase(Locale.ROOT));
+										return;
+									}
 								}
 							}
 							ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);

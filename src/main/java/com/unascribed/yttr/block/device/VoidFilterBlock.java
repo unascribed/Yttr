@@ -31,7 +31,7 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 
 	public VoidFilterBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(ENABLED, false));
+		setDefaultState(getDefaultState().with(ENABLED, true));
 	}
 
 	@Override
@@ -43,11 +43,11 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (!world.isClient) {
 			boolean cur = state.get(ENABLED);
-			if (cur != world.isReceivingRedstonePower(pos)) {
+			if (cur == world.isReceivingRedstonePower(pos)) {
 				if (cur) {
 					world.getBlockTickScheduler().schedule(pos, this, 4);
 				} else {
-					world.setBlockState(pos, state.with(ENABLED, true), 2);
+					world.setBlockState(pos, state.with(ENABLED, false), 2);
 				}
 			}
 
@@ -57,7 +57,7 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isReceivingRedstonePower(pos)) {
-			world.setBlockState(pos, state.with(ENABLED, false), 2);
+			world.setBlockState(pos, state.with(ENABLED, true), 2);
 		}
 	}
 	

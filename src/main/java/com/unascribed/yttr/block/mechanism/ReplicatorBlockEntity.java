@@ -28,14 +28,21 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	public int clientAge = 0;
 	public int removedTicks = 0;
 	
+	private boolean addedClient = false;
+	
 	public ReplicatorBlockEntity() {
 		super(YBlockEntities.REPLICATOR);
 	}
 	
+	@Environment(EnvType.CLIENT)
 	public void clientTick() {
 		clientAge++;
 		if (isRemoved()) {
+			addedClient = false;
 			removedTicks++;
+		} else if (!addedClient) {
+			addedClient = true;
+			ReplicatorRenderer.replicators.add(this);
 		}
 	}
 	
@@ -49,6 +56,7 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	
 	@Environment(EnvType.CLIENT)
 	private void removeClient() {
+		ReplicatorRenderer.replicators.remove(this);
 		ReplicatorRenderer.removing.add(this);
 	}
 

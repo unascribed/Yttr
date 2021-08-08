@@ -1,5 +1,6 @@
 package com.unascribed.yttr.block.void_;
 
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.world.GeysersState;
 
@@ -9,12 +10,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class VoidGeyserBlock extends Block implements BlockEntityProvider {
 
@@ -37,6 +43,14 @@ public class VoidGeyserBlock extends Block implements BlockEntityProvider {
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new VoidGeyserBlockEntity();
+	}
+	
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+		if (world.getBlockState(pos.up()).isOf(YBlocks.VOID_FILTER)) {
+			return YBlocks.DORMANT_VOID_GEYSER.getDefaultState();
+		}
+		return state;
 	}
 	
 	@Override

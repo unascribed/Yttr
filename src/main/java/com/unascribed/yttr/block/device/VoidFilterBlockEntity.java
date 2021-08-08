@@ -36,7 +36,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		}
 	}
 	
-	public static final int TICKS_PER_OP = 20*60;
+	public static final int TICKS_PER_TOCK = 100;
+	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
 	
 	private static final ImmutableList<OutputEntry> OUTPUTS = ImmutableList.of(
 				new OutputEntry(YItems.ULTRAPURE_SILICA, 0.5f),
@@ -51,15 +52,16 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 			);
 	
 	private final SimpleInventory inv = new SimpleInventory(9);
-	private int opTicks = 0;
-	private int maxOpTicks = TICKS_PER_OP;
+	private int tockProgress = 0;
+	private int opTocks = 0;
+	private int maxOpTocks = TOCKS_PER_OP;
 	
 	private final PropertyDelegate properties = new PropertyDelegate() {
 		@Override
 		public int get(int index) {
 			switch (index) {
-				case 0: return opTicks;
-				case 1: return maxOpTicks;
+				case 0: return (opTocks*TICKS_PER_TOCK)+tockProgress;
+				case 1: return maxOpTocks*TICKS_PER_TOCK;
 				default: return 0;
 			}
 		}
@@ -67,8 +69,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		@Override
 		public void set(int index, int value) {
 			switch(index) {
-				case 0: opTicks = value; break;
-				case 1: maxOpTicks = value; break;
+				case 0: opTocks = value/TICKS_PER_TOCK; break;
+				case 1: maxOpTocks = value/TICKS_PER_TOCK; break;
 			}
 
 		}
@@ -83,10 +85,15 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		super(YBlockEntities.VOID_FILTER);
 		inv.addListener(i -> markDirty());
 	}
-
+	
 	@Override
 	public void tick() {
 		if (world.isClient) return;
+		if (tockProgress++ >= TICKS_PER_TOCK) {
+			tockProgress = 0;
+		} else {
+			return;
+		}
 		if (!world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER)) return;
 		if (!getCachedState().get(VoidFilterBlock.ENABLED)) return;
 		boolean invFull = true;
@@ -96,8 +103,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 				break;
 			}
 		}
-		if (!invFull && opTicks++ >= maxOpTicks) {
-			opTicks = 0;
+		if (!invFull && opTocks++ >= maxOpTocks) {
+			opTocks = 0;
 			for (OutputEntry oe : OUTPUTS) {
 				if (ThreadLocalRandom.current().nextFloat()*10 < oe.chance) {
 					inv.addStack(new ItemStack(oe.item));
@@ -115,7 +122,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	public CompoundTag toTag(CompoundTag tag) {
 		tag = super.toTag(tag);
 		tag.put("Inventory", Yttr.serializeInv(inv));
-		tag.putInt("OpTicks", opTicks);
+		tag.putInt("OpTocks", opTocks);
 		return tag;
 	}
 	
@@ -123,7 +130,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
-		opTicks = tag.getInt("OpTicks");
+		opTocks = tag.getInt("OpTocks");
 	}
 
 	@Override

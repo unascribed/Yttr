@@ -87,17 +87,23 @@ public abstract class PureVoidFluid extends VoidFluid {
 	}
 	
 	@Override
-	protected void onRandomTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (state.isStill() && random.nextInt(100) == 0) {
+	public void onRandomTick(World world, BlockPos pos, FluidState state, Random random) {
+		if (state.isStill() && random.nextInt(100) == 0 && world.getBlockState(pos).isOf(YBlocks.PURE_VOID)) {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
 		Direction dir = Direction.byId(random.nextInt(5)+1);
 		BlockPos toDestroy = pos.offset(dir);
 		BlockState desState = world.getBlockState(toDestroy);
-		if (!desState.isOf(YBlocks.PURE_VOID)) {
-			float hard = desState.getHardness(world, toDestroy);
-			if (hard >= 0 && (random.nextFloat()*20) > hard) {
-				world.breakBlock(toDestroy, false);
+		if (!desState.isOf(YBlocks.PURE_VOID) && !desState.isOf(YBlocks.VOID_FILTER) && !desState.isOf(YBlocks.ERODED_BEDROCK)) {
+			if (desState.isOf(Blocks.BEDROCK) && toDestroy.getY() < 10 && toDestroy.getY() > 0) {
+				if (random.nextInt(10) == 0) {
+					world.setBlockState(toDestroy, YBlocks.ERODED_BEDROCK.getDefaultState());
+				}
+			} else {
+				float hard = desState.getHardness(world, toDestroy);
+				if (hard >= 0 && (random.nextFloat()*20) > hard) {
+					world.breakBlock(toDestroy, false);
+				}
 			}
 		}
 	}

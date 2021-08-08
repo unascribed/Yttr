@@ -26,6 +26,8 @@ import com.unascribed.yttr.block.natural.SqueezeSaplingBlock;
 import com.unascribed.yttr.block.natural.SqueezedLeavesBlock;
 import com.unascribed.yttr.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.block.void_.DivingPlateBlock;
+import com.unascribed.yttr.block.void_.DormantVoidGeyserBlock;
+import com.unascribed.yttr.block.void_.ErodedBedrockBlock;
 import com.unascribed.yttr.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.block.void_.VoidGeyserBlock;
@@ -114,6 +116,8 @@ public class YBlocks {
 			.strength(-1, 9000000)
 			.dropsNothing()
 		);
+	public static final DormantVoidGeyserBlock DORMANT_VOID_GEYSER = new DormantVoidGeyserBlock(FabricBlockSettings.copyOf(VOID_GEYSER)
+			.nonOpaque());
 	public static final Block BEDROCK_SMASHER = new BedrockSmasherBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(35, 4000));
@@ -240,7 +244,13 @@ public class YBlocks {
 		);
 	
 	public static final EncasedVoidFilterBlock ENCASED_VOID_FILTER = new EncasedVoidFilterBlock(FabricBlockSettings.copyOf(BEDROCK_SMASHER));
-	public static final VoidFilterBlock VOID_FILTER = new VoidFilterBlock(METALLIC_SETTINGS);
+	public static final VoidFilterBlock VOID_FILTER = new VoidFilterBlock(FabricBlockSettings.copyOf(METALLIC_SETTINGS)
+			.resistance(4000));
+	
+	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of(Material.STONE)
+			.breakByTool(FabricToolTags.PICKAXES, 3)
+			.strength(75, 0)
+		);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

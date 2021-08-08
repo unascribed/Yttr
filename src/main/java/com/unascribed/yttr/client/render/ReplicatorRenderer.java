@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 
@@ -19,6 +20,7 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.util.math.Interp;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
@@ -51,7 +53,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class ReplicatorRenderer extends IHasAClient {
 
-	public static final List<ReplicatorBlockEntity> removing = Lists.newArrayList();
+	public static final Set<ReplicatorBlockEntity> replicators = Sets.newLinkedHashSet();
+	public static final Set<ReplicatorBlockEntity> removing = Sets.newLinkedHashSet();
+	private static final List<ReplicatorBlockEntity> renderList = Lists.newArrayList();
 	
 	private static final Screen dummyScreen = new Screen(new LiteralText("")) {};
 	private static final Random rand = new Random();
@@ -237,25 +241,18 @@ public class ReplicatorRenderer extends IHasAClient {
 	
 	public static void render(WorldRenderContext wrc) {
 		wrc.profiler().swap("yttr:replicators");
-		List<ReplicatorBlockEntity> replicators = Collections.emptyList();
-		for (BlockEntity be : wrc.world().blockEntities) {
-			if (be instanceof ReplicatorBlockEntity) {
-				ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+		if (!replicators.isEmpty() || !removing.isEmpty()) {
+			renderList.clear();
+			renderList.addAll(replicators);
+			renderList.addAll(removing);
+			for (ReplicatorBlockEntity rbe : renderList) {
 				if (rbe.clientAge < 1) continue;
 				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos(), false);
 				if (dist < 64*64 && wrc.frustum().isVisible(new Box(rbe.getPos()))) {
 					rbe.distTmp = dist;
-					if (replicators.isEmpty()) replicators = Lists.newArrayList();
-					replicators.add(rbe);
 				}
 			}
-		}
-		if (!removing.isEmpty()) {
-			if (replicators.isEmpty()) replicators = Lists.newArrayList();
-			replicators.addAll(removing);
-		}
-		if (!replicators.isEmpty()) {
-			Collections.sort(replicators, (a, b) -> Double.compare(b.distTmp, a.distTmp));
+			Collections.sort(renderList, (a, b) -> Double.compare(b.distTmp, a.distTmp));
 			MatrixStack matrices = wrc.matrixStack();
 			RenderSystem.pushMatrix();
 			RenderSystem.loadIdentity();
@@ -266,7 +263,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				RenderSystem.depthMask(pass == 0);
 				RenderSystem.enableDepthTest();
 				RenderSystem.depthFunc(GL11.GL_LESS);
-				for (ReplicatorBlockEntity rbe : replicators) {
+				for (ReplicatorBlockEntity rbe : renderList) {
 					matrices.push();
 					matrices.translate(rbe.getPos().getX(), rbe.getPos().getY(), rbe.getPos().getZ());
 					if (rbe.isRemoved()) {
