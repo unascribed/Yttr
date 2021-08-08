@@ -94,7 +94,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		} else {
 			return;
 		}
-		if (!world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER)) return;
+		if (!world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) && !world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER)) return;
 		if (!getCachedState().get(VoidFilterBlock.ENABLED)) return;
 		boolean invFull = true;
 		for (int i = 0; i < size(); i++) {
