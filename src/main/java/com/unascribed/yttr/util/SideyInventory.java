@@ -7,12 +7,14 @@ import net.minecraft.util.math.Direction;
 
 public interface SideyInventory extends SidedInventory {
 
-	IntList scratchList = new IntArrayList();
+	ThreadLocal<IntList> scratchList = ThreadLocal.withInitial(IntArrayList::new);
 	
 	boolean canAccess(int slot, Direction side);
 	
 	@Override
 	default int[] getAvailableSlots(Direction side) {
+		IntList scratchList = SideyInventory.scratchList.get();
+		scratchList.clear();
 		for (int i = 0; i < size(); i++) {
 			if (canAccess(i, side)) {
 				scratchList.add(i);
