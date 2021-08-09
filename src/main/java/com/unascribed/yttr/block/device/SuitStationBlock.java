@@ -58,9 +58,8 @@ public class SuitStationBlock extends Block implements BlockEntityProvider {
 			if (be instanceof SuitStationBlockEntity) {
 				ItemScatterer.spawn(world, pos, (SuitStationBlockEntity)be);
 			}
-
-			super.onStateReplaced(state, world, pos, newState, moved);
 		}
+		super.onStateReplaced(state, world, pos, newState, moved);
 	}
 	
 }
