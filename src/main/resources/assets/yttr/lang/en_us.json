@@ -264,6 +264,7 @@
 	
 	"category.yttr.void_filtering": "Void Filtering",
 	"category.yttr.piston_smashing": "Piston Smashing",
+	"category.yttr.centrifuging": "Centrifuging",
 	
 	"category.yttr.void_filtering.chance": "Chance: %s%%",
 	"category.yttr.void_filtering.chance.short": "%s%%",

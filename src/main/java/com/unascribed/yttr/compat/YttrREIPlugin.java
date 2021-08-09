@@ -2,8 +2,10 @@ package com.unascribed.yttr.compat;
 
 import java.util.List;
 
+import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 
@@ -21,11 +23,13 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public static final Identifier ID = new Identifier("yttr", "main");
 	public static final VoidFilteringCategory VOID_FILTERING = new VoidFilteringCategory();
 	public static final PistonSmashingCategory PISTON_SMASHING = new PistonSmashingCategory();
+	public static final CentrifugingCategory CENTRIFUGING = new CentrifugingCategory();
 	
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategory(VOID_FILTERING);
 		recipeHelper.registerCategory(PISTON_SMASHING);
+		recipeHelper.registerCategory(CENTRIFUGING);
 	}
 	
 	@Override
@@ -33,6 +37,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(VoidFilteringCategory.ID, EntryStack.create(YItems.VOID_FILTER));
 		recipeHelper.registerWorkingStations(PistonSmashingCategory.ID, EntryStack.create(Blocks.PISTON));
 		recipeHelper.registerWorkingStations(PistonSmashingCategory.ID, EntryStack.create(Blocks.STICKY_PISTON));
+		recipeHelper.registerWorkingStations(CentrifugingCategory.ID, EntryStack.create(YBlocks.CENTRIFUGE));
 	}
 	
 	@Override
@@ -47,6 +52,9 @@ public class YttrREIPlugin implements REIPluginV0 {
 			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
 			recipeHelper.registerDisplay(new PistonSmashingEntry(r.getId(), r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(), EntryStack.create(r.getOutput()),
 					r.getCloudColor(), EntryStack.create(multCloudOutput)));
+		}
+		for (CentrifugingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING)) {
+			recipeHelper.registerDisplay(new CentrifugingEntry(r.getId(), EntryStack.ofIngredient(r.getInput()), EntryStack.ofItemStacks(r.getOutputs())));
 		}
 	}
 	

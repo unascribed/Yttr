@@ -42,6 +42,10 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 		this.spinTime = spinTime;
 	}
 
+	public Ingredient getInput() {
+		return input;
+	}
+	
 	@Override
 	public boolean matches(Inventory inv, World world) {
 		return input.test(inv.getStack(0)) && inv.getStack(0).getCount() >= inputCount && canFitOutput(inv);
