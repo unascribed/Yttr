@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -14,13 +15,15 @@ import net.minecraft.util.Identifier;
 
 public class PistonSmashingEntry implements RecipeDisplay {
 
+	private final Identifier id;
 	private final List<Block> input;
 	private final List<Block> catalysts;
 	private final EntryStack output;
 	private final int cloudColor;
 	private final EntryStack cloudOutput;
 	
-	public PistonSmashingEntry(List<Block> input, List<Block> catalysts, EntryStack output, int cloudColor, EntryStack cloudOutput) {
+	public PistonSmashingEntry(Identifier id, List<Block> input, List<Block> catalysts, EntryStack output, int cloudColor, EntryStack cloudOutput) {
+		this.id = id;
 		this.input = input;
 		this.catalysts = catalysts;
 		this.output = output;
@@ -66,6 +69,11 @@ public class PistonSmashingEntry implements RecipeDisplay {
 	@Override
 	public @NotNull Identifier getRecipeCategory() {
 		return PistonSmashingCategory.ID;
+	}
+	
+	@Override
+	public @NotNull Optional<Identifier> getRecipeLocation() {
+		return Optional.of(id);
 	}
 
 }

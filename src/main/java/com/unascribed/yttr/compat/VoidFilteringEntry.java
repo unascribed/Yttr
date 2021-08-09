@@ -2,6 +2,7 @@ package com.unascribed.yttr.compat;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,10 +12,12 @@ import net.minecraft.util.Identifier;
 
 public class VoidFilteringEntry implements RecipeDisplay {
 
+	private final Identifier id;
 	private final EntryStack output;
 	private final float chance;
 	
-	public VoidFilteringEntry(EntryStack output, float chance) {
+	public VoidFilteringEntry(Identifier id, EntryStack output, float chance) {
+		this.id = id;
 		this.output = output;
 		this.chance = chance;
 	}
@@ -40,6 +43,11 @@ public class VoidFilteringEntry implements RecipeDisplay {
 	@Override
 	public @NotNull Identifier getRecipeCategory() {
 		return VoidFilteringCategory.ID;
+	}
+	
+	@Override
+	public @NotNull Optional<Identifier> getRecipeLocation() {
+		return Optional.of(id);
 	}
 
 }

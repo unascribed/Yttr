@@ -40,12 +40,12 @@ public class YttrREIPlugin implements REIPluginV0 {
 		List<VoidFilteringRecipe> sorted = Lists.newArrayList(recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING));
 		sorted.sort((a, b) -> Double.compare(b.getChance(), a.getChance()));
 		for (VoidFilteringRecipe r : sorted) {
-			recipeHelper.registerDisplay(new VoidFilteringEntry(EntryStack.create(r.getOutput()), r.getChance()));
+			recipeHelper.registerDisplay(new VoidFilteringEntry(r.getId(), EntryStack.create(r.getOutput()), r.getChance()));
 		}
 		for (PistonSmashingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING)) {
 			ItemStack multCloudOutput = r.getCloudOutput().copy();
 			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
-			recipeHelper.registerDisplay(new PistonSmashingEntry(r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(), EntryStack.create(r.getOutput()),
+			recipeHelper.registerDisplay(new PistonSmashingEntry(r.getId(), r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(), EntryStack.create(r.getOutput()),
 					r.getCloudColor(), EntryStack.create(multCloudOutput)));
 		}
 	}
