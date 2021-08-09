@@ -1,8 +1,13 @@
 package com.unascribed.yttr.compat;
 
-import com.unascribed.yttr.block.device.VoidFilterBlockEntity;
-import com.unascribed.yttr.init.YBlocks;
+import java.util.List;
+
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YRecipeTypes;
+
+import com.google.common.collect.Lists;
 
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
@@ -32,12 +37,17 @@ public class YttrREIPlugin implements REIPluginV0 {
 	
 	@Override
 	public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-		for (VoidFilterBlockEntity.OutputEntry en : VoidFilterBlockEntity.OUTPUTS) {
-			recipeHelper.registerDisplay(new VoidFilteringEntry(EntryStack.create(en.item), en.chance));
+		List<VoidFilteringRecipe> sorted = Lists.newArrayList(recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING));
+		sorted.sort((a, b) -> Double.compare(b.getChance(), a.getChance()));
+		for (VoidFilteringRecipe r : sorted) {
+			recipeHelper.registerDisplay(new VoidFilteringEntry(EntryStack.create(r.getOutput()), r.getChance()));
 		}
-		recipeHelper.registerDisplay(new PistonSmashingEntry(EntryStack.create(Blocks.SHROOMLIGHT), EntryStack.create(new ItemStack(YItems.GLOWING_GAS, 4)), EntryStack.create(YBlocks.YTTRIUM_BLOCK)));
-		recipeHelper.registerDisplay(new PistonSmashingEntry(EntryStack.create(YBlocks.ULTRAPURE_CARBON_BLOCK), EntryStack.create(YItems.COMPRESSED_ULTRAPURE_CARBON), EntryStack.create(YBlocks.YTTRIUM_BLOCK), EntryStack.create(Blocks.DIAMOND_BLOCK)));
-		recipeHelper.registerDisplay(new PistonSmashingEntry(EntryStack.create(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK), EntryStack.create(YItems.ULTRAPURE_DIAMOND), EntryStack.create(Blocks.DIAMOND_BLOCK)));
+		for (PistonSmashingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING)) {
+			ItemStack multCloudOutput = r.getCloudOutput().copy();
+			multCloudOutput.setCount(multCloudOutput.getCount()*r.getCloudSize());
+			recipeHelper.registerDisplay(new PistonSmashingEntry(r.getInput().getMatchingBlocks(), r.getCatalyst().getMatchingBlocks(), EntryStack.create(r.getOutput()),
+					r.getCloudColor(), EntryStack.create(multCloudOutput)));
+		}
 	}
 	
 	@Override

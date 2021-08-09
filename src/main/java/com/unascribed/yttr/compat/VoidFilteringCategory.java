@@ -44,7 +44,7 @@ public class VoidFilteringCategory implements RecipeCategory<VoidFilteringEntry>
 	public @NotNull EntryStack getLogo() {
 		return EntryStack.create(YItems.VOID_FILTER);
 	}
-
+	
 	@Override
 	public int getDisplayHeight() {
 		return 28;

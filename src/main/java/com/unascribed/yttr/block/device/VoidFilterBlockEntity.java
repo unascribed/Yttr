@@ -4,14 +4,14 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
 
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 
 import net.fabricmc.fabric.api.util.NbtType;
@@ -33,30 +33,8 @@ import net.minecraft.util.registry.Registry;
 
 public class VoidFilterBlockEntity extends BlockEntity implements Tickable, DelegatingInventory, SideyInventory {
 	
-	public static final class OutputEntry {
-		public final Item item;
-		public final float chance;
-		
-		public OutputEntry(Item item, double chance) {
-			this.item = item;
-			this.chance = (float)chance;
-		}
-	}
-	
 	public static final int TICKS_PER_TOCK = 100;
 	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
-	
-	public static final ImmutableList<OutputEntry> OUTPUTS = ImmutableList.of(
-				new OutputEntry(   YItems.ULTRAPURE_SILICA, 5.500),
-				new OutputEntry(   YItems.ULTRAPURE_CARBON, 3.000),
-				new OutputEntry( YItems.ULTRAPURE_CINNABAR, 2.000),
-				new OutputEntry(     YItems.ULTRAPURE_IRON, 1.500),
-				new OutputEntry( YItems.ULTRAPURE_LAZURITE, 0.450),
-				new OutputEntry(  YItems.ULTRAPURE_YTTRIUM, 0.300),
-				new OutputEntry(YItems.ULTRAPURE_NEODYMIUM, 0.200),
-				new OutputEntry(     YItems.ULTRAPURE_GOLD, 0.175),
-				new OutputEntry(  YItems.ULTRAPURE_WOLFRAM, 0.025)
-			);
 	
 	private static final Multiset<Item> statQueue = HashMultiset.create();
 	
@@ -115,10 +93,11 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 		}
 		if (!invFull && opTocks++ >= maxOpTocks) {
 			opTocks = 0;
-			for (OutputEntry oe : OUTPUTS) {
-				if (ThreadLocalRandom.current().nextFloat()*100 < oe.chance) {
-					if (inv.addStack(new ItemStack(oe.item)).isEmpty()) {
-						statQueue.add(oe.item);
+			for (VoidFilteringRecipe r : world.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING)) {
+				if (ThreadLocalRandom.current().nextFloat()*100 < r.getChance()) {
+					ItemStack res = r.craft(this);
+					if (inv.addStack(res).isEmpty()) {
+						statQueue.add(res.getItem(), res.getCount());
 					}
 				}
 			}

@@ -1,0 +1,9 @@
+{
+	"type": "yttr:piston_smashing",
+	"input": { "block": "yttr:ultrapure_carbon_block" },
+	"catalysts": [
+		{ "block": "yttr:yttrium_block" },
+		{ "block": "minecraft:diamond_block" }
+	],
+	"output": { "item": "yttr:compressed_ultrapure_carbon" }
+}

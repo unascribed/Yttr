@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.glowing_gas;
+package com.unascribed.yttr.mixin.smashing;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.mechanics.GlowingGasLogic;
+import com.unascribed.yttr.mechanics.SmashCloudLogic;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.GlassBottleItem;
@@ -23,9 +23,9 @@ public abstract class MixinGlassBottleItem {
 	@Inject(at=@At("HEAD"), method="use", cancellable=true)
 	public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
 		ItemStack stack = user.getStackInHand(hand);
-		if (GlowingGasLogic.consumeGasCloud(world, user.getBoundingBox().expand(2))) {
-			YStats.add(user, YStats.GLOWDAMP_COLLECTED, 1);
-			ci.setReturnValue(TypedActionResult.success(fill(stack, user, new ItemStack(YItems.GLOWING_GAS)), world.isClient()));
+		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(world, user.getBoundingBox().expand(2));
+		if (r != null) {
+			ci.setReturnValue(TypedActionResult.success(fill(stack, user, r.getCloudOutput().copy()), world.isClient()));
 		}
 	}
 

@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
+import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -26,6 +28,8 @@ public class YRecipeSerializers {
 	};
 	
 	public static final CentrifugingRecipe.Serializer CENTRIFUGING = new CentrifugingRecipe.Serializer();
+	public static final VoidFilteringRecipe.Serializer VOID_FILTERING = new VoidFilteringRecipe.Serializer();
+	public static final PistonSmashingRecipe.Serializer PISTON_SMASHING = new PistonSmashingRecipe.Serializer();
 
 	public static void init() {
 		Yttr.autoRegister(Registry.RECIPE_SERIALIZER, YRecipeSerializers.class, RecipeSerializer.class);

@@ -22,7 +22,6 @@ import net.minecraft.util.registry.Registry;
 public class YStats {
 
 	public static final Identifier ULTRAPURE_ITEMS_CRAFTED = new Identifier("yttr", "ultrapure_items_crafted");
-	public static final Identifier GLOWDAMP_COLLECTED = new Identifier("yttr", "glowdamp_collected");
 	@FormattedAs("time")
 	public static final Identifier RIFLE_CHARGING_TIME = new Identifier("yttr", "rifle_charging_time");
 	public static final Identifier RIFLE_SHOTS_FIRED = new Identifier("yttr", "rifle_shots_fired");

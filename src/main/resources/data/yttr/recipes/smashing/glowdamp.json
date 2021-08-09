@@ -1,0 +1,20 @@
+{
+	"type": "yttr:piston_smashing",
+	"input": { "block": "minecraft:shroomlight" },
+	"catalysts": { "block": "yttr:yttrium_block" },
+	"cloud": {
+		"color": "#FEAC6D",
+		"size": 4,
+		"output": { "item": "yttr:glowing_gas" },
+		"effects": [
+			{
+				"effect": "minecraft:slowness",
+				"duration": 100
+			},
+			{
+				"effect": "minecraft:glowing",
+				"duration": 200
+			}
+		]
+	}
+}

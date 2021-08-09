@@ -1,0 +1,5 @@
+{
+	"type": "yttr:void_filtering",
+	"output": { "item": "yttr:ultrapure_wolfram" },
+	"chance": 0.025
+}
