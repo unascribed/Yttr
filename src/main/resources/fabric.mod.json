@@ -17,7 +17,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [ "com.unascribed.yttr.Yttr" ],
-		"client": [ "com.unascribed.yttr.client.YttrClient" ]
+		"client": [ "com.unascribed.yttr.client.YttrClient" ],
+		"rei_plugins": [ "com.unascribed.yttr.compat.YttrREIPlugin" ]
 	},
 	"mixins": [
 		"yttr.mixins.json"

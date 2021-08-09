@@ -260,6 +260,12 @@
 	"stat.yttr.geysers_opened": "[Yttr] Geysers Opened",
 	"stat.yttr.bedrock_broken": "[Yttr] Bedrock Smashed",
 	"stat.yttr.filters_installed": "[Yttr] Filters Installed",
-	"stat.yttr.blocks_voided": "[Yttr] Blocks Voided"
+	"stat.yttr.blocks_voided": "[Yttr] Blocks Voided",
+	
+	"category.yttr.void_filtering": "Void Filtering",
+	"category.yttr.piston_smashing": "Piston Smashing",
+	
+	"category.yttr.void_filtering.chance": "Chance: %s%%",
+	"category.yttr.void_filtering.chance.short": "%s%%"
 	
 }

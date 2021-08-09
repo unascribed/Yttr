@@ -33,7 +33,7 @@ import net.minecraft.util.registry.Registry;
 
 public class VoidFilterBlockEntity extends BlockEntity implements Tickable, DelegatingInventory, SideyInventory {
 	
-	private static class OutputEntry {
+	public static final class OutputEntry {
 		public final Item item;
 		public final float chance;
 		
@@ -46,7 +46,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	public static final int TICKS_PER_TOCK = 100;
 	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
 	
-	private static final ImmutableList<OutputEntry> OUTPUTS = ImmutableList.of(
+	public static final ImmutableList<OutputEntry> OUTPUTS = ImmutableList.of(
 				new OutputEntry(   YItems.ULTRAPURE_SILICA, 5.500),
 				new OutputEntry(   YItems.ULTRAPURE_CARBON, 3.000),
 				new OutputEntry( YItems.ULTRAPURE_CINNABAR, 2.000),
