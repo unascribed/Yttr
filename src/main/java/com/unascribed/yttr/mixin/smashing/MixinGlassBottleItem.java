@@ -7,12 +7,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
-import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mechanics.SmashCloudLogic;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -25,6 +25,7 @@ public abstract class MixinGlassBottleItem {
 		ItemStack stack = user.getStackInHand(hand);
 		PistonSmashingRecipe r = SmashCloudLogic.consumeGasCloud(world, user.getBoundingBox().expand(2));
 		if (r != null) {
+			user.incrementStat(Stats.CRAFTED.getOrCreateStat(r.getCloudOutput().getItem()));
 			ci.setReturnValue(TypedActionResult.success(fill(stack, user, r.getCloudOutput().copy()), world.isClient()));
 		}
 	}
