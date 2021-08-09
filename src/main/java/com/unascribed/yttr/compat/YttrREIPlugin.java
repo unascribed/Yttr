@@ -1,5 +1,6 @@
 package com.unascribed.yttr.compat;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
@@ -54,7 +55,12 @@ public class YttrREIPlugin implements REIPluginV0 {
 					r.getCloudColor(), EntryStack.create(multCloudOutput)));
 		}
 		for (CentrifugingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.CENTRIFUGING)) {
-			recipeHelper.registerDisplay(new CentrifugingEntry(r.getId(), EntryStack.ofIngredient(r.getInput()), EntryStack.ofItemStacks(r.getOutputs())));
+			List<ItemStack> inputs = Lists.newArrayList(Lists.transform(Arrays.asList(r.getInput().getMatchingStacksClient()), (is) -> {
+				is = is.copy();
+				is.setCount(r.getInputCount());
+				return is;
+			}));
+			recipeHelper.registerDisplay(new CentrifugingEntry(r.getId(), EntryStack.ofItemStacks(inputs), EntryStack.ofItemStacks(r.getOutputs())));
 		}
 	}
 	
