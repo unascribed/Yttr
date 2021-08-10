@@ -71,6 +71,11 @@ tasks.withType(JavaCompile).configureEach {
 	}
 }
 
+tasks.withType(AbstractArchiveTask) {
+	preserveFileTimestamps = false
+	reproducibleFileOrder = true
+}
+
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
