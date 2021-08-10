@@ -149,10 +149,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE, RifleItemRenderer::render);
 		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_REINFORCED, RifleItemRenderer::render);
 		BuiltinItemRendererRegistry.INSTANCE.register(YItems.RIFLE_OVERCLOCKED, RifleItemRenderer::render);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.LAMP, LampItemRenderer::render);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.FIXTURE, LampItemRenderer::render);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.CAGE_LAMP, LampItemRenderer::render);
-		BuiltinItemRendererRegistry.INSTANCE.register(YBlocks.REPLICATOR, ReplicatorItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.LAMP, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.FIXTURE, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.CAGE_LAMP, LampItemRenderer::render);
+		BuiltinItemRendererRegistry.INSTANCE.register(YItems.REPLICATOR, ReplicatorItemRenderer::render);
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(VOID_FLOW);
 			registry.register(VOID_STILL);

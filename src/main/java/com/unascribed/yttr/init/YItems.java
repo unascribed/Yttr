@@ -351,6 +351,8 @@ public class YItems {
 			.maxCount(Items.SPLASH_POTION.getMaxCount())
 			.group(YItemGroups.POTION));
 
+	public static final Item YTTRIUM_DUST = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
 
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

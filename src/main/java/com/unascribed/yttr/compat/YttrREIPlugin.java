@@ -229,7 +229,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 	private void permute(ItemStack is, Consumer<ItemStack> cb) {
 		cb.accept(is);
 		if (is.getItem() instanceof LampBlockItem) {
-			for (LampColor lc : LampColor.values()) {
+			for (LampColor lc : LampColor.VALUES) {
 				ItemStack is2 = is.copy();
 				LampBlockItem.setColor(is2, lc);
 				LampBlockItem.setInverted(is2, false);

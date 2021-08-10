@@ -9,6 +9,7 @@ import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.NBTUtils;
@@ -100,6 +101,7 @@ public class CleaverItem extends Item implements Attackable {
 					setCleaveBlock(stack, null);
 					setCleaveStart(stack, null);
 					setCleaveCorner(stack, null);
+					YStats.add(player, YStats.BLOCKS_CLEAVED, 1);
 					player.sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
 				}
 			}
@@ -155,7 +157,9 @@ public class CleaverItem extends Item implements Attackable {
 			if (p != null) {
 				BlockHitResult bhr = raycast(user.world, user, FluidHandling.NONE);
 				if (bhr.getType() != Type.MISS && canCleave(user.world, bhr.getBlockPos(), user.world.getBlockState(bhr.getBlockPos()))) {
-					performWorldCleave(user.world, bhr.getBlockPos(), stack, user, p);
+					if (performWorldCleave(user.world, bhr.getBlockPos(), stack, user, p)) {
+						YStats.add(user, YStats.BLOCKS_CLEAVED, 1);
+					}
 				}
 			}
 		} else if (getCleaveCorner(stack) != null) {

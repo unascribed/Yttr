@@ -6,11 +6,11 @@
 	"results": [
 		{
 			"item": "minecraft:iron_nugget",
-			"count": 25
+			"count": 24
 		},
 		{
-			"item": "yttr:yttrium_nugget",
-			"count": 8
+			"item": "yttr:yttrium_dust",
+			"count": 1
 		},
 		{
 			"item": "minecraft:cobblestone"

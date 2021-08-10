@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"item": "yttr:yttrium_dust"
+	},
+	"result": "yttr:yttrium_ingot",
+	"experience": 0,
+	"cookingtime": 100
+}

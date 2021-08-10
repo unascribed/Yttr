@@ -46,6 +46,7 @@
 	"item.yttr.quicksilver": "Quicksilver",
 	"item.yttr.mercurial_potion": "Mercurial Potion",
 	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
+	"item.yttr.yttrium_dust": "Yttrium Powder",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -262,6 +263,7 @@
 	"stat.yttr.bedrock_broken": "[Yttr] Bedrock Smashed",
 	"stat.yttr.filters_installed": "[Yttr] Filters Installed",
 	"stat.yttr.blocks_voided": "[Yttr] Blocks Voided",
+	"stat.yttr.blocks_cleaved": "[Yttr] Blocks Cleaved",
 	
 	"category.yttr.void_filtering": "Void Filtering",
 	"category.yttr.piston_smashing": "Piston Smashing",

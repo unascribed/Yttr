@@ -5,7 +5,7 @@
 	],
 	"key": {
 		"L": { "item": "yttr:lamp" },
-		"D": { "tag": "yttr:dyes" }
+		"D": { "tag": "yttr:lamp_dyes" }
 	},
 	"result": {
 		"item": "yttr:lamp"

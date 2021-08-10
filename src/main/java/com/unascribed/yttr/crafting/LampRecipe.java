@@ -1,18 +1,18 @@
 package com.unascribed.yttr.crafting;
 
 import java.util.List;
-import java.util.Locale;
-
 import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
+import com.unascribed.yttr.util.Resolvable;
 
-import com.google.common.base.Enums;
 import com.google.common.collect.Lists;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -58,13 +58,15 @@ public class LampRecipe extends ShapedRecipe {
 				inputLampColor = thisColor;
 				inputLampInverted = thisInverted;
 			} else {
-				Identifier id = Registry.ITEM.getId(in.getItem());
-				String path = id.getPath();
-				if (id.getNamespace().equals("minecraft") && path.endsWith("_dye")) {
-					LampColor thisColor = Enums.getIfPresent(LampColor.class, path.substring(0, path.length()-4).toUpperCase(Locale.ROOT)).orNull();
-					if (color != null && color != thisColor) return ItemStack.EMPTY;
-					if (thisColor != null) color = thisColor;
+				Item item = in.getItem();
+				LampColor thisColor = null;
+				if (item instanceof DyeItem) {
+					thisColor = LampColor.BY_DYE.get(((DyeItem)item).getColor());
+				} else {
+					thisColor = LampColor.BY_ITEM.get(Resolvable.mapKey(item, Registry.ITEM));
 				}
+				if (color != null && color != thisColor) return ItemStack.EMPTY;
+				if (thisColor != null) color = thisColor;
 			}
 		}
 		LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
