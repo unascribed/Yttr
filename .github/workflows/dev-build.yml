@@ -1,0 +1,38 @@
+name: "Dev Autobuild"
+
+on:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Get tags for release notes
+        shell: bash
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+      - name: Build
+        run: |
+          ./gradlew build
+      - name: Delete dev artifact
+        run: |
+          rm build/libs/*-dev.jar
+      - name: Create release
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "dev"
+          prerelease: true
+          title: "Dev Build"
+          files: build/libs/yttr-*.jar
