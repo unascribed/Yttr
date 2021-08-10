@@ -5,8 +5,12 @@
 	},
 	"results": [
 		{
-			"item": "minecraft:iron_nugget",
-			"count": 24
+			"item": "yttr:iron_dust",
+			"count": 3
+		},
+		{
+			"item": "yttr:neodymium_dust",
+			"count": 2
 		},
 		{
 			"item": "yttr:yttrium_dust",
@@ -14,10 +18,6 @@
 		},
 		{
 			"item": "minecraft:cobblestone"
-		},
-		{
-			"item": "yttr:neodymium_dust",
-			"count": 2
 		}
 	]
 }

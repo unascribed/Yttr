@@ -353,6 +353,8 @@ public class YItems {
 
 	public static final Item YTTRIUM_DUST = new Item(new Item.Settings()
 			.group(YItemGroups.MAIN));
+	public static final Item IRON_DUST = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
 
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

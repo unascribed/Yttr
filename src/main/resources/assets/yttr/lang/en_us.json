@@ -47,6 +47,7 @@
 	"item.yttr.mercurial_potion": "Mercurial Potion",
 	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
 	"item.yttr.yttrium_dust": "Yttrium Powder",
+	"item.yttr.iron_dust": "Iron Dust",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
