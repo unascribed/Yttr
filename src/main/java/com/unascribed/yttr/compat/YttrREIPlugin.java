@@ -121,7 +121,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		};
 		Multimap<ItemStack, List<ItemStack>> resultsToInputs = Multimaps.newMultimap(new Object2ObjectLinkedOpenCustomHashMap<>(itemStackStrategy), Lists::newArrayList);
 		
-		recipeLoop: for (Recipe<?> r : recipeHelper.getAllSortedRecipes()) {
+		for (Recipe<?> r : recipeHelper.getAllSortedRecipes()) {
 			if (r instanceof LampRecipe) {
 				resultsToInputs.clear();
 				LampRecipe lr = (LampRecipe)r;
@@ -138,10 +138,6 @@ public class YttrREIPlugin implements REIPluginV0 {
 						}
 					}
 				}
-				if (w <= 1 && h <= 1) {
-					interesting = true;
-				}
-				System.out.println(r.getId()+" is "+w+"x"+h);
 				CraftingInventory inv = new CraftingInventory(new ScreenHandler(null, 0) {
 					@Override
 					public boolean canUse(PlayerEntity player) {
@@ -157,6 +153,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 					}
 				}
 				if (interesting) {
+					System.out.println(r.getId()+" is "+w+"x"+h);
 					System.out.println("initial inventory setup: "+Yttr.asList(inv));
 				}
 				final boolean finteresting = interesting;
