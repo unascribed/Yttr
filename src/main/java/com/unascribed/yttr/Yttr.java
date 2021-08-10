@@ -370,7 +370,6 @@ public class Yttr implements ModInitializer {
 
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		eachRegisterableField(holder, type, null, (f, v, na) -> {
-			System.out.println("Registering "+holder.getSimpleName()+"."+f.getName()+" into "+registry.getKey().getValue()+" as yttr:"+f.getName().toLowerCase(Locale.ROOT)+" with value of type "+v.getClass().getSimpleName());
 			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);
 		});
 	}
