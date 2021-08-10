@@ -1,5 +1,6 @@
 package com.unascribed.yttr.crafting;
 
+import java.util.List;
 import java.util.Locale;
 
 import com.unascribed.yttr.block.decor.LampBlock;
@@ -8,6 +9,7 @@ import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 
 import com.google.common.base.Enums;
+import com.google.common.collect.Lists;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BlockItem;
@@ -22,6 +24,8 @@ import net.minecraft.world.World;
 
 public class LampRecipe extends ShapedRecipe {
 
+	private final List<String> stripTags = Lists.newArrayList();
+	
 	public LampRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output) {
 		super(id, group, width, height, ingredients, output);
 	}
@@ -65,7 +69,18 @@ public class LampRecipe extends ShapedRecipe {
 		}
 		LampBlockItem.setInverted(stack, inputLampInverted == null ? containsTorch : inputLampInverted ^ containsTorch);
 		LampBlockItem.setColor(stack, color == null ? inputLampColor == null ? LampColor.COLORLESS : inputLampColor : color);
+		for (String s : stripTags) {
+			stack.getTag().remove(s);
+		}
 		return stack;
+	}
+
+	public void addStripTag(String tag) {
+		stripTags.add(tag);
+	}
+	
+	public List<String> getStripTags() {
+		return stripTags;
 	}
 
 }

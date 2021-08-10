@@ -49,6 +49,7 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	}
 	
 	public static void setColor(ItemStack is, LampColor color) {
+		if (!is.hasTag()) is.setTag(new CompoundTag());
 		is.getTag().putString("LampColor", color.asString());
 	}
 

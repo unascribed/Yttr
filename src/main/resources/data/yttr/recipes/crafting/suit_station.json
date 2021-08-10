@@ -1,5 +1,5 @@
 {
-	"type": "yttr:lamp_crafting",
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"YYY",
 		"CCC",

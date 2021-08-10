@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
@@ -18,12 +19,37 @@ public class YRecipeSerializers {
 	public static final ShapedRecipe.Serializer LAMP_CRAFTING = new ShapedRecipe.Serializer() {
 		@Override
 		public ShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
-			return new LampRecipe(super.read(identifier, jsonObject));
+			LampRecipe lr = new LampRecipe(super.read(identifier, jsonObject));
+			if (jsonObject.has("yttr:strip_tags")) {
+				for (JsonElement je : jsonObject.get("yttr:strip_tags").getAsJsonArray()) {
+					lr.addStripTag(je.getAsString());
+				}
+			}
+			return lr;
 		}
 		
 		@Override
 		public ShapedRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-			return new LampRecipe(super.read(identifier, packetByteBuf));
+			LampRecipe lr = new LampRecipe(super.read(identifier, packetByteBuf));
+			if (packetByteBuf.isReadable()) {
+				int count = packetByteBuf.readVarInt();
+				for (int i = 0; i < count; i++) {
+					lr.addStripTag(packetByteBuf.readString(32767));
+				}
+			}
+			return lr;
+		}
+		
+		@Override
+		public void write(PacketByteBuf packetByteBuf, ShapedRecipe shapedRecipe) {
+			super.write(packetByteBuf, shapedRecipe);
+			if (shapedRecipe instanceof LampRecipe) {
+				LampRecipe lr = (LampRecipe)shapedRecipe;
+				packetByteBuf.writeVarInt(lr.getStripTags().size());
+				for (String tag : lr.getStripTags()) {
+					packetByteBuf.writeString(tag);
+				}
+			}
 		}
 	};
 	

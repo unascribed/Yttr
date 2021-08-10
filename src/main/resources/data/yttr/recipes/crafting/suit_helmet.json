@@ -12,5 +12,6 @@
 	},
 	"result": {
 		"item": "yttr:suit_helmet"
-	}
+	},
+	"yttr:strip_tags": ["Inverted"]
 }

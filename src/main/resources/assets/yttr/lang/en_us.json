@@ -235,6 +235,7 @@
 	"color.yttr.red": "Red",
 	"color.yttr.black": "Black",
 	"color.yttr.teal": "Teal",
+	"color.yttr.colorless": "Warm White",
 	
 	"attribute.name.yttr.jump_height": "Jump Height",
 	
@@ -269,6 +270,8 @@
 	"category.yttr.void_filtering.chance": "Chance: %s%%",
 	"category.yttr.void_filtering.chance.short": "%s%%",
 	
-	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud"
+	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
+	
+	"rei.yttr.suit_helmet_hud": "HUD Color: %s"
 	
 }

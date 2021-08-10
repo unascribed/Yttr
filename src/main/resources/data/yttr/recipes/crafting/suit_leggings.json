@@ -1,6 +1,7 @@
 {
-	"type": "yttr:lamp_crafting",
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
+		"PPP",
 		"P P",
 		"P P"
 	],
@@ -8,6 +9,6 @@
 		"P": { "item": "yttr:armor_plating" }
 	},
 	"result": {
-		"item": "yttr:suit_boots"
+		"item": "yttr:suit_leggings"
 	}
 }
