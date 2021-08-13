@@ -3,8 +3,8 @@ package com.unascribed.yttr.client.render.block_entity;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.unascribed.yttr.block.natural.SqueezedLeavesBlock;
-import com.unascribed.yttr.block.natural.SqueezedLeavesBlockEntity;
+import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
+import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;

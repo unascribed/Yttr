@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import com.unascribed.yttr.block.abomination.AwareHopperBlockEntity;
 import com.unascribed.yttr.client.render.ZendermieModel;
+import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;

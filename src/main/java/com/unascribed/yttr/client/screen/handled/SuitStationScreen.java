@@ -3,9 +3,9 @@ package com.unascribed.yttr.client.screen.handled;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
-import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mechanics.SuitResource;
 

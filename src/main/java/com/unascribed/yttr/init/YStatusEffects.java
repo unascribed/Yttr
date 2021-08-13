@@ -1,7 +1,7 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.effect.BleedingStatusEffect;
+import com.unascribed.yttr.content.effect.BleedingStatusEffect;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;

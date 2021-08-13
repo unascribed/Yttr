@@ -1,9 +1,9 @@
 package com.unascribed.yttr.client.render;
 
-import com.unascribed.yttr.block.decor.LampBlock;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
-import com.unascribed.yttr.item.block.LampBlockItem;
+import com.unascribed.yttr.content.block.decor.LampBlock;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.TexturedRenderLayers;

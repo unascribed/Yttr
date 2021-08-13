@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
-import com.unascribed.yttr.item.EffectorItem;
+import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 import com.unascribed.yttr.util.math.Interp;
 

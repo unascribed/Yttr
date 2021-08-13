@@ -1,6 +1,6 @@
 package com.unascribed.yttr.init;
 
-import com.unascribed.yttr.block.decor.LampBlock;
+import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;

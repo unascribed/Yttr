@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import com.unascribed.yttr.block.device.PowerMeterBlock;
-import com.unascribed.yttr.block.device.PowerMeterBlockEntity;
+import com.unascribed.yttr.content.block.device.PowerMeterBlock;
+import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 
 import net.minecraft.block.BlockState;

@@ -6,10 +6,10 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.client.IHasAClient;
+import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
+import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.item.CleaverItem;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;
 

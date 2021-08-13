@@ -3,12 +3,12 @@ package com.unascribed.yttr.client.render;
 import java.util.Locale;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.block.void_.DivingPlateBlock;
-import com.unascribed.yttr.block.void_.VoidGeyserBlockEntity;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.suit.SuitRenderer;
-import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.item.block.LampBlockItem;
+import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
+import com.unascribed.yttr.content.block.void_.VoidGeyserBlockEntity;
+import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 
 import net.minecraft.client.util.math.MatrixStack;

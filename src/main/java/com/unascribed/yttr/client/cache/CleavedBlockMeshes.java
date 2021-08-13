@@ -3,8 +3,8 @@ package com.unascribed.yttr.client.cache;
 import java.util.Random;
 
 import com.google.gson.internal.UnsafeAllocator;
-import com.unascribed.yttr.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.client.util.UVObserver;
+import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
 import com.unascribed.yttr.util.math.partitioner.Plane;
 import com.unascribed.yttr.util.math.partitioner.Polygon;

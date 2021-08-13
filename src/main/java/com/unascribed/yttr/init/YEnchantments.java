@@ -1,8 +1,8 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.enchant.DisjunctionEnchantment;
-import com.unascribed.yttr.enchant.VorpalEnchantment;
+import com.unascribed.yttr.content.enchant.DisjunctionEnchantment;
+import com.unascribed.yttr.content.enchant.VorpalEnchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.registry.Registry;

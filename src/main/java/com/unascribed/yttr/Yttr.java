@@ -14,6 +14,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.util.TriConsumer;
 
+import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCommands;
@@ -28,8 +30,6 @@ import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YWorldGen;
-import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TicksAlwaysItem;
 import com.unascribed.yttr.mixin.accessor.AccessorBrewingRecipeRegistry;

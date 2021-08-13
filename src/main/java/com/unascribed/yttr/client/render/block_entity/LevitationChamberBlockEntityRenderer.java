@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import com.unascribed.yttr.block.mechanism.LevitationChamberBlock;
-import com.unascribed.yttr.block.mechanism.LevitationChamberBlockEntity;
+import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlock;
+import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlockEntity;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;

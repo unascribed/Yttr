@@ -2,12 +2,12 @@ package com.unascribed.yttr.client.render.block_entity;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.unascribed.yttr.block.decor.LampBlock;
-import com.unascribed.yttr.block.decor.LampBlockEntity;
-import com.unascribed.yttr.block.decor.WallLampBlock;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
+import com.unascribed.yttr.content.block.decor.LampBlock;
+import com.unascribed.yttr.content.block.decor.LampBlockEntity;
+import com.unascribed.yttr.content.block.decor.WallLampBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

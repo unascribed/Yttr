@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.item.SuitArmorItem;
+import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.mixinsupport.SuitPiecesForJump;
 import com.unascribed.yttr.util.EquipmentSlots;
 

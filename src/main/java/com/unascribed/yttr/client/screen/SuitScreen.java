@@ -12,9 +12,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.client.suit.SuitSound;
+import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.item.SuitArmorItem;
-import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.world.Geyser;
 

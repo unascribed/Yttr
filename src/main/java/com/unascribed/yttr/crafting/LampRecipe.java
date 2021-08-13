@@ -1,8 +1,9 @@
 package com.unascribed.yttr.crafting;
 
 import java.util.List;
-import com.unascribed.yttr.block.decor.LampBlock;
-import com.unascribed.yttr.item.block.LampBlockItem;
+
+import com.unascribed.yttr.content.block.decor.LampBlock;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 import com.unascribed.yttr.mixin.accessor.AccessorShapedRecipe;
 import com.unascribed.yttr.util.Resolvable;

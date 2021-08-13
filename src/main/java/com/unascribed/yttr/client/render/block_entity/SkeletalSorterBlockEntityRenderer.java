@@ -1,10 +1,10 @@
 package com.unascribed.yttr.client.render.block_entity;
 
-import static com.unascribed.yttr.block.abomination.SkeletalSorterBlockEntity.STOW_TIME;
-import static com.unascribed.yttr.block.abomination.SkeletalSorterBlockEntity.THINK_TIME;
+import static com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity.STOW_TIME;
+import static com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity.THINK_TIME;
 
-import com.unascribed.yttr.block.abomination.SkeletalSorterBlock;
-import com.unascribed.yttr.block.abomination.SkeletalSorterBlockEntity;
+import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
+import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.util.math.Interp;
 
 import net.minecraft.client.MinecraftClient;

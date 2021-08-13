@@ -1,7 +1,7 @@
 package com.unascribed.yttr.client.render.block_entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.block.mechanism.ReplicatorBlockEntity;
+import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

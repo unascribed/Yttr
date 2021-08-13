@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
@@ -17,7 +18,6 @@ import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
-import com.unascribed.yttr.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.collect.Iterables;

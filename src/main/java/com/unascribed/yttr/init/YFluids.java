@@ -1,8 +1,8 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.fluid.PureVoidFluid;
-import com.unascribed.yttr.fluid.VoidFluid;
+import com.unascribed.yttr.content.fluid.PureVoidFluid;
+import com.unascribed.yttr.content.fluid.VoidFluid;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;

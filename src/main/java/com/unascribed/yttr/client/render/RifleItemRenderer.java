@@ -7,8 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.IHasAClient;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.client.util.UVObserver;
+import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.item.RifleItem;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;

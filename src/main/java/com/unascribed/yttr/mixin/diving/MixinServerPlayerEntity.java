@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
-import com.unascribed.yttr.item.SuitArmorItem;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.util.math.Vec2i;
