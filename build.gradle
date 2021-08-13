@@ -1,3 +1,11 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.google.code.gson:gson:2.8.7'
+	}
+}
 plugins {
 	id 'fabric-loom' version '0.6-SNAPSHOT'
 }
@@ -81,3 +89,11 @@ jar {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
 }
+
+task sortRefmapAndSetTimestamps {
+	doFirst {
+		evaluate(file("JarAmender.groovy"))(jar.archivePath)
+	}
+}
+
+tasks.remapJar.finalizedBy sortRefmapAndSetTimestamps
