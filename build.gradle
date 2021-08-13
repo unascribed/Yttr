@@ -90,10 +90,12 @@ jar {
 	}
 }
 
-task sortRefmapAndSetTimestamps {
+task amendJar {
+	def amender = evaluate(file("JarAmender.groovy"))
+	dependsOn remapJar
 	doFirst {
-		evaluate(file("JarAmender.groovy"))(jar.archivePath)
+		amender(remapJar.archivePath)
 	}
 }
 
-tasks.remapJar.finalizedBy sortRefmapAndSetTimestamps
+tasks.remapJar.finalizedBy amendJar
