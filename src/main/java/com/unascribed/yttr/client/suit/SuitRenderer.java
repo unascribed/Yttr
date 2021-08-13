@@ -89,18 +89,19 @@ public class SuitRenderer {
 				int l = c-'a';
 				u = (l%13)*5;
 				v = (l/13)*9;
-			} else if (c >= '0' && c <= '9') {
+			} else if (c >= '0' && c <= '?') {
 				int l = c-'0';
 				u = l*5;
 				v = 46;
-			} else if (c == '-') {
-				u = 50;
-				v = 46;
+			} else if (c >= '!' && c <= '/') {
+				int l = c-'!';
+				u = l*5;
+				v = 82;
 			} else if (c == ' ') {
 				x += 6;
 				continue;
 			} else {
-				u = 55;
+				u = 75;
 				v = 46;
 			}
 			drawElement(matrices, id+":"+i, x, y, u, v, 5, 9, delta);
