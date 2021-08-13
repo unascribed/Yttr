@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.function.Function;
 
 import com.google.gson.GsonBuilder;
@@ -17,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 return {
+	TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 	def zip = it.toPath()
 
 	def fs = FileSystems.newFileSystem(zip, null)
@@ -51,7 +53,7 @@ return {
 			return out
 		}
 		def sortedObj = sorter(obj)
-		Files.write(refmap, gson.toJson(obj).getBytes(StandardCharsets.UTF_8))
+		Files.write(refmap, gson.toJson(sortedObj).getBytes(StandardCharsets.UTF_8))
 	} finally {
 		fs.close()
 	}
