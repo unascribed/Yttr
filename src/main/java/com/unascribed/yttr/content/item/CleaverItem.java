@@ -79,6 +79,7 @@ public class CleaverItem extends Item implements Attackable {
 				setCleaveStart(stack, point);
 				return ActionResult.SUCCESS;
 			} else if (getCleaveCorner(stack) == null) {
+				pos = getCleaveBlock(stack);
 				Vec3d point = findCutPoint(ctx.getHitPos().subtract(Vec3d.of(pos)));
 				if (point == null) return ActionResult.FAIL;
 				setCleaveCorner(stack, point);
