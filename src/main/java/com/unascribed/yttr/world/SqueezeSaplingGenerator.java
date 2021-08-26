@@ -40,7 +40,7 @@ public class SqueezeSaplingGenerator extends SaplingGenerator {
 		
 	public boolean generate(WorldAccess world, BlockPos pos, Random random) {
 		// make sure we're on valid soil
-		if (!YBlocks.SQUEEZE_SAPLING.canPlaceAt(null, world, pos)) return false;
+		if (!YBlocks.SQUEEZE_SAPLING.canPlaceAt(YBlocks.SQUEEZE_SAPLING.getDefaultState(), world, pos)) return false;
 		Map<BlockPos, BlockState> plan = Maps.newLinkedHashMap();
 		
 		BlockPos.Mutable turt = pos.mutableCopy();
