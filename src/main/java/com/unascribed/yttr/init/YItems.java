@@ -90,6 +90,9 @@ public class YItems {
 	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
 	
+	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings()
+			.group(YItemGroups.MAIN));
+	
 	public static final BlockItem AWARE_HOPPER = new BlockItem(YBlocks.AWARE_HOPPER, new Item.Settings()
 			.group(YItemGroups.MAIN).maxCount(1));
 

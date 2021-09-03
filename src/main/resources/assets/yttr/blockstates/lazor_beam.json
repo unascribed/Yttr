@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "yttr:block/lazor_beam",
+      "x": 270
+    },
+    "facing=east": {
+      "model": "yttr:block/lazor_beam",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/lazor_beam"
+    },
+    "facing=south": {
+      "model": "yttr:block/lazor_beam",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "yttr:block/lazor_beam",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "yttr:block/lazor_beam",
+      "y": 270
+    }
+  }
+}

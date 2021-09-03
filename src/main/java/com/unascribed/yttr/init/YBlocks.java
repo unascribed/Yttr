@@ -12,6 +12,8 @@ import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
+import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
+import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
 import com.unascribed.yttr.content.block.mechanism.DopperBlock;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
@@ -251,6 +253,17 @@ public class YBlocks {
 			.breakByTool(FabricToolTags.PICKAXES, 3)
 			.strength(75, 0)
 		);
+	
+	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.of(Material.AIR)
+			.collidable(false)
+			.dropsNothing()
+			.ticksRandomly()
+			.strength(-1, 10000)
+			.luminance(15)
+		);
+	
+	@RenderLayer("cutout")
+	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

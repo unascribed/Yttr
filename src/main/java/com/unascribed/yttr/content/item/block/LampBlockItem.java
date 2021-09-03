@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item.block;
 
 import java.util.Locale;
 
+import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.base.Enums;
@@ -10,6 +11,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -56,8 +59,14 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public int getColor(ItemStack stack, int tintIndex) {
-		LampColor color = LampBlockItem.getColor(stack);
-		return LampBlockItem.isInverted(stack) ? color.baseLitColor : color.baseUnlitColor;
+		BlockState bs = getBlock().getDefaultState();
+		if (bs.getProperties().contains(LampBlock.COLOR)) {
+			bs = bs.with(LampBlock.COLOR, getColor(stack));
+		}
+		if (bs.getProperties().contains(LampBlock.INVERTED)) {
+			bs = bs.with(LampBlock.INVERTED, isInverted(stack));
+		}
+		return MinecraftClient.getInstance().getBlockColors().getColor(bs, null, null, tintIndex);
 	}
 	
 }

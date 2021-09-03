@@ -1,0 +1,39 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"back": "yttr:block/lazor_emitter_back",
+		"front": "yttr:block/lazor_emitter_front",
+		"particle": "yttr:block/lazor_emitter_side",
+		"side": "yttr:block/lazor_emitter_side",
+		"text": "yttr:block/lazor_emitter_text"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#front", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#side", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#back", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#side", "tintindex": 0},
+				"up": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#side", "tintindex": 0},
+				"down": {"uv": [0, 0, 16, 16], "rotation": 270, "texture": "#side", "tintindex": 0}
+			}
+		},
+		{
+			"name": "text",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#text", "tintindex": 0},
+				"east": {"uv": [0, 0, 15.11111, 16], "texture": "#text", "tintindex": 0},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#text", "tintindex": 0},
+				"west": {"uv": [0, 0, 15.11111, 16], "texture": "#text", "tintindex": 0},
+				"up": {"uv": [0, 0, 15.11111, 16], "rotation": 90, "texture": "#text", "tintindex": 0},
+				"down": {"uv": [0, 0, 15.11111, 16], "rotation": 270, "texture": "#text", "tintindex": 0}
+			}
+		}
+	]
+}

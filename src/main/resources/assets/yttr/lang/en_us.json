@@ -105,6 +105,7 @@
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
 	"block.yttr.cage_lamp": "Cage Lamp",
+	"block.yttr.lazor_emitter": "Lazor Emitter",
 	
 	"block.yttr.lamp.inverted": "Inverted Lamp",
 	"block.yttr.fixture.inverted": "Inverted Lamp Fixture",
@@ -113,6 +114,7 @@
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
 	"block.yttr.fixture.colored": "%s Lamp Fixture",
+	"block.yttr.lazor_emitter.colored": "%s Lazor Emitter",
 	
 	"block.yttr.lamp.colored.inverted": "Inverted %s Lamp",
 	"block.yttr.cage_lamp.colored.inverted": "Inverted %s Cage Lamp",
