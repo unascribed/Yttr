@@ -186,6 +186,7 @@
 	"death.attack.yttr.effector_fall": "%s had the rug pulled out from under them by %s",
 	"death.attack.yttr.void_rifle": "%s was erased by %s",
 	"death.attack.yttr.void_rifle.item": "%s was erased by %s using %s",
+	"death.attack.yttr.lazor": "%s got burned playing with lazors",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",
