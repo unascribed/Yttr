@@ -27,6 +27,10 @@ public abstract class MixinLivingEntity {
 	@Inject(at=@At("HEAD"), method="addStatusEffect", cancellable=true)
 	public void addStatusEffect(StatusEffectInstance in, CallbackInfoReturnable<Boolean> ci) {
 		if (in == null) return;
+		if (!in.shouldShowIcon() && !in.shouldShowParticles()) {
+			// probably added by a command, or an origin power, or just something that we shouldn't mess with
+			return;
+		}
 		if (hasStatusEffect(YStatusEffects.POTION_SICKNESS)) {
 			if (in.getEffectType().getType() != StatusEffectType.HARMFUL) {
 				ci.setReturnValue(false);
