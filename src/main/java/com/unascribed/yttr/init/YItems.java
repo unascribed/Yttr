@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.HornItem;
@@ -331,7 +332,7 @@ public class YItems {
 	public static final Item ULTRAPURE_CINNABAR = new Item(UP_SETTINGS);
 	public static final Item ULTRAPURE_GOLD = new Item(UP_SETTINGS);
 	public static final Item ULTRAPURE_IRON = new Item(UP_SETTINGS);
-	public static final Item ULTRAPURE_LAZURITE = new Item(UP_SETTINGS);
+	public static final Item ULTRAPURE_LAZURITE = new BlueCubeItem(UP_SETTINGS);
 	public static final Item ULTRAPURE_SILICA = new Item(UP_SETTINGS);
 	
 	public static final Item ULTRAPURE_YTTRIUM = new Item(UP_SETTINGS);
