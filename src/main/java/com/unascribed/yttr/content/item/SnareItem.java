@@ -183,7 +183,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (user.isSneaking() && hit == null && hr.getType() != Type.MISS) {
 				BlockState bs = world.getBlockState(hr.getBlockPos());
 				BlockEntity be = world.getBlockEntity(hr.getBlockPos());
-				if ((be == null || bs.isIn(YTags.Block.SNAREABLE_BLOCKS)) && !bs.isIn(YTags.Block.UNSNAREABLE_BLOCKS)) {
+				if ((be == null || bs.isIn(YTags.Block.SNAREABLE)) && !bs.isIn(YTags.Block.UNSNAREABLE)) {
 					if (bs.getHardness(world, hr.getBlockPos()) >= 0) {
 						toDelete = hr.getBlockPos();
 						boolean waterlogged = bs.getBlock() instanceof Waterloggable && bs.get(Properties.WATERLOGGED);
@@ -203,9 +203,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (hit == null) return TypedActionResult.pass(stack);
 			if (world.isClient) return TypedActionResult.success(stack, false);
 			if (!hit.isAlive()) return TypedActionResult.fail(stack);
-			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY) || hit.hasPassengers()) return TypedActionResult.fail(stack);
+			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE) || hit.hasPassengers()) return TypedActionResult.fail(stack);
 			if (!hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING) && !(hit instanceof LivingEntity) && !(hit instanceof FallingBlockEntity)) return TypedActionResult.fail(stack);
-			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE_ITEM)) return TypedActionResult.fail(stack);
+			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE)) return TypedActionResult.fail(stack);
 			CompoundTag data = new CompoundTag();
 			if (hit.saveSelfToTag(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
@@ -481,7 +481,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 				EntityType<?> e = en.getValue();
 				if (e == EntityType.ITEM || e == EntityType.FALLING_BLOCK) continue;
-				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE_ENTITY)) {
+				if ((e.getSpawnGroup() != SpawnGroup.MISC || e.isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING)) && !e.isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE)) {
 					ItemStack is = new ItemStack(this);
 					is.getOrCreateSubTag("Contents").putString("id", en.getKey().getValue().toString());
 					stacks.add(is);

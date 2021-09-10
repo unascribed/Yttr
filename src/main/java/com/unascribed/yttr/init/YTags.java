@@ -10,7 +10,7 @@ public class YTags {
 
 	public static class Item {
 
-		public static final Tag<net.minecraft.item.Item> UNSNAREABLE_ITEM = TagRegistry.item(new Identifier("yttr", "unsnareable"));
+		public static final Tag<net.minecraft.item.Item> UNSNAREABLE = TagRegistry.item(new Identifier("yttr", "unsnareable"));
 		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
 		public static final Tag<net.minecraft.item.Item> FLUXES = TagRegistry.item(new Identifier("yttr", "fluxes"));
 		
@@ -21,8 +21,9 @@ public class YTags {
 	public static class Block {
 
 		public static final Tag<net.minecraft.block.Block> FIRE_MODE_INSTABREAK = TagRegistry.block(new Identifier("yttr", "fire_mode_instabreak"));
-		public static final Tag<net.minecraft.block.Block> SNAREABLE_BLOCKS = TagRegistry.block(new Identifier("yttr", "snareable"));
-		public static final Tag<net.minecraft.block.Block> UNSNAREABLE_BLOCKS = TagRegistry.block(new Identifier("yttr", "unsnareable"));
+		public static final Tag<net.minecraft.block.Block> SNAREABLE = TagRegistry.block(new Identifier("yttr", "snareable"));
+		public static final Tag<net.minecraft.block.Block> UNSNAREABLE = TagRegistry.block(new Identifier("yttr", "unsnareable"));
+		public static final Tag<net.minecraft.block.Block> UNCLEAVABLE = TagRegistry.block(new Identifier("yttr", "uncleavable"));
 		
 		private static void init() {}
 		
@@ -39,7 +40,7 @@ public class YTags {
 	
 	public static class Entity {
 
-		public static final Tag<EntityType<?>> UNSNAREABLE_ENTITY = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
+		public static final Tag<EntityType<?>> UNSNAREABLE = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
 		public static final Tag<EntityType<?>> SNAREABLE_NONLIVING = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
 		public static final Tag<EntityType<?>> BOSSES = TagRegistry.entityType(new Identifier("yttr", "bosses"));
 		

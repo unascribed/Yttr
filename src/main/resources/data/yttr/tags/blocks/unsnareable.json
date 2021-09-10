@@ -5,6 +5,7 @@
 		"minecraft:sticky_piston",
 		"#minecraft:tall_flowers",
 		"minecraft:tall_grass",
-		"#minecraft:doors"
+		"#minecraft:doors",
+		"yttr:magtank"
 	]
 }

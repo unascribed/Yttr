@@ -10,6 +10,7 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
+import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.NBTUtils;
@@ -113,6 +114,7 @@ public class CleaverItem extends Item implements Attackable {
 	public static boolean canCleave(World world, BlockPos pos, BlockState state) {
 		// multi-cleaving brings out a lot of bugs in the renderer and partitioner. revisit later
 		//if (state.isOf(YBlocks.CLEAVED_BLOCK)) return true;
+		if (state.isIn(YTags.Block.UNCLEAVABLE)) return false;
 		return !state.getBlock().hasBlockEntity() && state.getOutlineShape(world, pos) == VoxelShapes.fullCube() && state.getHardness(world, pos) >= 0;
 	}
 	
