@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block;
 
 import java.util.List;
+import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -11,9 +12,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -59,6 +63,53 @@ public abstract class BigBlock extends Block {
 	}
 	
 	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onStateReplaced(state, world, pos, newState, moved);
+		world.getBlockTickScheduler().schedule(pos, this, 1);
+	}
+	
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		world.getBlockTickScheduler().schedule(pos, this, 1);
+	}
+	
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if (player.isCreative()) {
+			BlockPos origin = pos.add(-state.get(X), -state.get(Y), -state.get(Z));
+			for (int y = 0; y < ySize; y++) {
+				for (int x = 0; x < xSize; x++) {
+					for (int z = 0; z < zSize; z++) {
+						world.breakBlock(origin.add(x, y, z), false, player);
+					}
+				}
+			}
+		}
+		
+	}
+	
+	@Override
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		super.scheduledTick(state, world, pos, random);
+		for (Direction dir : Direction.values()) {
+			BlockState expected = getExpectedNeighbor(state, dir);
+			if (expected != null) {
+				BlockState have = world.getBlockState(pos.offset(dir));
+				if (have != expected) {
+					world.breakBlock(pos, false);
+					return;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.BLOCK;
+	}
+	
+	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
 		if (state.get(X) != 0 || state.get(Y) != 0 || state.get(Z) != 0) return ImmutableList.of();
 		return super.getDroppedStacks(state, builder);
@@ -68,7 +119,6 @@ public abstract class BigBlock extends Block {
 		double x = pos.getX()-state.get(X)+(entity.world.random.nextFloat() * (xSize/2D) + (xSize/4D));
 		double y = pos.getY()-state.get(Y)+(entity.world.random.nextFloat() * (ySize/2D) + (ySize/4D));
 		double z = pos.getZ()-state.get(Z)+(entity.world.random.nextFloat() * (zSize/2D) + (zSize/4D));
-		System.out.println(x+", "+y+", "+z);
 		entity.updatePosition(x, y, z);
 	}
 
