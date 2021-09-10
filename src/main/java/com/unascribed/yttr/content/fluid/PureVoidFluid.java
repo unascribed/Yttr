@@ -4,6 +4,9 @@ import java.util.Random;
 
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
+
+import com.google.common.hash.Hashing;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -96,7 +99,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 		BlockState desState = world.getBlockState(toDestroy);
 		if (!desState.isOf(YBlocks.PURE_VOID) && !desState.isOf(YBlocks.VOID_FILTER) && !desState.isOf(YBlocks.ERODED_BEDROCK)) {
 			if (desState.isOf(Blocks.BEDROCK) && toDestroy.getY() < 10 && toDestroy.getY() > 0) {
-				if (random.nextInt(10) == 0) {
+				if (random.nextInt(10) == 0 && (toDestroy.getY() > 1 || ((Hashing.murmur3_32().hashInt((31*toDestroy.getX())+toDestroy.getZ()).asInt()&127) > 8))) {
 					world.setBlockState(toDestroy, YBlocks.ERODED_BEDROCK.getDefaultState());
 				}
 			} else {
