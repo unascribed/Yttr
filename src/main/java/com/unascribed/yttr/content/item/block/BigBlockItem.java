@@ -9,6 +9,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
@@ -35,6 +36,10 @@ public class BigBlockItem extends BlockItem {
 		BlockPos origin = new BlockPos(Ints.min(front.getX(), back.getX()), front.getY(), Ints.min(front.getZ(), back.getZ()));
 		if (context.getSide() == Direction.DOWN) {
 			origin = origin.down(b.ySize-1);
+		}
+		Box box = new Box(origin, origin.add(b.xSize-1, b.ySize-1, b.zSize-1));
+		if (w.getEntityCollisions(null, box, e -> true).anyMatch(s -> true)) {
+			return false;
 		}
 		for (int p = 0; p < 2; p++) {
 			for (int y = 0; y < b.ySize; y++) {
