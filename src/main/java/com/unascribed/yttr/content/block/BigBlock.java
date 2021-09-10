@@ -1,13 +1,19 @@
 package com.unascribed.yttr.content.block;
 
+import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -50,6 +56,20 @@ public abstract class BigBlock extends Block {
 			return Blocks.AIR.getDefaultState();
 		}
 		return state;
+	}
+	
+	@Override
+	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
+		if (state.get(X) != 0 || state.get(Y) != 0 || state.get(Z) != 0) return ImmutableList.of();
+		return super.getDroppedStacks(state, builder);
+	}
+	
+	public void alterDroppedEntity(BlockPos pos, BlockState state, ItemEntity entity) {
+		double x = pos.getX()-state.get(X)+(entity.world.random.nextFloat() * (xSize/2D) + (xSize/4D));
+		double y = pos.getY()-state.get(Y)+(entity.world.random.nextFloat() * (ySize/2D) + (ySize/4D));
+		double z = pos.getZ()-state.get(Z)+(entity.world.random.nextFloat() * (zSize/2D) + (zSize/4D));
+		System.out.println(x+", "+y+", "+z);
+		entity.updatePosition(x, y, z);
 	}
 
 	private static final ThreadLocal<int[]> reentering = ThreadLocal.withInitial(() -> new int[1]);
