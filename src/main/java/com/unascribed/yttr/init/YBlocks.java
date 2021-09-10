@@ -1,6 +1,7 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.MagtankBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
@@ -264,6 +265,8 @@ public class YBlocks {
 	
 	@RenderLayer("cutout")
 	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
+	
+	public static final MagtankBlock MAGTANK = new MagtankBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

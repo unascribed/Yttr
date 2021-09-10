@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"8": "yttr:block/magtank/pole_2",
+		"14": "yttr:block/magtank/side_4",
+		"15": "yttr:block/magtank/side_5",
+		"particle": "yttr:block/magtank/side_4"
+	},
+	"elements": [
+		{
+			"name": "101",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#14"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#15"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#8"}
+			}
+		}
+	]
+}

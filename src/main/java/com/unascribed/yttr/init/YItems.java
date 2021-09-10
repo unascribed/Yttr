@@ -15,6 +15,7 @@ import com.unascribed.yttr.content.item.SpectralAxeItem;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.SwallowableItem;
 import com.unascribed.yttr.content.item.VoidBucketItem;
+import com.unascribed.yttr.content.item.block.BigBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.content.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
@@ -107,6 +108,10 @@ public class YItems {
 	
 	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings()
 			.group(YItemGroups.MAIN));
+	
+	public static final BigBlockItem MAGTANK = new BigBlockItem(YBlocks.MAGTANK, new Item.Settings()
+			.group(YItemGroups.MAIN)
+			.maxCount(4));
 
 	private static BlockItem createNormalBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings().group(YItemGroups.MAIN));
