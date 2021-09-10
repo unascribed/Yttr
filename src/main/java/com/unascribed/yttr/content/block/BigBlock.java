@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.init.YSounds;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -18,6 +20,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -85,8 +89,19 @@ public abstract class BigBlock extends Block {
 					}
 				}
 			}
+		} else if (world.isClient && state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
+			BlockSoundGroup sg = getSoundGroup(state);
+			world.playSound(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, sg.getBreakSound(), SoundCategory.BLOCKS, (sg.getVolume() + 1) / 2f, sg.getPitch() * 0.8f, false);
 		}
-		
+	}
+	
+	@Override
+	public BlockSoundGroup getSoundGroup(BlockState state) {
+		BlockSoundGroup sg = super.getSoundGroup(state);
+		if (state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
+			return sg;
+		}
+		return new BlockSoundGroup(sg.volume, sg.pitch, YSounds.SILENCE, sg.getStepSound(), sg.getPlaceSound(), sg.getHitSound(), sg.getFallSound());
 	}
 	
 	@Override
