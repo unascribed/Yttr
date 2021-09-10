@@ -1,16 +1,66 @@
 {
 	"variants": {
-		"x=0,y=0,z=0": { "model": "yttr:block/magtank/000" },
-		"x=0,y=0,z=1": { "model": "yttr:block/magtank/001" },
-		"x=0,y=1,z=0": { "model": "yttr:block/magtank/010" },
-		"x=0,y=1,z=1": { "model": "yttr:block/magtank/011" },
-		"x=0,y=2,z=0": { "model": "yttr:block/magtank/020" },
-		"x=0,y=2,z=1": { "model": "yttr:block/magtank/021" },
-		"x=1,y=0,z=0": { "model": "yttr:block/magtank/100" },
-		"x=1,y=0,z=1": { "model": "yttr:block/magtank/101" },
-		"x=1,y=1,z=0": { "model": "yttr:block/magtank/110" },
-		"x=1,y=1,z=1": { "model": "yttr:block/magtank/111" },
-		"x=1,y=2,z=0": { "model": "yttr:block/magtank/120" },
-		"x=1,y=2,z=1": { "model": "yttr:block/magtank/121" }
+		"facing=north,x=0,y=0,z=0": { "model": "yttr:block/magtank/000"},
+		"facing=north,x=1,y=0,z=0": { "model": "yttr:block/magtank/100"},
+		"facing=north,x=1,y=0,z=1": { "model": "yttr:block/magtank/101"},
+		"facing=north,x=0,y=0,z=1": { "model": "yttr:block/magtank/001"},
+		
+		"facing=north,x=0,y=1,z=0": { "model": "yttr:block/magtank/010"},
+		"facing=north,x=1,y=1,z=0": { "model": "yttr:block/magtank/110"},
+		"facing=north,x=1,y=1,z=1": { "model": "yttr:block/magtank/111"},
+		"facing=north,x=0,y=1,z=1": { "model": "yttr:block/magtank/011"},
+		
+		"facing=north,x=0,y=2,z=0": { "model": "yttr:block/magtank/020"},
+		"facing=north,x=1,y=2,z=0": { "model": "yttr:block/magtank/120"},
+		"facing=north,x=1,y=2,z=1": { "model": "yttr:block/magtank/121"},
+		"facing=north,x=0,y=2,z=1": { "model": "yttr:block/magtank/021"},
+		
+		
+		"facing=east,x=0,y=0,z=0": { "model": "yttr:block/magtank/001", "y": 90 },
+		"facing=east,x=1,y=0,z=0": { "model": "yttr:block/magtank/000", "y": 90 },
+		"facing=east,x=1,y=0,z=1": { "model": "yttr:block/magtank/100", "y": 90 },
+		"facing=east,x=0,y=0,z=1": { "model": "yttr:block/magtank/101", "y": 90 },
+		
+		"facing=east,x=0,y=1,z=0": { "model": "yttr:block/magtank/011", "y": 90 },
+		"facing=east,x=1,y=1,z=0": { "model": "yttr:block/magtank/010", "y": 90 },
+		"facing=east,x=1,y=1,z=1": { "model": "yttr:block/magtank/110", "y": 90 },
+		"facing=east,x=0,y=1,z=1": { "model": "yttr:block/magtank/111", "y": 90 },
+		
+		"facing=east,x=0,y=2,z=0": { "model": "yttr:block/magtank/021", "y": 90 },
+		"facing=east,x=1,y=2,z=0": { "model": "yttr:block/magtank/020", "y": 90 },
+		"facing=east,x=1,y=2,z=1": { "model": "yttr:block/magtank/120", "y": 90 },
+		"facing=east,x=0,y=2,z=1": { "model": "yttr:block/magtank/121", "y": 90 },
+		
+		
+		"facing=south,x=0,y=0,z=0": { "model": "yttr:block/magtank/101", "y": 180 },
+		"facing=south,x=1,y=0,z=0": { "model": "yttr:block/magtank/001", "y": 180 },
+		"facing=south,x=1,y=0,z=1": { "model": "yttr:block/magtank/000", "y": 180 },
+		"facing=south,x=0,y=0,z=1": { "model": "yttr:block/magtank/100", "y": 180 },
+		
+		"facing=south,x=0,y=1,z=0": { "model": "yttr:block/magtank/111", "y": 180 },
+		"facing=south,x=1,y=1,z=0": { "model": "yttr:block/magtank/011", "y": 180 },
+		"facing=south,x=1,y=1,z=1": { "model": "yttr:block/magtank/010", "y": 180 },
+		"facing=south,x=0,y=1,z=1": { "model": "yttr:block/magtank/110", "y": 180 },
+		
+		"facing=south,x=0,y=2,z=0": { "model": "yttr:block/magtank/121", "y": 180 },
+		"facing=south,x=1,y=2,z=0": { "model": "yttr:block/magtank/021", "y": 180 },
+		"facing=south,x=1,y=2,z=1": { "model": "yttr:block/magtank/020", "y": 180 },
+		"facing=south,x=0,y=2,z=1": { "model": "yttr:block/magtank/120", "y": 180 },
+		
+		
+		"facing=west,x=0,y=0,z=0": { "model": "yttr:block/magtank/100", "y": 270 },
+		"facing=west,x=1,y=0,z=0": { "model": "yttr:block/magtank/101", "y": 270 },
+		"facing=west,x=1,y=0,z=1": { "model": "yttr:block/magtank/001", "y": 270 },
+		"facing=west,x=0,y=0,z=1": { "model": "yttr:block/magtank/000", "y": 270 },
+
+		"facing=west,x=0,y=1,z=0": { "model": "yttr:block/magtank/110", "y": 270 },
+		"facing=west,x=1,y=1,z=0": { "model": "yttr:block/magtank/111", "y": 270 },
+		"facing=west,x=1,y=1,z=1": { "model": "yttr:block/magtank/011", "y": 270 },
+		"facing=west,x=0,y=1,z=1": { "model": "yttr:block/magtank/010", "y": 270 },
+
+		"facing=west,x=0,y=2,z=0": { "model": "yttr:block/magtank/120", "y": 270 },
+		"facing=west,x=1,y=2,z=0": { "model": "yttr:block/magtank/121", "y": 270 },
+		"facing=west,x=1,y=2,z=1": { "model": "yttr:block/magtank/021", "y": 270 },
+		"facing=west,x=0,y=2,z=1": { "model": "yttr:block/magtank/020", "y": 270 }
 	}
 }

@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"4": "yttr:block/magtank/front_4",
-		"6": "yttr:block/magtank/pole_0",
+		"6": "yttr:block/magtank/pole_3",
 		"15": "yttr:block/magtank/side_5",
 		"particle": "yttr:block/magtank/front_4"
 	},

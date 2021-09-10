@@ -252,7 +252,7 @@ public class YBlocks {
 	
 	public static final ErodedBedrockBlock ERODED_BEDROCK = new ErodedBedrockBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES, 3)
-			.strength(75, 0)
+			.strength(45, 0)
 		);
 	
 	public static final LazorBeamBlock LAZOR_BEAM = new LazorBeamBlock(FabricBlockSettings.of(Material.AIR)
