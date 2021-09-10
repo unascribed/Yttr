@@ -30,6 +30,7 @@ import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.client.suit.SuitSound;
 import com.unascribed.yttr.client.util.TextureColorThief;
+import com.unascribed.yttr.content.block.BigBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.RifleItem;
@@ -75,6 +76,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
@@ -89,6 +91,8 @@ import net.minecraft.client.particle.RedDustParticle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.resource.language.I18n;
@@ -413,6 +417,25 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
+		WorldRenderEvents.BLOCK_OUTLINE.register((wrc, boc) -> {
+			if (boc.blockState().getBlock() instanceof BigBlock) {
+				BlockState bs = boc.blockState();
+				BigBlock b = (BigBlock)boc.blockState().getBlock();
+				double minX = boc.blockPos().getX()-bs.get(b.X);
+				double minY = boc.blockPos().getY()-bs.get(b.Y);
+				double minZ = boc.blockPos().getZ()-bs.get(b.Z);
+				minX -= wrc.camera().getPos().x;
+				minY -= wrc.camera().getPos().y;
+				minZ -= wrc.camera().getPos().z;
+				double maxX = minX+b.xSize;
+				double maxY = minY+b.ySize;
+				double maxZ = minZ+b.zSize;
+				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
+				WorldRenderer.drawBox(wrc.matrixStack(), vc, minX, minY, minZ, maxX, maxY, maxZ, 0, 0, 0, 0.4f);
+				return false;
+			}
+			return true;
+		});
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
 		CleavedBlockModelProvider.init();

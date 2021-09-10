@@ -12,6 +12,7 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public abstract class BigBlock extends Block {
@@ -49,6 +50,34 @@ public abstract class BigBlock extends Block {
 			return Blocks.AIR.getDefaultState();
 		}
 		return state;
+	}
+
+	private static final ThreadLocal<int[]> reentering = ThreadLocal.withInitial(() -> new int[1]);
+	
+	public static boolean handleSetBlockBreakingInfo(World w, int entityId, BlockPos pos, int progress) {
+		int[] re = reentering.get();
+		if (re[0] > 0) return false;
+		BlockState bs = w.getBlockState(pos);
+		if (bs.getBlock() instanceof BigBlock) {
+			re[0]++;
+			try {
+				BigBlock b = (BigBlock)bs.getBlock();
+				BlockPos origin = pos.add(-bs.get(b.X), -bs.get(b.Y), -bs.get(b.Z));
+				int i = 1;
+				for (int x = 0; x < b.xSize; x++) {
+					for (int y = 0; y < b.ySize; y++) {
+						for (int z = 0; z < b.zSize; z++) {
+							w.setBlockBreakingInfo(entityId+(i*10000), origin.add(x, y, z), progress);
+							i++;
+						}
+					}
+				}
+			} finally {
+				re[0]--;
+			}
+			return true;
+		}
+		return false;
 	}
 	
 }

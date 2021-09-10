@@ -57,6 +57,7 @@
 	"substitute.MixinIngredient",
 	"substitute.MixinIngredientStackEntry",
 	"substitute.MixinSetTag",
+	"bigblock.MixinServerWorld",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
@@ -95,6 +96,7 @@
 	"diving.client.MixinDeathScreen",
 	"cleaver.client.MixinParticleManager",
 	"aware_hopper.client.MixinSoundSystem",
+	"bigblock.MixinClientWorld",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],
