@@ -136,33 +136,5 @@ public abstract class BigBlock extends Block {
 		double z = pos.getZ()-state.get(Z)+(entity.world.random.nextFloat() * (zSize/2D) + (zSize/4D));
 		entity.updatePosition(x, y, z);
 	}
-
-	private static final ThreadLocal<int[]> reentering = ThreadLocal.withInitial(() -> new int[1]);
-	
-	public static boolean handleSetBlockBreakingInfo(World w, int entityId, BlockPos pos, int progress) {
-		int[] re = reentering.get();
-		if (re[0] > 0) return false;
-		BlockState bs = w.getBlockState(pos);
-		if (bs.getBlock() instanceof BigBlock) {
-			re[0]++;
-			try {
-				BigBlock b = (BigBlock)bs.getBlock();
-				BlockPos origin = pos.add(-bs.get(b.X), -bs.get(b.Y), -bs.get(b.Z));
-				int i = 1;
-				for (int x = 0; x < b.xSize; x++) {
-					for (int y = 0; y < b.ySize; y++) {
-						for (int z = 0; z < b.zSize; z++) {
-							w.setBlockBreakingInfo(entityId+(i*10000), origin.add(x, y, z), progress);
-							i++;
-						}
-					}
-				}
-			} finally {
-				re[0]--;
-			}
-			return true;
-		}
-		return false;
-	}
 	
 }
