@@ -98,6 +98,7 @@
 	"aware_hopper.client.MixinSoundSystem",
 	"bigblock.MixinBlockRenderManager",
 	"bigblock.MixinClientPlayerInteractionManager",
+	"bigblock.MixinParticleManager",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],
