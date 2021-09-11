@@ -1,0 +1,48 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "0": "yttr:block/giant_cobblestone/0",
+    "1": "yttr:block/giant_cobblestone/1",
+    "2": "yttr:block/giant_cobblestone/2",
+    "3": "yttr:block/giant_cobblestone/3",
+    "4": "yttr:block/giant_cobblestone/4",
+    "5": "yttr:block/giant_cobblestone/5",
+    "6": "yttr:block/giant_cobblestone/6",
+    "7": "yttr:block/giant_cobblestone/7",
+    "8": "yttr:block/giant_cobblestone/8",
+    "9": "yttr:block/giant_cobblestone/9",
+    "10": "yttr:block/giant_cobblestone/10",
+    "11": "yttr:block/giant_cobblestone/11",
+    "12": "yttr:block/giant_cobblestone/12",
+    "13": "yttr:block/giant_cobblestone/13",
+    "14": "yttr:block/giant_cobblestone/14",
+    "15": "yttr:block/giant_cobblestone/15",
+    "particle": "minecraft:block/cobblestone"
+  },
+  "elements": [
+    {
+      "name": "210",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#9"
+        }
+      }
+    }
+  ]
+}

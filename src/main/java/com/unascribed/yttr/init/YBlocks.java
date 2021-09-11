@@ -267,6 +267,7 @@ public class YBlocks {
 	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
 	
 	public static final MagtankBlock MAGTANK = new MagtankBlock(METALLIC_SETTINGS);
+//	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

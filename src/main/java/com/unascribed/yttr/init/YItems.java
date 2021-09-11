@@ -112,6 +112,10 @@ public class YItems {
 	public static final BigBlockItem MAGTANK = new BigBlockItem(YBlocks.MAGTANK, new Item.Settings()
 			.group(YItemGroups.MAIN)
 			.maxCount(4));
+	
+//	public static final BigBlockItem GIANT_COBBLESTONE = new BigBlockItem(YBlocks.GIANT_COBBLESTONE, new Item.Settings()
+//			.group(YItemGroups.MAIN)
+//			.maxCount(4));
 
 	private static BlockItem createNormalBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings().group(YItemGroups.MAIN));
