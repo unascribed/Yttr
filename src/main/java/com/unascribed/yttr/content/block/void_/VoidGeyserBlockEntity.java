@@ -59,6 +59,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
+		if (world.isDebugWorld()) return;
 		if (pos.getY() != 0 && !world.getBlockState(pos.down()).isOf(Blocks.BEDROCK)) {
 			world.createExplosion(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 4, DestructionType.NONE);
 			world.setBlockState(pos, Blocks.VOID_AIR.getDefaultState());

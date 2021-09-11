@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.unascribed.yttr.content.block.BigBlock;
+import com.unascribed.yttr.content.block.big.BigBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

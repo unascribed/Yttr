@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +58,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -82,6 +84,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
+import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
 	
@@ -115,6 +118,24 @@ public class Yttr implements ModInitializer {
 		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
 		
 		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
+		
+		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
+		Set<BlockState> known = Sets.newHashSet(states);
+		List<BlockState> newStates = Registry.BLOCK.stream()
+			.flatMap(b -> b.getStateManager().getStates().stream())
+			.filter(bs -> !known.contains(bs))
+			.collect(Collectors.toList());
+		if (newStates.isEmpty()) {
+			LogManager.getLogger("Yttr").info("[Yttr] Looks like someone else already fixed the debug world.", newStates.size());
+		} else {
+			LogManager.getLogger("Yttr").info("[Yttr] Adding {} missing blockstates to the debug world.", newStates.size());
+			states.addAll(newStates);
+			int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
+			int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
+			DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
+			DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
+			LogManager.getLogger("Yttr").info("[Yttr] Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
+		}
 		
 		TradeOffers.Factory[] clericOffers = TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.CLERIC).get(2);
 		clericOffers = ArrayUtils.add(clericOffers, new TradeOffers.SellItemFactory(YItems.QUICKSILVER, 8, 1, 2));

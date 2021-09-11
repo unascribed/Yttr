@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import com.unascribed.yttr.content.block.BigBlock;
+import com.unascribed.yttr.content.block.big.BigBlock;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;

@@ -30,7 +30,7 @@ import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.client.suit.SuitSound;
 import com.unascribed.yttr.client.util.TextureColorThief;
-import com.unascribed.yttr.content.block.BigBlock;
+import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.RifleItem;

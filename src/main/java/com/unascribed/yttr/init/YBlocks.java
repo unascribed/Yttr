@@ -3,9 +3,10 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.MagtankBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
+import com.unascribed.yttr.content.block.big.DSUBlock;
+import com.unascribed.yttr.content.block.big.MagtankBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.block.decor.TableBlock;
@@ -271,6 +272,7 @@ public class YBlocks {
 	
 	public static final MagtankBlock MAGTANK = new MagtankBlock(METALLIC_SETTINGS);
 //	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
+	public static final DSUBlock DSU = new DSUBlock(METALLIC_SETTINGS);
 	
 	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(4)

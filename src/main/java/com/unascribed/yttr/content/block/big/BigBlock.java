@@ -1,4 +1,4 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.big;
 
 import java.util.List;
 import java.util.Random;
@@ -22,6 +22,7 @@ import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -43,6 +44,10 @@ public abstract class BigBlock extends Block {
 		Y = y;
 		Z = z;
 	}
+	
+	protected BlockState copyState(BlockState us, BlockState neighbor) {
+		return us;
+	}
 
 	public @Nullable BlockState getExpectedNeighbor(BlockState state, Direction dir) {
 		int x = state.get(X)+dir.getOffsetX();
@@ -57,13 +62,16 @@ public abstract class BigBlock extends Block {
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
 		BlockState expected = getExpectedNeighbor(state, direction);
 		if (expected == null) return state;
+		if (newState.isOf(this)) {
+			expected = copyState(expected, newState);
+		}
 		if (newState != expected) {
 			if (this instanceof Waterloggable && state.get(Properties.WATERLOGGED)) {
 				return Blocks.WATER.getDefaultState();
 			}
 			return Blocks.AIR.getDefaultState();
 		}
-		return state;
+		return copyState(state, newState);
 	}
 	
 	@Override
@@ -135,6 +143,13 @@ public abstract class BigBlock extends Block {
 		double y = pos.getY()-state.get(Y)+(entity.world.random.nextFloat() * (ySize/2D) + (ySize/4D));
 		double z = pos.getZ()-state.get(Z)+(entity.world.random.nextFloat() * (zSize/2D) + (zSize/4D));
 		entity.updatePosition(x, y, z);
+	}
+
+	protected void playSound(World world, PlayerEntity player, BlockPos pos, BlockState state, SoundEvent event, SoundCategory cat, float vol, float pitch) {
+		double x = (pos.getX()-state.get(X))+(xSize/2D);
+		double y = (pos.getY()-state.get(Y))+(ySize/2D);
+		double z = (pos.getZ()-state.get(Z))+(zSize/2D);
+		world.playSound(player, x, y, z, event, cat, vol, pitch);
 	}
 	
 }

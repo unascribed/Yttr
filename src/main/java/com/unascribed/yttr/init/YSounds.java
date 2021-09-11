@@ -59,6 +59,9 @@ public class YSounds {
 	public static final SoundEvent REPLICATOR_VEND = create("replicator_vend");
 	public static final SoundEvent SILENCE = create("silence");
 	public static final SoundEvent SPECTRAL_AXE_DISAPPEAR = create("spectral_axe_disappear");
+	public static final SoundEvent DSU_OPEN = create("dsu_open");
+	public static final SoundEvent DSU_CLOSE = create("dsu_close");
+	
 	
 
 	public static void init() {

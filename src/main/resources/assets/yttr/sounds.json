@@ -260,5 +260,13 @@
 	"spectral_axe_disappear": {
 		"sounds": ["yttr:spectral_axe_disappear"],
 		"subtitle": "subtitles.yttr.spectral_axe_disappear"
+	},
+	"dsu_open": {
+		"sounds": ["yttr:dsu_open"],
+		"subtitle": "subtitles.yttr.dsu_open"
+	},
+	"dsu_close": {
+		"sounds": ["yttr:dsu_close"],
+		"subtitle": "subtitles.yttr.dsu_close"
 	}
 }

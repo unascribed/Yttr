@@ -123,7 +123,11 @@ public class YItems {
 	
 //	public static final BigBlockItem GIANT_COBBLESTONE = new BigBlockItem(YBlocks.GIANT_COBBLESTONE, new Item.Settings()
 //			.group(YItemGroups.MAIN)
-//			.maxCount(4));
+//			.maxCount(1));
+	
+	public static final BigBlockItem DSU = new BigBlockItem(YBlocks.DSU, new Item.Settings()
+			.group(YItemGroups.MAIN)
+			.maxCount(8));
 
 	private static BlockItem createNormalBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings().group(YItemGroups.MAIN));

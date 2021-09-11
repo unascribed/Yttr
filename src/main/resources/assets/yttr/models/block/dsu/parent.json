@@ -1,0 +1,16 @@
+{
+	"textures": {
+		"0": "yttr:block/dsu/front_0",
+	    "1": "yttr:block/dsu/front_1",
+	    "2": "yttr:block/dsu/front_2",
+	    "3": "yttr:block/dsu/front_3",
+	    "4": "yttr:block/dsu/left_0",
+	    "5": "yttr:block/dsu/left_1",
+	    "6": "yttr:block/dsu/left_2",
+	    "7": "yttr:block/dsu/left_3",
+	    "8": "yttr:block/dsu/side_0",
+	    "9": "yttr:block/dsu/side_1",
+	    "10": "yttr:block/dsu/side_2",
+	    "11": "yttr:block/dsu/side_3"
+	}
+}

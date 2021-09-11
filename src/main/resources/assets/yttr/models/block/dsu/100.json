@@ -1,0 +1,52 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "yttr:block/dsu/parent",
+  "textures": {
+    "particle": "yttr:block/dsu/front_0"
+  },
+  "elements": [
+    {
+      "name": "100",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#7"
+        },
+        "down": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "rotation": 90,
+          "texture": "#8"
+        }
+      }
+    }
+  ]
+}

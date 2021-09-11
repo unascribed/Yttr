@@ -29,6 +29,10 @@ public class SqueezedLeavesBlockEntityRenderer extends BlockEntityRenderer<Squee
 	@Override
 	public void render(SqueezedLeavesBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		if (entity.getCachedState().get(SqueezedLeavesBlock.SQUEEZING)) {
+			Immediate imm = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+			// make sure there's no junk in the buffer before we do weird stuff
+			imm.draw();
+			
 			// this is done in this weird way so the block entity doesn't have to be tickable
 			long ticks = MinecraftClient.getInstance().world.getTime();
 			if (entity.squeezeBegin == -1) {
@@ -55,7 +59,6 @@ public class SqueezedLeavesBlockEntityRenderer extends BlockEntityRenderer<Squee
 			matrices.translate(-0.5, -0.5, -0.5);
 			BlockState state = entity.getCachedState().with(SqueezedLeavesBlock.SQUEEZING, false);
 			RenderLayer layer = RenderLayers.getBlockLayer(state);
-			Immediate imm = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 			MinecraftClient.getInstance().getBlockRenderManager().renderBlock(state,
 					entity.getPos(), entity.getWorld(), matrices,
 					imm.getBuffer(layer), true, entity.getWorld().random);

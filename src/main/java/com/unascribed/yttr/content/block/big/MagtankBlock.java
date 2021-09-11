@@ -1,4 +1,4 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.big;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,7 +10,7 @@ import net.minecraft.state.property.Properties;
 
 public class MagtankBlock extends BigBlock {
 
-	public static final DirectionProperty FACING = Properties.FACING;
+	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 	public static final IntProperty X = IntProperty.of("x", 0, 1);
 	public static final IntProperty Y = IntProperty.of("y", 0, 2);
 	public static final IntProperty Z = IntProperty.of("z", 0, 1);

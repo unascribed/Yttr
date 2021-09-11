@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.item.block;
 
-import com.unascribed.yttr.content.block.BigBlock;
+import com.unascribed.yttr.content.block.big.BigBlock;
 
 import com.google.common.primitives.Ints;
 

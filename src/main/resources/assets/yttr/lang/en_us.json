@@ -109,6 +109,8 @@
 	"block.yttr.eroded_bedrock": "Eroded Bedrock",
 	"block.yttr.magtank": "Magtank",
 	"block.yttr.brookite_ore": "Brookite Ore",
+	"block.yttr.dsu": "Deep Shelving Unit",
+	"block.yttr.magtube": "Magtube",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
@@ -129,6 +131,9 @@
 	"block.yttr.fixture.colored.inverted": "Inverted %s Lamp Fixture",
 	
 	"block.yttr.replicator.holding": "%s §7in %s",
+	
+	"block.yttr.magtube.flow.forward": "FLOW ▶",
+	"block.yttr.magtube.flow.backward": "◀ FLOW",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
@@ -179,6 +184,8 @@
 	"subtitles.yttr.replicator_refuse": "Replicator refuses",
 	"subtitles.yttr.replicator_vend": "Replicator vends",
 	"subtitles.yttr.spectral_axe_disappear": "Spectral axe dispels",
+	"subtitles.yttr.dsu_open": "DSU opened",
+	"subtitles.yttr.dsu_close": "DSU closed",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
