@@ -389,7 +389,7 @@ public class YItems {
 		
 		@Override
 		public float getMiningSpeedMultiplier() {
-			return ToolMaterials.IRON.getMiningSpeedMultiplier()*1.05f;
+			return ToolMaterials.IRON.getMiningSpeedMultiplier()*1.15f;
 		}
 		
 		@Override
@@ -399,7 +399,7 @@ public class YItems {
 		
 		@Override
 		public int getEnchantability() {
-			return ToolMaterials.STONE.getEnchantability();
+			return ToolMaterials.IRON.getEnchantability();
 		}
 		
 		@Override
