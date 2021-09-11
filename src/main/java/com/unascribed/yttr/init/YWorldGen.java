@@ -29,10 +29,20 @@ public class YWorldGen {
 					96)))
 			.spreadHorizontally()
 			.repeat(8);
+
+	public static final ConfiguredFeature<?, ?> BROOKITE_OVERWORLD = Feature.ORE
+			.configure(new OreFeatureConfig(
+					OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
+					YBlocks.BROOKITE_ORE.getDefaultState(),
+					5))
+			.rangeOf(32)
+			.spreadHorizontally()
+			.repeat(4);
 	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld"));
+		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
 	}
 
 	private static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {

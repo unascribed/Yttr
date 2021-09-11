@@ -36,12 +36,19 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ArmorMaterials;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -82,6 +89,7 @@ public class YItems {
 	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
 	public static final BlockItem ENCASED_VOID_FILTER = createNormalBlockItem(YBlocks.ENCASED_VOID_FILTER);
 	public static final BlockItem VOID_FILTER = createNormalBlockItem(YBlocks.VOID_FILTER);
+	public static final BlockItem BROOKITE_ORE = createNormalBlockItem(YBlocks.BROOKITE_ORE);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
@@ -368,7 +376,49 @@ public class YItems {
 			.group(YItemGroups.MAIN));
 	public static final Item IRON_DUST = new Item(new Item.Settings()
 			.group(YItemGroups.MAIN));
-
+	
+	public static final Item BROOKITE = new Item(new Item.Settings()
+			.group(YItemGroups.MAIN));
+	
+	public static final ToolMaterial BROOKITE_MATERIAL = new ToolMaterial() {
+		
+		@Override
+		public Ingredient getRepairIngredient() {
+			return Ingredient.ofItems(YItems.BROOKITE);
+		}
+		
+		@Override
+		public float getMiningSpeedMultiplier() {
+			return ToolMaterials.IRON.getMiningSpeedMultiplier()*1.05f;
+		}
+		
+		@Override
+		public int getMiningLevel() {
+			return ToolMaterials.IRON.getMiningLevel();
+		}
+		
+		@Override
+		public int getEnchantability() {
+			return ToolMaterials.STONE.getEnchantability();
+		}
+		
+		@Override
+		public int getDurability() {
+			return ToolMaterials.IRON.getDurability()*7/4;
+		}
+		
+		@Override
+		public float getAttackDamage() {
+			return ToolMaterials.IRON.getAttackDamage();
+		}
+	};
+	
+	public static final SwordItem BROOKITE_SWORD = new SwordItem(BROOKITE_MATERIAL, 3, -2.4f, new Item.Settings().group(YItemGroups.MAIN)) {};
+	public static final ShovelItem BROOKITE_SHOVEL = new ShovelItem(BROOKITE_MATERIAL, 1.5f, -3.0f, new Item.Settings().group(YItemGroups.MAIN)) {};
+	public static final PickaxeItem BROOKITE_PICKAXE = new PickaxeItem(BROOKITE_MATERIAL, 1, -2.8f, new Item.Settings().group(YItemGroups.MAIN)) {};
+	public static final AxeItem BROOKITE_AXE = new AxeItem(BROOKITE_MATERIAL, 6, -3.1f, new Item.Settings().group(YItemGroups.MAIN)) {};
+	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings().group(YItemGroups.MAIN)) {};
+	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
 	}

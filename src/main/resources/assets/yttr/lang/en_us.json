@@ -48,6 +48,12 @@
 	"item.yttr.mercurial_splash_potion": "Mercurial Splash Potion",
 	"item.yttr.yttrium_dust": "Yttrium Powder",
 	"item.yttr.iron_dust": "Iron Dust",
+	"item.yttr.brookite": "Brookite",
+	"item.yttr.brookite_sword": "Brookite Sword",
+	"item.yttr.brookite_shovel": "Brookite Shovel",
+	"item.yttr.brookite_pickaxe": "Brookite Pickaxe",
+	"item.yttr.brookite_axe": "Brookite Axe",
+	"item.yttr.brookite_hoe": "Brookite Hoe",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -102,6 +108,7 @@
 	"block.yttr.encased_void_filter": "Encased Void Filter",
 	"block.yttr.eroded_bedrock": "Eroded Bedrock",
 	"block.yttr.magtank": "Magtank",
+	"block.yttr.brookite_ore": "Brookite Ore",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

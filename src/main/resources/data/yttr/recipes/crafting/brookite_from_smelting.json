@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "yttr:brookite_ore"
+  },
+  "result": "yttr:brookite",
+  "experience": 1.0,
+  "cookingtime": 200
+}

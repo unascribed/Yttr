@@ -1,5 +1,7 @@
 package com.unascribed.yttr.init;
 
+import java.util.Random;
+
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.MagtankBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
@@ -45,6 +47,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
+import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
@@ -268,6 +271,19 @@ public class YBlocks {
 	
 	public static final MagtankBlock MAGTANK = new MagtankBlock(METALLIC_SETTINGS);
 //	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
+	
+	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
+			.strength(4)
+			.requiresTool()
+			.sounds(BlockSoundGroup.STONE)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 2)
+		) {
+		@Override
+		protected int getExperienceWhenMined(Random rand) {
+			return 1+rand.nextInt(5);
+		}
+	};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
