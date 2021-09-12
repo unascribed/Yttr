@@ -6,6 +6,7 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.inventory.HighStackSimpleInventory;
 import com.unascribed.yttr.util.DelegatingInventory;
+import com.unascribed.yttr.util.SideyInventory;
 
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
@@ -13,10 +14,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.Direction;
 
-public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, BlockEntityClientSerializable {
+public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, BlockEntityClientSerializable, SideyInventory {
 
 	private final HighStackSimpleInventory contents = new HighStackSimpleInventory(9*5);
 	
@@ -110,6 +113,21 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 		if (world != null && !world.isClient) {
 			sync();
 		}
+	}
+
+	@Override
+	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+		return true;
+	}
+
+	@Override
+	public boolean canAccess(int slot, Direction side) {
+		return true;
 	}
 
 }
