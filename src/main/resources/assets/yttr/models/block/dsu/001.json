@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
-  "parent": "yttr:block/dsu/parent",
+  "parent": "yttr:block/dsu/parent_back",
   "textures": {
-    "particle": "yttr:block/dsu/front_0"
+    "particle": "yttr:block/dsu/back_0"
   },
   "elements": [
     {

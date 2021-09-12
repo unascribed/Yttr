@@ -87,6 +87,52 @@
 		"open=true,facing=west,x=0,y=1,z=0": { "model": "yttr:block/dsu/110_open", "y": 270 },
 		"open=true,facing=west,x=1,y=1,z=0": { "model": "yttr:block/dsu/111_open", "y": 270 },
 		"open=true,facing=west,x=1,y=1,z=1": { "model": "yttr:block/dsu/011_open", "y": 270 },
-		"open=true,facing=west,x=0,y=1,z=1": { "model": "yttr:block/dsu/010_open", "y": 270 }
+		"open=true,facing=west,x=0,y=1,z=1": { "model": "yttr:block/dsu/010_open", "y": 270 },
+		
+		
+		
+		
+		"open=forced,facing=north,x=0,y=0,z=0": { "model": "yttr:block/dsu/000_open"},
+		"open=forced,facing=north,x=1,y=0,z=0": { "model": "yttr:block/dsu/100_open"},
+		"open=forced,facing=north,x=1,y=0,z=1": { "model": "yttr:block/dsu/101_open"},
+		"open=forced,facing=north,x=0,y=0,z=1": { "model": "yttr:block/dsu/001_open"},
+		
+		"open=forced,facing=north,x=0,y=1,z=0": { "model": "yttr:block/dsu/010_open"},
+		"open=forced,facing=north,x=1,y=1,z=0": { "model": "yttr:block/dsu/110_open"},
+		"open=forced,facing=north,x=1,y=1,z=1": { "model": "yttr:block/dsu/111_open"},
+		"open=forced,facing=north,x=0,y=1,z=1": { "model": "yttr:block/dsu/011_open"},
+		
+		
+		"open=forced,facing=east,x=0,y=0,z=0": { "model": "yttr:block/dsu/001_open", "y": 90 },
+		"open=forced,facing=east,x=1,y=0,z=0": { "model": "yttr:block/dsu/000_open", "y": 90 },
+		"open=forced,facing=east,x=1,y=0,z=1": { "model": "yttr:block/dsu/100_open", "y": 90 },
+		"open=forced,facing=east,x=0,y=0,z=1": { "model": "yttr:block/dsu/101_open", "y": 90 },
+		
+		"open=forced,facing=east,x=0,y=1,z=0": { "model": "yttr:block/dsu/011_open", "y": 90 },
+		"open=forced,facing=east,x=1,y=1,z=0": { "model": "yttr:block/dsu/010_open", "y": 90 },
+		"open=forced,facing=east,x=1,y=1,z=1": { "model": "yttr:block/dsu/110_open", "y": 90 },
+		"open=forced,facing=east,x=0,y=1,z=1": { "model": "yttr:block/dsu/111_open", "y": 90 },
+		
+		
+		"open=forced,facing=south,x=0,y=0,z=0": { "model": "yttr:block/dsu/101_open", "y": 180 },
+		"open=forced,facing=south,x=1,y=0,z=0": { "model": "yttr:block/dsu/001_open", "y": 180 },
+		"open=forced,facing=south,x=1,y=0,z=1": { "model": "yttr:block/dsu/000_open", "y": 180 },
+		"open=forced,facing=south,x=0,y=0,z=1": { "model": "yttr:block/dsu/100_open", "y": 180 },
+		
+		"open=forced,facing=south,x=0,y=1,z=0": { "model": "yttr:block/dsu/111_open", "y": 180 },
+		"open=forced,facing=south,x=1,y=1,z=0": { "model": "yttr:block/dsu/011_open", "y": 180 },
+		"open=forced,facing=south,x=1,y=1,z=1": { "model": "yttr:block/dsu/010_open", "y": 180 },
+		"open=forced,facing=south,x=0,y=1,z=1": { "model": "yttr:block/dsu/110_open", "y": 180 },
+		
+		
+		"open=forced,facing=west,x=0,y=0,z=0": { "model": "yttr:block/dsu/100_open", "y": 270 },
+		"open=forced,facing=west,x=1,y=0,z=0": { "model": "yttr:block/dsu/101_open", "y": 270 },
+		"open=forced,facing=west,x=1,y=0,z=1": { "model": "yttr:block/dsu/001_open", "y": 270 },
+		"open=forced,facing=west,x=0,y=0,z=1": { "model": "yttr:block/dsu/000_open", "y": 270 },
+
+		"open=forced,facing=west,x=0,y=1,z=0": { "model": "yttr:block/dsu/110_open", "y": 270 },
+		"open=forced,facing=west,x=1,y=1,z=0": { "model": "yttr:block/dsu/111_open", "y": 270 },
+		"open=forced,facing=west,x=1,y=1,z=1": { "model": "yttr:block/dsu/011_open", "y": 270 },
+		"open=forced,facing=west,x=0,y=1,z=1": { "model": "yttr:block/dsu/010_open", "y": 270 }
 	}
 }

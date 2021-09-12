@@ -13,6 +13,7 @@ public class YTags {
 		public static final Tag<net.minecraft.item.Item> UNSNAREABLE = TagRegistry.item(new Identifier("yttr", "unsnareable"));
 		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
 		public static final Tag<net.minecraft.item.Item> FLUXES = TagRegistry.item(new Identifier("yttr", "fluxes"));
+		public static final Tag<net.minecraft.item.Item> ULTRAPURE_CUBES = TagRegistry.item(new Identifier("yttr", "ultrapure_cubes"));
 		
 		private static void init() {}
 		

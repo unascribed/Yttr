@@ -58,6 +58,8 @@
 	"substitute.MixinIngredientStackEntry",
 	"substitute.MixinSetTag",
 	"bigblock.MixinBlock",
+	"deep.MixinPacketByteBuf",
+	"deep.MixinItemStack",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
@@ -99,6 +101,7 @@
 	"bigblock.MixinBlockRenderManager",
 	"bigblock.MixinClientPlayerInteractionManager",
 	"bigblock.MixinParticleManager",
+	"deep.MixinHandledScreen",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
+import com.unascribed.yttr.client.render.block_entity.DSUBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
@@ -12,6 +13,7 @@ import com.unascribed.yttr.client.render.block_entity.SkeletalSorterBlockEntityR
 import com.unascribed.yttr.client.render.block_entity.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
+import com.unascribed.yttr.content.block.big.DSUBlockEntity;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.block.decor.LampBlockEntity;
 import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
@@ -60,6 +62,8 @@ public class YBlockEntities {
 	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
 	public static final BlockEntityType<VoidCauldronBlockEntity> VOID_CAULDRON = create(VoidCauldronBlockEntity::new, YBlocks.VOID_CAULDRON);
 	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
+	@Renderer(DSUBlockEntityRenderer.class)
+	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.big;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -145,11 +146,62 @@ public abstract class BigBlock extends Block {
 		entity.updatePosition(x, y, z);
 	}
 
-	protected void playSound(World world, PlayerEntity player, BlockPos pos, BlockState state, SoundEvent event, SoundCategory cat, float vol, float pitch) {
-		double x = (pos.getX()-state.get(X))+(xSize/2D);
-		double y = (pos.getY()-state.get(Y))+(ySize/2D);
-		double z = (pos.getZ()-state.get(Z))+(zSize/2D);
+	public static void playSound(World world, PlayerEntity player, BlockPos pos, BlockState state, SoundEvent event, SoundCategory cat, float vol, float pitch) {
+		if (!(state.getBlock() instanceof BigBlock)) {
+			world.playSound(player, pos, event, cat, vol, pitch);
+			return;
+		}
+		BigBlock b = (BigBlock)state.getBlock();
+		double x = (pos.getX()-state.get(b.X))+(b.xSize/2D);
+		double y = (pos.getY()-state.get(b.Y))+(b.ySize/2D);
+		double z = (pos.getZ()-state.get(b.Z))+(b.zSize/2D);
 		world.playSound(player, x, y, z, event, cat, vol, pitch);
+	}
+
+	public static boolean isReceivingRedstonePower(World world, BlockPos pos, BlockState state) {
+		if (!(state.getBlock() instanceof BigBlock)) {
+			return world.isReceivingRedstonePower(pos);
+		}
+		BigBlock b = (BigBlock)state.getBlock();
+		int oX = pos.getX()-state.get(b.X);
+		int oY = pos.getY()-state.get(b.Y);
+		int oZ = pos.getZ()-state.get(b.Z);
+		BlockPos.Mutable bp = new BlockPos.Mutable();
+		for (int x = 0; x < b.xSize; x++) {
+			for (int y = 0; y < b.ySize; y++) {
+				for (int z = 0; z < b.zSize; z++) {
+					bp.set(oX+x, oY+y, oZ+z);
+					if (world.isReceivingRedstonePower(bp)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static boolean anyNeighborsMatch(World w, BlockPos pos, BlockState state, Predicate<BlockState> pred) {
+		if (!(state.getBlock() instanceof BigBlock)) {
+			return false;
+		}
+		BigBlock b = (BigBlock)state.getBlock();
+		int x = state.get(b.X);
+		int y = state.get(b.Y);
+		int z = state.get(b.Z);
+		for (Direction d : Direction.values()) {
+			int nX = x+d.getOffsetX();
+			int nY = y+d.getOffsetY();
+			int nZ = z+d.getOffsetZ();
+			if (nX < 0 || nX >= b.xSize) continue;
+			if (nY < 0 || nY >= b.ySize) continue;
+			if (nZ < 0 || nZ >= b.zSize) continue;
+			BlockPos bp = pos.offset(d);
+			if (!w.getBlockState(bp).isOf(state.getBlock())) continue;
+			if (pred.test(w.getBlockState(bp))) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

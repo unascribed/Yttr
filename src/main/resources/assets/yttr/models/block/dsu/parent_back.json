@@ -1,0 +1,9 @@
+{
+	"parent": "yttr:block/dsu/parent",
+	"textures": {
+		"0": "yttr:block/dsu/back_0",
+		"1": "yttr:block/dsu/back_1",
+		"2": "yttr:block/dsu/back_2",
+		"3": "yttr:block/dsu/back_3"
+	}
+}

@@ -401,6 +401,9 @@ public class Yttr implements ModInitializer {
 			ItemStack is = inv.getStack(i);
 			if (!is.isEmpty()) {
 				CompoundTag c = is.toTag(new CompoundTag());
+				if (is.getCount() > 127) {
+					c.putInt("Count", is.getCount());
+				}
 				c.putInt("Slot", i);
 				out.add(c);
 			}
@@ -412,7 +415,14 @@ public class Yttr implements ModInitializer {
 		inv.clear();
 		for (int i = 0; i < tag.size(); i++) {
 			CompoundTag c = tag.getCompound(i);
-			inv.setStack(c.getInt("Slot"), ItemStack.fromTag(c));
+			int count = c.getInt("Count");
+			if (count > 127) {
+				c = c.copy();
+				c.putInt("Count", 1);
+			}
+			ItemStack is = ItemStack.fromTag(c);
+			is.setCount(count);
+			inv.setStack(c.getInt("Slot"), is);
 		}
 	}
 
