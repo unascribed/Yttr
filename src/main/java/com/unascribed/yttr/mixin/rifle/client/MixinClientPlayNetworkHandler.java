@@ -32,6 +32,14 @@ public class MixinClientPlayNetworkHandler {
 				});
 			}
 			ci.cancel();
+		} else if (pkt.getSound() == YSounds.DROP_CAST_CANCEL) {
+			SoundInstance si = YttrClient.dropCastSounds.remove(world.getEntityById(pkt.getEntityId()));
+			if (si != null) {
+				MinecraftClient.getInstance().send(() -> {
+					MinecraftClient.getInstance().getSoundManager().stop(si);
+				});
+			}
+			ci.cancel();
 		}
 		// vanilla playSoundFromEntity ignores pitch, so we do it ourselves
 		if (pkt.getSound().getId().getNamespace().equals("yttr")) {

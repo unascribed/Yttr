@@ -14,6 +14,8 @@ public class YTags {
 		public static final Tag<net.minecraft.item.Item> VOID_IMMUNE = TagRegistry.item(new Identifier("yttr", "void_immune"));
 		public static final Tag<net.minecraft.item.Item> FLUXES = TagRegistry.item(new Identifier("yttr", "fluxes"));
 		public static final Tag<net.minecraft.item.Item> ULTRAPURE_CUBES = TagRegistry.item(new Identifier("yttr", "ultrapure_cubes"));
+		public static final Tag<net.minecraft.item.Item> GIFTS = TagRegistry.item(new Identifier("yttr", "gifts"));
+		public static final Tag<net.minecraft.item.Item> NOT_GIFTS = TagRegistry.item(new Identifier("yttr", "not_gifts"));
 		
 		private static void init() {}
 		
@@ -25,6 +27,7 @@ public class YTags {
 		public static final Tag<net.minecraft.block.Block> SNAREABLE = TagRegistry.block(new Identifier("yttr", "snareable"));
 		public static final Tag<net.minecraft.block.Block> UNSNAREABLE = TagRegistry.block(new Identifier("yttr", "unsnareable"));
 		public static final Tag<net.minecraft.block.Block> UNCLEAVABLE = TagRegistry.block(new Identifier("yttr", "uncleavable"));
+		public static final Tag<net.minecraft.block.Block> GIFTS = TagRegistry.block(new Identifier("yttr", "gifts"));
 		
 		private static void init() {}
 		

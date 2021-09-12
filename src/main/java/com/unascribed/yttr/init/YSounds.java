@@ -61,6 +61,9 @@ public class YSounds {
 	public static final SoundEvent SPECTRAL_AXE_DISAPPEAR = create("spectral_axe_disappear");
 	public static final SoundEvent DSU_OPEN = create("dsu_open");
 	public static final SoundEvent DSU_CLOSE = create("dsu_close");
+	public static final SoundEvent DROP_CAST = create("drop_cast");
+	public static final SoundEvent DROP_CAST_CANCEL = create("drop_cast_cancel");
+	public static final SoundEvent DROP_CAST_CANCEL_AUDIBLE = create("drop_cast_cancel_audible");
 	
 	
 

@@ -268,5 +268,16 @@
 	"dsu_close": {
 		"sounds": ["yttr:dsu_close"],
 		"subtitle": "subtitles.yttr.dsu_close"
+	},
+	"drop_cast": {
+		"sounds": ["yttr:drop_cast"],
+		"subtitle": "subtitles.yttr.drop_cast"
+	},
+	"drop_cast_cancel": {
+		"sounds": ["yttr:silence"]
+	},
+	"drop_cast_cancel_audible": {
+		"sounds": ["yttr:drop_cast_cancel"],
+		"subtitle": "subtitles.yttr.drop_cast_cancel"
 	}
 }

@@ -145,6 +145,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	public static final Identifier PURE_VOID_STILL = new Identifier("yttr", "block/pure_void_still");
 	
 	public static final Map<Entity, SoundInstance> rifleChargeSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
+	public static final Map<Entity, SoundInstance> dropCastSounds = new MapMaker().concurrencyLevel(1).weakKeys().weakValues().makeMap();
 	
 	private boolean hasCheckedRegistry = false;
 	
@@ -234,6 +235,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				if ((sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE.getId()) || sound.getSound().getIdentifier().equals(YSounds.RIFLE_CHARGE_FAST.getId()))
 						&& sound instanceof EntityTrackingSoundInstance) {
 					SoundInstance existing = rifleChargeSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
+					if (existing != null) {
+						mc.getSoundManager().stop(existing);
+					}
+				} else if ((sound.getSound().getIdentifier().equals(YSounds.DROP_CAST.getId()))
+						&& sound instanceof EntityTrackingSoundInstance) {
+					SoundInstance existing = dropCastSounds.put(((AccessorEntityTrackingSoundInstance)sound).yttr$getEntity(), sound);
 					if (existing != null) {
 						mc.getSoundManager().stop(existing);
 					}

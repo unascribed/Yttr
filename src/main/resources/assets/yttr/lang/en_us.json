@@ -54,6 +54,7 @@
 	"item.yttr.brookite_pickaxe": "Brookite Pickaxe",
 	"item.yttr.brookite_axe": "Brookite Axe",
 	"item.yttr.brookite_hoe": "Brookite Hoe",
+	"item.yttr.drop_of_continuity": "Drop of Continuity",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -186,6 +187,8 @@
 	"subtitles.yttr.spectral_axe_disappear": "Spectral axe dispels",
 	"subtitles.yttr.dsu_open": "DSU opened",
 	"subtitles.yttr.dsu_close": "DSU closed",
+	"subtitles.yttr.drop_cast": "Drop casting",
+	"subtitles.yttr.drop_cast_cancel": "Drop casting stops",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

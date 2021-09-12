@@ -29,7 +29,7 @@ public class EncasedVoidFilterBlock extends Block implements Shootable {
 
 	@Override
 	public boolean onShotByRifle(World world, BlockState bs, LivingEntity user, RifleMode mode, float power, BlockPos pos, BlockHitResult bhr) {
-		if (power > 1.1f && world.getRegistryKey().getValue().toString().equals("minecraft:overworld") && pos.getY() == 2 && bhr.getSide() == Direction.UP) {
+		if (mode == RifleMode.EXPLODE && power > 1.1f && world.getRegistryKey().getValue().toString().equals("minecraft:overworld") && pos.getY() == 2 && bhr.getSide() == Direction.UP) {
 			BlockPos down = pos.down();
 			BlockPos downDown = pos.down().down();
 			if (world.getBlockState(down).isOf(YBlocks.BEDROCK_SMASHER) && world.getBlockState(downDown).isOf(Blocks.BEDROCK)) {
