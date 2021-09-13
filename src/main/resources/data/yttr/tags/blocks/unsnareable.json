@@ -6,6 +6,8 @@
 		"#minecraft:tall_flowers",
 		"minecraft:tall_grass",
 		"#minecraft:doors",
-		"yttr:magtank"
+		"yttr:magtank",
+		"yttr:dsu",
+		"yttr:root_of_continuity"
 	]
 }

@@ -27,6 +27,8 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -37,6 +39,8 @@ import net.minecraft.world.World;
 
 public class RootOfContinuityBlock extends Block {
 
+	public static final BooleanProperty ANCHOR = BooleanProperty.of("anchor");
+	
 	public static final BlockSoundGroup SOUND_GROUP = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTHIT, YSounds.ROOTSTEP);
 	public static final BlockSoundGroup SOUND_GROUP_INEFFECTIVE = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTSTEP);
 	
@@ -46,6 +50,13 @@ public class RootOfContinuityBlock extends Block {
 	
 	public RootOfContinuityBlock(Settings settings) {
 		super(settings);
+		setDefaultState(getDefaultState().with(ANCHOR, false));
+	}
+	
+	@Override
+	protected void appendProperties(Builder<Block, BlockState> builder) {
+		super.appendProperties(builder);
+		builder.add(ANCHOR);
 	}
 	
 	@Override
@@ -69,23 +80,25 @@ public class RootOfContinuityBlock extends Block {
 	
 	@Override
 	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
-		player.incrementStat(Stats.MINED.getOrCreateStat(this));
-		player.addExhaustion(0.5f);
-		if (world instanceof ServerWorld) {
+		if (world instanceof ServerWorld && EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+			player.incrementStat(Stats.MINED.getOrCreateStat(this));
+			player.addExhaustion(0.5f);
 			getDroppedStacks(state, (ServerWorld)world, pos, blockEntity, player, stack).forEach((itemStack) -> {
 				if (!world.isClient && !stack.isEmpty() && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
 					double x = pos.getX() + (world.random.nextFloat() * 0.75 + 0.25);
 					double y = pos.getY() + (world.random.nextFloat() * 0.75 + 0.25);
 					double z = pos.getZ() + (world.random.nextFloat() * 0.75 + 0.25);
 					ItemEntity ie = new ItemEntity(world, x, y, z, itemStack);
-					ie.setVelocity(player.getPos().subtract(x, y, z).normalize().multiply(0.1));
+					ie.setVelocity(player.getPos().subtract(x, y, z).normalize().multiply(0.2));
 					ie.setToDefaultPickupDelay();
 					world.spawnEntity(ie);
 				}
 			});
 			state.onStacksDropped((ServerWorld)world, pos, stack);
+		} else {
+			super.afterBreak(world, player, pos, state, blockEntity, stack);
 		}
-		if (!world.isClient) {
+		if (!world.isClient && state.get(ANCHOR)) {
 			if (world.random.nextInt(10) == 0 && player.isUsingEffectiveTool(state)) {
 				ItemStack held = player.getStackInHand(Hand.MAIN_HAND);
 				Map<Enchantment, Integer> ench = EnchantmentHelper.get(held);
@@ -147,9 +160,12 @@ public class RootOfContinuityBlock extends Block {
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		super.randomDisplayTick(state, world, pos, random);
+		boolean anchor = state.get(ANCHOR);
 		for (int i = 0; i < 6; i++) {
 			world.addParticle(ParticleTypes.CRIT, pos.getX()+random.nextDouble(), pos.getY()+random.nextDouble(), pos.getZ()+random.nextDouble(), (random.nextDouble()-0.5)/2, (random.nextDouble()-0.5)/2, (random.nextDouble()-0.5)/2);
-			world.addParticle(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()-0.05, pos.getZ()+0.5, (random.nextDouble()-0.5)/4, (random.nextDouble()-0.5)/4, (random.nextDouble()-0.5)/4);
+			if (anchor) {
+				world.addParticle(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()-0.05, pos.getZ()+0.5, (random.nextDouble()-0.5)/4, (random.nextDouble()-0.5)/4, (random.nextDouble()-0.5)/4);
+			}
 		}
 	}
 

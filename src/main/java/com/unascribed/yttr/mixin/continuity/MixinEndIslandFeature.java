@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
 import com.unascribed.yttr.init.YBlocks;
 
 import net.minecraft.block.BlockState;
@@ -32,7 +33,7 @@ public class MixinEndIslandFeature {
 				bs = structureWorldAccess.getBlockState(cur);
 			}
 			cur.move(Direction.UP);
-			structureWorldAccess.setBlockState(cur, YBlocks.ROOT_OF_CONTINUITY.getDefaultState(), 3);
+			structureWorldAccess.setBlockState(cur, YBlocks.ROOT_OF_CONTINUITY.getDefaultState().with(RootOfContinuityBlock.ANCHOR, true), 3);
 		}
 	}
 	
