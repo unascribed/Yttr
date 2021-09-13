@@ -5,6 +5,7 @@ import java.util.List;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
+import com.unascribed.yttr.content.item.DiscOfContinuityItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.HornItem;
@@ -426,6 +427,7 @@ public class YItems {
 	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings().group(YItemGroups.MAIN)) {};
 	
 	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(1));
+	public static final DiscOfContinuityItem DISC_OF_CONTINUITY = new DiscOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(16));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
