@@ -64,6 +64,9 @@ public class YSounds {
 	public static final SoundEvent DROP_CAST = create("drop_cast");
 	public static final SoundEvent DROP_CAST_CANCEL = create("drop_cast_cancel");
 	public static final SoundEvent DROP_CAST_CANCEL_AUDIBLE = create("drop_cast_cancel_audible");
+	public static final SoundEvent ROOTBREAK = create("rootbreak");
+	public static final SoundEvent ROOTSTEP = create("rootstep");
+	public static final SoundEvent ROOTHIT = create("roothit");
 	
 	
 

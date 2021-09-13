@@ -26,6 +26,7 @@ import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumPressurePlateBlock;
 import com.unascribed.yttr.content.block.natural.DelicaceBlock;
+import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeSaplingBlock;
@@ -286,6 +287,13 @@ public class YBlocks {
 			return 1+rand.nextInt(5);
 		}
 	};
+	
+	public static final RootOfContinuityBlock ROOT_OF_CONTINUITY = new RootOfContinuityBlock(FabricBlockSettings.of(Material.GLASS)
+			.breakByTool(FabricToolTags.PICKAXES)
+			.strength(20)
+			.luminance(4)
+			.sounds(RootOfContinuityBlock.SOUND_GROUP)
+			.requiresTool());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -83,20 +83,22 @@ public class DropOfContinuityItem extends Item {
 	
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		Set<Item> possibilities = Sets.newHashSet();
-		possibilities.addAll(YTags.Item.GIFTS.values());
-		possibilities.addAll(Collections2.transform(YTags.Block.GIFTS.values(), Block::asItem));
-		possibilities.removeAll(YTags.Item.NOT_GIFTS.values());
-		possibilities.remove(null);
-		ItemStack gift = new ItemStack(Iterables.get(possibilities, RANDOM.nextInt(possibilities.size())));
-		gift.setCount(Math.min(gift.getMaxCount(), RANDOM.nextInt(3)+1));
-		if (user.isUsingItem()) {
-			user.setStackInHand(user.getActiveHand(), gift);
-		} else if (user instanceof PlayerEntity && ((PlayerEntity) user).isCreative()) {
-			((PlayerEntity) user).inventory.offerOrDrop(world, gift);
-		} else {
-			user.dropStack(gift);
-			stack.setCount(0);
+		if (!world.isClient) {
+			Set<Item> possibilities = Sets.newHashSet();
+			possibilities.addAll(YTags.Item.GIFTS.values());
+			possibilities.addAll(Collections2.transform(YTags.Block.GIFTS.values(), Block::asItem));
+			possibilities.removeAll(YTags.Item.NOT_GIFTS.values());
+			possibilities.remove(null);
+			ItemStack gift = new ItemStack(Iterables.get(possibilities, RANDOM.nextInt(possibilities.size())));
+			gift.setCount(Math.min(gift.getMaxCount(), RANDOM.nextInt(3)+1));
+			if (user.isUsingItem()) {
+				user.setStackInHand(user.getActiveHand(), gift);
+			} else if (user instanceof PlayerEntity && ((PlayerEntity) user).isCreative()) {
+				((PlayerEntity) user).inventory.offerOrDrop(world, gift);
+			} else {
+				user.dropStack(gift);
+				stack.setCount(0);
+			}
 		}
 		if (world instanceof ServerWorld) {
 			Box box = user.getBoundingBox();
@@ -120,5 +122,5 @@ public class DropOfContinuityItem extends Item {
 	public boolean hasGlint(ItemStack stack) {
 		return true;
 	}
-
+	
 }

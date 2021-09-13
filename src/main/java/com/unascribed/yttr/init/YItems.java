@@ -91,6 +91,7 @@ public class YItems {
 	public static final BlockItem ENCASED_VOID_FILTER = createNormalBlockItem(YBlocks.ENCASED_VOID_FILTER);
 	public static final BlockItem VOID_FILTER = createNormalBlockItem(YBlocks.VOID_FILTER);
 	public static final BlockItem BROOKITE_ORE = createNormalBlockItem(YBlocks.BROOKITE_ORE);
+	public static final BlockItem ROOT_OF_CONTINUITY = createNormalBlockItem(YBlocks.ROOT_OF_CONTINUITY);
 	
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));

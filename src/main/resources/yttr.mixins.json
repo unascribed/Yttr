@@ -48,6 +48,7 @@
 	"accessor.AccessorBlockEntity",
 	"accessor.AccessorDispenserBlock",
 	"accessor.AccessorBrewingRecipeRegistry",
+	"accessor.AccessorEndermanEntity",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
@@ -60,6 +61,8 @@
 	"bigblock.MixinBlock",
 	"deep.MixinPacketByteBuf",
 	"deep.MixinItemStack",
+	"continuity.MixinItemEntity",
+	"continuity.MixinEndIslandFeature",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",

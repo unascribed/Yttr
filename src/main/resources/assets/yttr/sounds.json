@@ -279,5 +279,36 @@
 	"drop_cast_cancel_audible": {
 		"sounds": ["yttr:drop_cast_cancel"],
 		"subtitle": "subtitles.yttr.drop_cast_cancel"
+	},
+	"rootbreak": {
+		"sounds": [
+			{"name": "yttr:rootbreak", "pitch": 1}
+		]
+	},
+	"rootstep": {
+		"sounds": [
+			{"name": "yttr:rootstep", "pitch": 1.2},
+			{"name": "yttr:rootstep", "pitch": 1.1},
+			{"name": "yttr:rootstep", "pitch": 1},
+			{"name": "yttr:rootstep", "pitch": 0.9},
+			{"name": "yttr:rootstep", "pitch": 0.8},
+			{"name": "yttr:rootstep", "pitch": 0.7}
+		]
+	},
+	"roothit": {
+		"sounds": [
+			{"name": "yttr:roothit1", "pitch": 1.2},
+			{"name": "yttr:roothit1", "pitch": 1.1},
+			{"name": "yttr:roothit1", "pitch": 1},
+			{"name": "yttr:roothit1", "pitch": 0.9},
+			{"name": "yttr:roothit1", "pitch": 0.8},
+			{"name": "yttr:roothit1", "pitch": 0.7},
+			{"name": "yttr:roothit2", "pitch": 1.2},
+			{"name": "yttr:roothit2", "pitch": 1.1},
+			{"name": "yttr:roothit2", "pitch": 1},
+			{"name": "yttr:roothit2", "pitch": 0.9},
+			{"name": "yttr:roothit2", "pitch": 0.8},
+			{"name": "yttr:roothit2", "pitch": 0.7}
+		]
 	}
 }
