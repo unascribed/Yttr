@@ -66,6 +66,15 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1);
 	
+	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
+	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
+	
+	private static final FabricBlockSettings HOLLOWHUGE_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
+			.sounds(HOLLOWHUGE_SOUNDS)
+			.strength(8);
+	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
+			.sounds(HOLLOW_SOUNDS);
+	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
 			.strength(4)
 			.requiresTool()
@@ -194,7 +203,7 @@ public class YBlocks {
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES), 10, 6, 10);
-	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
+	public static final Block YTTRIUM_PLATING = new Block(HOLLOW_SETTINGS);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES)
@@ -271,9 +280,9 @@ public class YBlocks {
 	@RenderLayer("cutout")
 	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
 	
-	public static final MagtankBlock MAGTANK = new MagtankBlock(METALLIC_SETTINGS);
+	public static final MagtankBlock MAGTANK = new MagtankBlock(HOLLOWHUGE_SETTINGS);
 //	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
-	public static final DSUBlock DSU = new DSUBlock(METALLIC_SETTINGS);
+	public static final DSUBlock DSU = new DSUBlock(HOLLOWHUGE_SETTINGS);
 	
 	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
 			.strength(4)

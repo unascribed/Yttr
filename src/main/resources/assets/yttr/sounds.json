@@ -283,7 +283,8 @@
 	"rootbreak": {
 		"sounds": [
 			{"name": "yttr:rootbreak", "pitch": 1}
-		]
+		],
+		"subtitle": "subtitles.block.generic.break"
 	},
 	"rootstep": {
 		"sounds": [
@@ -293,7 +294,30 @@
 			{"name": "yttr:rootstep", "pitch": 0.9},
 			{"name": "yttr:rootstep", "pitch": 0.8},
 			{"name": "yttr:rootstep", "pitch": 0.7}
-		]
+		],
+		"subtitle": "subtitles.block.generic.footsteps"
+	},
+	"roothitweak": {
+		"sounds": [
+			{"name": "yttr:rootstep", "pitch": 1.2},
+			{"name": "yttr:rootstep", "pitch": 1.1},
+			{"name": "yttr:rootstep", "pitch": 1},
+			{"name": "yttr:rootstep", "pitch": 0.9},
+			{"name": "yttr:rootstep", "pitch": 0.8},
+			{"name": "yttr:rootstep", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.hit"
+	},
+	"rootplace": {
+		"sounds": [
+			{"name": "yttr:rootstep", "pitch": 1.2},
+			{"name": "yttr:rootstep", "pitch": 1.1},
+			{"name": "yttr:rootstep", "pitch": 1},
+			{"name": "yttr:rootstep", "pitch": 0.9},
+			{"name": "yttr:rootstep", "pitch": 0.8},
+			{"name": "yttr:rootstep", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.place"
 	},
 	"roothit": {
 		"sounds": [
@@ -309,6 +333,117 @@
 			{"name": "yttr:roothit2", "pitch": 0.9},
 			{"name": "yttr:roothit2", "pitch": 0.8},
 			{"name": "yttr:roothit2", "pitch": 0.7}
-		]
+		],
+		"subtitle": "subtitles.block.generic.hit"
+	},
+	"hollowbreakhuge": {
+		"sounds": [
+			{"name": "yttr:hollowbreak", "pitch": 1.2},
+			{"name": "yttr:hollowbreak", "pitch": 1.1},
+			{"name": "yttr:hollowbreak", "pitch": 1},
+			{"name": "yttr:hollowbreak", "pitch": 0.9},
+			{"name": "yttr:hollowbreak", "pitch": 0.8},
+			{"name": "yttr:hollowbreak", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.break"
+	},
+	"hollowplacehuge": {
+		"sounds": [
+			{"name": "yttr:hollowplace", "pitch": 1.2},
+			{"name": "yttr:hollowplace", "pitch": 1.1},
+			{"name": "yttr:hollowplace", "pitch": 1},
+			{"name": "yttr:hollowplace", "pitch": 0.9},
+			{"name": "yttr:hollowplace", "pitch": 0.8},
+			{"name": "yttr:hollowplace", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.place"
+	},
+	"hollowplace": {
+		"sounds": [
+			{"name": "yttr:hollowstep1", "pitch": 1.2},
+			{"name": "yttr:hollowstep1", "pitch": 1.1},
+			{"name": "yttr:hollowstep1", "pitch": 1},
+			{"name": "yttr:hollowstep1", "pitch": 0.9},
+			{"name": "yttr:hollowstep1", "pitch": 0.8},
+			{"name": "yttr:hollowstep1", "pitch": 0.7},
+			{"name": "yttr:hollowstep2", "pitch": 1.2},
+			{"name": "yttr:hollowstep2", "pitch": 1.1},
+			{"name": "yttr:hollowstep2", "pitch": 1},
+			{"name": "yttr:hollowstep2", "pitch": 0.9},
+			{"name": "yttr:hollowstep2", "pitch": 0.8},
+			{"name": "yttr:hollowstep2", "pitch": 0.7},
+			{"name": "yttr:hollowstep3", "pitch": 1.2},
+			{"name": "yttr:hollowstep3", "pitch": 1.1},
+			{"name": "yttr:hollowstep3", "pitch": 1},
+			{"name": "yttr:hollowstep3", "pitch": 0.9},
+			{"name": "yttr:hollowstep3", "pitch": 0.8},
+			{"name": "yttr:hollowstep3", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.place"
+	},
+	"hollowbreak": {
+		"sounds": [
+			{"name": "yttr:hollowhit2", "pitch": 1.2},
+			{"name": "yttr:hollowhit2", "pitch": 1.1},
+			{"name": "yttr:hollowhit2", "pitch": 1},
+			{"name": "yttr:hollowhit2", "pitch": 0.9},
+			{"name": "yttr:hollowhit2", "pitch": 0.8},
+			{"name": "yttr:hollowhit2", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.break"
+	},
+	"hollowhit": {
+		"sounds": [
+			{"name": "yttr:hollowhit1", "pitch": 1, "volume": 0.8},
+			{"name": "yttr:hollowhit1", "pitch": 0.9, "volume": 0.8},
+			{"name": "yttr:hollowhit1", "pitch": 0.8, "volume": 0.8},
+			{"name": "yttr:hollowhit1", "pitch": 0.7, "volume": 0.8},
+			{"name": "yttr:hollowhit2", "pitch": 1.2},
+			{"name": "yttr:hollowhit2", "pitch": 1.1},
+			{"name": "yttr:hollowhit2", "pitch": 1},
+			{"name": "yttr:hollowhit2", "pitch": 0.9},
+			{"name": "yttr:hollowhit2", "pitch": 0.8},
+			{"name": "yttr:hollowhit2", "pitch": 0.7},
+			{"name": "yttr:hollowstep1", "pitch": 1.2},
+			{"name": "yttr:hollowstep1", "pitch": 1.1},
+			{"name": "yttr:hollowstep1", "pitch": 1},
+			{"name": "yttr:hollowstep1", "pitch": 0.9},
+			{"name": "yttr:hollowstep1", "pitch": 0.8},
+			{"name": "yttr:hollowstep1", "pitch": 0.7},
+			{"name": "yttr:hollowstep2", "pitch": 1.2},
+			{"name": "yttr:hollowstep2", "pitch": 1.1},
+			{"name": "yttr:hollowstep2", "pitch": 1},
+			{"name": "yttr:hollowstep2", "pitch": 0.9},
+			{"name": "yttr:hollowstep2", "pitch": 0.8},
+			{"name": "yttr:hollowstep2", "pitch": 0.7},
+			{"name": "yttr:hollowstep3", "pitch": 1.2},
+			{"name": "yttr:hollowstep3", "pitch": 1.1},
+			{"name": "yttr:hollowstep3", "pitch": 1},
+			{"name": "yttr:hollowstep3", "pitch": 0.9},
+			{"name": "yttr:hollowstep3", "pitch": 0.8},
+			{"name": "yttr:hollowstep3", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.hit"
+	},
+	"hollowstep": {
+		"sounds": [
+			{"name": "yttr:hollowstep1", "pitch": 1},
+			{"name": "yttr:hollowstep1", "pitch": 0.9},
+			{"name": "yttr:hollowstep1", "pitch": 0.8},
+			{"name": "yttr:hollowstep1", "pitch": 0.7},
+			{"name": "yttr:hollowstep2", "pitch": 1.2},
+			{"name": "yttr:hollowstep2", "pitch": 1.1},
+			{"name": "yttr:hollowstep2", "pitch": 1},
+			{"name": "yttr:hollowstep2", "pitch": 0.9},
+			{"name": "yttr:hollowstep2", "pitch": 0.8},
+			{"name": "yttr:hollowstep2", "pitch": 0.7},
+			{"name": "yttr:hollowstep3", "pitch": 1.2},
+			{"name": "yttr:hollowstep3", "pitch": 1.1},
+			{"name": "yttr:hollowstep3", "pitch": 1},
+			{"name": "yttr:hollowstep3", "pitch": 0.9},
+			{"name": "yttr:hollowstep3", "pitch": 0.8},
+			{"name": "yttr:hollowstep3", "pitch": 0.7}
+		],
+		"subtitle": "subtitles.block.generic.footsteps"
 	}
 }

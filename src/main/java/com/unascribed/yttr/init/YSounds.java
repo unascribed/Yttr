@@ -67,6 +67,14 @@ public class YSounds {
 	public static final SoundEvent ROOTBREAK = create("rootbreak");
 	public static final SoundEvent ROOTSTEP = create("rootstep");
 	public static final SoundEvent ROOTHIT = create("roothit");
+	public static final SoundEvent ROOTHITWEAK = create("roothitweak");
+	public static final SoundEvent ROOTPLACE = create("rootplace");
+	public static final SoundEvent HOLLOWBREAKHUGE = create("hollowbreakhuge");
+	public static final SoundEvent HOLLOWBREAK = create("hollowbreak");
+	public static final SoundEvent HOLLOWSTEP = create("hollowstep");
+	public static final SoundEvent HOLLOWHIT = create("hollowhit");
+	public static final SoundEvent HOLLOWPLACEHUGE = create("hollowplacehuge");
+	public static final SoundEvent HOLLOWPLACE = create("hollowplace");
 	
 	
 

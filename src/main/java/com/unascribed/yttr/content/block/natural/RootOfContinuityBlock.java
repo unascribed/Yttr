@@ -41,8 +41,8 @@ public class RootOfContinuityBlock extends Block {
 
 	public static final BooleanProperty ANCHOR = BooleanProperty.of("anchor");
 	
-	public static final BlockSoundGroup SOUND_GROUP = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTHIT, YSounds.ROOTSTEP);
-	public static final BlockSoundGroup SOUND_GROUP_INEFFECTIVE = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTSTEP, YSounds.ROOTSTEP);
+	public static final BlockSoundGroup SOUND_GROUP = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTPLACE, YSounds.ROOTHIT, YSounds.ROOTSTEP);
+	public static final BlockSoundGroup SOUND_GROUP_INEFFECTIVE = new BlockSoundGroup(1, 1, YSounds.ROOTBREAK, YSounds.ROOTSTEP, YSounds.ROOTPLACE, YSounds.ROOTHITWEAK, YSounds.ROOTSTEP);
 	
 	public static int maxPiercingLevel_MutableOnPurposeHiKat = 10;
 	
