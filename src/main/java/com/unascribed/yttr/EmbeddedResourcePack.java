@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -37,7 +37,7 @@ public class EmbeddedResourcePack implements ResourcePack {
 		try {
 			meta = new Gson().fromJson(Resources.toString(url("pack.mcmeta"), Charsets.UTF_8), JsonObject.class);
 		} catch (Throwable t) {
-			LogManager.getLogger("Yttr").warn("Failed to load meta for internal resource pack "+path);
+			YLog.warn("Failed to load meta for internal resource pack "+path);
 			meta = new JsonObject();
 		}
 		this.meta = meta;

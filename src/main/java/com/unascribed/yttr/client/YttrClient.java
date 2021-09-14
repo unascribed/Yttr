@@ -9,8 +9,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EmbeddedResourcePack;
@@ -394,29 +393,28 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				if (mc.world != null && mc.isIntegratedServerRunning() && !hasCheckedRegistry) {
-					Logger log = LogManager.getLogger("YttrRegistryCheck");
 					hasCheckedRegistry = true;
 					for (Map.Entry<RegistryKey<Block>, Block> en : Registry.BLOCK.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
-							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
 							if (!mc.getServer().getLootManager().getTableIds().contains(en.getValue().getLootTableId())) {
 								if (en.getValue().getDroppedStacks(en.getValue().getDefaultState(), new LootContext.Builder(mc.getServer().getOverworld())
 										.parameter(LootContextParameters.TOOL, new ItemStack(Items.APPLE))
 										.parameter(LootContextParameters.ORIGIN, Vec3d.ZERO)).isEmpty()) {
-									log.error("Block "+en.getKey().getValue()+" is missing a loot table and doesn't seem to have custom drops");
+									YLog.error("Block "+en.getKey().getValue()+" is missing a loot table and doesn't seem to have custom drops");
 								}
 							}
 						}
 					}
 					for (Map.Entry<RegistryKey<Item>, Item> en : Registry.ITEM.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
-							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
 					for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> en : Registry.ENTITY_TYPE.getEntries()) {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
-							checkTranslation(log, en.getKey().getValue(), en.getValue().getTranslationKey());
+							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 						}
 					}
 				}
@@ -475,9 +473,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		}
 	}
 
-	private void checkTranslation(Logger log, Identifier id, String key) {
+	private void checkTranslation(Identifier id, String key) {
 		if (!I18n.hasTranslation(key)) {
-			log.error("Translation "+key+" is missing for "+id);
+			YLog.error("Translation "+key+" is missing for "+id);
 		}
 	}
 

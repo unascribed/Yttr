@@ -3,7 +3,7 @@ package com.unascribed.yttr.client.cache;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 
 import com.google.gson.internal.UnsafeAllocator;
 import com.unascribed.yttr.client.util.DummyServerWorld;
@@ -36,7 +36,7 @@ public class SnareEntityTextureCache {
 			dummyWorldTemp = () -> sw;
 		} catch (Exception e) {
 			dummyWorldTemp = () -> MinecraftClient.getInstance().world;
-			LogManager.getLogger("Yttr").warn("Failed to construct dummy ServerWorld, using client world directly. Snare color determination may be wrong for some entities!", e);
+			YLog.warn("Failed to construct dummy ServerWorld, using client world directly. Snare color determination may be wrong for some entities!", e);
 		}
 		dummyWorld = dummyWorldTemp;
 	}
@@ -67,7 +67,7 @@ public class SnareEntityTextureCache {
 					try {
 						textureCache.put(data, renderer.getTexture(YItems.SNARE.createEntity(dummyWorld.get(), stack)));
 					} catch (Throwable e) {
-						LogManager.getLogger("Yttr").debug("Failed to determine color for entity", e);
+						YLog.debug("Failed to determine color for entity", e);
 						textureCache.put(data, TextureColorThief.MISSINGNO);
 					}
 				}

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
@@ -172,10 +172,10 @@ public class VoidLogic {
 					}
 				}
 			}
-			LogManager.getLogger("Yttr").info("{} performed a {} radius void at {}, {}, {} in {}. Undo with /yttr:void_undo just {} or undo all voids by this player with /yttr:void_undo by {}",
+			YLog.info("{} performed a {} radius void at {}, {}, {} in {}. Undo with /yttr:void_undo just {} or undo all voids by this player with /yttr:void_undo by {}",
 					user.getGameProfile().getName(), r, pos.getX(), pos.getY(), pos.getZ(), world.getRegistryKey().getValue(), undoName, user.getGameProfile().getName());
 		} catch (IOException e) {
-			LogManager.getLogger("Yttr").warn("Failed to void", e);
+			YLog.warn("Failed to void", e);
 		}
 	}
 

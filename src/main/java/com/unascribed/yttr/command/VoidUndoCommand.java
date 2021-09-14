@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -62,7 +62,7 @@ public class VoidUndoCommand {
 							}
 							ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.clean", count), true);
 						} catch (IOException e) {
-							LogManager.getLogger("Yttr").warn("Failed to clean undos", e);
+							YLog.warn("Failed to clean undos", e);
 							throw new UncheckedIOException(e);
 						}
 						return 1;
@@ -108,7 +108,7 @@ public class VoidUndoCommand {
 									}
 									return bldr.build();
 								} catch (IOException e) {
-									LogManager.getLogger("Yttr").warn("Failed to suggest undos", e);
+									YLog.warn("Failed to suggest undos", e);
 									throw new UncheckedIOException(e);
 								}
 							});
@@ -130,7 +130,7 @@ public class VoidUndoCommand {
 									}
 									ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.success", count), true);
 								} catch (IOException e) {
-									LogManager.getLogger("Yttr").warn("Failed to undo", e);
+									YLog.warn("Failed to undo", e);
 									throw new UncheckedIOException(e);
 								}
 							} else {
@@ -158,7 +158,7 @@ public class VoidUndoCommand {
 									}
 									return bldr.build();
 								} catch (IOException e) {
-									LogManager.getLogger("Yttr").warn("Failed to suggest undos", e);
+									YLog.warn("Failed to suggest undos", e);
 									throw new UncheckedIOException(e);
 								}
 							});
@@ -194,7 +194,7 @@ public class VoidUndoCommand {
 													Files.delete(file);
 												}
 											} catch (IOException e) {
-												LogManager.getLogger("Yttr").warn("Failed to undo "+fname, e);
+												YLog.warn("Failed to undo "+fname, e);
 											}
 										}
 										ctx.getSource().sendFeedback(new TranslatableText("commands.yttr.void_undo.success_multi", count, success), true);
@@ -207,7 +207,7 @@ public class VoidUndoCommand {
 									throw new CommandException(new TranslatableText("commands.yttr.void_undo.not_found"));
 								}
 							} catch (IOException e) {
-								LogManager.getLogger("Yttr").warn("Failed to read/update index", e);
+								YLog.warn("Failed to read/update index", e);
 								throw new UncheckedIOException(e);
 							}
 							return 1;

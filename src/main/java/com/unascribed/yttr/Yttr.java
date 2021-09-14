@@ -11,18 +11,18 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import com.unascribed.yttr.content.item.SuitArmorItem;
-import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YBrewing;
 import com.unascribed.yttr.init.YCommands;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YFluids;
+import com.unascribed.yttr.init.YFuels;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YNetworking;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.init.YScreenTypes;
@@ -30,22 +30,17 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
+import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.mechanics.SuitResource;
-import com.unascribed.yttr.mechanics.TicksAlwaysItem;
-import com.unascribed.yttr.mixin.accessor.AccessorBrewingRecipeRegistry;
-import com.unascribed.yttr.mixin.accessor.AccessorDispenserBlock;
-import com.unascribed.yttr.mixin.accessor.AccessorHorseBaseEntity;
+import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
-import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.EquipmentSlots;
-import com.unascribed.yttr.util.math.Vec2i;
+import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.EnumMultiset;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
@@ -53,26 +48,16 @@ import com.google.common.collect.Sets;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.inventory.EnderChestInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.PacketByteBuf;
@@ -82,8 +67,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.village.TradeOffers;
-import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
@@ -110,15 +93,12 @@ public class Yttr implements ModInitializer {
 		YScreenTypes.init();
 		YEnchantments.init();
 		YStats.init();
+		YBrewing.init();
+		YTrades.init();
+		YNetworking.init();
+		YFuels.init();
 		
-		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_POTION);
-		AccessorBrewingRecipeRegistry.registerPotionType(YItems.MERCURIAL_SPLASH_POTION);
-		
-		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.POTION, YItems.QUICKSILVER, YItems.MERCURIAL_POTION);
-		AccessorBrewingRecipeRegistry.registerItemRecipe(Items.SPLASH_POTION, YItems.QUICKSILVER, YItems.MERCURIAL_SPLASH_POTION);
-		
-		AccessorBrewingRecipeRegistry.registerItemRecipe(YItems.MERCURIAL_POTION, Items.GUNPOWDER, YItems.MERCURIAL_SPLASH_POTION);
-		
+		// TODO this should probably live somewhere else; this would be a nice time for an onPostInitialize {
 		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
 		Set<BlockState> known = Sets.newHashSet(states);
 		List<BlockState> newStates = Registry.BLOCK.stream()
@@ -126,218 +106,19 @@ public class Yttr implements ModInitializer {
 			.filter(bs -> !known.contains(bs))
 			.collect(Collectors.toList());
 		if (newStates.isEmpty()) {
-			LogManager.getLogger("Yttr").info("[Yttr] Looks like someone else already fixed the debug world.", newStates.size());
+			YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
 		} else {
-			LogManager.getLogger("Yttr").info("[Yttr] Adding {} missing blockstates to the debug world.", newStates.size());
+			YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
 			states.addAll(newStates);
 			int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
 			int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
 			DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
 			DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
-			LogManager.getLogger("Yttr").info("[Yttr] Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
+			YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
 		}
+		// }
 		
-		TradeOffers.Factory[] clericOffers = TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.CLERIC).get(2);
-		clericOffers = ArrayUtils.add(clericOffers, new TradeOffers.SellItemFactory(YItems.QUICKSILVER, 8, 1, 2));
-		TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.CLERIC).put(2, clericOffers);
-		
-		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON, 1800);
-		FuelRegistry.INSTANCE.add(YItems.ULTRAPURE_CARBON_BLOCK, 18000);
-		FuelRegistry.INSTANCE.add(YItems.COMPRESSED_ULTRAPURE_CARBON, 20000);
-		FuelRegistry.INSTANCE.add(YItems.COMPRESSED_ULTRAPURE_CARBON_BLOCK, 200000);
-		
-		DispenserBlock.registerBehavior(YItems.REPLICATOR, (pointer, stack) -> {
-			ItemStack inside = ReplicatorBlockItem.getHeldItem(stack);
-			Block b = pointer.getBlockState().getBlock();
-			if (b instanceof AccessorDispenserBlock) {
-				((AccessorDispenserBlock)b).yttr$getBehaviorForItem(inside).dispense(pointer, inside);
-			}
-			return stack;
-		});
-		
-		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "attack"), (server, player, handler, buf, responseSender) -> {
-			server.execute(() -> {
-				if (player != null && player.getMainHandStack().getItem() instanceof Attackable) {
-					((Attackable)player.getMainHandStack().getItem()).attack(player);
-				}
-			});
-		});
-		
-		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_pos"), (server, player, handler, buf, responseSender) -> {
-			if (player != null && player instanceof DiverPlayer) {
-				DiverPlayer diver = (DiverPlayer)player;
-				
-				int x = buf.readInt();
-				int z = buf.readInt();
-				server.execute(() -> {
-					if (diver.yttr$isDiving()) {
-						int ticks = server.getTicks();
-						int lastUpdate = diver.yttr$getLastDivePosUpdate();
-						int diff = ticks-lastUpdate;
-						diver.yttr$setLastDivePosUpdate(ticks);
-						if (lastUpdate != 0 && diff < 4) {
-							LogManager.getLogger("Yttr").warn("{} is updating their dive pos too quickly!", player.getName().getString());
-							correctDivePos(diver, responseSender);
-							return;
-						}
-						Vec2i vec = new Vec2i(x, z);
-						int distSq = vec.squaredDistanceTo(diver.yttr$getDivePos());
-						if (distSq == 0) return;
-						int moveSpeed = DIVING_BLOCKS_PER_TICK;
-						ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
-						if (!(is.getItem() instanceof SuitArmorItem)) return;
-						SuitArmorItem sai = (SuitArmorItem)is.getItem();
-						for (SuitResource sr : SuitResource.VALUES) {
-							moveSpeed /= sr.getSpeedDivider(sai.getResourceAmount(is, sr) <= 0);
-						}
-						int max = (moveSpeed+1)*diff;
-						if (distSq > max*max) {
-							LogManager.getLogger("Yttr").warn("{} dove too quickly! {}, {}", player.getName().getString(), x-diver.yttr$getDivePos().x, z-diver.yttr$getDivePos().z);
-							correctDivePos(diver, responseSender);
-							return;
-						}
-						double dist = MathHelper.sqrt(distSq);
-						int pressure = calculatePressure(player.getServerWorld(), diver.yttr$getDivePos().x, diver.yttr$getDivePos().z);
-						for (SuitResource sr : SuitResource.VALUES) {
-							sai.consumeResource(is, sr, sr.getConsumptionPerBlock(pressure)*(int)dist);
-						}
-						YStats.add(player, YStats.BLOCKS_DOVE, (int)(dist*100));
-						diver.yttr$setDivePos(vec);
-						PacketByteBuf resp = new PacketByteBuf(Unpooled.buffer(8));
-						resp.writeVarInt(pressure);
-						responseSender.sendPacket(new Identifier("yttr", "dive_pressure"), resp);
-					}
-				});
-			}
-		});
-		
-		ServerPlayNetworking.registerGlobalReceiver(new Identifier("yttr", "dive_to"), (server, player, handler, buf, responseSender) -> {
-			if (player != null && player instanceof DiverPlayer) {
-				DiverPlayer diver = (DiverPlayer)player;
-				
-				UUID id = buf.readUuid();
-				server.execute(() -> {
-					if (diver.yttr$isDiving() && diver.yttr$getFastDiveTarget() == null && diver.yttr$getKnownGeysers().contains(id)) {
-						Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
-						if (g != null) {
-							double distance = Math.sqrt(g.pos.getSquaredDistance(diver.yttr$getDivePos().x, g.pos.getY(), diver.yttr$getDivePos().z, true));
-							Multiset<SuitResource> resourcesNeeded = determineNeededResourcesForFastDive(distance);
-							Multiset<SuitResource> resourcesAvailable = determineAvailableResources(player);
-							if (!player.isCreative()) {
-								for (SuitResource sr : SuitResource.VALUES) {
-									if (resourcesAvailable.count(sr) < resourcesNeeded.count(sr)) {
-										informCantDive(responseSender, "not enough "+sr.name().toLowerCase(Locale.ROOT));
-										return;
-									}
-								}
-							}
-							ItemStack is = player.getEquippedStack(EquipmentSlot.CHEST);
-							SuitArmorItem sai = (SuitArmorItem)is.getItem();
-							for (SuitResource sr : SuitResource.VALUES) {
-								sai.consumeResource(is, sr, resourcesNeeded.count(sr));
-							}
-							int time = (int)((distance/DIVING_BLOCKS_PER_TICK)/5);
-							diver.yttr$setFastDiveTarget(g.pos);
-							diver.yttr$setFastDiveTime(time);
-							YStats.add(player, YStats.BLOCKS_DOVE, (int)(distance*100));
-							PacketByteBuf res = PacketByteBufs.create();
-							for (SuitResource sr : SuitResource.VALUES) {
-								res.writeVarInt(resourcesNeeded.count(sr));
-							}
-							res.writeVarInt(g.pos.getX());
-							res.writeVarInt(g.pos.getZ());
-							res.writeVarInt(time);
-							responseSender.sendPacket(new Identifier("yttr", "animate_fastdive"), res);
-						} else {
-							informCantDive(responseSender, "unknown geyser");
-							return;
-						}
-					} else {
-						informCantDive(responseSender, "bad state");
-						return;
-					}
-				});
-			}
-		});
-		
-		ServerTickEvents.START_WORLD_TICK.register((world) -> {
-			// TODO pick random chunks
-			for (BlockEntity be : ImmutableList.copyOf(world.blockEntities)) {
-				if (be instanceof Inventory && world.random.nextInt(40) == 0) {
-					Inventory inv = (Inventory)be;
-					for (int i = 0; i < inv.size(); i++) {
-						ItemStack is = inv.getStack(i);
-						if (is.getItem() instanceof TicksAlwaysItem) {
-							((TicksAlwaysItem)is.getItem()).blockInventoryTick(is, world, be.getPos(), i);
-							inv.setStack(i, is);
-						}
-					}
-				}
-			}
-			for (Entity e : world.getEntitiesByType(null, Predicates.alwaysTrue())) {
-				if (e instanceof PlayerEntity) {
-					EnderChestInventory inv = ((PlayerEntity) e).getEnderChestInventory();
-					for (int i = 0; i < inv.size(); i++) {
-						ItemStack is = inv.getStack(i);
-						if (is.getItem() instanceof TicksAlwaysItem) {
-							((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
-							inv.setStack(i, is);
-						}
-					}
-					continue;
-				}
-				if (e instanceof ItemEntity) {
-					ItemStack is = ((ItemEntity) e).getStack();
-					if (is.getItem() instanceof TicksAlwaysItem) {
-						((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, 0, false);
-						if (is.isEmpty()) e.remove();
-					}
-					continue;
-				}
-				if (e instanceof ItemFrameEntity) {
-					ItemStack is = ((ItemFrameEntity) e).getHeldItemStack();
-					if (is.getItem() instanceof TicksAlwaysItem) {
-						((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, 0, false);
-						if (is.isEmpty()) {
-							((ItemFrameEntity) e).setHeldItemStack(ItemStack.EMPTY, true);
-						}
-					}
-					continue;
-				}
-				if (world.random.nextInt(40) == 0) {
-					Set<ItemStack> seen = Sets.newIdentityHashSet();
-					if (e instanceof HorseBaseEntity) {
-						SimpleInventory inv = ((AccessorHorseBaseEntity)e).yttr$getItems();
-						for (int i = 0; i < inv.size(); i++) {
-							ItemStack is = inv.getStack(i);
-							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
-								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
-								inv.setStack(i, is);
-							}
-						}
-					}
-					if (e instanceof LivingEntity) {
-						for (EquipmentSlot slot : EquipmentSlot.values()) {
-							ItemStack is = ((LivingEntity) e).getEquippedStack(slot);
-							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
-								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, slot.getEntitySlotId(), false);
-								e.equipStack(slot, is);
-							}
-						}
-					}
-					if (e instanceof Inventory) {
-						Inventory inv = (Inventory)e;
-						for (int i = 0; i < inv.size(); i++) {
-							ItemStack is = inv.getStack(i);
-							if (is.getItem() instanceof TicksAlwaysItem && seen.add(is)) {
-								((TicksAlwaysItem)is.getItem()).inventoryTick(is, world, e, i, false);
-								inv.setStack(i, is);
-							}
-						}
-					}
-				}
-			}
-		});
+		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
 		
 	}
 
@@ -364,19 +145,14 @@ public class Yttr implements ModInitializer {
 		return resourcesNeeded;
 	}
 
-	private void informCantDive(PacketSender responseSender, String msg) {
-		PacketByteBuf res = PacketByteBufs.create();
-		res.writeString(msg);
-		responseSender.sendPacket(new Identifier("yttr", "cant_dive"), res);
-	}
-
-	private void correctDivePos(DiverPlayer diver, PacketSender responseSender) {
-		PacketByteBuf resp = new PacketByteBuf(Unpooled.buffer(8));
-		resp.writeInt(diver.yttr$getDivePos().x);
-		resp.writeInt(diver.yttr$getDivePos().z);
-		responseSender.sendPacket(new Identifier("yttr", "dive_pos"), resp);
-	}
-
+	/**
+	 * Invoke the given callback for every field of the given type in the given class. If an
+	 * annotation type is supplied, the annotation on the field (if any) will be passed as the
+	 * third argument to the callback.
+	 * <p>
+	 * This is the same method used by {@link #autoRegister}, so it can be used to scan fields in
+	 * holder classes for additional information in later passes.
+	 */
 	public static <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {
 		for (Field f : holder.getDeclaredFields()) {
 			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
@@ -389,12 +165,23 @@ public class Yttr implements ModInitializer {
 		}
 	}
 
+	/**
+	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
+	 * in the yttr namespace with a path equal to the field's name as lower case in the given
+	 * registry.
+	 */
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		eachRegisterableField(holder, type, null, (f, v, na) -> {
 			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);
 		});
 	}
 
+	/**
+	 * Serialize an Inventory to a ListTag. Unlike {@link Inventories#toTag}, this supports arbitrarily
+	 * large stack sizes. Unlike {@link SimpleInventory#getTags}, this keeps slot indexes and therefore
+	 * empty slots.
+	 * @see #deserializeInv
+	 */
 	public static ListTag serializeInv(Inventory inv) {
 		ListTag out = new ListTag();
 		for (int i = 0; i < inv.size(); i++) {
@@ -411,6 +198,10 @@ public class Yttr implements ModInitializer {
 		return out;
 	}
 	
+	/**
+	 * Deserialize a ListTag created by {@link #serializeInv} into the given Inventory. The
+	 * Inventory will be cleared first. Can load large stacks written by serializeInv.
+	 */
 	public static void deserializeInv(ListTag tag, Inventory inv) {
 		inv.clear();
 		for (int i = 0; i < tag.size(); i++) {
@@ -426,6 +217,9 @@ public class Yttr implements ModInitializer {
 		}
 	}
 
+	/**
+	 * @return {@code true} if the give entity is wearing a full Diving Suit
+	 */
 	public static boolean isWearingFullSuit(Entity entity) {
 		if (!(entity instanceof LivingEntity)) return false;
 		LivingEntity le = (LivingEntity)entity;
@@ -490,10 +284,19 @@ public class Yttr implements ModInitializer {
 		return maxPressure-Math.min(maxPressureGap, pressureEffect);
 	}
 
+	/**
+	 * Return a view of the given Inventory as a List. Modifications to the List will pass through
+	 * to the Inventory.
+	 */
 	public static List<ItemStack> asList(Inventory inv) {
 		return asListExcluding(inv, -1);
 	}
-		
+	
+	/**
+	 * Return a view of the given Inventory as a List, excluding the given slot by treating it as
+	 * empty. Modifications to the List will pass through to the Inventory, other than those to
+	 * the excluded slot.
+	 */
 	public static List<ItemStack> asListExcluding(Inventory inv, int exclude) {
 		return new AbstractList<ItemStack>() {
 			

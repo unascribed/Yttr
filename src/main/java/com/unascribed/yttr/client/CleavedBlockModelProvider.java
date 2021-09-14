@@ -1,6 +1,6 @@
 package com.unascribed.yttr.client;
 
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
@@ -23,8 +23,8 @@ public class CleavedBlockModelProvider implements ModelResourceProvider {
 	public @Nullable UnbakedModel loadModelResource(Identifier resourceId, ModelProviderContext context) throws ModelProviderException {
 		if (ID.equals(resourceId)) {
 			if (!RendererAccess.INSTANCE.hasRenderer()) {
-	 			LogManager.getLogger("Yttr").warn("No implementation of the Fabric Rendering API was detected. Cleaved blocks likely won't render, and may crash the game!");
-	 			LogManager.getLogger("Yttr").warn("You're probably using Sodium; consider updating to a dev build and installing Indium.");
+	 			YLog.warn("No implementation of the Fabric Rendering API was detected. Cleaved blocks likely won't render, and may crash the game!");
+	 			YLog.warn("You're probably using Sodium; consider updating to a dev build and installing Indium.");
 			}
 			return new CleavedBlockModel();
 		}

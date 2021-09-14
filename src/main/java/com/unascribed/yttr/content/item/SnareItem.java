@@ -2,7 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
+import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
@@ -137,7 +137,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 								}
 							}
 						} catch (Throwable t) {
-							LogManager.getLogger("Yttr").warn("Failed to update rotation for snare placement", t);
+							YLog.warn("Failed to update rotation for snare placement", t);
 						}
 						world.setBlockState(target, bs);
 						for (Direction dir : Direction.values()) {
