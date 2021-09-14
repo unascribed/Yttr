@@ -16,6 +16,8 @@ import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.mechanics.SuitResource;
+import com.unascribed.yttr.network.MessageC2SDivePos;
+import com.unascribed.yttr.network.MessageC2SDiveTo;
 import com.unascribed.yttr.world.Geyser;
 
 import com.google.common.base.Ascii;
@@ -23,15 +25,11 @@ import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class SuitScreen extends Screen {
@@ -122,10 +120,7 @@ public class SuitScreen extends Screen {
 		if (ticks == 1) client.getSoundManager().play(new SuitSound(YSounds.DIVE));
 		ticks++;
 		if (!fastDiving && ticks % 5 == 0) {
-			PacketByteBuf buf = PacketByteBufs.create();
-			buf.writeInt((int)posX);
-			buf.writeInt((int)posZ);
-			ClientPlayNetworking.send(new Identifier("yttr", "dive_pos"), buf);
+			new MessageC2SDivePos((int)posX, (int)posZ).sendToServer();
 		}
 		if (fastDiving) {
 			fastDiveTicks++;
@@ -337,9 +332,7 @@ public class SuitScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (button == 0) {
 			if (mouseOver != null) {
-				PacketByteBuf buf = PacketByteBufs.create();
-				buf.writeUuid(mouseOver.id);
-				ClientPlayNetworking.send(new Identifier("yttr", "dive_to"), buf);
+				new MessageC2SDiveTo(mouseOver.id).sendToServer();
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);

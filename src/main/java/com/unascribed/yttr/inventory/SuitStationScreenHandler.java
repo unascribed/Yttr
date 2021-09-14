@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YScreenTypes;
+import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YTags;
 
 import net.fabricmc.api.EnvType;
@@ -86,7 +86,7 @@ public class SuitStationScreenHandler extends ScreenHandler {
 	}
 	
 	public SuitStationScreenHandler(Inventory station, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
-		super(YScreenTypes.SUIT_STATION, syncId);
+		super(YHandledScreens.SUIT_STATION, syncId);
 		
 		this.station = station;
 		this.properties = properties;

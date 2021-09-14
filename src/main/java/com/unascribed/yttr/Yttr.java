@@ -19,13 +19,14 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YBrewing;
 import com.unascribed.yttr.init.YCommands;
 import com.unascribed.yttr.init.YEnchantments;
+import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YFuels;
 import com.unascribed.yttr.init.YItems;
-import com.unascribed.yttr.init.YNetworking;
+import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
-import com.unascribed.yttr.init.YScreenTypes;
+import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
@@ -35,6 +36,8 @@ import com.unascribed.yttr.init.YWorldGen;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
+import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.world.Geyser;
@@ -45,10 +48,8 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
-import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -60,7 +61,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -79,23 +79,29 @@ public class Yttr implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
+		// base content
 		YBlocks.init();
 		YBlockEntities.init();
 		YItems.init();
 		YSounds.init();
 		YFluids.init();
+		YEntities.init();
+		
+		// auxillary content
 		YStatusEffects.init();
 		YRecipeTypes.init();
 		YRecipeSerializers.init();
 		YWorldGen.init();
 		YCommands.init();
 		YTags.init();
-		YScreenTypes.init();
+		YHandledScreens.init();
 		YEnchantments.init();
+		
+		// general initialization
 		YStats.init();
 		YBrewing.init();
 		YTrades.init();
-		YNetworking.init();
+		YNetwork.init();
 		YFuels.init();
 		
 		// TODO this should probably live somewhere else; this would be a nice time for an onPostInitialize {
@@ -119,7 +125,6 @@ public class Yttr implements ModInitializer {
 		// }
 		
 		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
-		
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {
@@ -237,17 +242,11 @@ public class Yttr implements ModInitializer {
 
 	public static void syncDive(ServerPlayerEntity p) {
 		if (!(p instanceof DiverPlayer)) return;
-		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-		buf.writeInt((int)p.getX());
-		buf.writeInt((int)p.getZ());
 		GeysersState gs = GeysersState.get(p.getServerWorld());
-		for (UUID u : ((DiverPlayer)p).yttr$getKnownGeysers()) {
-			Geyser g = gs.getGeyser(u);
-			if (g != null) {
-				g.write(buf);
-			}
-		}
-		ServerPlayNetworking.send(p, new Identifier("yttr", "dive"), buf);
+		List<Geyser> geysers = ((DiverPlayer)p).yttr$getKnownGeysers().stream()
+				.map(gs::getGeyser).filter(g -> g != null)
+				.collect(Collectors.toList());
+		new MessageS2CDive((int)p.getPos().x, (int)p.getPos().z, geysers).sendTo(p);
 	}
 
 	public static void discoverGeyser(UUID id, ServerPlayerEntity player) {
@@ -258,9 +257,7 @@ public class Yttr implements ModInitializer {
 			Geyser g = GeysersState.get(player.getServerWorld()).getGeyser(id);
 			if (g == null) return;
 			knownGeysers.add(id);
-			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-			g.write(buf);
-			ServerPlayNetworking.send(player, new Identifier("yttr", "discovered_geyser"), buf);
+			new MessageS2CDiscoveredGeyser(g).sendTo(player);
 		}
 	}
 	

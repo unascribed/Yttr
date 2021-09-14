@@ -9,12 +9,11 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
+import com.unascribed.yttr.network.MessageS2CEffectorHole;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,13 +23,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult.Type;
@@ -88,11 +85,7 @@ public class EffectorItem extends Item {
 		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);
 		YStats.add(context.getPlayer(), YStats.BLOCKS_EFFECTED, amt*100);
 		if (!context.getPlayer().abilities.creativeMode) setFuel(stack, fuel-amt);
-		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-		buf.writeBlockPos(pos);
-		buf.writeByte(dir.ordinal());
-		buf.writeByte(amt);
-		((ServerWorld)world).getChunkManager().sendToNearbyPlayers(context.getPlayer(), ServerPlayNetworking.createS2CPacket(new Identifier("yttr", "effector"), buf));
+		new MessageS2CEffectorHole(pos, dir, amt).sendToAllWatching(context.getPlayer());
 		return ActionResult.SUCCESS;
 	}
 	

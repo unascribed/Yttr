@@ -50,5 +50,10 @@ I don't use them.
 
 ## REI and other mods support
 
-`compat`. At the time of writing, the only other mod Yttr integrates with is REI, so this package is
-dedicated to that. The REI support classes may move to `compat.rei` in the future.
+`compat`. Each mod Yttr has compat with gets its own subpackage.
+
+## Network system
+
+`network`. The `concrete` package contains a port of the Elytra Concrete Network system (which I
+wrote) from Forge 1.12 to Fabric 1.16. This networking system is also used in Not Enough Creativity.
+Packets are at root level.

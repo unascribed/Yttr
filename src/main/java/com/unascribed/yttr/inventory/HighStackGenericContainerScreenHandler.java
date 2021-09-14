@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import com.unascribed.yttr.init.YScreenTypes;
+import com.unascribed.yttr.init.YHandledScreens;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -134,51 +134,51 @@ public class HighStackGenericContainerScreenHandler extends GenericContainerScre
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x1(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X1, syncId, playerInventory, inventory, 1);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X1, syncId, playerInventory, inventory, 1);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x2(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X2, syncId, playerInventory, inventory, 2);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X2, syncId, playerInventory, inventory, 2);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x3(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X3, syncId, playerInventory, inventory, 3);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X3, syncId, playerInventory, inventory, 3);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x4(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X4, syncId, playerInventory, inventory, 4);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X4, syncId, playerInventory, inventory, 4);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x5(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X5, syncId, playerInventory, inventory, 5);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X5, syncId, playerInventory, inventory, 5);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x6(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X6, syncId, playerInventory, inventory, 6);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X6, syncId, playerInventory, inventory, 6);
 	}
 	
 	public static HighStackGenericContainerScreenHandler createGeneric9x1(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X1, syncId, playerInventory, new HighStackSimpleInventory(9*1), 1);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X1, syncId, playerInventory, new HighStackSimpleInventory(9*1), 1);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x2(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X2, syncId, playerInventory, new HighStackSimpleInventory(9*2), 2);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X2, syncId, playerInventory, new HighStackSimpleInventory(9*2), 2);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x3(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X3, syncId, playerInventory, new HighStackSimpleInventory(9*3), 3);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X3, syncId, playerInventory, new HighStackSimpleInventory(9*3), 3);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x4(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X4, syncId, playerInventory, new HighStackSimpleInventory(9*4), 4);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X4, syncId, playerInventory, new HighStackSimpleInventory(9*4), 4);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x5(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X5, syncId, playerInventory, new HighStackSimpleInventory(9*5), 5);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X5, syncId, playerInventory, new HighStackSimpleInventory(9*5), 5);
 	}
 
 	public static HighStackGenericContainerScreenHandler createGeneric9x6(int syncId, PlayerInventory playerInventory) {
-		return new HighStackGenericContainerScreenHandler(YScreenTypes.HIGH_STACK_GENERIC_9X6, syncId, playerInventory, new HighStackSimpleInventory(9*6), 6);
+		return new HighStackGenericContainerScreenHandler(YHandledScreens.HIGH_STACK_GENERIC_9X6, syncId, playerInventory, new HighStackSimpleInventory(9*6), 6);
 	}
 
 }

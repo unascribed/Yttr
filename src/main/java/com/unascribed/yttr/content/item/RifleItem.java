@@ -7,17 +7,16 @@ import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
+import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.util.Attackable;
 
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
 
-import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.texture.NativeImage;
@@ -29,7 +28,6 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -37,7 +35,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -212,19 +209,13 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				BlockHitResult bhr = world.raycast(new RaycastContext(start, end, ShapeType.COLLIDER, FluidHandling.NONE, user));
 				EntityHitResult ehr = correctEntityHit(ProjectileUtil.getEntityCollision(user.world, user, start, bhr.getPos(), new Box(start, end).expand(0.3), Predicates.alwaysTrue()), start, end);
 				HitResult hr = MoreObjects.firstNonNull(ehr, bhr);
-				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-				buf.writeInt(user.getEntityId());
 				int color = mode.color;
 				if (power > 1.2) {
 					color = 0xFFFFFFFF;
 				} else {
 					color |= (int)Math.min(255, power*255)<<24;
 				}
-				buf.writeInt(color);
-				buf.writeFloat((float)hr.getPos().x);
-				buf.writeFloat((float)hr.getPos().y);
-				buf.writeFloat((float)hr.getPos().z);
-				((ServerWorld)world).getChunkManager().sendToNearbyPlayers(user, ServerPlayNetworking.createS2CPacket(new Identifier("yttr", "beam"), buf));
+				new MessageS2CBeam(user.getEntityId(), color, (float)hr.getPos().x, (float)hr.getPos().y, (float)hr.getPos().z).sendToAllWatching(user);
 				if (ehr == null) {
 					BlockState bs = world.getBlockState(bhr.getBlockPos());
 					if (bs.getBlock() instanceof Shootable) {

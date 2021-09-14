@@ -1,5 +1,10 @@
 package com.unascribed.yttr.init;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
 import com.unascribed.yttr.Yttr;
@@ -28,13 +33,12 @@ import com.unascribed.yttr.content.block.mechanism.ReplicatorBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlockEntity;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlockEntity;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlockEntity;
-import com.unascribed.yttr.util.annotate.Renderer;
-
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.util.registry.Registry;
 
 public class YBlockEntities {
@@ -73,4 +77,10 @@ public class YBlockEntities {
 		Yttr.autoRegister(Registry.BLOCK_ENTITY_TYPE, YBlockEntities.class, BlockEntityType.class);
 	}
 
+	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface Renderer {
+		Class<? extends BlockEntityRenderer<?>> value();
+	}
+	
 }

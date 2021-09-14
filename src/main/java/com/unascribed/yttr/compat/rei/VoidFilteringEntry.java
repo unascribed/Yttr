@@ -1,4 +1,4 @@
-package com.unascribed.yttr.compat;
+package com.unascribed.yttr.compat.rei;
 
 import java.util.Collections;
 import java.util.List;

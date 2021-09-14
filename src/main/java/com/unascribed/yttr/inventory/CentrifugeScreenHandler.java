@@ -1,7 +1,7 @@
 package com.unascribed.yttr.inventory;
 
 import com.unascribed.yttr.init.YRecipeTypes;
-import com.unascribed.yttr.init.YScreenTypes;
+import com.unascribed.yttr.init.YHandledScreens;
 
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +40,7 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 	}
 	
 	public CentrifugeScreenHandler(Inventory centrifuge, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
-		super(YScreenTypes.CENTRIFUGE, syncId);
+		super(YHandledScreens.CENTRIFUGE, syncId);
 		world = playerInv.player.world;
 		
 		this.centrifuge = centrifuge;

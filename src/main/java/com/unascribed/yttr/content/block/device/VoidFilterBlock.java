@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.block.device;
 
 import java.util.Random;
 
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
 
 import net.minecraft.block.Block;
@@ -69,6 +70,7 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (!world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) && !world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER)) return ActionResult.PASS;
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof VoidFilterBlockEntity) {
 			player.openHandledScreen(new NamedScreenHandlerFactory() {

@@ -16,14 +16,13 @@ import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
+import com.unascribed.yttr.network.MessageS2CDiveEnd;
 import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
 import com.google.common.collect.Sets;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -32,7 +31,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 @Mixin(ServerPlayerEntity.class)
@@ -90,7 +88,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 					self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
 				} else {
 					yttr$isDiving = false;
-					ServerPlayNetworking.send(self, new Identifier("yttr", "dive_end"), PacketByteBufs.empty());
+					new MessageS2CDiveEnd().sendTo(self);
 					self.playSound(YSounds.DIVE_END, 2, 1);
 					double closestDist = Double.POSITIVE_INFINITY;
 					BlockPos closestPad = null;

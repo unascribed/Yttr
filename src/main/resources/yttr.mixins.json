@@ -49,6 +49,7 @@
 	"accessor.AccessorDispenserBlock",
 	"accessor.AccessorBrewingRecipeRegistry",
 	"accessor.AccessorEndermanEntity",
+	"accessor.AccessorCustomPayload",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
@@ -65,6 +66,7 @@
 	"continuity.MixinEndIslandFeature",
 	"continuity.MixinServerPlayNetworkHandler",
 	"continuity.MixinPlayerEntity",
+	"concrete.MixinServerPlayNetworkHandler",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
@@ -107,6 +109,7 @@
 	"bigblock.MixinClientPlayerInteractionManager",
 	"bigblock.MixinParticleManager",
 	"deep.MixinHandledScreen",
+	"concrete.MixinClientPlayNetworkHandler",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

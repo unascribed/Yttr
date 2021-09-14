@@ -1,8 +1,16 @@
 package com.unascribed.yttr.init;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.render.LampItemRenderer;
+import com.unascribed.yttr.client.render.ReplicatorItemRenderer;
+import com.unascribed.yttr.client.render.RifleItemRenderer;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.content.item.DiscOfContinuityItem;
@@ -94,12 +102,15 @@ public class YItems {
 	public static final BlockItem BROOKITE_ORE = createNormalBlockItem(YBlocks.BROOKITE_ORE);
 	public static final BlockItem ROOT_OF_CONTINUITY = createNormalBlockItem(YBlocks.ROOT_OF_CONTINUITY);
 	
+	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
 
+	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem FIXTURE = new LampBlockItem(YBlocks.FIXTURE, new Item.Settings()
 			.group(YItemGroups.LAMP));
 
+	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings()
 			.group(YItemGroups.LAMP));
 	
@@ -117,6 +128,7 @@ public class YItems {
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings()
 			.group(YItemGroups.MAIN));
 	
+	@BuiltinRenderer(ReplicatorItemRenderer.class)
 	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings()
 			.group(YItemGroups.MAIN));
 	
@@ -151,14 +163,17 @@ public class YItems {
 			.maxCount(1)
 			.group(YItemGroups.MAIN));
 	
+	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
 			.maxCount(1)
 			.group(YItemGroups.MAIN), 1, 1, false, 0x3E5656);
 	
+	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE_REINFORCED = new RifleItem(new Item.Settings()
 			.maxCount(1)
 			.group(YItemGroups.MAIN), 0.85f, 1, true, 0x223333);
 	
+	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE_OVERCLOCKED = new RifleItem(new Item.Settings()
 			.maxCount(1)
 			.group(YItemGroups.MAIN), 1.65f, 2, false, 0x111111);
@@ -272,18 +287,22 @@ public class YItems {
 		
 	};
 	
+	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.HEAD, new Item.Settings()
 			.fireproof()
 			.group(YItemGroups.MAIN));
 	
+	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.CHEST, new Item.Settings()
 			.fireproof()
 			.group(YItemGroups.MAIN));
 	
+	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.LEGS, new Item.Settings()
 			.fireproof()
 			.group(YItemGroups.MAIN));
 	
+	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
 			.fireproof()
 			.group(YItemGroups.MAIN));
@@ -291,6 +310,7 @@ public class YItems {
 	public static final Item ARMOR_PLATING = new Item(new Item.Settings()
 			.group(YItemGroups.MAIN));
 	
+	@SimpleArmorTexture("yttr:goggles")
 	public static final ArmorItem GOGGLES = new ArmorItem(new ArmorMaterial() {
 		
 		@Override
@@ -431,5 +451,17 @@ public class YItems {
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
+	}
+	
+	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface SimpleArmorTexture {
+		String value();
+	}
+	
+	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface BuiltinRenderer {
+		Class<?> value();
 	}
 }

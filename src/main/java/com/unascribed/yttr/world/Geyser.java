@@ -2,6 +2,7 @@ package com.unascribed.yttr.world;
 
 import java.util.UUID;
 
+import com.unascribed.yttr.network.concrete.ImmutableMarshallable;
 import com.unascribed.yttr.util.math.Vec2i;
 
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
-public final class Geyser {
+public final class Geyser implements ImmutableMarshallable {
 
 	public final UUID id;
 	public final BlockPos pos;
@@ -41,20 +42,23 @@ public final class Geyser {
 				tag.getString("Name")
 		);
 	}
-	
-	public void write(PacketByteBuf buf) {
+
+	// implements ImmutableMarshallable {
+	@Override
+	public void writeToNetwork(PacketByteBuf buf) {
 		buf.writeUuid(id);
 		buf.writeBlockPos(pos);
 		buf.writeString(name);
 	}
 	
-	public static Geyser read(PacketByteBuf buf) {
+	public static Geyser readFromNetwork(PacketByteBuf buf) {
 		return new Geyser(
 				buf.readUuid(),
 				buf.readBlockPos(),
 				buf.readString()
 		);
 	}
+	// }
 
 	@Override
 	public int hashCode() {

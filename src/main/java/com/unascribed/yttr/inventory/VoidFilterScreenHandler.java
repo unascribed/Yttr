@@ -1,6 +1,6 @@
 package com.unascribed.yttr.inventory;
 
-import com.unascribed.yttr.init.YScreenTypes;
+import com.unascribed.yttr.init.YHandledScreens;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -38,7 +38,7 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 	}
 	
 	public VoidFilterScreenHandler(Inventory voidFilter, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
-		super(YScreenTypes.VOID_FILTER, syncId);
+		super(YHandledScreens.VOID_FILTER, syncId);
 		world = playerInv.player.world;
 		
 		this.voidFilter = voidFilter;
