@@ -77,9 +77,9 @@ public class RifleHUDRenderer extends IHasAClient {
 						int textureWidth = RifleMode.VALUES.size()*2;
 						int textureHeight = 2;
 						Matrix4f mat = matrices.peek().getModel();
-						float x1 = 4-(p/8f);
+						float x1 = 4.4f-(p/8f);
 						float x2 = x1 + width;
-						float y1 = -1;
+						float y1 = -0.88f;
 						float y2 = y1 + height;
 						float minU = (u + 0) / textureWidth;
 						float maxU = (u + width) / textureWidth;
@@ -90,7 +90,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						bufferBuilder.vertex(mat, x1, y2-0.2f, 0).texture(minU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y2, 0).texture(maxU, maxV).next();
 						bufferBuilder.vertex(mat, x2, y1, 0).texture(maxU, minV).next();
-						bufferBuilder.vertex(mat, x1, y1+0.2f, 0).texture(minU, minV).next();
+						bufferBuilder.vertex(mat, x1, y1-0.2f, 0).texture(minU, minV).next();
 						bufferBuilder.end();
 						BufferRenderer.draw(bufferBuilder);
 					}
