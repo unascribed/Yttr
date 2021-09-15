@@ -56,6 +56,8 @@
 	"item.yttr.brookite_hoe": "Brookite Hoe",
 	"item.yttr.drop_of_continuity": "Drop of Continuity",
 	"item.yttr.disc_of_continuity": "Disc of Continuity",
+	"item.yttr.music_disc_papillons": "Music Disc",
+	"item.yttr.music_disc_void": "§8Music Disc",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -71,6 +73,9 @@
 	"item.yttr.goggles.tip.4": "",
 	"item.yttr.goggles.tip.5": "§7(Equip a Skeletal Sorter with",
 	"item.yttr.goggles.tip.6": "§7these to filter by NBT.)",
+	
+	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
+	"item.yttr.music_disc_void.desc": "§0Aureate - void",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Block of Yttrium",

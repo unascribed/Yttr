@@ -17,7 +17,7 @@ public class MixinGameRenderer {
 	@Inject(at=@At("RETURN"), method="getFov", cancellable=true)
 	private void getFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> ci) {
 		if (RifleHUDRenderer.scopeTime > 0) {
-			float target = 10;
+			float target = 5;
 			float res = target+((float)ci.getReturnValueD()-target)*(1-RifleHUDRenderer.scopeA);
 			ci.setReturnValue(Double.valueOf(res));
 		}

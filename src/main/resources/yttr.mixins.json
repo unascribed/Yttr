@@ -117,6 +117,8 @@
 	"bigblock.MixinParticleManager",
 	"deep.MixinHandledScreen",
 	"concrete.MixinClientPlayNetworkHandler",
+	"ibxm.MixinSoundLoader",
+	"ibxm.MixinSound",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

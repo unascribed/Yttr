@@ -452,5 +452,11 @@
 	},
 	"rifle_scope": {
 		"sounds": [ "yttr:rifle_scope" ]
+	},
+	"papillons": {
+		"sounds": [ { "name": "yttr:papillons.yttr_xm", "stream": true } ]
+	},
+	"void_music": {
+		"sounds": [ { "name": "yttr:void.yttr_xm", "stream": true } ]
 	}
 }

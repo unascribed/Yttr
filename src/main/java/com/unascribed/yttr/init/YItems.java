@@ -54,6 +54,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.MusicDiscItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
@@ -450,6 +451,9 @@ public class YItems {
 	
 	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(1));
 	public static final DiscOfContinuityItem DISC_OF_CONTINUITY = new DiscOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(16));
+	
+	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

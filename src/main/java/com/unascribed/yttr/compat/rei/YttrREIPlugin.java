@@ -78,6 +78,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		List<VoidFilteringRecipe> sorted = Lists.newArrayList(recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.VOID_FILTERING));
 		sorted.sort((a, b) -> Double.compare(b.getChance(), a.getChance()));
 		for (VoidFilteringRecipe r : sorted) {
+			if (r.isHidden()) continue;
 			recipeHelper.registerDisplay(new VoidFilteringEntry(r.getId(), EntryStack.create(r.getOutput()), r.getChance()));
 		}
 		for (PistonSmashingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.PISTON_SMASHING)) {

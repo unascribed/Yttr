@@ -23,12 +23,14 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 	protected final String group;
 	protected final ItemStack output;
 	protected final float chance;
+	protected final boolean hidden;
 
-	public VoidFilteringRecipe(Identifier id, String group, ItemStack output, float chance) {
+	public VoidFilteringRecipe(Identifier id, String group, ItemStack output, float chance, boolean hidden) {
 		this.id = id;
 		this.group = group;
 		this.output = output;
 		this.chance = chance;
+		this.hidden = hidden;
 	}
 
 	@Override
@@ -77,6 +79,10 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 	public float getChance() {
 		return chance;
 	}
+	
+	public boolean isHidden() {
+		return hidden;
+	}
 
 	@Override
 	public RecipeType<?> getType() {
@@ -95,7 +101,7 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 			String group = JsonHelper.getString(obj, "group", "");
 			ItemStack output = ShapedRecipe.getItemStack(obj.getAsJsonObject("output"));
 			float chance = JsonHelper.getFloat(obj, "chance");
-			return new VoidFilteringRecipe(id, group, output, chance);
+			return new VoidFilteringRecipe(id, group, output, chance, JsonHelper.getBoolean(obj, "hidden", false));
 		}
 
 		@Override
@@ -103,14 +109,18 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 			String group = buf.readString(32767);
 			ItemStack output = buf.readItemStack();
 			float chance = buf.readFloat();
-			return new VoidFilteringRecipe(id, group, output, chance);
+			boolean hidden = chance < 0;
+			if (hidden) {
+				chance = -chance;
+			}
+			return new VoidFilteringRecipe(id, group, output, chance, hidden);
 		}
 
 		@Override
 		public void write(PacketByteBuf buf, VoidFilteringRecipe recipe) {
 			buf.writeString(recipe.group);
 			buf.writeItemStack(recipe.output);
-			buf.writeFloat(recipe.chance);
+			buf.writeFloat(recipe.chance*(recipe.hidden ? -1 : 1));
 		}
 		
 	}

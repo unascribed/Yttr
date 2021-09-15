@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "minecraft:creeper_drop_music_discs"
+    },
+    {
+      "item": "yttr:yttrium_ingot"
+    }
+  ],
+  "result": {
+    "item": "yttr:music_disc_papillons",
+    "count": 1
+  }
+}
