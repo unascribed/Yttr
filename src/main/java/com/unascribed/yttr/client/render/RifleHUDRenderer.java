@@ -96,18 +96,19 @@ public class RifleHUDRenderer extends IHasAClient {
 					}
 					mc.getTextureManager().bindTexture(SCOPEAMMO);
 					matrices.push(); {
-						float f = (1-(rifleItem.getRemainingAmmo(rifleStack)/(float)rifleItem.getMaxAmmo(rifleStack)))*2.2f;
+						float mH = 1.8f;
+						float f = (1-(rifleItem.getRemainingAmmo(rifleStack)/(float)rifleItem.getMaxAmmo(rifleStack)))*mH;
 						matrices.scale(4, 4/3f, 0);
-						float u = mode.ordinal()*2;
+						float u = 0;
 						float v = f;
-						float width = 2;
-						float height = 2.2f-f;
-						float textureWidth = 2;
-						float textureHeight = 2.2f;
+						float width = mH;
+						float height = mH-f;
+						float textureWidth = mH;
+						float textureHeight = mH;
 						Matrix4f mat = matrices.peek().getModel();
-						float x1 = -1.35f+(p/32f);
+						float x1 = -1.3f+(p/32f);
 						float x2 = x1 + width;
-						float y1 = f-1.1f;
+						float y1 = f-(mH/2);
 						float y2 = y1 + height;
 						float minU = (u + 0) / textureWidth;
 						float maxU = (u + width) / textureWidth;

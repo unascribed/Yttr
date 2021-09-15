@@ -43,7 +43,8 @@
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-midpoints="true"
      inkscape:snap-center="false"
-     inkscape:snap-smooth-nodes="true" />
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -65,13 +66,13 @@
        style="opacity:1;fill:none;fill-opacity:0.16244728;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.1984375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.99999714;stroke-opacity:1;paint-order:stroke fill markers"
        id="path942"
        sodipodi:type="arc"
-       sodipodi:cx="2.4807701"
+       sodipodi:cx="2.8819139"
        sodipodi:cy="293.82498"
-       sodipodi:rx="2.1578796"
-       sodipodi:ry="2.8525393"
+       sodipodi:rx="2.6929195"
+       sodipodi:ry="3.5499005"
        sodipodi:start="2.0943951"
        sodipodi:end="4.1887902"
        sodipodi:open="true"
-       d="M 1.4018303,296.29535 A 2.1578796,2.8525393 0 0 1 0.32289052,293.82498 2.1578796,2.8525393 0 0 1 1.4018303,291.35461" />
+       d="m 1.5354542,296.89929 a 2.6929195,3.5499005 0 0 1 -1.34645979,-3.07431 2.6929195,3.5499005 0 0 1 1.34645969,-3.0743" />
   </g>
 </svg>
