@@ -45,6 +45,7 @@ import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -52,6 +53,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -319,6 +321,28 @@ public class YBlocks {
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1)
 		);
+	
+	public static final AirBlock TEMPORARY_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
+			.noCollision()
+			.air()
+			.nonOpaque()
+			.luminance(9)
+			.ticksRandomly()
+		) {
+		@Override
+		public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+			if (random.nextInt(4) == 0) {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			}
+		}
+	};
+	
+	public static final AirBlock PERMANENT_LIGHT_AIR = new AirBlock(FabricBlockSettings.of(Material.AIR)
+			.noCollision()
+			.air()
+			.nonOpaque()
+			.luminance(15)
+		) {};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

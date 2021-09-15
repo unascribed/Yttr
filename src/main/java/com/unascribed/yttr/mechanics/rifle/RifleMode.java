@@ -2,6 +2,8 @@ package com.unascribed.yttr.mechanics.rifle;
 
 import java.util.function.Supplier;
 
+import com.unascribed.yttr.content.item.RifleItem;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.VoidLogic;
@@ -11,6 +13,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -21,6 +25,8 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public enum RifleMode {
@@ -126,6 +132,52 @@ public enum RifleMode {
 			VoidLogic.doVoid((PlayerEntity)user, user.world, user.getPos(), 12);
 		}
 		
+	},
+	LIGHT(Formatting.GOLD, 0xFFAA00, () -> YItems.GLOWING_GAS, 8, 2f) {
+		@Override
+		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
+			Vec3d start = RifleItem.getMuzzlePos(user, false);
+			double len = MathHelper.sqrt(start.squaredDistanceTo(hit.getPos()));
+			double diffX = hit.getPos().x-start.x;
+			double diffY = hit.getPos().y-start.y;
+			double diffZ = hit.getPos().z-start.z;
+			BlockPos.Mutable mut = new BlockPos.Mutable();
+			int count = (int)(len*4);
+			for (int i = 0; i < count; i++) {
+				double t = (i/(double)count);
+				double x = start.x+(diffX*t);
+				double y = start.y+(diffY*t);
+				double z = start.z+(diffZ*t);
+				mut.set(x, y, z);
+				if (user.world.getBlockState(mut).isAir()) {
+					user.world.setBlockState(mut, (power > 1.1f ? YBlocks.PERMANENT_LIGHT_AIR : YBlocks.TEMPORARY_LIGHT_AIR).getDefaultState());
+				}
+			}
+			if (hit instanceof EntityHitResult) {
+				Entity e = ((EntityHitResult)hit).getEntity();
+				if (e instanceof LivingEntity) {
+					((LivingEntity) e).addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, (int)(200*power)));
+				}
+			} else if (hit instanceof BlockHitResult && power > 0.8f) {
+				BlockHitResult bhr = (BlockHitResult)hit;
+				BlockPos end = bhr.getBlockPos().offset(bhr.getSide());
+				if (user.world.getBlockState(bhr.getBlockPos()).isAir()) {
+					user.world.setBlockState(bhr.getBlockPos(), YBlocks.PERMANENT_LIGHT_AIR.getDefaultState());
+				} else if (user.world.getBlockState(end).isAir()) {
+					user.world.setBlockState(end, YBlocks.PERMANENT_LIGHT_AIR.getDefaultState());
+				}
+			}
+		}
+		
+		@Override
+		public void handleBackfire(LivingEntity user, ItemStack stack) {
+			user.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 300));
+			for (BlockPos bp : BlockPos.iterate(user.getBlockPos().add(-2, -2, -2), user.getBlockPos().add(2, 2, 2))) {
+				if (user.world.getBlockState(bp).isAir()) {
+					user.world.setBlockState(bp, YBlocks.TEMPORARY_LIGHT_AIR.getDefaultState());
+				}
+			}
+		}
 	}
 	;
 	private static final RifleMode[] VALUES = values();

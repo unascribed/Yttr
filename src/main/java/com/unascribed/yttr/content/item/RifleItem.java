@@ -101,6 +101,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 								ammo = Math.max(1, mode.shotsPerItem/ammoMod);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+							} else if (mode == RifleMode.LIGHT) {
+								ammo = (mode.shotsPerItem*need)/ammoMod;
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, user.getSoundCategory(), 1, 1);
+								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
 							} else {
 								ammo = (mode.shotsPerItem*need)/ammoMod;
 								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
