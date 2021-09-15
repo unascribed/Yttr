@@ -12,7 +12,11 @@ public class SuitSound extends PositionedSoundInstance {
 	}
 	
 	public SuitSound(SoundEvent event, float volume) {
-		super(event, SoundCategory.MASTER, volume, 1, 0, 0, 0);
+		this(event, volume, SoundCategory.MASTER);
+	}
+	
+	public SuitSound(SoundEvent event, float volume, SoundCategory category) {
+		super(event, category, volume, 1, 0, 0, 0);
 		attenuationType = AttenuationType.NONE;
 	}
 	
@@ -25,6 +29,10 @@ public class SuitSound extends PositionedSoundInstance {
 			z = mc.player.getPos().z;
 		}
 		return true;
+	}
+	
+	public void setVolume(float v) {
+		this.volume = v;
 	}
 	
 }

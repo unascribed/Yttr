@@ -10,6 +10,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.suit.SuitMusic;
 import com.unascribed.yttr.client.suit.SuitRenderer;
 import com.unascribed.yttr.client.suit.SuitSound;
 import com.unascribed.yttr.content.item.SuitArmorItem;
@@ -29,6 +30,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.MathHelper;
 
@@ -66,6 +68,8 @@ public class SuitScreen extends Screen {
 	private int errorId;
 	private int errorTicks;
 	private String error;
+	
+	private SuitSound music;
 	
 	public SuitScreen(int x, int z, List<Geyser> geysers) {
 		super(new LiteralText(""));
@@ -119,6 +123,16 @@ public class SuitScreen extends Screen {
 	public void tick() {
 		if (ticks == 1) client.getSoundManager().play(new SuitSound(YSounds.DIVE));
 		ticks++;
+		if (ticks > 20*20) {
+			if (music == null) {
+				music = new SuitMusic(YSounds.VOID_MUSIC, 0.5f, SoundCategory.AMBIENT);
+			}
+			int time = ticks-(20*20);
+			music.setVolume(MathHelper.clamp(time/(20*20f), 0.05f, 0.5f));
+			if (!client.getSoundManager().isPlaying(music)) {
+				client.getSoundManager().play(music);
+			}
+		}
 		if (!fastDiving && ticks % 5 == 0) {
 			new MessageC2SDivePos((int)posX, (int)posZ).sendToServer();
 		}
@@ -262,7 +276,7 @@ public class SuitScreen extends Screen {
 				blinkSpeed = 12;
 			}
 			if (blinkSpeed != -1 && (ticks/blinkSpeed)%4 != 0) {
-				if (!hasDangered) {
+				if (!hasDangered && !client.player.isCreative()) {
 					hasDangered = true;
 					client.getSoundManager().play(new SuitSound(YSounds.DANGER));
 				}
