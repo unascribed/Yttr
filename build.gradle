@@ -28,6 +28,9 @@ repositories {
 	maven {
 		name = "JitPack"
 		url = "https://jitpack.io"
+		content {
+			includeGroup 'io.github.prospector'
+		}
 	}
 	maven { url "https://maven.shedaniel.me/" }
 }
@@ -44,9 +47,6 @@ dependencies {
 	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
 
 	modRuntime("io.github.prospector:modmenu:1.16.6") {
-		transitive = false
-	}
-	modRuntime("com.github.SuperCoder7979:databreaker:715b589") {
 		transitive = false
 	}
 }
