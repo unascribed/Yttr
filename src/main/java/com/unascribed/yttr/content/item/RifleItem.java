@@ -78,14 +78,16 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 					ammo = mode.shotsPerItem;
 				} else {
 					for (int i = 0; i < user.inventory.size(); i++) {
+						boolean replicator = false;
 						ItemStack is = user.inventory.getStack(i);
 						if (is.getItem() == YItems.REPLICATOR) {
 							is = ReplicatorBlockItem.getHeldItem(is);
 							is.setCount(64);
+							replicator = true;
 						}
 						if (is.getItem() == mode.item.get().asItem() && is.getCount() >= need) {
 							Item remainder = is.getItem().getRecipeRemainder();
-							if (remainder != null) {
+							if (!replicator && remainder != null) {
 								if (is.getCount() == need) {
 									user.inventory.setStack(i, new ItemStack(remainder));
 								} else {
