@@ -449,5 +449,8 @@
 	"metal_button": {
 		"sounds": [ "yttr:metal_button" ],
 		"subtitle": "subtitles.block.button.click"
+	},
+	"rifle_scope": {
+		"sounds": [ "yttr:rifle_scope" ]
 	}
 }

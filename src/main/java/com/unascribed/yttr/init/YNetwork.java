@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import com.unascribed.yttr.network.MessageC2SAttack;
 import com.unascribed.yttr.network.MessageC2SDivePos;
 import com.unascribed.yttr.network.MessageC2SDiveTo;
+import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.network.MessageS2CAnimateFastDive;
 import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
@@ -33,6 +34,7 @@ public class YNetwork {
 		CONTEXT.register(MessageS2CDivePressure.class);
 		CONTEXT.register(MessageS2CEffectorHole.class);
 		CONTEXT.register(MessageS2CVoidBall.class);
+		CONTEXT.register(MessageC2SRifleMode.class);
 	}
 	
 }

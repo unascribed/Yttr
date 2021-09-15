@@ -18,6 +18,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
+import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.BigBlock;
@@ -202,9 +203,13 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			EffectorRenderer.tick();
 			SuitHUDRenderer.tick();
 			ReplicatorRenderer.tick();
+			RifleHUDRenderer.tick();
 		});
 		
-		HudRenderCallback.EVENT.register(SuitHUDRenderer::render);
+		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
+			SuitHUDRenderer.render(matrixStack, tickDelta);
+			RifleHUDRenderer.render(matrixStack, tickDelta);
+		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);

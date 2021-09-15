@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
@@ -142,10 +143,50 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	
 	@Override
 	public void attack(PlayerEntity user) {
+		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
+		if (!held.hasTag()) held.setTag(new CompoundTag());
+		boolean scoped = held.getTag().getBoolean("Scoped");
+		held.getTag().putBoolean("Scoped", !scoped);
+		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
+	}
+	
+	public int getPotentialAmmoCount(PlayerEntity user, RifleMode mode) {
+		if (user.isCreative()) return -1;
+		int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
+		int ammo = 0;
+		for (int i = 0; i < user.inventory.size(); i++) {
+			boolean replicator = false;
+			ItemStack is = user.inventory.getStack(i);
+			if (is.getItem() == YItems.REPLICATOR) {
+				is = ReplicatorBlockItem.getHeldItem(is);
+				is.setCount(64);
+				replicator = true;
+			}
+			if (is.getItem() == mode.item.get().asItem()) {
+				if (replicator) return -1;
+				if (mode == RifleMode.VOID) {
+					ammo += Math.max(1, mode.shotsPerItem/ammoMod);
+				} else if (mode == RifleMode.LIGHT) {
+					ammo += (mode.shotsPerItem*(is.getCount()/need))/ammoMod;
+				} else {
+					ammo += (mode.shotsPerItem*(is.getCount()/need))/ammoMod;
+				}
+			}
+		}
+		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
+		if (held.getItem() instanceof RifleItem) {
+			RifleItem ri = (RifleItem)held.getItem();
+			if (ri.getMode(held) == mode) {
+				ammo += ri.getRemainingAmmo(held);
+			}
+		}
+		return ammo;
+	}
+	
+	public void changeMode(PlayerEntity user, RifleMode mode) {
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
 		RifleMode oldMode = getMode(stack);
-		RifleMode mode = user.isSneaking() ? oldMode.prev() : oldMode.next();
 		if (setMode(stack, mode)) {
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 0.75f);
 			user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_WASTE, user.getSoundCategory(), 3, 1f);
@@ -377,6 +418,12 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		Vec3d look = entity.getRotationVec(0);
 		Vec3d right = ((AccessorEntity)entity).yttr$invokeGetRotationVector(0, entity.getYaw(0)+90);
 		Vec3d down = look.crossProduct(right);
+		if (entity instanceof LivingEntity) {
+			ItemStack stack = ((LivingEntity) entity).getStackInHand(Hand.MAIN_HAND);
+			if (stack.getItem() instanceof RifleItem && stack.hasTag() && stack.getTag().getBoolean("Scoped")) {
+				return eyes.add(down.multiply(0.075));
+			}
+		}
 		if (arm == Arm.LEFT) right = right.multiply(-1);
 		return eyes.add(look.multiply(0.5)).add(right.multiply(0.25)).add(down.multiply(0.075));
 	}

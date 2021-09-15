@@ -19,6 +19,7 @@ public class YSounds {
 	public static final SoundEvent RIFLE_VENT = create("rifle_vent");
 	public static final SoundEvent RIFLE_LOAD = create("rifle_load");
 	public static final SoundEvent RIFLE_WASTE = create("rifle_waste");
+	public static final SoundEvent RIFLE_SCOPE = create("rifle_scope");
 	public static final SoundEvent VOID = create("void");
 	public static final SoundEvent DISSOLVE = create("dissolve");
 	public static final SoundEvent CRAFT_AWARE_HOPPER = create("craft_aware_hopper");

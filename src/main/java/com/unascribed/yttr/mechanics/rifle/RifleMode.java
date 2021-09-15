@@ -8,6 +8,8 @@ import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.VoidLogic;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -133,7 +135,7 @@ public enum RifleMode {
 		}
 		
 	},
-	LIGHT(Formatting.GOLD, 0xFFAA00, () -> YItems.GLOWING_GAS, 8, 2f) {
+	LIGHT(Formatting.YELLOW, 0xFFFF00, () -> YItems.GLOWING_GAS, 8, 2f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			Vec3d start = RifleItem.getMuzzlePos(user, false);
@@ -180,7 +182,7 @@ public enum RifleMode {
 		}
 	}
 	;
-	private static final RifleMode[] VALUES = values();
+	public static final ImmutableList<RifleMode> VALUES = ImmutableList.copyOf(values());
 	
 	public final Formatting chatColor;
 	public final int color;
@@ -204,12 +206,12 @@ public enum RifleMode {
 	public void handleBackfire(LivingEntity user, ItemStack stack) {}
 	
 	public RifleMode next() {
-		return VALUES[(ordinal()+1)%VALUES.length];
+		return VALUES.get((ordinal()+1)%VALUES.size());
 	}
 	
 	public RifleMode prev() {
-		if (ordinal() == 0) return VALUES[VALUES.length-1];
-		return VALUES[ordinal()-1];
+		if (ordinal() == 0) return VALUES.get(VALUES.size()-1);
+		return VALUES.get(ordinal()-1);
 	}
 	
 }
