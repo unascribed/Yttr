@@ -67,6 +67,7 @@
 	"continuity.MixinServerPlayNetworkHandler",
 	"continuity.MixinPlayerEntity",
 	"concrete.MixinServerPlayNetworkHandler",
+	"button.MixinAbstractButtonBlock",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",

@@ -73,7 +73,7 @@
 	"item.yttr.goggles.tip.6": "§7these to filter by NBT.)",
 	
 	"block.yttr.gadolinite": "Gadolinite",
-	"block.yttr.yttrium_block": "Yttrium Block",
+	"block.yttr.yttrium_block": "Block of Yttrium",
 	"block.yttr.power_meter": "Power Meter",
 	"block.yttr.void": "Void",
 	"block.yttr.aware_hopper": "Aware Hopper",
@@ -114,6 +114,9 @@
 	"block.yttr.dsu": "Deep Shelving Unit",
 	"block.yttr.magtube": "Magtube",
 	"block.yttr.root_of_continuity": "Root of Continuity",
+	"block.yttr.lazor_beam": "Lazor Beam",
+	"block.yttr.yttrium_button": "Yttrium Button",
+	"block.yttr.brookite_block": "Block of Brookite",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
@@ -137,6 +140,8 @@
 	
 	"block.yttr.magtube.flow.forward": "FLOW ▶",
 	"block.yttr.magtube.flow.backward": "◀ FLOW",
+	
+	"entity.yttr.disc_of_continuity": "Disc of Continuity",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

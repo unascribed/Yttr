@@ -445,5 +445,9 @@
 			{"name": "yttr:hollowstep3", "pitch": 0.7}
 		],
 		"subtitle": "subtitles.block.generic.footsteps"
+	},
+	"metal_button": {
+		"sounds": [ "yttr:metal_button" ],
+		"subtitle": "subtitles.block.button.click"
 	}
 }

@@ -75,6 +75,7 @@ public class YSounds {
 	public static final SoundEvent HOLLOWHIT = create("hollowhit");
 	public static final SoundEvent HOLLOWPLACEHUGE = create("hollowplacehuge");
 	public static final SoundEvent HOLLOWPLACE = create("hollowplace");
+	public static final SoundEvent METAL_BUTTON = create("metal_button");
 	
 	
 

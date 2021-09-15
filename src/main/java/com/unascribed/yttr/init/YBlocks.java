@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
@@ -203,7 +204,7 @@ public class YBlocks {
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
 			.breakByTool(FabricToolTags.PICKAXES), 10, 6, 10);
-	public static final Block YTTRIUM_PLATING = new Block(HOLLOW_SETTINGS);
+	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)
 			.breakByTool(FabricToolTags.PICKAXES)
@@ -303,6 +304,21 @@ public class YBlocks {
 			.luminance(4)
 			.sounds(RootOfContinuityBlock.SOUND_GROUP)
 			.requiresTool());
+	
+	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.of(Material.SUPPORTED)
+			.strength(1)
+			.breakByTool(FabricToolTags.PICKAXES)
+			.requiresTool()
+			.sounds(BlockSoundGroup.METAL)
+			.noCollision());
+	
+	public static final Block BROOKITE_BLOCK = new Block(FabricBlockSettings.of(Material.STONE)
+			.strength(3)
+			.requiresTool()
+			.sounds(BlockSoundGroup.NETHERITE)
+			.breakByHand(false)
+			.breakByTool(FabricToolTags.PICKAXES, 1)
+		);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
