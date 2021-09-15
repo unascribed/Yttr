@@ -12,13 +12,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 public class ReplicatorBlockItem extends BlockItem {
@@ -64,5 +69,41 @@ public class ReplicatorBlockItem extends BlockItem {
 		}
 		return ItemStack.EMPTY;
 	}
-
+	
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		ItemStack stack = user.getStackInHand(hand);
+		ItemStack held = getHeldItem(stack);
+		if (held.isFood() && user.canConsume(held.getItem().getFoodComponent().isAlwaysEdible())) {
+			user.setCurrentHand(hand);
+			return TypedActionResult.consume(stack);
+		}
+		return TypedActionResult.pass(stack);
+	}
+	
+	@Override
+	public int getMaxUseTime(ItemStack stack) {
+		ItemStack held = getHeldItem(stack);
+		return held.getMaxUseTime();
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		ItemStack held = getHeldItem(stack);
+		return held.getUseAction();
+	}
+	
+	@Override
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+		ItemStack held = getHeldItem(stack);
+		held.copy().finishUsing(world, user);
+		return stack;
+	}
+	
+	@Override
+	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+		ItemStack held = getHeldItem(stack);
+		held.copy().onStoppedUsing(world, user, remainingUseTicks);
+	}
+	
 }

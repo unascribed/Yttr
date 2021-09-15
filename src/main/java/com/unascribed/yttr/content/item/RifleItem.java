@@ -2,6 +2,8 @@ package com.unascribed.yttr.content.item;
 
 import java.util.Locale;
 
+import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
@@ -77,6 +79,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				} else {
 					for (int i = 0; i < user.inventory.size(); i++) {
 						ItemStack is = user.inventory.getStack(i);
+						if (is.getItem() == YItems.REPLICATOR) {
+							is = ReplicatorBlockItem.getHeldItem(is);
+							is.setCount(64);
+						}
 						if (is.getItem() == mode.item.get().asItem() && is.getCount() >= need) {
 							Item remainder = is.getItem().getRecipeRemainder();
 							if (remainder != null) {

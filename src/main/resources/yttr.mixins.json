@@ -55,6 +55,8 @@
 	"diving.MixinServerPlayerEntity",
 	"sorter.MixinChestBlockEntity",
 	"replicator.MixinDropperBlock",
+	"replicator.MixinLivingEntity",
+	"replicator.MixinInGameHud",
 	"disjunction.MixinLivingEntity",
 	"substitute.MixinIngredient",
 	"substitute.MixinIngredientStackEntry",
