@@ -90,6 +90,7 @@
 	"rifle.client.MixinPlayerEntityRenderer",
 	"rifle.client.MixinInGameHud",
 	"rifle.client.MixinGameRenderer",
+	"rifle.client.MixinEntity",
 	"tooltip.client.MixinItemStack",
 	"effector.client.MixinChunkRendererRegion",
 	"effector.client.MixinClientWorld",
