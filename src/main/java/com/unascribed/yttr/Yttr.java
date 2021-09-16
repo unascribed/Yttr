@@ -49,6 +49,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -125,6 +126,10 @@ public class Yttr implements ModInitializer {
 		// }
 		
 		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
+		
+		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
+			Substitutes.reload(mgr.getResourceManager());
+		});
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {

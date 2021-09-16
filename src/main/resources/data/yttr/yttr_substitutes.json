@@ -1,0 +1,14 @@
+{
+	"yttr:ultrapure_carbon": "minecraft:coal",
+	"yttr:ultrapure_cinnabar": "minecraft:redstone",
+	"yttr:ultrapure_gold": "minecraft:gold_ingot",
+	"yttr:ultrapure_iron": "minecraft:iron_ingot",
+	"yttr:ultrapure_lazurite": "minecraft:lapis_lazuli",
+	"yttr:ultrapure_silica": "minecraft:quartz",
+	"yttr:ultrapure_yttrium": "yttr:yttrium_ingot",
+	"yttr:ultrapure_neodymium": "yttr:neodymium_disc",
+	"yttr:ultrapure_diamond": "minecraft:diamond",
+	"yttr:ultrapure_wolfram": "minecraft:netherite_scrap",
+	"yttr:ultrapure_netherite": "minecraft:netherite_ingot",
+	"yttr:ultrapure_carbon_block": "minecraft:coal_block"
+}
