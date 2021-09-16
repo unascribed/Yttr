@@ -18,7 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundFromEntityS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
@@ -89,7 +89,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 			return;
 		}
 		if (!stack.hasTag()) {
-			stack.setTag(new CompoundTag());
+			stack.setTag(new NbtCompound());
 		}
 		if (!stack.getTag().contains("CreatedAt")) {
 			stack.getTag().putLong("CreatedAt", System.currentTimeMillis());

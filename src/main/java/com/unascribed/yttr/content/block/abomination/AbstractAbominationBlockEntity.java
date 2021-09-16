@@ -3,7 +3,7 @@ package com.unascribed.yttr.content.block.abomination;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Tickable;
@@ -57,23 +57,23 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag = super.writeNbt(tag);
 		tag.putFloat("HeadYaw", headYaw);
 		tag.putFloat("HeadPitch", headPitch);
 		return tag;
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		headYaw = prevHeadYaw = (tag.contains("Yaw") ? tag.getFloat("Yaw") : tag.getFloat("HeadYaw"));
 		headPitch = prevHeadPitch = (tag.contains("Pitch") ? tag.getFloat("Pitch") : tag.getFloat("HeadPitch"));
 	}
 	
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		CompoundTag tag = super.toInitialChunkDataTag();
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound tag = super.toInitialChunkDataNbt();
 		tag.putFloat("HeadYaw", headYaw);
 		tag.putFloat("HeadPitch", headPitch);
 		return tag;

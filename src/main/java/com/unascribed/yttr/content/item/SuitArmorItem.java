@@ -15,7 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class SuitArmorItem extends ArmorItem {
 
@@ -45,7 +45,7 @@ public class SuitArmorItem extends ArmorItem {
 	
 	public int getResourceAmount(ItemStack stack, SuitResource resource) {
 //		setResourceAmount(stack, resource, resource.getMaximum());
-		CompoundTag resources = stack.getSubTag("Resources");
+		NbtCompound resources = stack.getSubTag("Resources");
 		if (resources == null || !resources.contains(resource.name())) return resource.getDefaultAmount();
 		return resources.getInt(resource.name());
 	}

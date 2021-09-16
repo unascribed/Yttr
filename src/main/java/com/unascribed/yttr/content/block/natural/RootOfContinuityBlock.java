@@ -61,7 +61,7 @@ public class RootOfContinuityBlock extends Block {
 	
 	@Override
 	public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
-		if (player.isUsingEffectiveTool(state)) {
+		if (player.canHarvest(state)) {
 			currentGroup.set(SOUND_GROUP);
 			if (world instanceof ServerWorld) {
 				((ServerWorld)world).spawnParticles(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 3, 0.3, 0.3, 0.3, 0);
@@ -99,7 +99,7 @@ public class RootOfContinuityBlock extends Block {
 			super.afterBreak(world, player, pos, state, blockEntity, stack);
 		}
 		if (!world.isClient && state.get(ANCHOR)) {
-			if (world.random.nextInt(10) == 0 && player.isUsingEffectiveTool(state)) {
+			if (world.random.nextInt(10) == 0 && player.canHarvest(state)) {
 				ItemStack held = player.getStackInHand(Hand.MAIN_HAND);
 				Map<Enchantment, Integer> ench = EnchantmentHelper.get(held);
 				if (!ench.isEmpty()) {

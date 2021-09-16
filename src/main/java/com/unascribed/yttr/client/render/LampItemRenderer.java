@@ -12,9 +12,9 @@ import net.minecraft.client.render.VertexConsumerProvider.Immediate;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3f;
 
 public class LampItemRenderer extends IHasAClient {
 	
@@ -25,7 +25,7 @@ public class LampItemRenderer extends IHasAClient {
 				.with(LampBlock.LIT, LampBlockItem.isInverted(stack))
 				.with(LampBlock.COLOR, LampBlockItem.getColor(stack));
 		matrices.translate(0.5, 0.5, 0.5);
-		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90));
+		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 		matrices.translate(-0.5, -0.5, -0.5);
 		BakedModel model = mc.getBlockRenderManager().getModel(state);
         int i = mc.getBlockColors().getColor(state, null, null, 0);

@@ -15,7 +15,7 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -272,40 +272,40 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
-		heldItemMainHand = ItemStack.fromTag(tag.getCompound("MainHand"));
-		heldItemOffHand = ItemStack.fromTag(tag.getCompound("OffHand"));
+		heldItemMainHand = ItemStack.fromNbt(tag.getCompound("MainHand"));
+		heldItemOffHand = ItemStack.fromNbt(tag.getCompound("OffHand"));
 		thinkTicks = tag.getInt("ThinkTicks");
 		stowTicks = tag.getInt("StowTicks");
 		stowing = tag.contains("Stowing") ? Hand.valueOf(tag.getString("Stowing")) : null;
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("MainHand", heldItemMainHand.toTag(new CompoundTag()));
-		tag.put("OffHand", heldItemOffHand.toTag(new CompoundTag()));
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
+		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
 		tag.putInt("ThinkTicks", thinkTicks);
 		tag.putInt("StowTicks", stowTicks);
 		if (stowing != null) tag.putString("Stowing", stowing.name());
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toClientTag(super.toInitialChunkDataTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return toClientTag(super.toInitialChunkDataNbt());
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
-		heldItemMainHand = ItemStack.fromTag(tag.getCompound("MainHand"));
-		heldItemOffHand = ItemStack.fromTag(tag.getCompound("OffHand"));
+	public void fromClientTag(NbtCompound tag) {
+		heldItemMainHand = ItemStack.fromNbt(tag.getCompound("MainHand"));
+		heldItemOffHand = ItemStack.fromNbt(tag.getCompound("OffHand"));
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
-		tag.put("MainHand", heldItemMainHand.toTag(new CompoundTag()));
-		tag.put("OffHand", heldItemOffHand.toTag(new CompoundTag()));
+	public NbtCompound toClientTag(NbtCompound tag) {
+		tag.put("MainHand", heldItemMainHand.writeNbt(new NbtCompound()));
+		tag.put("OffHand", heldItemOffHand.writeNbt(new NbtCompound()));
 		return tag;
 	}
 

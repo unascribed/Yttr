@@ -26,7 +26,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -199,14 +199,14 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putUuid("ID", id);
 		tag.putString("Name", name);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		id = tag.containsUuid("ID") ? tag.getUuid("ID") : UUID.randomUUID();
 		name = tag.getString("Name");

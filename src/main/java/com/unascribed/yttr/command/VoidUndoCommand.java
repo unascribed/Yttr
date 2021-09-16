@@ -27,9 +27,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.CommandException;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -80,16 +80,16 @@ public class VoidUndoCommand {
 								try {
 									Path indexFile = root.resolve("index.dat");
 									if (Files.exists(indexFile)) {
-										CompoundTag index = NbtIo.readCompressed(indexFile.toFile());
-										CompoundTag byChunk = index.getCompound("ByChunk");
+										NbtCompound index = NbtIo.readCompressed(indexFile.toFile());
+										NbtCompound byChunk = index.getCompound("ByChunk");
 										List<Pair<Double, Runnable>> suggestorsByDistance = Lists.newArrayList();
 										for (int x = -2; x <= 2; x++) {
 											for (int z = -2; z <= 2; z++) {
 												String s = (chunkPos.x+x)+" "+(chunkPos.z+z);
 												if (byChunk.contains(s, NbtType.LIST)) {
-													ListTag list = byChunk.getList(s, NbtType.COMPOUND);
+													NbtList list = byChunk.getList(s, NbtType.COMPOUND);
 													for (int i = 0; i < list.size(); i++) {
-														CompoundTag entry = list.getCompound(i);
+														NbtCompound entry = list.getCompound(i);
 														if (!entry.getString("Dim").equals(dim)) continue;
 														int hpos = entry.getByte("HPos")&0xFF;
 														BlockPos entryPos = new ChunkPos(chunkPos.x+x, chunkPos.z+z).getStartPos().add((hpos>>4)&0xF, entry.getInt("YPos"), hpos&0xF);
@@ -120,10 +120,10 @@ public class VoidUndoCommand {
 							Path file = root.resolve(fname+".dat");
 							if (Files.exists(file)) {
 								try {
-									CompoundTag data = NbtIo.readCompressed(file.toFile());
+									NbtCompound data = NbtIo.readCompressed(file.toFile());
 									int count = undo(ctx.getSource().getMinecraftServer(), data);
 									if (Files.exists(indexFile)) {
-										CompoundTag index = NbtIo.readCompressed(indexFile.toFile());
+										NbtCompound index = NbtIo.readCompressed(indexFile.toFile());
 										removeFromIndex(index, Collections.singleton(fname));
 										NbtIo.writeCompressed(index, indexFile.toFile());
 										Files.delete(file);
@@ -149,10 +149,10 @@ public class VoidUndoCommand {
 								try {
 									Path indexFile = root.resolve("index.dat");
 									if (Files.exists(indexFile)) {
-										CompoundTag index = NbtIo.readCompressed(indexFile.toFile());
-										CompoundTag byUser = index.getCompound("ByUser");
+										NbtCompound index = NbtIo.readCompressed(indexFile.toFile());
+										NbtCompound byUser = index.getCompound("ByUser");
 										for (String k : byUser.getKeys()) {
-											CompoundTag tag = byUser.getCompound(k);
+											NbtCompound tag = byUser.getCompound(k);
 											bldr.suggest(tag.getString("Username"), new LiteralText(k));
 										}
 									}
@@ -170,12 +170,12 @@ public class VoidUndoCommand {
 							Set<String> fnames = Sets.newHashSet();
 							try {
 								if (Files.exists(indexFile)) {
-									CompoundTag index = NbtIo.readCompressed(indexFile.toFile());
-									CompoundTag byUser = index.getCompound("ByUser");
+									NbtCompound index = NbtIo.readCompressed(indexFile.toFile());
+									NbtCompound byUser = index.getCompound("ByUser");
 									for (String k : byUser.getKeys()) {
-										CompoundTag tag = byUser.getCompound(k);
+										NbtCompound tag = byUser.getCompound(k);
 										if (k.equals(user) || tag.getString("Username").equals(user)) {
-											ListTag list = tag.getList("List", NbtType.STRING);
+											NbtList list = tag.getList("List", NbtType.STRING);
 											for (int i = 0; i < list.size(); i++) {
 												fnames.add(list.getString(i));
 											}
@@ -187,7 +187,7 @@ public class VoidUndoCommand {
 										for (String fname : fnames) {
 											try {
 												Path file = root.resolve(fname+".dat");
-												CompoundTag data = NbtIo.readCompressed(file.toFile());
+												NbtCompound data = NbtIo.readCompressed(file.toFile());
 												count += undo(ctx.getSource().getMinecraftServer(), data);
 												success++;
 												if (Files.exists(indexFile)) {
@@ -216,26 +216,26 @@ public class VoidUndoCommand {
 				);
 	}
 
-	private static int undo(MinecraftServer server, CompoundTag data) {
+	private static int undo(MinecraftServer server, NbtCompound data) {
 		int count = 0;
 		Identifier dim = new Identifier(data.getString("Dim"));
-		World world = server.getWorld(RegistryKey.of(Registry.DIMENSION, dim));
+		World world = server.getWorld(RegistryKey.of(Registry.WORLD_KEY, dim));
 		if (world == null) {
 			throw new CommandException(new TranslatableText("commands.yttr.void_undo.no_world", dim.toString()));
 		}
 		int[] posArr = data.getIntArray("Pos");
 		BlockPos pos = new BlockPos(posArr[0], posArr[1], posArr[2]);
-		ListTag blocks = data.getList("Blocks", NbtType.COMPOUND);
+		NbtList blocks = data.getList("Blocks", NbtType.COMPOUND);
 		BlockPos.Mutable mut = new BlockPos.Mutable();
 		for (int i = 0; i < blocks.size(); i++) {
-			CompoundTag block = blocks.getCompound(i);
+			NbtCompound block = blocks.getCompound(i);
 			byte[] posOfs = block.getByteArray("Pos");
 			mut.set(pos.getX()+posOfs[0], pos.getY()+posOfs[1], pos.getZ()+posOfs[2]);
 			Block b = Registry.BLOCK.get(new Identifier(block.getString("Block")));
 			if (b == null) continue;
 			BlockState bs = b.getDefaultState();
 			if (block.contains("State", NbtType.COMPOUND)) {
-				CompoundTag state = block.getCompound("State");
+				NbtCompound state = block.getCompound("State");
 				for (Property<?> prop : bs.getProperties()) {
 					if (state.contains(prop.getName(), NbtType.STRING)) {
 						bs = setParseProperty(bs, prop, state.getString(prop.getName()));
@@ -245,7 +245,7 @@ public class VoidUndoCommand {
 			if (bs.isAir() && !world.isAir(mut)) continue;
 			if (world.setBlockState(mut, bs)) count++;
 			if (block.contains("Entity", NbtType.COMPOUND)) {
-				CompoundTag tag = block.getCompound("Entity");
+				NbtCompound tag = block.getCompound("Entity");
 				if (world.getBlockEntity(mut) != null) {
 					world.getBlockEntity(mut).fromTag(bs, tag);
 				} else {
@@ -256,10 +256,10 @@ public class VoidUndoCommand {
 		return count;
 	}
 
-	private static void removeFromIndex(CompoundTag index, Set<String> fnames) {
-		CompoundTag byChunk = index.getCompound("ByChunk");
+	private static void removeFromIndex(NbtCompound index, Set<String> fnames) {
+		NbtCompound byChunk = index.getCompound("ByChunk");
 		for (String k : ImmutableList.copyOf(byChunk.getKeys())) {
-			ListTag list = byChunk.getList(k, NbtType.COMPOUND);
+			NbtList list = byChunk.getList(k, NbtType.COMPOUND);
 			for (int i = list.size()-1; i >= 0; i--) {
 				if (fnames.contains(list.getCompound(i).getString("Name"))) {
 					list.remove(i);
@@ -269,10 +269,10 @@ public class VoidUndoCommand {
 				byChunk.remove(k);
 			}
 		}
-		CompoundTag byUser = index.getCompound("ByUser");
+		NbtCompound byUser = index.getCompound("ByUser");
 		for (String k : ImmutableList.copyOf(byUser.getKeys())) {
-			CompoundTag userData = byUser.getCompound(k);
-			ListTag list = userData.getList("List", NbtType.STRING);
+			NbtCompound userData = byUser.getCompound(k);
+			NbtList list = userData.getList("List", NbtType.STRING);
 			for (int i = list.size()-1; i >= 0; i--) {
 				if (fnames.contains(list.getString(i))) {
 					list.remove(i);

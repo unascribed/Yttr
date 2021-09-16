@@ -16,13 +16,13 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
 
 public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<SkeletalSorterBlockEntity> {
 
@@ -54,18 +54,18 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 				ang = 90;
 				break;
 		}
-		matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(ang));
-		matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
+		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 		matrices.translate(0, -0.5, 0);
 		matrices.translate(0, 0, -1/16f);
 		skeletonModel.child = false;
 		
-		skeletonModel.torso.visible = true;
-		skeletonModel.torso.pivotX = -3;
-		skeletonModel.torso.pivotY = 13.9f;
-		skeletonModel.torso.pivotZ = -6;
-		skeletonModel.torso.pitch = (float)Math.PI/2;
-		skeletonModel.torso.yaw = (float)Math.PI/6;
+		skeletonModel.body.visible = true;
+		skeletonModel.body.pivotX = -3;
+		skeletonModel.body.pivotY = 13.9f;
+		skeletonModel.body.pivotZ = -6;
+		skeletonModel.body.pitch = (float)Math.PI/2;
+		skeletonModel.body.yaw = (float)Math.PI/6;
 		
 		skeletonModel.leftLeg.visible = false;
 		skeletonModel.rightLeg.visible = false;
@@ -133,7 +133,7 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			matrices.push();
 			matrices.scale(1.25f, 1.25f, 1.25f);
 			matrices.translate(0, 1/16f, 0);
-			skeletonModel.torso.visible = false;
+			skeletonModel.body.visible = false;
 			skeletonModel.leftArm.visible = false;
 			skeletonModel.rightArm.visible = false;
 			skeletonModel.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(GOGGLES_TEXTURE)), light, overlay, 1, 1, 1, 1);
@@ -150,8 +150,8 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			skeletonModel.leftArm.rotate(matrices);
 			matrices.translate(0, 0.65, 0);
 			matrices.scale(0.5f, 0.5f, 0.5f);
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-50));
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(40));
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(40));
 			mc.getItemRenderer().renderItem(null, left, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay);
 			matrices.pop();
 			
@@ -159,8 +159,8 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			skeletonModel.rightArm.rotate(matrices);
 			matrices.translate(0, 0.65, 0);
 			matrices.scale(0.5f, 0.5f, 0.5f);
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-50));
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-40));
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-50));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-40));
 			mc.getItemRenderer().renderItem(null, right, Mode.FIXED, false, matrices, vertexConsumers, null, light, overlay);
 			matrices.pop();
 		}

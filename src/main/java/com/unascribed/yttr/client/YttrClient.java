@@ -154,8 +154,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			});
 			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
-			rm.registerListener(reloader("yttr:clear_thief_cache", (manager) -> TextureColorThief.clearCache()));
-			rm.registerListener(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"))));
+			rm.registerReloader(reloader("yttr:clear_thief_cache", (manager) -> TextureColorThief.clearCache()));
+			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"))));
 			Yttr.lessCreepyAwareHopper = rm.containsResource(new Identifier("yttr", "lcah-marker"));
 		});
 		
@@ -261,7 +261,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Identifier id = new Identifier(idStr);
 		return new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public void apply(ResourceManager manager) {
+			public void reload(ResourceManager manager) {
 				cb.accept(manager);
 			}
 			

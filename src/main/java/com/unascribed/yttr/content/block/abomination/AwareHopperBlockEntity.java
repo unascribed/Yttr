@@ -24,7 +24,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.CraftingRecipe;
@@ -139,7 +139,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 									if (((SpecialInputsRecipe)r).yttr$isInputValid(input, index, rem)) {
 										tgt = input;
 									}
-								} else if (r.getPreviewInputs().size() > index && r.getPreviewInputs().get(index).test(rem)) {
+								} else if (r.getIngredients().size() > index && r.getIngredients().get(index).test(rem)) {
 									tgt = input;
 								}
 							}
@@ -212,8 +212,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag = super.writeNbt(tag);
 		if (recipe != null) tag.putString("Recipe", recipe.toString());
 		tag.put("Inventory", Yttr.serializeInv(union));
 		tag.putInt("CraftingTicks", craftingTicks);
@@ -222,7 +222,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		recipe = tag.contains("Recipe", NbtType.STRING) ? Identifier.tryParse(tag.getString("Recipe")) : null;
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), union);
@@ -235,8 +235,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		CompoundTag tag = super.toInitialChunkDataTag();
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound tag = super.toInitialChunkDataNbt();
 		tag.putInt("CraftingTicks", craftingTicks);
 		return tag;
 	}
@@ -346,7 +346,7 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 		if (slot >= 9) return false;
 		CraftingRecipe recipe = getRecipe();
 		if (recipe == null) return false;
-		DefaultedList<Ingredient> inputs = recipe.getPreviewInputs();
+		DefaultedList<Ingredient> inputs = recipe.getIngredients();
 		List<Integer> candidates = Lists.newArrayList();
 		for (int i = 0; i < (recipe instanceof SpecialInputsRecipe ? 9 : inputs.size()); i++) {
 			if (recipe instanceof SpecialInputsRecipe) {

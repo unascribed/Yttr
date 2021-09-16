@@ -15,7 +15,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Direction;
 
@@ -56,14 +56,14 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		tag.put("Contents", Yttr.serializeInv(contents));
 		return tag;
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Contents", NbtType.COMPOUND), contents);
 	}
@@ -97,12 +97,12 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
+	public void fromClientTag(NbtCompound tag) {
 		Yttr.deserializeInv(tag.getList("Contents", NbtType.COMPOUND), contents);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
+	public NbtCompound toClientTag(NbtCompound tag) {
 		tag.put("Contents", Yttr.serializeInv(contents));
 		return tag;
 	}

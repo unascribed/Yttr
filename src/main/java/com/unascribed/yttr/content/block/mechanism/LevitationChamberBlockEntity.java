@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
@@ -55,15 +55,15 @@ public class LevitationChamberBlockEntity extends BlockEntity implements Tickabl
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		cooldown = tag.getInt("Cooldown");
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag = super.writeNbt(tag);
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("Cooldown", cooldown);
 		return tag;

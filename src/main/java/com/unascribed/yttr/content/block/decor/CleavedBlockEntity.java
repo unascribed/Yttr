@@ -22,11 +22,11 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.ByteArrayTag;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtByteArray;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.BitSetVoxelSet;
 import net.minecraft.util.shape.SimpleVoxelShape;
@@ -143,15 +143,15 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		if (!world.isClient) sync();
 	}
 
-	public void fromTagInner(CompoundTag tag) {
+	public void fromTagInner(NbtCompound tag) {
 		if (tag.contains("Polygons", NbtType.LIST)) {
 			ImmutableList.Builder<Polygon> builder = ImmutableList.builder();
-			ListTag li = tag.getList("Polygons", NbtType.BYTE_ARRAY);
+			NbtList li = tag.getList("Polygons", NbtType.BYTE_ARRAY);
 			for (int i = 0; i < li.size(); i++) {
-				Tag en = li.get(i);
+				NbtElement en = li.get(i);
 				List<Vec3d> points = Lists.newArrayList();
-				if (!(en instanceof ByteArrayTag)) continue;
-				byte[] arr = ((ByteArrayTag)en).getByteArray();
+				if (!(en instanceof NbtByteArray)) continue;
+				byte[] arr = ((NbtByteArray)en).getByteArray();
 				for (int j = 0; j < arr.length; j += 3) {
 					points.add(new Vec3d(byteToUnit(arr[j]), byteToUnit(arr[j+1]), byteToUnit(arr[j+2])));
 				}
@@ -167,8 +167,8 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 		if (world instanceof YttrWorld) ((YttrWorld)world).yttr$scheduleRenderUpdate(pos);
 	}
 	
-	public CompoundTag toTagInner(CompoundTag tag) {
-		ListTag li = new ListTag();
+	public NbtCompound toTagInner(NbtCompound tag) {
+		NbtList li = new NbtList();
 		for (Polygon poly : polygons) {
 			ByteBuffer buf = ByteBuffer.allocate(poly.nPoints()*3);
 			poly.forEachDEdge((de) -> {
@@ -177,7 +177,7 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 				buf.put(unitToByte(de.srcPoint().z));
 			});
 			buf.flip();
-			li.add(new ByteArrayTag(buf.array()));
+			li.add(new NbtByteArray(buf.array()));
 		}
 		tag.put("Polygons", li);
 		tag.put("Donor", NbtHelper.fromBlockState(donor));
@@ -193,29 +193,29 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		fromTagInner(tag);
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		toTagInner(tag);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toTagInner(super.toInitialChunkDataTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return toTagInner(super.toInitialChunkDataNbt());
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
+	public void fromClientTag(NbtCompound tag) {
 		fromTagInner(tag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
+	public NbtCompound toClientTag(NbtCompound tag) {
 		toTagInner(tag);
 		return tag;
 	}

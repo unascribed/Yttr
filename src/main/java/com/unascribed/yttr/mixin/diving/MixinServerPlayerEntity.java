@@ -26,9 +26,9 @@ import com.google.common.collect.Sets;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -149,35 +149,35 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 		}
 	}
 	
-	@Inject(at=@At("TAIL"), method="writeCustomDataToTag")
-	public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-		if (yttr$isDiving) tag.putBoolean("yttr:Diving", yttr$isDiving);
-		if (yttr$isInvisibleFromDiving) tag.putBoolean("yttr:InvisibleFromDiving", yttr$isInvisibleFromDiving);
-		if (yttr$isNoGravityFromDiving) tag.putBoolean("yttr:NoGravityFromDiving", yttr$isNoGravityFromDiving);
-		if (yttr$divePos != null) tag.put("yttr:DivePos", yttr$divePos.toTag());
-		if (yttr$fastDiveTarget != null) tag.put("yttr:FastDiveTarget", NbtHelper.fromBlockPos(yttr$fastDiveTarget));
-		if (yttr$fastDiveTime != 0) tag.putInt("yttr:FastDiveTime", yttr$fastDiveTime);
+	@Inject(at=@At("TAIL"), method="writeCustomDataToNbt")
+	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
+		if (yttr$isDiving) nbt.putBoolean("yttr:Diving", yttr$isDiving);
+		if (yttr$isInvisibleFromDiving) nbt.putBoolean("yttr:InvisibleFromDiving", yttr$isInvisibleFromDiving);
+		if (yttr$isNoGravityFromDiving) nbt.putBoolean("yttr:NoGravityFromDiving", yttr$isNoGravityFromDiving);
+		if (yttr$divePos != null) nbt.put("yttr:DivePos", yttr$divePos.toTag());
+		if (yttr$fastDiveTarget != null) nbt.put("yttr:FastDiveTarget", NbtHelper.fromBlockPos(yttr$fastDiveTarget));
+		if (yttr$fastDiveTime != 0) nbt.putInt("yttr:FastDiveTime", yttr$fastDiveTime);
 		
 		if (!yttr$knownGeysers.isEmpty()) {
-			ListTag li = new ListTag();
+			NbtList li = new NbtList();
 			for (UUID id : yttr$knownGeysers) {
 				li.add(NbtHelper.fromUuid(id));
 			}
-			tag.put("yttr:KnownGeysers", li);
+			nbt.put("yttr:KnownGeysers", li);
 		}
 	}
 	
-	@Inject(at=@At("TAIL"), method="readCustomDataFromTag")
-	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-		yttr$isDiving = tag.getBoolean("yttr:Diving");
-		yttr$isInvisibleFromDiving = tag.getBoolean("yttr:InvisibleFromDiving");
-		yttr$isNoGravityFromDiving = tag.getBoolean("yttr:NoGravityFromDiving");
-		yttr$divePos = Vec2i.fromTag(tag.get("yttr:DivePos"));
-		yttr$fastDiveTarget = tag.contains("yttr:FastDiveTarget", NbtType.COMPOUND) ? NbtHelper.toBlockPos(tag.getCompound("yttr:FastDiveTarget")) : null;
-		yttr$fastDiveTime = tag.getInt("yttr:FastDiveTime");
+	@Inject(at=@At("TAIL"), method="readCustomDataFromNbt")
+	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
+		yttr$isDiving = nbt.getBoolean("yttr:Diving");
+		yttr$isInvisibleFromDiving = nbt.getBoolean("yttr:InvisibleFromDiving");
+		yttr$isNoGravityFromDiving = nbt.getBoolean("yttr:NoGravityFromDiving");
+		yttr$divePos = Vec2i.fromTag(nbt.get("yttr:DivePos"));
+		yttr$fastDiveTarget = nbt.contains("yttr:FastDiveTarget", NbtType.COMPOUND) ? NbtHelper.toBlockPos(nbt.getCompound("yttr:FastDiveTarget")) : null;
+		yttr$fastDiveTime = nbt.getInt("yttr:FastDiveTime");
 		
 		yttr$knownGeysers.clear();
-		ListTag li = tag.getList("yttr:KnownGeysers", NbtType.INT_ARRAY);
+		NbtList li = nbt.getList("yttr:KnownGeysers", NbtType.INT_ARRAY);
 		for (int i = 0; i < li.size(); i++) {
 			yttr$knownGeysers.add(NbtHelper.toUuid(li.get(i)));
 		}

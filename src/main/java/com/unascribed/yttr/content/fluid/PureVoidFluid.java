@@ -81,7 +81,7 @@ public abstract class PureVoidFluid extends VoidFluid {
 
 	@Override
 	protected BlockState toBlockState(FluidState state) {
-		return YBlocks.PURE_VOID.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+		return YBlocks.PURE_VOID.getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
 	
 	@Override

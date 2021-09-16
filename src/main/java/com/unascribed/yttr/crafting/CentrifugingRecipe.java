@@ -90,7 +90,7 @@ public class CentrifugingRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
+	public DefaultedList<Ingredient> getIngredients() {
 		DefaultedList<Ingredient> out = DefaultedList.of();
 		out.add(input);
 		return out;

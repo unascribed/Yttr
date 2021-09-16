@@ -16,7 +16,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -127,8 +127,8 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag = super.writeNbt(tag);
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("FuelTime", fuelTime);
 		tag.putInt("MaxFuelTime", maxFuelTime);
@@ -138,7 +138,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		fuelTime = tag.getInt("FuelTime");

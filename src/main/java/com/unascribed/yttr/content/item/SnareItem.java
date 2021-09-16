@@ -47,11 +47,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -147,8 +147,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						if (fbe.blockEntityData != null) {
 							BlockEntity be = world.getBlockEntity(target);
 							if (be != null) {
-								CompoundTag data = be.toTag(new CompoundTag());
-								CompoundTag incoming = fbe.blockEntityData.copy();
+								NbtCompound data = be.writeNbt(new NbtCompound());
+								NbtCompound incoming = fbe.blockEntityData.copy();
 								incoming.remove("x");
 								incoming.remove("y");
 								incoming.remove("z");
@@ -193,7 +193,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 						fbe.dropItem = true;
 						fbe.timeFalling = 2;
 						if (be != null) {
-							CompoundTag data = be.toTag(new CompoundTag());
+							NbtCompound data = be.writeNbt(new NbtCompound());
 							fbe.blockEntityData = data;
 						}
 						hit = fbe;
@@ -206,8 +206,8 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 			if (hit instanceof PlayerEntity || hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.UNSNAREABLE) || hit.hasPassengers()) return TypedActionResult.fail(stack);
 			if (!hit.getType().isIn(com.unascribed.yttr.init.YTags.Entity.SNAREABLE_NONLIVING) && !(hit instanceof LivingEntity) && !(hit instanceof FallingBlockEntity)) return TypedActionResult.fail(stack);
 			if (hit instanceof ItemEntity && ((ItemEntity)hit).getStack().getItem().isIn(com.unascribed.yttr.init.YTags.Item.UNSNAREABLE)) return TypedActionResult.fail(stack);
-			CompoundTag data = new CompoundTag();
-			if (hit.saveSelfToTag(data)) {
+			NbtCompound data = new NbtCompound();
+			if (hit.saveSelfNbt(data)) {
 				boolean tryingToCheatSnareTimer = checkForCheating(data);
 				if (tryingToCheatSnareTimer) return TypedActionResult.fail(stack);
 				stack.damage(400, user, (e) -> user.sendToolBreakStatus(hand));
@@ -249,7 +249,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				}
 				boolean baby = hit instanceof LivingEntity && ((LivingEntity)hit).isBaby();
 				hit.remove();
-				if (!stack.hasTag()) stack.setTag(new CompoundTag());
+				if (!stack.hasTag()) stack.setTag(new NbtCompound());
 				stack.getTag().putLong("LastUpdate", user.world.getServer().getTicks());
 				stack.getTag().put("Contents", data);
 				stack.getTag().putBoolean("Baby", baby);
@@ -260,7 +260,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		}
 	}
 	
-	private boolean checkForCheating(CompoundTag data) {
+	private boolean checkForCheating(NbtCompound data) {
 		for (String key : data.getKeys()) {
 			if (key.contains("yttr:snare")) return true;
 			if (checkForCheating(data.get(key))) return true;
@@ -268,20 +268,20 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		return false;
 	}
 	
-	private boolean checkForCheating(ListTag data) {
+	private boolean checkForCheating(NbtList data) {
 		for (int i = 0; i < data.size(); i++) {
 			if (checkForCheating(data.get(i))) return true;
 		}
 		return false;
 	}
 	
-	private boolean checkForCheating(Tag tag) {
-		if (tag instanceof StringTag) {
-			return ((StringTag)tag).asString().contains("yttr:snare");
-		} else if (tag instanceof ListTag) {
-			return checkForCheating((ListTag)tag);
-		} else if (tag instanceof CompoundTag) {
-			return checkForCheating((CompoundTag)tag);
+	private boolean checkForCheating(NbtElement tag) {
+		if (tag instanceof NbtString) {
+			return ((NbtString)tag).asString().contains("yttr:snare");
+		} else if (tag instanceof NbtList) {
+			return checkForCheating((NbtList)tag);
+		} else if (tag instanceof NbtCompound) {
+			return checkForCheating((NbtCompound)tag);
 		}
 		return false;
 	}
@@ -291,7 +291,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ITEM) {
-				return new TranslatableText("item.yttr.snare.filled", ItemStack.fromTag(stack.getTag().getCompound("Contents").getCompound("Item")).getName());
+				return new TranslatableText("item.yttr.snare.filled", ItemStack.fromNbt(stack.getTag().getCompound("Contents").getCompound("Item")).getName());
 			} else if (type == EntityType.FALLING_BLOCK) {
 				return new TranslatableText("item.yttr.snare.filled", NbtHelper.toBlockState(stack.getTag().getCompound("Contents").getCompound("BlockState")).getBlock().getName());
 			}
@@ -408,7 +408,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type != null) {
 			if (type == EntityType.ARMOR_STAND || type == EntityType.ITEM) return 0;
-			CompoundTag data = stack.getTag().getCompound("Contents");
+			NbtCompound data = stack.getTag().getCompound("Contents");
 			int dmg = MathHelper.ceil(data.getFloat("Health")*MathHelper.sqrt(type.getDimensions().height*type.getDimensions().width));
 			switch (type.getSpawnGroup()) {
 				case AMBIENT:
@@ -434,7 +434,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 	}
 
 	public EntityType<?> getEntityType(ItemStack stack) {
-		CompoundTag data = stack.getTag().getCompound("Contents");
+		NbtCompound data = stack.getTag().getCompound("Contents");
 		Identifier id = Identifier.tryParse(data.getString("id"));
 		if (id == null) return null;
 		return Registry.ENTITY_TYPE.getOrEmpty(id).orElse(null);
@@ -470,7 +470,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		EntityType<?> type = getEntityType(stack);
 		if (type == null) return null;
 		Entity e = type.create(world);
-		e.fromTag(stack.getTag().getCompound("Contents"));
+		e.readNbt(stack.getTag().getCompound("Contents"));
 		return e;
 	}
 	

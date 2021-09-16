@@ -60,8 +60,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -187,17 +187,17 @@ public class Yttr implements ModInitializer {
 	}
 
 	/**
-	 * Serialize an Inventory to a ListTag. Unlike {@link Inventories#toTag}, this supports arbitrarily
-	 * large stack sizes. Unlike {@link SimpleInventory#getTags}, this keeps slot indexes and therefore
+	 * Serialize an Inventory to a ListTag. Unlike {@link Inventories#writeNbt}, this supports arbitrarily
+	 * large stack sizes. Unlike {@link SimpleInventory#toNbtList}, this keeps slot indexes and therefore
 	 * empty slots.
 	 * @see #deserializeInv
 	 */
-	public static ListTag serializeInv(Inventory inv) {
-		ListTag out = new ListTag();
+	public static NbtList serializeInv(Inventory inv) {
+		NbtList out = new NbtList();
 		for (int i = 0; i < inv.size(); i++) {
 			ItemStack is = inv.getStack(i);
 			if (!is.isEmpty()) {
-				CompoundTag c = is.toTag(new CompoundTag());
+				NbtCompound c = is.writeNbt(new NbtCompound());
 				if (is.getCount() > 127) {
 					c.putInt("Count", is.getCount());
 				}
@@ -212,16 +212,16 @@ public class Yttr implements ModInitializer {
 	 * Deserialize a ListTag created by {@link #serializeInv} into the given Inventory. The
 	 * Inventory will be cleared first. Can load large stacks written by serializeInv.
 	 */
-	public static void deserializeInv(ListTag tag, Inventory inv) {
+	public static void deserializeInv(NbtList tag, Inventory inv) {
 		inv.clear();
 		for (int i = 0; i < tag.size(); i++) {
-			CompoundTag c = tag.getCompound(i);
+			NbtCompound c = tag.getCompound(i);
 			int count = c.getInt("Count");
 			if (count > 127) {
 				c = c.copy();
 				c.putInt("Count", 1);
 			}
-			ItemStack is = ItemStack.fromTag(c);
+			ItemStack is = ItemStack.fromNbt(c);
 			is.setCount(count);
 			inv.setStack(c.getInt("Slot"), is);
 		}

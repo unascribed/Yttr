@@ -20,7 +20,7 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -40,14 +40,14 @@ public class SnareEntityTextureCache {
 		}
 		dummyWorld = dummyWorldTemp;
 	}
-	private static final Cache<CompoundTag, Identifier> textureCache = CacheBuilder.newBuilder()
+	private static final Cache<NbtCompound, Identifier> textureCache = CacheBuilder.newBuilder()
 			.expireAfterAccess(5, TimeUnit.SECONDS)
 			.build();
 	
 	public static Identifier get(ItemStack stack) {
 		EntityType<?> type = YItems.SNARE.getEntityType(stack);
 		if (type == null) return null;
-		CompoundTag data = stack.getTag().getCompound("Contents");
+		NbtCompound data = stack.getTag().getCompound("Contents");
 		if (!textureCache.asMap().containsKey(data)) {
 			if (type == EntityType.FALLING_BLOCK) {
 				BlockState bs = NbtHelper.toBlockState(data.getCompound("BlockState"));
@@ -55,7 +55,7 @@ public class SnareEntityTextureCache {
 				Identifier id = bm.getSprite().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));
 			} else if (type == EntityType.ITEM) {
-				ItemStack item = ItemStack.fromTag(data.getCompound("Item"));
+				ItemStack item = ItemStack.fromNbt(data.getCompound("Item"));
 				BakedModel bm = MinecraftClient.getInstance().getItemRenderer().getModels().getModel(item);
 				Identifier id = bm.getSprite().getId();
 				textureCache.put(data, new Identifier(id.getNamespace(), "textures/"+id.getPath()+".png"));

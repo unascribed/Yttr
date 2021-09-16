@@ -10,7 +10,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -82,7 +82,7 @@ public class ReplicatorBlock extends Block implements BlockEntityProvider {
 		ItemStack stack = new ItemStack(this);
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ReplicatorBlockEntity) {
-			stack.putSubTag("BlockEntityTag", be.toTag(new CompoundTag()));
+			stack.putSubTag("BlockEntityTag", be.writeNbt(new NbtCompound()));
 		}
 		return stack;
 	}

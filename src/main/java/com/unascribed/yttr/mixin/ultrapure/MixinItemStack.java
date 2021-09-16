@@ -7,13 +7,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 @Mixin(ItemStack.class)
 public class MixinItemStack {
 
 	@Shadow
-	private CompoundTag tag;
+	private NbtCompound tag;
 	
 	@Inject(at=@At("RETURN"), method="getMaxDamage", cancellable=true)
 	public void getMaxDamage(CallbackInfoReturnable<Integer> ci) {

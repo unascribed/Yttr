@@ -11,10 +11,10 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 
 public class PowerMeterBlockEntityRenderer extends BlockEntityRenderer<PowerMeterBlockEntity> {
 
@@ -56,7 +56,7 @@ public class PowerMeterBlockEntityRenderer extends BlockEntityRenderer<PowerMete
 					ang = 270;
 					break;
 			}
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(ang));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
 			matrices.translate(-0.5f, -0.5f, -0.5f);
 			matrices.translate(1/16f, 0.5f, 0.89825f);
 			matrices.translate(0, 0, -0.01f);

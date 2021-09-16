@@ -109,7 +109,7 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	}
 	
 	@Override
-	public boolean isEffectiveOn(BlockState state) {
+	public boolean isSuitableFor(BlockState state) {
 		return true;
 	}
 	

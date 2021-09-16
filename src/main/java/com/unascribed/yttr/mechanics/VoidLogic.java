@@ -29,10 +29,10 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -67,23 +67,23 @@ public class VoidLogic {
 			Path out = root.resolve(undoName+".dat");
 			MoreFiles.createParentDirectories(out);
 			Path indexFile = root.resolve("index.dat");
-			CompoundTag index = Files.exists(indexFile) ? NbtIo.readCompressed(indexFile.toFile()) : new CompoundTag();
+			NbtCompound index = Files.exists(indexFile) ? NbtIo.readCompressed(indexFile.toFile()) : new NbtCompound();
 			
-			CompoundTag byUser = index.getCompound("ByUser");
+			NbtCompound byUser = index.getCompound("ByUser");
 			String id = user.getGameProfile().getId().toString();
-			CompoundTag userData = byUser.getCompound(id);
+			NbtCompound userData = byUser.getCompound(id);
 			userData.putString("Username", user.getGameProfile().getName());
-			ListTag userList = userData.getList("List", NbtType.STRING);
-			userList.add(StringTag.of(undoName));
+			NbtList userList = userData.getList("List", NbtType.STRING);
+			userList.add(NbtString.of(undoName));
 			userData.put("List", userList);
 			byUser.put(id, userData);
 			index.put("ByUser", byUser);
 			
-			CompoundTag byChunk = index.getCompound("ByChunk");
+			NbtCompound byChunk = index.getCompound("ByChunk");
 			ChunkPos chunkPos = new ChunkPos(pos);
 			String chunkKey = chunkPos.x+" "+chunkPos.z;
-			ListTag chunkList = byUser.getList(chunkKey, NbtType.COMPOUND);
-			CompoundTag chunkListEntry = new CompoundTag();
+			NbtList chunkList = byUser.getList(chunkKey, NbtType.COMPOUND);
+			NbtCompound chunkListEntry = new NbtCompound();
 			chunkListEntry.putByte("HPos", (byte)(((pos.getX()&0xF)<<4)|(pos.getZ()&0xF)));
 			chunkListEntry.putShort("YPos", (short)pos.getY());
 			chunkListEntry.putString("Dim", world.getRegistryKey().getValue().toString());
@@ -92,10 +92,10 @@ public class VoidLogic {
 			byChunk.put(chunkKey, chunkList);
 			index.put("ByChunk", byChunk);
 			
-			CompoundTag data = new CompoundTag();
+			NbtCompound data = new NbtCompound();
 			data.putIntArray("Pos", new int[] {pos.getX(), pos.getY(), pos.getZ()});
 			data.putString("Dim", world.getRegistryKey().getValue().toString());
-			ListTag blocks = new ListTag();
+			NbtList blocks = new NbtList();
 			data.put("Blocks", blocks);
 			BlockPos.Mutable bp = new BlockPos.Mutable();
 			for (int y = -r; y <= r; y++) {
@@ -106,18 +106,18 @@ public class VoidLogic {
 							BlockState bs = world.getBlockState(bp);
 							if (bs.getHardness(world, bp) < 0) continue;
 							BlockEntity be = world.getBlockEntity(bp);
-							CompoundTag block = new CompoundTag();
+							NbtCompound block = new NbtCompound();
 							block.putByteArray("Pos", new byte[] {(byte)x, (byte)y, (byte)z});
 							block.putString("Block", Registry.BLOCK.getId(bs.getBlock()).toString());
 							if (!bs.getEntries().isEmpty()) {
-								CompoundTag state = new CompoundTag();
+								NbtCompound state = new NbtCompound();
 								for (Map.Entry<Property, Comparable<?>> en : (Set<Map.Entry<Property, Comparable<?>>>)(Set)(bs.getEntries().entrySet())) {
 									state.putString(en.getKey().getName(), en.getKey().name(en.getValue()));
 								}
 								block.put("State", state);
 							}
 							if (be != null) {
-								block.put("Entity", be.toTag(new CompoundTag()));
+								block.put("Entity", be.writeNbt(new NbtCompound()));
 							}
 							blocks.add(block);
 						}

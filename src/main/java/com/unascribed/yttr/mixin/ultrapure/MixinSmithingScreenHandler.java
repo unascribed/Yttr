@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.init.YItems;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ForgingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
@@ -30,7 +30,7 @@ public abstract class MixinSmithingScreenHandler extends ForgingScreenHandler {
 				out.setCustomName(new TranslatableText("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
 			}
 			if (!out.hasTag()) {
-				out.setTag(new CompoundTag());
+				out.setTag(new NbtCompound());
 			}
 			out.getTag().putInt("yttr:DurabilityBonus", out.getTag().getInt("yttr:DurabilityBonus")+1);
 		}

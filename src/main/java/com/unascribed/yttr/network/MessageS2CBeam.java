@@ -10,7 +10,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.Perspective;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.RedDustParticle;
 import net.minecraft.client.particle.SpriteProvider;
@@ -88,7 +88,7 @@ public class MessageS2CBeam extends S2CMessage {
 				}
 				
 				@Override
-				protected int getColorMultiplier(float tint) {
+				protected int getBrightness(float tint) {
 					return LightmapTextureManager.pack(15, 15);
 				}
 

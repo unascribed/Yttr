@@ -40,7 +40,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 			ie.calculateDimensions();
 			ie.setNoGravity(true);
 			ie.setVelocity(ie.getVelocity().x, 0, ie.getVelocity().z);
-			ie.updatePosition(getPos().x, getPos().y-0.3, getPos().z);
+			ie.setPosition(getPos().x, getPos().y-0.3, getPos().z);
 		}
 	}
 	

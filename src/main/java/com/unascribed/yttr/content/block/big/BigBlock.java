@@ -143,7 +143,7 @@ public abstract class BigBlock extends Block {
 		double x = pos.getX()-state.get(X)+(entity.world.random.nextFloat() * (xSize/2D) + (xSize/4D));
 		double y = pos.getY()-state.get(Y)+(entity.world.random.nextFloat() * (ySize/2D) + (ySize/4D));
 		double z = pos.getZ()-state.get(Z)+(entity.world.random.nextFloat() * (zSize/2D) + (zSize/4D));
-		entity.updatePosition(x, y, z);
+		entity.setPosition(x, y, z);
 	}
 
 	public static void playSound(World world, PlayerEntity player, BlockPos pos, BlockState state, SoundEvent event, SoundCategory cat, float vol, float pitch) {

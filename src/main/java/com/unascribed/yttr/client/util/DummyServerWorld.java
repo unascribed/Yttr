@@ -26,7 +26,7 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.map.MapState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.recipe.RecipeManager;
@@ -745,8 +745,8 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public BlockView getExistingChunk(int chunkX, int chunkZ) {
-		return getDelegate().getExistingChunk(chunkX, chunkZ);
+	public BlockView getChunkAsView(int chunkX, int chunkZ) {
+		return getDelegate().getChunkAsView(chunkX, chunkZ);
 	}
 
 	@Override
@@ -928,7 +928,7 @@ public class DummyServerWorld extends ServerWorld {
 	@Override
 	public void addFireworkParticle(double x, double y, double z,
 			double velocityX, double velocityY, double velocityZ,
-			CompoundTag tag) {
+			NbtCompound tag) {
 		getDelegate().addFireworkParticle(x, y, z, velocityX, velocityY, velocityZ,
 				tag);
 	}

@@ -32,7 +32,7 @@ public class LampRecipe extends ShapedRecipe {
 	}
 	
 	public LampRecipe(ShapedRecipe copy) {
-		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getWidth(), copy.getHeight(), copy.getPreviewInputs(), copy.getOutput());
+		this(copy.getId(), ((AccessorShapedRecipe)copy).yttr$getGroup(), copy.getWidth(), copy.getHeight(), copy.getIngredients(), copy.getOutput());
 	}
 
 	@Override

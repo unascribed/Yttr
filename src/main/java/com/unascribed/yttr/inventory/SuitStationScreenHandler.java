@@ -163,7 +163,7 @@ public class SuitStationScreenHandler extends ScreenHandler {
 					return ItemStack.EMPTY;
 				}
 
-				slot.onStackChanged(slotStack, out);
+				slot.onQuickTransfer(slotStack, out);
 			} else if (index > 5) {
 				if (slotStack.getItem() instanceof SuitArmorItem) {
 					// try to put suit pieces into the suit slots

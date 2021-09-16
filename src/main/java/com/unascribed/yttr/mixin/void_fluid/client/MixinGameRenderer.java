@@ -11,7 +11,7 @@ import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.Perspective;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 

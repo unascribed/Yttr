@@ -22,7 +22,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
@@ -94,7 +94,7 @@ public class EffectorItem extends Item {
 	}
 	
 	public void setFuel(ItemStack stack, int fuel) {
-		if (!stack.hasTag()) stack.setTag(new CompoundTag());
+		if (!stack.hasTag()) stack.setTag(new NbtCompound());
 		stack.getTag().putInt("Fuel", fuel);
 	}
 

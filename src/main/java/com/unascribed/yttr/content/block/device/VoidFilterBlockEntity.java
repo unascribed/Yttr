@@ -22,7 +22,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
@@ -119,12 +119,12 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag = super.writeNbt(tag);
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("OpTocks", opTocks);
 		if (owner != null) tag.putUuid("Owner", owner);
-		CompoundTag statQTag = new CompoundTag();
+		NbtCompound statQTag = new NbtCompound();
 		for (Multiset.Entry<Item> en : statQueue.entrySet()) {
 			statQTag.putInt(Registry.ITEM.getId(en.getElement()).toString(), en.getCount());
 		}
@@ -133,13 +133,13 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		opTocks = tag.getInt("OpTocks");
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
 		statQueue.clear();
-		CompoundTag statQTag = tag.getCompound("StatQueue");
+		NbtCompound statQTag = tag.getCompound("StatQueue");
 		for (String key : statQTag.getKeys()) {
 			Item i = Registry.ITEM.getOrEmpty(Identifier.tryParse(key)).orElse(null);
 			if (i != null) {

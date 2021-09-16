@@ -14,7 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
 
 public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityClientSerializable, SideyInventory {
@@ -61,35 +61,35 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
+	public void fromClientTag(NbtCompound tag) {
 		seed = tag.getInt("Seed");
-		item = ItemStack.fromTag(tag.getCompound("Item"));
+		item = ItemStack.fromNbt(tag.getCompound("Item"));
 	}
 	
 	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
+	public NbtCompound toClientTag(NbtCompound tag) {
 		tag.putInt("Seed", seed);
-		tag.put("Item", item.toTag(new CompoundTag()));
+		tag.put("Item", item.writeNbt(new NbtCompound()));
 		return tag;
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		fromClientTag(tag);
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		toClientTag(tag);
 		if (owner != null) tag.putUuid("Owner", owner);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toClientTag(super.toInitialChunkDataTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return toClientTag(super.toInitialChunkDataNbt());
 	}
 
 	@Override

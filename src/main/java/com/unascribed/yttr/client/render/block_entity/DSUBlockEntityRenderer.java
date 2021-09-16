@@ -21,7 +21,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.client.util.math.MatrixStack.Entry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.world.LightType;
 
@@ -108,7 +108,7 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 					ang = 90;
 					break;
 			}
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(ang));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
 			matrices.translate(-dsu.xSize/2D, -dsu.ySize/2D, -dsu.zSize/2D);
 			matrices.translate(2, 2, 0);
 			matrices.scale(-1/16f, -1/16f, 1/16f);

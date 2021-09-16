@@ -90,7 +90,7 @@ public class CentrifugeScreenHandler extends ScreenHandler {
 					return ItemStack.EMPTY;
 				}
 
-				slot.onStackChanged(slotStack, out);
+				slot.onQuickTransfer(slotStack, out);
 			} else if (index > 5) {
 				if (isCentrifugable(slotStack)) {
 					// try to put valid inputs into the input slot

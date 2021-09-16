@@ -101,7 +101,7 @@ public class PistonSmashingRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
+	public DefaultedList<Ingredient> getIngredients() {
 		return DefaultedList.of();
 	}
 	

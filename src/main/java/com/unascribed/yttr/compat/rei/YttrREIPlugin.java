@@ -126,7 +126,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 			if (r instanceof LampRecipe) {
 				resultsToInputs.clear();
 				LampRecipe lr = (LampRecipe)r;
-				DefaultedList<Ingredient> ingredients = lr.getPreviewInputs();
+				DefaultedList<Ingredient> ingredients = lr.getIngredients();
 				boolean interesting = false;
 				int w = 0;
 				int h = 0;

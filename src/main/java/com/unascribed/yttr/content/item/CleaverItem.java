@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.TranslatableText;
@@ -271,7 +271,7 @@ public class CleaverItem extends Item implements Attackable {
 	
 	public @Nullable Plane getLastCut(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().contains("LastCut", NbtType.COMPOUND)) {
-			CompoundTag tag = stack.getTag().getCompound("LastCut");
+			NbtCompound tag = stack.getTag().getCompound("LastCut");
 			Vec3d normal = NBTUtils.listToVec(tag.getList("Normal", NbtType.DOUBLE));
 			if (normal == null) return null;
 			double distance = tag.getDouble("Distance");
@@ -284,7 +284,7 @@ public class CleaverItem extends Item implements Attackable {
 	public void setCleaveBlock(ItemStack stack, @Nullable BlockPos pos) {
 		if (!stack.hasTag()) {
 			if (pos == null) return;
-			stack.setTag(new CompoundTag());
+			stack.setTag(new NbtCompound());
 		}
 		if (pos == null) {
 			stack.getTag().remove("CleaveBlock");
@@ -304,12 +304,12 @@ public class CleaverItem extends Item implements Attackable {
 	public void setLastCut(ItemStack stack, @Nullable Plane plane) {
 		if (!stack.hasTag()) {
 			if (plane == null) return;
-			stack.setTag(new CompoundTag());
+			stack.setTag(new NbtCompound());
 		}
 		if (plane == null) {
 			stack.getTag().remove("LastCut");
 		} else {
-			CompoundTag tag = new CompoundTag();
+			NbtCompound tag = new NbtCompound();
 			tag.put("Normal", NBTUtils.vecToList(plane.normal()));
 			tag.putDouble("Distance", plane.distance());
 			tag.putDouble("Epsilon", plane.epsilon());
@@ -320,7 +320,7 @@ public class CleaverItem extends Item implements Attackable {
 	private void setVec(ItemStack stack, String key, @Nullable Vec3d pos) {
 		if (!stack.hasTag()) {
 			if (pos == null) return;
-			stack.setTag(new CompoundTag());
+			stack.setTag(new NbtCompound());
 		}
 		if (pos == null) {
 			stack.getTag().remove(key);

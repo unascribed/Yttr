@@ -1,9 +1,8 @@
 package com.unascribed.yttr.util.math;
 
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtIntArray;
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.Tag;
 
 public class Vec2i {
 
@@ -55,13 +54,13 @@ public class Vec2i {
 		return true;
 	}
 
-	public IntArrayTag toTag() {
-		return new IntArrayTag(new int[] {x, z});
+	public NbtIntArray toTag() {
+		return new NbtIntArray(new int[] {x, z});
 	}
 	
-	public static @Nullable Vec2i fromTag(Tag tag) {
-		if (!(tag instanceof IntArrayTag)) return null;
-		int[] arr = ((IntArrayTag)tag).getIntArray();
+	public static @Nullable Vec2i fromTag(NbtElement tag) {
+		if (!(tag instanceof NbtIntArray)) return null;
+		int[] arr = ((NbtIntArray)tag).getIntArray();
 		if (arr.length != 2) return null;
 		return new Vec2i(arr[0], arr[1]);
 	}

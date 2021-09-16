@@ -20,10 +20,10 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class LampBlockEntityRenderer extends BlockEntityRenderer<LampBlockEntity> {
@@ -83,8 +83,8 @@ public class LampBlockEntityRenderer extends BlockEntityRenderer<LampBlockEntity
 					case UP: x = 180; break;
 				}
 				matrices.translate(0.5, 0.5, 0.5);
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(y));
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(x));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(y));
+				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(x));
 				matrices.translate(-0.5, -0.5, -0.5);
 			}
 			

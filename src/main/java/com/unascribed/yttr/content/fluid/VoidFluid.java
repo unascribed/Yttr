@@ -113,7 +113,7 @@ public abstract class VoidFluid extends FlowableFluid {
 
 	@Override
 	protected BlockState toBlockState(FluidState state) {
-		return YBlocks.VOID.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+		return YBlocks.VOID.getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
 
 }

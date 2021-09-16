@@ -30,7 +30,7 @@ public class DebugTeleportCommand {
 							x += 1;
 							z += 1;
 							ServerPlayerEntity p = ctx.getSource().getPlayer();
-							p.networkHandler.teleportRequest(x+0.5, 75, z+0.5, 0, 90, Collections.emptySet());
+							p.networkHandler.requestTeleport(x+0.5, 75, z+0.5, 0, 90, Collections.emptySet());
 							String stateStr = state.toString().replaceFirst("^\\Q"+state.getBlock().toString()+"\\E", Registry.BLOCK.getId(state.getBlock()).toString());
 							ctx.getSource().sendFeedback(new TranslatableText("commands.teleport.success.entity.single", p.getDisplayName(), stateStr), true);
 						}

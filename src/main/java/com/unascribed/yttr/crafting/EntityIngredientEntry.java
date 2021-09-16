@@ -12,8 +12,8 @@ import com.google.common.base.Ascii;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.recipe.Ingredient.Entry;
 import net.minecraft.util.Arm;
 import net.minecraft.util.registry.Registry;
@@ -33,8 +33,8 @@ public class EntityIngredientEntry implements Entry {
 		ItemStack is = new ItemStack(YItems.SNARE);
 		is.getOrCreateSubTag("Contents").putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
 		if (mainHand != null) {
-			ListTag lore = new ListTag();
-			lore.add(StringTag.of("\"§7"+(mainHand == Arm.LEFT ? "Left" : "Right")+"-Handed\""));
+			NbtList lore = new NbtList();
+			lore.add(NbtString.of("\"§7"+(mainHand == Arm.LEFT ? "Left" : "Right")+"-Handed\""));
 			is.getOrCreateSubTag("display").put("Lore", lore);
 		}
 		return Collections.singleton(is);

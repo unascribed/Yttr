@@ -49,8 +49,8 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -88,7 +88,7 @@ public class YBlocks {
 	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
 	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MaterialColor.WATER)
+			new FabricMaterialBuilder(MapColor.WATER_BLUE)
 				.allowsMovement()
 				.lightPassesThrough()
 				.notSolid()
@@ -103,7 +103,7 @@ public class YBlocks {
 	);
 	@RenderLayer("translucent")
 	public static final PureVoidFluidBlock PURE_VOID = new PureVoidFluidBlock(YFluids.PURE_VOID, FabricBlockSettings.of(
-			new FabricMaterialBuilder(MaterialColor.WATER)
+			new FabricMaterialBuilder(MapColor.WATER_BLUE)
 				.allowsMovement()
 				.lightPassesThrough()
 				.notSolid()
@@ -307,7 +307,7 @@ public class YBlocks {
 			.sounds(RootOfContinuityBlock.SOUND_GROUP)
 			.requiresTool());
 	
-	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.of(Material.SUPPORTED)
+	public static final YttriumButtonBlock YTTRIUM_BUTTON = new YttriumButtonBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(1)
 			.breakByTool(FabricToolTags.PICKAXES)
 			.requiresTool()

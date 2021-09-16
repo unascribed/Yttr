@@ -17,8 +17,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -124,21 +124,21 @@ public class GeysersState extends PersistentState {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void fromTag(NbtCompound tag) {
 		geysers.clear();
 		geysersById.clear();
 		geysersByPos.clear();
 		geysersByChunk.clear();
 		geysersByRegion.clear();
-		ListTag li = tag.getList("Geysers", NbtType.COMPOUND);
+		NbtList li = tag.getList("Geysers", NbtType.COMPOUND);
 		for (int i = 0; i < li.size(); i++) {
 			addGeyser(Geyser.fromTag(li.getCompound(i)));
 		}
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		ListTag li = new ListTag();
+	public NbtCompound writeNbt(NbtCompound tag) {
+		NbtList li = new NbtList();
 		for (Geyser g : geysers) {
 			li.add(g.toTag());
 		}

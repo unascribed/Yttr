@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 @Mixin(PacketByteBuf.class)
@@ -22,11 +22,11 @@ public class MixinPacketByteBuf {
 			Item item = stack.getItem();
 			buf.writeVarInt(Item.getRawId(item));
 			buf.writeVarInt(stack.getCount()); // here's the change: count is a varint, not a byte
-			CompoundTag compoundTag = null;
+			NbtCompound compoundTag = null;
 			if (item.isDamageable() || item.shouldSyncTagToClient()) {
 				compoundTag = stack.getTag();
 			}
-			buf.writeCompoundTag(compoundTag);
+			buf.writeNbt(compoundTag);
 			ci.setReturnValue(buf);
 		}
 	}
@@ -41,7 +41,7 @@ public class MixinPacketByteBuf {
 			int item = buf.readVarInt();
 			int count = buf.readVarInt();
 			ItemStack stack = new ItemStack(Item.byRawId(item), count);
-			stack.setTag(buf.readCompoundTag());
+			stack.setTag(buf.readNbt());
 			ci.setReturnValue(stack);
 		}
 	}

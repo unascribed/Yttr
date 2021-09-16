@@ -4,7 +4,7 @@ import com.unascribed.yttr.Substitutes;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 
@@ -28,7 +28,7 @@ public class UltrapureBonus {
 				out.setCustomName(new TranslatableText("item.yttr.ultrapure_tool.prefix", out.getName()).setStyle(Style.EMPTY.withItalic(false)));
 			}
 			if (!out.hasTag()) {
-				out.setTag(new CompoundTag());
+				out.setTag(new NbtCompound());
 			}
 			out.getTag().putInt("yttr:DurabilityBonus", out.getTag().getInt("yttr:DurabilityBonus")+1);
 			out.getTag().putBoolean("yttr:Ultrapure", true);

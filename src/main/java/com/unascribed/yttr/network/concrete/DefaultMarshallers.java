@@ -16,7 +16,7 @@ import com.google.common.primitives.Ints;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -124,7 +124,7 @@ public final class DefaultMarshallers {
 	/**
 	 * Compound NBT tag.
 	 */
-	public static final Marshaller<CompoundTag> NBT = weld(PacketByteBuf::writeCompoundTag, PacketByteBuf::readCompoundTag);
+	public static final Marshaller<NbtCompound> NBT = weld(PacketByteBuf::writeNbt, PacketByteBuf::readNbt);
 	
 	
 	/**
@@ -422,7 +422,7 @@ public final class DefaultMarshallers {
 			return (Marshaller<T>) STRING;
 		} else if (BlockPos.class.isAssignableFrom(type)) {
 			return (Marshaller<T>) BLOCKPOS;
-		} else if (CompoundTag.class.isAssignableFrom(type)) {
+		} else if (NbtCompound.class.isAssignableFrom(type)) {
 			return (Marshaller<T>) NBT;
 		} else if (type.isEnum()) {
 			return new EnumMarshaller(type);

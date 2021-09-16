@@ -20,7 +20,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Tickable;
@@ -149,7 +149,7 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.put("Inventory", Yttr.serializeInv(inv));
 		tag.putInt("FuelTime", fuelTime);
 		tag.putInt("MaxFuelTime", maxFuelTime);
@@ -157,11 +157,11 @@ public class SuitStationBlockEntity extends BlockEntity implements Tickable, Sid
 		tag.putInt("MaxFluxLeft", maxFluxLeft);
 		tag.putInt("MeltedGlowstoneLeft", meltedGlowstoneLeft);
 		tag.putInt("ArmorPlatingLeft", armorPlatingLeft);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, NbtCompound tag) {
 		super.fromTag(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		fuelTime = tag.getInt("FuelTime");

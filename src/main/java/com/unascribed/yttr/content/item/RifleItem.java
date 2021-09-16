@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -144,7 +144,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	@Override
 	public void attack(PlayerEntity user) {
 		ItemStack held = user.getStackInHand(Hand.MAIN_HAND);
-		if (!held.hasTag()) held.setTag(new CompoundTag());
+		if (!held.hasTag()) held.setTag(new NbtCompound());
 		boolean scoped = held.getTag().getBoolean("Scoped");
 		held.getTag().putBoolean("Scoped", !scoped);
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
@@ -305,7 +305,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	public boolean setMode(ItemStack stack, RifleMode mode) {
-		if (!stack.hasTag()) stack.setTag(new CompoundTag());
+		if (!stack.hasTag()) stack.setTag(new NbtCompound());
 		RifleMode cur = getMode(stack);
 		if (cur == mode) return false;
 		stack.getTag().putString("Mode", mode.name());
@@ -320,7 +320,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	public void setRemainingAmmo(ItemStack stack, int ammo) {
-		if (!stack.hasTag()) stack.setTag(new CompoundTag());
+		if (!stack.hasTag()) stack.setTag(new NbtCompound());
 		stack.getTag().putInt("RemainingAmmo", ammo);
 	}
 	
@@ -365,7 +365,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		user.playSound(YSounds.RIFLE_OVERCHARGE, 1, 1);
 		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8*speedMod);
 		user.setOnFireFor((int)(3*speedMod));
-		if (!stack.hasTag()) stack.setTag(new CompoundTag());
+		if (!stack.hasTag()) stack.setTag(new NbtCompound());
 		setRemainingAmmo(stack, 0);
 		if (!world.isClient) {
 			getMode(stack).handleBackfire(user, stack);
@@ -394,7 +394,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		super.inventoryTick(stack, world, entity, slot, selected);
 		boolean wasSelected = stack.hasTag() && stack.getTag().getBoolean("WasSelected");
 		if (selected != wasSelected) {
-			if (!stack.hasTag()) stack.setTag(new CompoundTag());
+			if (!stack.hasTag()) stack.setTag(new NbtCompound());
 			stack.getTag().putBoolean("WasSelected", selected);
 			if (!wasSelected) {
 				if (entity instanceof PlayerEntity && !world.isClient) {

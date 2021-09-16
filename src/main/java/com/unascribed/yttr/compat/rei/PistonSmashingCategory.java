@@ -31,19 +31,19 @@ import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 
 public class PistonSmashingCategory extends DrawableHelper implements RecipeCategory<PistonSmashingEntry> {
@@ -91,9 +91,9 @@ public class PistonSmashingCategory extends DrawableHelper implements RecipeCate
 			}));
 			outX += 14;
 			ItemStack output = recipe.getCloudOutput().getItemStack().copy();
-			if (!output.hasTag()) output.setTag(new CompoundTag());
-			ListTag lore = new ListTag();
-			lore.add(StringTag.of(Text.Serializer.toJson(new TranslatableText("category.yttr.piston_smashing.cloud_output_hint").setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.YELLOW)))));
+			if (!output.hasTag()) output.setTag(new NbtCompound());
+			NbtList lore = new NbtList();
+			lore.add(NbtString.of(Text.Serializer.toJson(new TranslatableText("category.yttr.piston_smashing.cloud_output_hint").setStyle(Style.EMPTY.withItalic(false).withColor(Formatting.YELLOW)))));
 			output.getOrCreateSubTag("display").put("Lore", lore);
 			widgets.add(Widgets.createSlot(new Point(outX, cY - 22)).entry(EntryStack.create(output)).markOutput());
 			outX += 20;
@@ -112,9 +112,9 @@ public class PistonSmashingCategory extends DrawableHelper implements RecipeCate
 			matrices.translate(cX-11, cY+8, 50);
 			matrices.scale(16, -16, 16);
 			matrices.translate(-2, 0, 0);
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90));
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
 			matrices.push();
-			matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90));
+			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90));
 			MinecraftClient.getInstance().getItemRenderer().renderItem(piston, Mode.NONE, light, overlay, matrices, vcp);
 			matrices.pop();
 			BlockState catalyst = catalysts.get((int)((System.currentTimeMillis()/1000)%catalysts.size())).getDefaultState();

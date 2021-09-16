@@ -38,7 +38,6 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
@@ -50,6 +49,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 
 public class ReplicatorRenderer extends IHasAClient {
 
@@ -81,9 +81,9 @@ public class ReplicatorRenderer extends IHasAClient {
 				int shape = rand.nextInt(ReplicatorShapes.ALL.size());
 				rand.nextInt(ReplicatorShapes.ALL.size());
 				
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
 				matrices.scale(1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f));
 		
 				switch (shape) {
@@ -143,7 +143,7 @@ public class ReplicatorRenderer extends IHasAClient {
 				if (cam != null) {
 					matrices.multiply(cam.getRotation());
 				}
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin((t/6)%((float)Math.PI*2))*10));
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin((t/6)%((float)Math.PI*2))*10));
 			
 				VertexConsumerProvider.Immediate imm = mc.getBufferBuilders().getEntityVertexConsumers();
 				ir.renderItem(item, Mode.NONE, false, matrices, imm, LightmapTextureManager.pack(15, 15), OverlayTexture.DEFAULT_UV, model);
@@ -161,9 +161,9 @@ public class ReplicatorRenderer extends IHasAClient {
 				RenderSystem.defaultBlendFunc();
 				RenderSystem.disableAlphaTest();
 				
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(t*(rand.nextFloat()*2)));
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
 				float xSo = (rand.nextFloat()*0.65f);
 				float ySo = (rand.nextFloat()*0.65f);
 				float zSo = (rand.nextFloat()*0.65f);
@@ -270,7 +270,7 @@ public class ReplicatorRenderer extends IHasAClient {
 						float a = Interp.sCurve5(Math.max(0, 1-((rbe.removedTicks+wrc.tickDelta())/10f)));
 						matrices.translate(0.5, 0.5, 0.5);
 						matrices.scale(a, a, a);
-						matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(a*720));
+						matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(a*720));
 						matrices.translate(-0.5, -0.5, -0.5);
 					}
 					render(matrices, wrc.tickDelta(), rbe.seed, rbe.item, rbe.getPos(), rbe.clientAge, wrc.camera(), pass);

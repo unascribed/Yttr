@@ -16,7 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -63,9 +63,9 @@ public class ReplicatorBlockItem extends BlockItem {
 	}
 	
 	public static ItemStack getHeldItem(ItemStack stack) {
-		CompoundTag entityTag = stack.getSubTag("BlockEntityTag");
+		NbtCompound entityTag = stack.getSubTag("BlockEntityTag");
 		if (entityTag != null) {
-			return ItemStack.fromTag(entityTag.getCompound("Item"));
+			return ItemStack.fromNbt(entityTag.getCompound("Item"));
 		}
 		return ItemStack.EMPTY;
 	}

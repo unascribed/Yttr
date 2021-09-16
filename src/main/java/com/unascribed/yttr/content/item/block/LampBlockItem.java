@@ -16,7 +16,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -47,12 +47,12 @@ public class LampBlockItem extends BlockItem implements ItemColorProvider {
 	}
 
 	public static void setInverted(ItemStack is, boolean inverted) {
-		if (!is.hasTag()) is.setTag(new CompoundTag());
+		if (!is.hasTag()) is.setTag(new NbtCompound());
 		is.getTag().putBoolean("Inverted", inverted);
 	}
 	
 	public static void setColor(ItemStack is, LampColor color) {
-		if (!is.hasTag()) is.setTag(new CompoundTag());
+		if (!is.hasTag()) is.setTag(new NbtCompound());
 		is.getTag().putString("LampColor", color.asString());
 	}
 

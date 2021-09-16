@@ -4,8 +4,7 @@ import java.util.UUID;
 
 import com.unascribed.yttr.network.concrete.ImmutableMarshallable;
 import com.unascribed.yttr.util.math.Vec2i;
-
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
@@ -27,15 +26,15 @@ public final class Geyser implements ImmutableMarshallable {
 		this.name = name;
 	}
 	
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+	public NbtCompound toTag() {
+		NbtCompound tag = new NbtCompound();
 		tag.putUuid("ID", id);
 		tag.put("Pos", NbtHelper.fromBlockPos(pos));
 		tag.putString("Name", name);
 		return tag;
 	}
 	
-	public static Geyser fromTag(CompoundTag tag) {
+	public static Geyser fromTag(NbtCompound tag) {
 		return new Geyser(
 				tag.getUuid("ID"),
 				NbtHelper.toBlockPos(tag.getCompound("Pos")),
