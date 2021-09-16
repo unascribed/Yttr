@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 
 public abstract class PureVoidFluid extends VoidFluid {
 
@@ -87,6 +88,21 @@ public abstract class PureVoidFluid extends VoidFluid {
 	@Override
 	protected boolean hasRandomTicks() {
 		return true;
+	}
+	
+	@Override
+	public int getTickRate(WorldView world) {
+		return 1;
+	}
+	
+	@Override
+	protected int getFlowSpeed(WorldView world) {
+		return 1;
+	}
+	
+	@Override
+	protected int getLevelDecreasePerBlock(WorldView world) {
+		return 1;
 	}
 	
 	@Override

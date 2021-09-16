@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.fluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
@@ -73,12 +74,12 @@ public abstract class VoidFluid extends FlowableFluid {
 
 	@Override
 	protected int getFlowSpeed(WorldView world) {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	protected int getLevelDecreasePerBlock(WorldView world) {
-		return 1;
+		return 2;
 	}
 
 	@Override
@@ -88,12 +89,12 @@ public abstract class VoidFluid extends FlowableFluid {
 
 	@Override
 	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
-		return direction == Direction.DOWN;
+		return direction == Direction.DOWN || state.isIn(YTags.Fluid.PURE_VOID);
 	}
 
 	@Override
 	public int getTickRate(WorldView world) {
-		return 1;
+		return 20;
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public abstract class VoidFluid extends FlowableFluid {
 	
 	@Override
 	public float getHeight(FluidState state) {
-		return (super.getHeight(state)*2)/3;
+		return super.getHeight(state);
 	}
 
 	@Override
