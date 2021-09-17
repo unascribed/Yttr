@@ -8,8 +8,8 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeParticleConfig;
+import net.minecraft.world.biome.DefaultBiomeCreator;
 import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 
 public class YBiomes {
@@ -30,10 +30,7 @@ public class YBiomes {
 					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.0015f))
 					.build()
 				)
-			.spawnSettings(new SpawnSettings.Builder()
-					.creatureSpawnProbability(0)
-					.build()
-				)
+			.spawnSettings(DefaultBiomeCreator.createNetherWastes().getSpawnSettings())
 			.generationSettings(new GenerationSettings.Builder()
 					.surfaceBuilder(ConfiguredSurfaceBuilders.NOPE)
 					.build()
@@ -56,10 +53,7 @@ public class YBiomes {
 					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.003f))
 					.build()
 				)
-			.spawnSettings(new SpawnSettings.Builder()
-					.creatureSpawnProbability(0)
-					.build()
-				)
+			.spawnSettings(DefaultBiomeCreator.createNetherWastes().getSpawnSettings())
 			.generationSettings(new GenerationSettings.Builder()
 					.surfaceBuilder(ConfiguredSurfaceBuilders.NOPE)
 					.build()
