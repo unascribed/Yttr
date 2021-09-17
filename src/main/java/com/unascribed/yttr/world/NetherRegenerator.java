@@ -75,10 +75,11 @@ public class NetherRegenerator {
 								chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
 							}
 							if (fireNoise.sample(bX/20D, bZ/20D, true) > 0.4) {
-								BlockPos firePos = new BlockPos(x, (int)(128+height)+1, z);
+								BlockPos firePos = new BlockPos(bX, (int)(128+height)+1, bZ);
 								// postpone fire creation to prevent a deadlock in onBlockAdded
+								// and do it through the World rather than the Chunk for light updates
 								world.getServer().send(new ServerTask(world.getServer().getTicks(), () -> {
-									chunk.setBlockState(firePos, Blocks.FIRE.getDefaultState(), false);
+									world.setBlockState(firePos, Blocks.FIRE.getDefaultState());
 								}));
 							}
 						}
