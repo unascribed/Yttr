@@ -40,6 +40,32 @@ public class YBiomes {
 				)
 			.build();
 	
+	public static final Biome SCORCHED_HEIGHTS = new Biome.Builder()
+			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.NETHER)
+			.depth(0.1f)
+			.scale(0.2f)
+			.temperature(2)
+			.downfall(0)
+			.effects(new BiomeEffects.Builder()
+					.waterColor(0x3F76E4)
+					.waterFogColor(0x50533)
+					.fogColor(0x000000)
+					.skyColor(0x000000)
+					.music(MusicType.createIngameMusic(YSounds.DESERT_HEAT))
+					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.003f))
+					.build()
+				)
+			.spawnSettings(new SpawnSettings.Builder()
+					.creatureSpawnProbability(0)
+					.build()
+				)
+			.generationSettings(new GenerationSettings.Builder()
+					.surfaceBuilder(ConfiguredSurfaceBuilders.NOPE)
+					.build()
+				)
+			.build();
+	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
 	}

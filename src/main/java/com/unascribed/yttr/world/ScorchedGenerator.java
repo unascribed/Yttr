@@ -1,32 +1,30 @@
 package com.unascribed.yttr.world;
 
 import java.util.Arrays;
-
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixin.accessor.AccessorBiomeArray;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.server.ServerTask;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeArray;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.StructureAccessor;
 
-public class NetherRegenerator {
+public class ScorchedGenerator {
 
 	private static final int HORIZONTAL_SECTION_COUNT = AccessorBiomeArray.yttr$getHorizontalSectionCount();
 	private static final int VERTICAL_SECTION_COUNT = AccessorBiomeArray.yttr$getVerticalSectionCount();
 	
-	public static void onChunkLoad(ServerWorld world, WorldChunk chunk) {
-		if (world.getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
+	public static void generate(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
+			Chunk chunk = region.getChunk(region.getCenterChunkX(), region.getCenterChunkZ());
 			if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
 				for (int x = 0; x < 16; x++) {
 					for (int z = 0; z < 16; z++) {
@@ -47,9 +45,12 @@ public class NetherRegenerator {
 			}
 			bp.setY(127);
 			if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
-				ChunkRandom rand = new ChunkRandom(world.getSeed());
+				ChunkRandom rand = new ChunkRandom(worldSeed);
 				OctaveSimplexNoiseSampler noise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(1, 4, 8));
-				OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(1, 4, 8));
+				OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));
+				OctaveSimplexNoiseSampler heightsBNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 3, 6));
+				OctaveSimplexNoiseSampler heightsTNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 4));
+				rand.setPopulationSeed(worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
 				for (int x = 0; x < 16; x++) {
 					for (int z = 0; z < 16; z++) {
 						for (int y = 120; y < 128; y++) {
@@ -61,10 +62,12 @@ public class NetherRegenerator {
 						int bX = (chunk.getPos().getStartX()+x);
 						int bZ = (chunk.getPos().getStartZ()+z);
 						double height = (noise.sample(bX/200D, bZ/200D, true)+0.2)*6;
+						int lastY = 128;
 						if (height < 0) {
 							for (int y = 128; y > 128+(height*8); y--) {
 								bp.set(x, y, z);
 								chunk.setBlockState(bp, Blocks.AIR.getDefaultState(), false);
+								lastY = y-1;
 							}
 						} else {
 							if (height > 3) {
@@ -73,22 +76,35 @@ public class NetherRegenerator {
 							for (int y = 128; y < 128+height; y++) {
 								bp.set(x, y, z);
 								chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
+								lastY = y;
 							}
-							if (fireNoise.sample(bX/20D, bZ/20D, true) > 0.4) {
-								BlockPos firePos = new BlockPos(bX, (int)(128+height)+1, bZ);
-								// postpone fire creation to prevent a deadlock in onBlockAdded
-								// and do it through the World rather than the Chunk for light updates
-								world.getServer().send(new ServerTask(world.getServer().getTicks(), () -> {
-									world.setBlockState(firePos, Blocks.FIRE.getDefaultState());
-								}));
+						}
+						if (rand.nextDouble()*2 < (fireNoise.sample(bX/20D, bZ/20D, true)-0.2)) {
+							bp.set(bX, lastY+1, bZ);
+							region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+						}
+						
+						double bh = heightsBNoise.sample(bX/100D, bZ/100D, true)*12;
+						if (bh > 0) {
+							double th = heightsTNoise.sample(bX/200D, bZ/200D, true)*6;
+							int lastYH = 0;
+							for (int y = (int)(220-bh); y < 220+th; y++) {
+								bp.set(x, y, z);
+								chunk.setBlockState(bp, YBlocks.NETHERTUFF.getDefaultState(), false);
+								lastYH = y;
+							}
+							if (rand.nextDouble() < (fireNoise.sample(bX/30D, bZ/30D, false)+0.2)) {
+								bp.set(bX, lastYH+1, bZ);
+								region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
 							}
 						}
 					}
 				}
 				Biome[] data = ((AccessorBiomeArray)chunk.getBiomeArray()).yttr$getData();
-				int y = MathHelper.clamp(128 >> 2, 0, BiomeArray.VERTICAL_BIT_MASK);
-				int idx = y << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
-				Arrays.fill(data, idx, data.length, world.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_summit")));
+				int summitIdx = (128 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
+				int heightsIdx = (192 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
+				Arrays.fill(data, summitIdx, heightsIdx, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_summit")));
+				Arrays.fill(data, heightsIdx, data.length, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_heights")));
 			}
 		}
 	}
