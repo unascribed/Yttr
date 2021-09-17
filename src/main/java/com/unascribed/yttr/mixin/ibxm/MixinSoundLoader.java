@@ -13,9 +13,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.client.IBXMAudioStream;
+import com.unascribed.yttr.client.IBXMResourceMetadata;
+import com.unascribed.yttr.client.IBXMAudioStream.InterpolationMode;
+
 import net.minecraft.client.sound.AudioStream;
 import net.minecraft.client.sound.RepeatingAudioStream;
 import net.minecraft.client.sound.SoundLoader;
+import net.minecraft.client.sound.RepeatingAudioStream.DelegateFactory;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -34,7 +38,15 @@ public class MixinSoundLoader {
 				try {
 					Resource resource = this.resourceManager.getResource(id);
 					InputStream inputStream = resource.getInputStream();
-					return repeatInstantly ? new RepeatingAudioStream(IBXMAudioStream::new, inputStream) : new IBXMAudioStream(inputStream);
+					DelegateFactory factory;
+					IBXMResourceMetadata meta = resource.getMetadata(IBXMResourceMetadata.READER);
+					if (meta != null) {
+						factory = in -> IBXMAudioStream.create(in, meta.getMode(), meta.isStereo());
+					} else {
+						boolean isAmiga = id.getPath().endsWith(".yttr_mod");
+						factory = in -> IBXMAudioStream.create(in, isAmiga ? InterpolationMode.LINEAR : InterpolationMode.SINC, false);
+					}
+					return repeatInstantly ? new RepeatingAudioStream(factory, inputStream) : factory.create(inputStream);
 				} catch (IOException var5) {
 					throw new CompletionException(var5);
 				}

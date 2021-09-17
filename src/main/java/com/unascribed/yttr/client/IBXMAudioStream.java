@@ -19,18 +19,25 @@ import net.minecraft.client.sound.AudioStream;
  */
 public class IBXMAudioStream implements AudioStream {
 
-	private IBXM ibxm;
-	private int[] mixBuf;
-	private byte[] outBuf;
-	private int outIdx, outLen, remain, fadeLen;
-
-	public IBXMAudioStream(InputStream in) throws IOException {
-		this(new IBXM(new Module(in), 48000));
-		ibxm.setInterpolation(Channel.LINEAR);
+	public enum InterpolationMode {
+		NEAREST(Channel.NEAREST),
+		LINEAR(Channel.LINEAR),
+		SINC(Channel.SINC),
+		;
+		public final int ibxm;
+		InterpolationMode(int ibxm) {
+			this.ibxm = ibxm;
+		}
 	}
 	
-	public IBXMAudioStream(IBXM ibxm) {
-		this(ibxm, ibxm.calculateSongDuration(), 0);
+	private final IBXM ibxm;
+	private final int[] mixBuf;
+	private final byte[] outBuf;
+	private int outIdx, outLen, remain, fadeLen;
+	private final boolean stereo;
+
+	public IBXMAudioStream(IBXM ibxm, boolean stereo) {
+		this(ibxm, ibxm.calculateSongDuration(), 0, stereo);
 	}
 
 	/*
@@ -38,7 +45,7 @@ public class IBXMAudioStream implements AudioStream {
 	 * instance. If fadeOutSeconds is greater than zero, a fade-out will be
 	 * applied at the end of the stream.
 	 */
-	public IBXMAudioStream(IBXM ibxm, int duration, int fadeOutSeconds) {
+	public IBXMAudioStream(IBXM ibxm, int duration, int fadeOutSeconds, boolean stereo) {
 		this.ibxm = ibxm;
 		mixBuf = new int[ibxm.getMixBufferLength()];
 		outBuf = new byte[mixBuf.length * 2];
@@ -48,6 +55,13 @@ public class IBXMAudioStream implements AudioStream {
 		outLen = 0;
 		remain = dataLen;
 		fadeLen = samplingRate * 2 * fadeOutSeconds;
+		this.stereo = stereo;
+	}
+	
+	public static IBXMAudioStream create(InputStream in, InterpolationMode mode, boolean stereo) throws IOException {
+		IBXM ibxm = new IBXM(new Module(in), 48000);
+		ibxm.setInterpolation(mode.ibxm);
+		return new IBXMAudioStream(ibxm, stereo);
 	}
 
 	/* Get the number of bytes available before read() returns end-of-file. */
@@ -87,24 +101,29 @@ public class IBXMAudioStream implements AudioStream {
 
 	private void getAudio() {
 		int mEnd = ibxm.getAudio(mixBuf) * 2;
-		int gain = 1024;
+		int gain = 768;
 		if (remain < fadeLen) {
 			gain = remain / (fadeLen >> 10);
 			gain = (gain * gain * gain) >> 20;
 		}
-		for (int mIdx = 0, oIdx = 0; mIdx < mEnd; mIdx += 2) {
+		for (int mIdx = 0, oIdx = 0; mIdx < mEnd; mIdx += (stereo ? 1 : 2)) {
 			int ampl1 = (mixBuf[mIdx] * gain) >> 10;
-			int ampl2 = (mixBuf[mIdx + 1] * gain) >> 10;
-			int ampl = (ampl1 + ampl2) / 2;
-			if (ampl > 32767)
-				ampl = 32767;
-			if (ampl < -32768)
-				ampl = -32768;
-			outBuf[oIdx++] = (byte) ampl;
-			outBuf[oIdx++] = (byte) (ampl >> 8);
+			if (stereo) {
+				outBuf[oIdx++] = (byte) ampl1;
+				outBuf[oIdx++] = (byte) (ampl1 >> 8);
+			} else {
+				int ampl2 = (mixBuf[mIdx + 1] * gain) >> 10;
+				int ampl = (ampl1 + ampl2) / 2;
+				if (ampl > 32767)
+					ampl = 32767;
+				if (ampl < -32768)
+					ampl = -32768;
+				outBuf[oIdx++] = (byte) ampl;
+				outBuf[oIdx++] = (byte) (ampl >> 8);
+			}
 		}
 		outIdx = 0;
-		outLen = mEnd;
+		outLen = mEnd * (stereo ? 2 : 1);
 	}
 	
 	@Override
@@ -113,7 +132,7 @@ public class IBXMAudioStream implements AudioStream {
 	
 	@Override
 	public AudioFormat getFormat() {
-		return new AudioFormat(ibxm.getSampleRate(), 16, 1, true, false);
+		return new AudioFormat(ibxm.getSampleRate(), 16, stereo ? 2 : 1, true, false);
 	}
 
 }
