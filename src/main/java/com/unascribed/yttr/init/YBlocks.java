@@ -381,7 +381,7 @@ public class YBlocks {
 		) {};
 		
 	public static final Block NETHERTUFF = new Block(FabricBlockSettings.copyOf(Blocks.NETHERRACK)
-			.strength(1.4f)
+			.strength(1.4f, 0.2f)
 			.allowsSpawning((state, world, pos, et) -> false)
 		);
 	

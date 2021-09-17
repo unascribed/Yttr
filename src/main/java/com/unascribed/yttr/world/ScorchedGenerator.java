@@ -106,12 +106,17 @@ public class ScorchedGenerator {
 						}
 					}
 				}
-				Biome[] data = ((AccessorBiomeArray)chunk.getBiomeArray()).yttr$getData();
-				int summitIdx = (128 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
-				int heightsIdx = (192 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
-				Arrays.fill(data, summitIdx, heightsIdx, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_summit")));
-				Arrays.fill(data, heightsIdx, data.length, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_heights")));
 			}
+		}
+	}
+
+	public static void amendBiomes(ChunkRegion region, Chunk chunk) {
+		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
+			Biome[] data = ((AccessorBiomeArray)chunk.getBiomeArray()).yttr$getData();
+			int summitIdx = (128 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
+			int terminusIdx = (192 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
+			Arrays.fill(data, summitIdx, terminusIdx, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_summit")));
+			Arrays.fill(data, terminusIdx, data.length, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_terminus")));
 		}
 	}
 	

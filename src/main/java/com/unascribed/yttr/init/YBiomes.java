@@ -37,7 +37,7 @@ public class YBiomes {
 				)
 			.build();
 	
-	public static final Biome SCORCHED_HEIGHTS = new Biome.Builder()
+	public static final Biome SCORCHED_TERMINUS = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
 			.category(Biome.Category.NETHER)
 			.depth(0.1f)

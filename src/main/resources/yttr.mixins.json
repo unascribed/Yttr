@@ -72,6 +72,7 @@
 	"concrete.MixinServerPlayNetworkHandler",
 	"button.MixinAbstractButtonBlock",
 	"scorched.MixinChunkGenerator",
+	"scorched.MixinNoiseChunkGenerator",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
