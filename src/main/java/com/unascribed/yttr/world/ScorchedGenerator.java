@@ -244,7 +244,6 @@ public class ScorchedGenerator {
 								return StructureProcessorType.NOP;
 							}
 						});
-						System.out.println(origin);
 						s.place(region, origin, spd, rand);
 						for (BlockPos chain : chains) {
 							bp.set(chain);
