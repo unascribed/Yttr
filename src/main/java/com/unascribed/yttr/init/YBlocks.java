@@ -54,6 +54,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
@@ -141,6 +142,10 @@ public class YBlocks {
 		@Override
 		public Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
 			return Fluids.LAVA;
+		}
+		@Override
+		public PistonBehavior getPistonBehavior(BlockState state) {
+			return PistonBehavior.BLOCK;
 		}
 	};
 	
