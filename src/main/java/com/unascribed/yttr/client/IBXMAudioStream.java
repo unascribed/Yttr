@@ -37,7 +37,7 @@ public class IBXMAudioStream implements AudioStream {
 	private final boolean stereo;
 
 	public IBXMAudioStream(IBXM ibxm, boolean stereo) {
-		this(ibxm, ibxm.calculateSongDuration(), 0, stereo);
+		this(ibxm, ibxm.calculateSongDuration()*(stereo ? 2 : 1), 0, stereo);
 	}
 
 	/*

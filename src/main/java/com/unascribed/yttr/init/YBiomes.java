@@ -8,7 +8,6 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeParticleConfig;
-import net.minecraft.world.biome.DefaultBiomeCreator;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
@@ -26,7 +25,7 @@ public class YBiomes {
 					.waterColor(0x3F76E4)
 					.waterFogColor(0x50533)
 					.fogColor(0x330808)
-					.skyColor(DefaultBiomeCreator.createNetherWastes().getSkyColor())
+					.skyColor(0x220000)
 					.music(MusicType.createIngameMusic(YSounds.DESERT_HEAT))
 					.particleConfig(new BiomeParticleConfig(ParticleTypes.FLAME, 0.0015f))
 					.build()

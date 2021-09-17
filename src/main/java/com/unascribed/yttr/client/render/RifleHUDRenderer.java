@@ -179,6 +179,10 @@ public class RifleHUDRenderer extends IHasAClient {
 				if (ticksSinceOpen > 0) ticksSinceOpen = -1;
 				ticksSinceClose++;
 			}
+			if (scopeTime > 0) {
+				scopeTime = 0;
+				((AccessorWorldRenderer)mc.worldRenderer).yttr$setNeedsTerrainUpdate(true);
+			}
 			return;
 		}
 		if (ticksSinceChange > ANIM_TIME) {
