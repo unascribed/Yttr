@@ -80,8 +80,11 @@ public class ScorchedGenerator {
 							}
 						}
 						if (rand.nextDouble()*2 < (fireNoise.sample(bX/20D, bZ/20D, true)-0.2)) {
-							bp.set(bX, lastY+1, bZ);
-							region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+							bp.set(bX, lastY, bZ);
+							if (!region.getBlockState(bp).isAir()) {
+								bp.set(bX, lastY+1, bZ);
+								region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+							}
 						}
 						
 						double bh = heightsBNoise.sample(bX/100D, bZ/100D, true)*12;
@@ -94,8 +97,11 @@ public class ScorchedGenerator {
 								lastYH = y;
 							}
 							if (rand.nextDouble() < (fireNoise.sample(bX/30D, bZ/30D, false)+0.2)) {
-								bp.set(bX, lastYH+1, bZ);
-								region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+								bp.set(bX, lastYH, bZ);
+								if (!region.getBlockState(bp).isAir()) {
+									bp.set(bX, lastYH+1, bZ);
+									region.setBlockState(bp, Blocks.FIRE.getDefaultState(), 3);
+								}
 							}
 						}
 					}
