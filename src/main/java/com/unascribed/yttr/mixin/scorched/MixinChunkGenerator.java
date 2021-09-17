@@ -21,7 +21,7 @@ public abstract class MixinChunkGenerator {
 	
 	@Inject(at=@At("TAIL"), method="generateFeatures")
 	public void generateFeatures(ChunkRegion region, StructureAccessor accessor, CallbackInfo ci) {
-		ScorchedGenerator.generate(worldSeed, region, accessor);
+		ScorchedGenerator.populate(worldSeed, region, accessor);
 	}
 	
 }

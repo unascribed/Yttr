@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.mixin.accessor.AccessorBiomeArray;
-
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
 
@@ -30,10 +28,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldView;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
@@ -41,10 +37,7 @@ import net.minecraft.world.gen.StructureAccessor;
 
 public class ScorchedGenerator {
 
-	private static final int HORIZONTAL_SECTION_COUNT = AccessorBiomeArray.yttr$getHorizontalSectionCount();
-	private static final int VERTICAL_SECTION_COUNT = AccessorBiomeArray.yttr$getVerticalSectionCount();
-	
-	public static void generate(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
+	public static void populate(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			Chunk chunk = region.getChunk(region.getCenterChunkX(), region.getCenterChunkZ());
@@ -262,14 +255,8 @@ public class ScorchedGenerator {
 		}
 	}
 
-	public static void amendBiomes(ChunkRegion region, Chunk chunk) {
-		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
-			Biome[] data = ((AccessorBiomeArray)chunk.getBiomeArray()).yttr$getData();
-			int summitIdx = (128 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
-			int terminusIdx = (192 >> 2) << HORIZONTAL_SECTION_COUNT + HORIZONTAL_SECTION_COUNT;
-			Arrays.fill(data, summitIdx, terminusIdx, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_summit")));
-			Arrays.fill(data, terminusIdx, data.length, region.getRegistryManager().get(Registry.BIOME_KEY).get(new Identifier("yttr", "scorched_terminus")));
-		}
+	public static void buildSurface(ChunkRegion region, Chunk chunk) {
+		
 	}
 	
 }

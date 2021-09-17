@@ -50,7 +50,6 @@
 	"accessor.AccessorBrewingRecipeRegistry",
 	"accessor.AccessorEndermanEntity",
 	"accessor.AccessorCustomPayload",
-	"accessor.AccessorBiomeArray",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
@@ -73,6 +72,8 @@
 	"button.MixinAbstractButtonBlock",
 	"scorched.MixinChunkGenerator",
 	"scorched.MixinNoiseChunkGenerator",
+	"scorched.MixinMultiNoiseBiomeSource",
+	"scorched.MixinMultiNoiseBiomeSourcePreset",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",

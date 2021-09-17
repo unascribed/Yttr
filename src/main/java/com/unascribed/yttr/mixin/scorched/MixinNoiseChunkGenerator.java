@@ -28,7 +28,7 @@ public abstract class MixinNoiseChunkGenerator extends ChunkGenerator {
 	
 	@Inject(at=@At("TAIL"), method="buildSurface")
 	public void buildSurface(ChunkRegion region, Chunk chunk, CallbackInfo ci) {
-		ScorchedGenerator.amendBiomes(region, chunk);
+		ScorchedGenerator.buildSurface(region, chunk);
 	}
 	
 }
