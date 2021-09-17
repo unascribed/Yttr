@@ -40,11 +40,12 @@ public class MixinSoundLoader {
 					InputStream inputStream = resource.getInputStream();
 					DelegateFactory factory;
 					IBXMResourceMetadata meta = resource.getMetadata(IBXMResourceMetadata.READER);
+					boolean isAmiga = id.getPath().endsWith(".yttr_mod");
+					InterpolationMode defaultMode = isAmiga ? InterpolationMode.LINEAR : InterpolationMode.SINC;
 					if (meta != null) {
-						factory = in -> IBXMAudioStream.create(in, meta.getMode(), meta.isStereo());
+						factory = in -> IBXMAudioStream.create(in, meta.getMode() == null ? defaultMode : meta.getMode(), meta.isStereo());
 					} else {
-						boolean isAmiga = id.getPath().endsWith(".yttr_mod");
-						factory = in -> IBXMAudioStream.create(in, isAmiga ? InterpolationMode.LINEAR : InterpolationMode.SINC, false);
+						factory = in -> IBXMAudioStream.create(in, defaultMode, false);
 					}
 					return repeatInstantly ? new RepeatingAudioStream(factory, inputStream) : factory.create(inputStream);
 				} catch (IOException var5) {

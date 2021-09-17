@@ -12,7 +12,7 @@ public class IBXMResourceMetadataReader implements ResourceMetadataReader<IBXMRe
 	@Override
 	public IBXMResourceMetadata fromJson(JsonObject jsonObject) {
 		return new IBXMResourceMetadata(
-				InterpolationMode.valueOf(Ascii.toUpperCase(JsonHelper.getString(jsonObject, "mode", "linear"))),
+				jsonObject.has("mode") ? InterpolationMode.valueOf(Ascii.toUpperCase(JsonHelper.getString(jsonObject, "mode"))) : null,
 				JsonHelper.getBoolean(jsonObject, "stereo", false)
 			);
 	}
