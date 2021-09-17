@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import com.unascribed.yttr.content.item.SuitArmorItem;
+import com.unascribed.yttr.init.YBiomes;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YBrewing;
@@ -42,6 +43,7 @@ import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
+import com.unascribed.yttr.world.NetherRegenerator;
 
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.ImmutableMultiset;
@@ -49,6 +51,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
@@ -87,6 +90,7 @@ public class Yttr implements ModInitializer {
 		YSounds.init();
 		YFluids.init();
 		YEntities.init();
+		YBiomes.init();
 		
 		// auxillary content
 		YStatusEffects.init();
@@ -130,6 +134,8 @@ public class Yttr implements ModInitializer {
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
 			Substitutes.reload(mgr.getResourceManager());
 		});
+		
+		ServerChunkEvents.CHUNK_LOAD.register(NetherRegenerator::onChunkLoad);
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {

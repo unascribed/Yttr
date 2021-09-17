@@ -104,6 +104,7 @@ public class YItems {
 	public static final BlockItem ROOT_OF_CONTINUITY = createNormalBlockItem(YBlocks.ROOT_OF_CONTINUITY);
 	public static final BlockItem YTTRIUM_BUTTON = createNormalBlockItem(YBlocks.YTTRIUM_BUTTON);
 	public static final BlockItem BROOKITE_BLOCK = createNormalBlockItem(YBlocks.BROOKITE_BLOCK);
+	public static final BlockItem NETHERTUFF = createNormalBlockItem(YBlocks.NETHERTUFF);
 	
 	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()

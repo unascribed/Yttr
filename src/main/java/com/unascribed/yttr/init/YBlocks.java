@@ -49,16 +49,21 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class YBlocks {
 
@@ -87,6 +92,8 @@ public class YBlocks {
 		);
 	public static final Block YTTRIUM_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final PowerMeterBlock POWER_METER = new PowerMeterBlock(METALLIC_SETTINGS);
+	
+	
 	public static final VoidFluidBlock VOID = new VoidFluidBlock(YFluids.VOID, FabricBlockSettings.of(
 			new FabricMaterialBuilder(MapColor.WATER_BLUE)
 				.allowsMovement()
@@ -114,6 +121,30 @@ public class YBlocks {
 		.strength(100)
 		.dropsNothing()
 	);
+	public static final FluidBlock CORE_LAVA = new FluidBlock(YFluids.CORE_LAVA, FabricBlockSettings.of(
+			new FabricMaterialBuilder(MapColor.BRIGHT_RED)
+				.allowsMovement()
+				.lightPassesThrough()
+				.notSolid()
+				.liquid()
+				.build()
+			)
+		.noCollision()
+		.strength(100)
+		.dropsNothing()
+		.luminance(15)
+	) {
+		@Override
+		public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+			// no-op to prevent deadlock, and as core lava doesn't flow
+		}
+		@Override
+		public Fluid tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
+			return Fluids.LAVA;
+		}
+	};
+	
+	
 	public static final AwareHopperBlock AWARE_HOPPER = new AwareHopperBlock(METALLIC_SETTINGS);
 	@RenderLayer("cutout_mipped")
 	public static final LevitationChamberBlock LEVITATION_CHAMBER = new LevitationChamberBlock(FabricBlockSettings.of(Material.METAL)
@@ -343,6 +374,11 @@ public class YBlocks {
 			.nonOpaque()
 			.luminance(15)
 		) {};
+		
+	public static final Block NETHERTUFF = new Block(FabricBlockSettings.copyOf(Blocks.NETHERRACK)
+			.strength(1.4f)
+			.allowsSpawning((state, world, pos, et) -> false)
+		);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

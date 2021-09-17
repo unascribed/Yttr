@@ -122,6 +122,7 @@
 	"block.yttr.lazor_beam": "Lazor Beam",
 	"block.yttr.yttrium_button": "Yttrium Button",
 	"block.yttr.brookite_block": "Block of Brookite",
+	"block.yttr.nethertuff": "Nethertuff",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
@@ -148,10 +149,13 @@
 	
 	"entity.yttr.disc_of_continuity": "Disc of Continuity",
 	
+	"biome.yttr.scorched_summit": "Scorched Summit",
+	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",
 	"fluid.yttr.pure_void": "Purified Void",
 	"fluid.yttr.flowing_pure_void": "Purified Void",
+	"fluid.yttr.core_lava": "Core Lava",
 	
 	"effect.yttr.delicaceness": "Delicaceness",
 	"effect.yttr.bleeding": "Bleeding",

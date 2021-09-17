@@ -7,6 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.fluid.CoreLavaFluid;
 import com.unascribed.yttr.content.fluid.PureVoidFluid;
 import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.util.annotate.ConstantColor;
@@ -30,6 +31,10 @@ public class YFluids {
 	@RenderLayer("translucent")
 	@Sprite("yttr:block/pure_void_still")
 	public static final PureVoidFluid.Still PURE_VOID = new PureVoidFluid.Still();
+	
+	@Sprite("minecraft:block/lava_still")
+	@ConstantColor(0xFFAAAA)
+	public static final CoreLavaFluid CORE_LAVA = new CoreLavaFluid();
 
 	public static void init() {
 		Yttr.autoRegister(Registry.FLUID, YFluids.class, Fluid.class);

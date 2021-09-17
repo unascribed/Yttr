@@ -50,6 +50,7 @@
 	"accessor.AccessorBrewingRecipeRegistry",
 	"accessor.AccessorEndermanEntity",
 	"accessor.AccessorCustomPayload",
+	"accessor.AccessorBiomeArray",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
