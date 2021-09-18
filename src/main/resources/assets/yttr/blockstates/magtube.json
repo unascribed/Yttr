@@ -1,0 +1,29 @@
+{
+	"multipart": [
+		{ "apply": { "model": "yttr:block/magtube_core" } },
+		{
+			"when": { "north": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "uvlock": true }
+		},
+		{
+			"when": { "east": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "y": 90, "uvlock": true }
+		},
+		{
+			"when": { "south": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "y": 180, "uvlock": true }
+		},
+		{
+			"when": { "west": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "y": 270, "uvlock": true }
+		},
+		{
+			"when": { "up": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "x": 270, "uvlock": true }
+		},
+		{
+			"when": { "down": "true" },
+			"apply": { "model": "yttr:block/magtube_extension", "x": 90, "uvlock": true }
+		}
+	]
+}

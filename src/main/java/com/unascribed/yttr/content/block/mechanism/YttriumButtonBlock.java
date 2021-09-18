@@ -1,4 +1,4 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.mechanism;
 
 import com.unascribed.yttr.init.YSounds;
 

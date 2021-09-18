@@ -3,7 +3,6 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
@@ -25,6 +24,7 @@ import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
 import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
 import com.unascribed.yttr.content.block.mechanism.VoidCauldronBlock;
+import com.unascribed.yttr.content.block.mechanism.YttriumButtonBlock;
 import com.unascribed.yttr.content.block.mechanism.YttriumPressurePlateBlock;
 import com.unascribed.yttr.content.block.natural.DelicaceBlock;
 import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
@@ -36,6 +36,7 @@ import com.unascribed.yttr.content.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.block.void_.ErodedBedrockBlock;
+import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlock;
@@ -384,6 +385,9 @@ public class YBlocks {
 			.strength(1.4f, 0.2f)
 			.allowsSpawning((state, world, pos, et) -> false)
 		);
+	
+	@RenderLayer("cutout")
+	public static final MagtubeBlock MAGTUBE = new MagtubeBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"PPP",
+		"NNN",
+		"PPP"
+	],
+	"key": {
+		"P": { "item": "yttr:armor_plating" },
+		"N": { "item": "yttr:neodymium_disc" }
+	},
+	"result": {
+		"item": "yttr:magtube",
+		"count": 4
+	}
+}

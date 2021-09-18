@@ -1,0 +1,20 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "yttr:block/magtube",
+		"1_1": "yttr:block/magtube"
+	},
+	"elements": [
+		{
+			"from": [3, 3, 0],
+			"to": [13, 13, 2],
+			"faces": {
+				"north": {"uv": [2, 2, 14, 14], "texture": "#1_1"},
+				"east": {"uv": [0, 3, 2, 13], "rotation": 180, "texture": "#1_1"},
+				"west": {"uv": [0, 3, 2, 13], "texture": "#1_1"},
+				"up": {"uv": [0, 3, 2, 13], "rotation": 270, "texture": "#1_1"},
+				"down": {"uv": [0, 3, 2, 13], "rotation": 270, "texture": "#1_1"}
+			}
+		}
+	]
+}
