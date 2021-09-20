@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.void_;
 
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,7 +40,7 @@ public class MagtubeBlock extends ConnectingBlock implements Waterloggable {
 	}
 	
 	public boolean connectsTo(BlockState bs) {
-		return bs.isOf(this) || bs.isOf(YBlocks.MAGTANK) || bs.isOf(YBlocks.VOID_FILTER) || bs.isOf(YBlocks.DSU);
+		return bs.isIn(YTags.Block.MAGTUBE_TARGETS);
 	}
 
 	public BlockState withConnectionProperties(BlockView world, BlockPos pos) {

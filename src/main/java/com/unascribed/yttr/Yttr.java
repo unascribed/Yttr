@@ -93,11 +93,11 @@ public class Yttr implements ModInitializer {
 		YStatusEffects.init();
 		YRecipeTypes.init();
 		YRecipeSerializers.init();
-		YWorldGen.init();
 		YCommands.init();
 		YTags.init();
 		YHandledScreens.init();
 		YEnchantments.init();
+		YWorldGen.init();
 		
 		// general initialization
 		YStats.init();

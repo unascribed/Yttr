@@ -36,6 +36,7 @@ import com.unascribed.yttr.content.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.block.void_.ErodedBedrockBlock;
+import com.unascribed.yttr.content.block.void_.EvaporatorBlock;
 import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
@@ -388,6 +389,8 @@ public class YBlocks {
 	
 	@RenderLayer("cutout")
 	public static final MagtubeBlock MAGTUBE = new MagtubeBlock(METALLIC_SETTINGS);
+	
+	public static final EvaporatorBlock EVAPORATOR = new EvaporatorBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -50,13 +50,14 @@
 	"accessor.AccessorBrewingRecipeRegistry",
 	"accessor.AccessorEndermanEntity",
 	"accessor.AccessorCustomPayload",
+	"accessor.AccessorNamespaceResourceManager",
+	"accessor.AccessorReloadableResourceManagerImpl",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
 	"sorter.MixinChestBlockEntity",
 	"replicator.MixinDropperBlock",
 	"replicator.MixinLivingEntity",
-	"replicator.MixinInGameHud",
 	"disjunction.MixinLivingEntity",
 	"substitute.MixinIngredient",
 	"substitute.MixinIngredientStackEntry",
@@ -74,6 +75,7 @@
 	"scorched.MixinNoiseChunkGenerator",
 	"scorched.MixinMultiNoiseBiomeSource",
 	"scorched.MixinMultiNoiseBiomeSourcePreset",
+	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",
@@ -123,6 +125,7 @@
 	"concrete.MixinClientPlayNetworkHandler",
 	"ibxm.MixinSoundLoader",
 	"ibxm.MixinSound",
+	"replicator.MixinInGameHud",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

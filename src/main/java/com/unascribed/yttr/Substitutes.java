@@ -1,6 +1,8 @@
 package com.unascribed.yttr;
 
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -10,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.unascribed.yttr.mixin.accessor.AccessorNamespaceResourceManager;
+import com.unascribed.yttr.mixin.accessor.AccessorReloadableResourceManagerImpl;
 import com.unascribed.yttr.util.YLog;
 
 import com.google.common.base.Charsets;
@@ -29,50 +33,59 @@ public class Substitutes {
 	
 	public static void reload(ResourceManager mgr) {
 		MAP.clear();
-		for (String ns : mgr.getAllNamespaces()) {
+		Iterable<String> namespaces;
+		if (mgr instanceof AccessorReloadableResourceManagerImpl) {
+			namespaces = ((AccessorReloadableResourceManagerImpl)mgr).yttr$getAllNamespaces();
+		} else if (mgr instanceof AccessorNamespaceResourceManager) {
+			namespaces = Collections.singleton(((AccessorNamespaceResourceManager)mgr).yttr$getNamespace());
+		} else {
+			YLog.warn("Found no namespaces in resource manager...");
+			namespaces = Collections.emptySet();
+		}
+		for (String ns : namespaces) {
 			Identifier id = new Identifier(ns, "yttr_substitutes.json");
-			if (mgr.containsResource(id)) {
-				try {
-					Resource r = mgr.getResource(id);
-					try (InputStreamReader isr = new InputStreamReader(r.getInputStream(), Charsets.UTF_8)) {
-						JsonObject obj = gson.fromJson(isr, JsonObject.class);
-						for (Map.Entry<String, JsonElement> en : obj.entrySet()) {
-							String k = en.getKey();
-							boolean optionalK = false;
-							if (k.endsWith("?")) {
-								k = k.substring(0, k.length()-1);
-								optionalK = true;
+			try {
+				Resource r = mgr.getResource(id);
+				try (InputStreamReader isr = new InputStreamReader(r.getInputStream(), Charsets.UTF_8)) {
+					JsonObject obj = gson.fromJson(isr, JsonObject.class);
+					for (Map.Entry<String, JsonElement> en : obj.entrySet()) {
+						String k = en.getKey();
+						boolean optionalK = false;
+						if (k.endsWith("?")) {
+							k = k.substring(0, k.length()-1);
+							optionalK = true;
+						}
+						Identifier kId = new Identifier(k);
+						Optional<Item> kI = Registry.ITEM.getOrEmpty(kId);
+						if (kI.isPresent()) {
+							String v = en.getValue().getAsString();
+							boolean optionalV = false;
+							if (v.endsWith("?")) {
+								v = v.substring(0, v.length()-1);
+								optionalV = true;
 							}
-							Identifier kId = new Identifier(k);
-							Optional<Item> kI = Registry.ITEM.getOrEmpty(kId);
-							if (kI.isPresent()) {
-								String v = en.getValue().getAsString();
-								boolean optionalV = false;
-								if (v.endsWith("?")) {
-									v = v.substring(0, v.length()-1);
-									optionalV = true;
+							Identifier vId = new Identifier(v);
+							Optional<Item> vI = Registry.ITEM.getOrEmpty(vId);
+							if (vI.isPresent()) {
+								if (MAP.containsKey(kI.get())) {
+									if (!optionalK) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this substitute to prime "+Registry.ITEM.getId(MAP.get(kI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
+								} else if (MAP.containsValue(vI.get())) {
+									if (!optionalV) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this prime to substitute "+Registry.ITEM.getId(MAP.inverse().get(vI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
+								} else {
+									MAP.put(kI.get(), vI.get());
 								}
-								Identifier vId = new Identifier(v);
-								Optional<Item> vI = Registry.ITEM.getOrEmpty(vId);
-								if (vI.isPresent()) {
-									if (MAP.containsKey(kI.get())) {
-										if (!optionalK) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this substitute to prime "+Registry.ITEM.getId(MAP.get(kI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
-									} else if (MAP.containsValue(vI.get())) {
-										if (!optionalV) YLog.warn("While loading "+id+" substitute "+kId+" to prime "+vId+", a mapping already exists for this prime to substitute "+Registry.ITEM.getId(MAP.inverse().get(vI.get()))+" - ignoring this mapping. Add a ? to make it optional and silence this warning.");
-									} else {
-										MAP.put(kI.get(), vI.get());
-									}
-								} else if (!optionalV) {
-									YLog.warn("While loading "+id+" substitute "+kId+", could not find item with ID "+vId+" for prime (add a ? to make it optional and silence this warning)");
-								}
-							} else if (!optionalK) {
-								YLog.warn("While loading "+id+", could not find item with ID "+kId+" for substitute (add a ? to make it optional and silence this warning)");
+							} else if (!optionalV) {
+								YLog.warn("While loading "+id+" substitute "+kId+", could not find item with ID "+vId+" for prime (add a ? to make it optional and silence this warning)");
 							}
+						} else if (!optionalK) {
+							YLog.warn("While loading "+id+", could not find item with ID "+kId+" for substitute (add a ? to make it optional and silence this warning)");
 						}
 					}
-				} catch (Throwable e) {
-					YLog.error("Failed to load "+id, e);
 				}
+			} catch (FileNotFoundException e) {
+				// containsResource is client-only
+			} catch (Throwable e) {
+				YLog.error("Failed to load "+id, e);
 			}
 		}
 		YLog.info("Loaded "+MAP.size()+" substitution"+(MAP.size() == 1 ? "" : "s"));
