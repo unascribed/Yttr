@@ -51,6 +51,7 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -391,6 +392,22 @@ public class YBlocks {
 	public static final MagtubeBlock MAGTUBE = new MagtubeBlock(METALLIC_SETTINGS);
 	
 	public static final EvaporatorBlock EVAPORATOR = new EvaporatorBlock(METALLIC_SETTINGS);
+	
+	public static final Block WASTELAND_DIRT = new Block(FabricBlockSettings.copyOf(Blocks.DIRT)
+			.strength(0.8f)
+		);
+	
+	@RenderLayer("cutout")
+	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)) {
+		@Override
+		protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
+			return floor.isOf(YBlocks.WASTELAND_DIRT);
+		}
+		@Override
+		public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
+			return false;
+		}
+	};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

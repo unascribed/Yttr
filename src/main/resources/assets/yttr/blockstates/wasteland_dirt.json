@@ -1,0 +1,78 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "yttr:block/wasteland_dirt"
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "x": 90
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "x": 180
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "x": 270
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 90
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 90,
+        "x": 90
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 90,
+        "x": 180
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 90,
+        "x": 270
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 180
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 180,
+        "x": 90
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 180,
+        "x": 180
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 180,
+        "x": 270
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 270
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 270,
+        "x": 90
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 270,
+        "x": 180
+      },
+      {
+        "model": "yttr:block/wasteland_dirt",
+        "y": 270,
+        "x": 270
+      }
+    ]
+  }
+}

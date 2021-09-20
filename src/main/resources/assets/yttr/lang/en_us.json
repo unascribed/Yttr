@@ -124,6 +124,8 @@
 	"block.yttr.brookite_block": "Block of Brookite",
 	"block.yttr.nethertuff": "Nethertuff",
 	"block.yttr.evaporator": "Magvaporator",
+	"block.yttr.wasteland_dirt": "Wasteland Dirt",
+	"block.yttr.wasteland_grass": "Wasteland Grass",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
@@ -152,6 +154,7 @@
 	
 	"biome.yttr.scorched_summit": "Scorched Summit",
 	"biome.yttr.scorched_terminus": "Scorched Terminus",
+	"biome.yttr.wasteland": "Wasteland",
 	
 	"fluid.yttr.void": "Void",
 	"fluid.yttr.flowing_void": "Void",

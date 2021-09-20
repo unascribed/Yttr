@@ -1,15 +1,22 @@
 package com.unascribed.yttr.init;
 
+import java.util.function.Consumer;
+
 import com.unascribed.yttr.Yttr;
 
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BiomeMoodSound;
+import net.minecraft.sound.MusicSound;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.DefaultBiomeCreator;
 import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep.Feature;
+import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 
 public class YBiomes {
@@ -60,8 +67,47 @@ public class YBiomes {
 				)
 			.build();
 	
+	public static final Biome WASTELAND = new Biome.Builder()
+			.precipitation(Biome.Precipitation.NONE)
+			.category(Biome.Category.DESERT)
+			.depth(0.1f)
+			.scale(0.015f)
+			.temperature(1.2f)
+			.downfall(0.5f)
+			.effects(new BiomeEffects.Builder()
+					.waterColor(0x403E16)
+					.waterFogColor(0x403E16)
+					.fogColor(0x6A7053)
+					.skyColor(0x848970)
+					.moodSound(BiomeMoodSound.CAVE)
+					.music(new MusicSound(YSounds.MANUSCRIPT, 3000, 6000, true))
+					.build())
+			.spawnSettings(modify(new SpawnSettings.Builder(),
+						DefaultBiomeFeatures::addCaveMobs,
+						b -> DefaultBiomeFeatures.addMonsters(b, 0, 40, 120))
+					.build())
+			.generationSettings(modify(new GenerationSettings.Builder(),
+						DefaultBiomeFeatures::addLandCarvers,
+						DefaultBiomeFeatures::addDefaultUndergroundStructures,
+						DefaultBiomeFeatures::addDefaultDisks,
+						DefaultBiomeFeatures::addDefaultLakes,
+						DefaultBiomeFeatures::addDefaultOres)
+					.surfaceBuilder(YWorldGen.WASTELAND_SURFACE)
+					.feature(Feature.VEGETAL_DECORATION, YWorldGen.WASTELAND_GRASS)
+					.build()
+				)
+			.build();
+	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
+	}
+
+	@SafeVarargs
+	private static <T> T modify(T obj, Consumer<T>... steps) {
+		for (Consumer<T> step : steps) {
+			step.accept(obj);
+		}
+		return obj;
 	}
 	
 }

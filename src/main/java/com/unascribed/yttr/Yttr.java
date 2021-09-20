@@ -87,6 +87,7 @@ public class Yttr implements ModInitializer {
 		YSounds.init();
 		YFluids.init();
 		YEntities.init();
+		YWorldGen.init();
 		YBiomes.init();
 		
 		// auxillary content
@@ -97,7 +98,6 @@ public class Yttr implements ModInitializer {
 		YTags.init();
 		YHandledScreens.init();
 		YEnchantments.init();
-		YWorldGen.init();
 		
 		// general initialization
 		YStats.init();
