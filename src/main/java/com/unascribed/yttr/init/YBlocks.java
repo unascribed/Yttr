@@ -398,7 +398,8 @@ public class YBlocks {
 		);
 	
 	@RenderLayer("cutout")
-	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)) {
+	public static final FernBlock WASTELAND_GRASS = new FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)
+			.breakByTool(FabricToolTags.SHOVELS)) {
 		@Override
 		protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
 			return floor.isOf(YBlocks.WASTELAND_DIRT);
