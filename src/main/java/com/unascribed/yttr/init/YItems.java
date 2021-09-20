@@ -107,6 +107,8 @@ public class YItems {
 	public static final BlockItem NETHERTUFF = createNormalBlockItem(YBlocks.NETHERTUFF);
 	public static final BlockItem MAGTUBE = createNormalBlockItem(YBlocks.MAGTUBE);
 	public static final BlockItem EVAPORATOR = createNormalBlockItem(YBlocks.EVAPORATOR);
+	public static final BlockItem WASTELAND_DIRT = createNormalBlockItem(YBlocks.WASTELAND_DIRT);
+	public static final BlockItem WASTELAND_GRASS = createNormalBlockItem(YBlocks.WASTELAND_GRASS);
 	
 	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
