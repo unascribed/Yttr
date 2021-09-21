@@ -1,8 +1,10 @@
 package com.unascribed.yttr.content.block;
 
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -22,7 +24,13 @@ public class RuinedPipeBlock extends BasicConnectingBlock {
 	}
 	
 	@Override
-	public boolean connectsTo(BlockState bs) {
+	public boolean connectsTo(BlockState bs, Direction face) {
+		if (bs.isOf(YBlocks.RUINED_CONTAINER)) {
+			return face == Direction.UP || face == Direction.DOWN;
+		}
+		if (bs.isOf(YBlocks.RUINED_DEVICE_BC_2)) {
+			return face == bs.get(FacingBlock.FACING);
+		}
 		return bs.isOf(this) || bs.isIn(YTags.Block.RUINED_DEVICES);
 	}
 	

@@ -27,21 +27,21 @@ public class BasicConnectingBlock extends ConnectingBlock {
 		return withConnectionProperties(ctx.getWorld(), ctx.getBlockPos());
 	}
 	
-	public boolean connectsTo(BlockState bs) {
+	public boolean connectsTo(BlockState bs, Direction face) {
 		return bs.isOf(this);
 	}
 
 	public BlockState withConnectionProperties(BlockView world, BlockPos pos) {
 		BlockState bs = getDefaultState();
 		for (Direction d : DIRECTIONS) {
-			bs = bs.with(FACING_PROPERTIES.get(d), connectsTo(world.getBlockState(pos.offset(d))));
+			bs = bs.with(FACING_PROPERTIES.get(d), connectsTo(world.getBlockState(pos.offset(d)), d));
 		}
 		return bs;
 	}
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		return state.with(FACING_PROPERTIES.get(direction), connectsTo(neighborState));
+		return state.with(FACING_PROPERTIES.get(direction), connectsTo(neighborState, direction));
 	}
 	
 }

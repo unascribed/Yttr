@@ -123,7 +123,7 @@ public class ScorchedGenerator {
 				}
 				if (foundAllAnchors) {
 					boolean warped = rand.nextBoolean();
-					spd.addProcessor(new NetherWoodSwapStructueProcessor(warped));
+					spd.addProcessor(new NetherWoodSwapStructureProcessor(warped));
 					spd.addProcessor(new LootTableFromPaperStructureProcessor());
 					s.place(region, origin, spd, rand);
 					for (BlockPos chain : chains) {

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "inside=false": {
+      "model": "yttr:block/ruined_construct_rc_1"
+    },
+    "inside=true": {
+      "model": "yttr:block/ruined_construct_rc_1_middle"
+    }
+  }
+}

@@ -117,11 +117,14 @@ public class YItems {
 	public static final BlockItem RUINED_DEVICE_BC_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_1);
 	public static final BlockItem RUINED_DEVICE_BC_2 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_2);
 	public static final BlockItem RUINED_DEVICE_GT_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_GT_1);
+	public static final BlockItem RUINED_DEVICE_RP_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_RP_1);
 	public static final BlockItem RUINED_PIPE = createRuinedBlockItem(YBlocks.RUINED_PIPE);
 	public static final BlockItem RUINED_FRAME = createRuinedBlockItem(YBlocks.RUINED_FRAME);
 	public static final BlockItem RUINED_TUBE = createRuinedBlockItem(YBlocks.RUINED_TUBE);
 	public static final BlockItem RUINED_LEVER = createRuinedBlockItem(YBlocks.RUINED_LEVER);
 	public static final BlockItem RUINED_TANK = createRuinedBlockItem(YBlocks.RUINED_TANK);
+	public static final BlockItem RUINED_CONSTRUCT_RC_1 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_1);
+	public static final BlockItem RUINED_CONSTRUCT_RC_2 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_2);
 	
 	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings().group(YItemGroups.RUINED));
 	
@@ -478,6 +481,8 @@ public class YItems {
 	
 	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
+	
+	public static final Item RUBBLE = new Item(new Item.Settings().group(YItemGroups.RUINED)) {};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

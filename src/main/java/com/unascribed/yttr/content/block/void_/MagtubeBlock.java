@@ -13,6 +13,7 @@ import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.math.Direction;
 
 public class MagtubeBlock extends BasicConnectingBlock implements Waterloggable {
 
@@ -35,7 +36,7 @@ public class MagtubeBlock extends BasicConnectingBlock implements Waterloggable 
 	}
 	
 	@Override
-	public boolean connectsTo(BlockState bs) {
+	public boolean connectsTo(BlockState bs, Direction face) {
 		return bs.isIn(YTags.Block.MAGTUBE_TARGETS);
 	}
 	

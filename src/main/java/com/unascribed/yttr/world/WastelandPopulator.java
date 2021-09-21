@@ -1,20 +1,28 @@
 package com.unascribed.yttr.world;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
+import net.minecraft.block.SideShapeType;
+import net.minecraft.block.StructureBlock;
 import net.minecraft.block.WallTorchBlock;
+import net.minecraft.block.enums.StructureBlockMode;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.structure.Structure.StructureBlockInfo;
+import net.minecraft.structure.processor.StructureProcessor;
+import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
@@ -23,6 +31,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.gen.ChunkRandom;
 
@@ -129,18 +138,38 @@ public class WastelandPopulator {
 			}
 			if (rand.nextInt(100) < 15) {
 				mut.set(chunkStart);
-				mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX(), mut.getZ()));
-				tryPlaceSchematic(rand, world, mut, "yttr:ruined/twilight_portal", -2);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/twilight_portal", -2, true, false);
 			}
 			if (rand.nextInt(300) == 0) {
 				mut.set(chunkStart);
-				mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX(), mut.getZ()));
-				tryPlaceSchematic(rand, world, mut, "yttr:ruined/laundromat", 0);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/laundromat", 0, true, true);
 			}
 			if (rand.nextInt(100) == 0) {
 				mut.set(chunkStart);
-				mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX(), mut.getZ()));
-				tryPlaceSchematic(rand, world, mut, "yttr:ruined/sulfur_goo_farm", 0);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/sulfur_goo_farm", 1, true, true);
+			}
+			if (rand.nextInt(100) == 0) {
+				mut.set(chunkStart);
+				mut.setY(-1);
+				Direction d = Direction.Type.HORIZONTAL.random(rand);
+				for (int i = 0; i < 1+rand.nextInt(8); i++) {
+					if (!tryPlaceSchematic(rand, world, mut, "yttr:ruined/coke_oven", 0, false, true)) break;
+					mut.move(d, 4);
+					mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX()-1, mut.getZ()-1));
+				}
+			}
+			if (rand.nextInt(100) == 0) {
+				mut.set(chunkStart);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/blast_furnace", 0, false, true);
+			}
+			if (rand.nextInt(200) == 0) {
+				mut.set(chunkStart);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/quarry", 0, false, true);
 			}
 		}
 	}
@@ -193,19 +222,70 @@ public class WastelandPopulator {
 		return !hitUnbreakable;
 	}
 	
-	private static boolean tryPlaceSchematic(ChunkRandom rand, ServerWorld world, BlockPos pos, String id, int yOffset) {
+	private static boolean tryPlaceSchematic(ChunkRandom rand, ServerWorld world, BlockPos pos, String id, int yOffset, boolean eatDirt, boolean fill) {
 		Structure s = world.getStructureManager().getStructure(new Identifier(id));
 		BlockRotation rot = BlockRotation.random(rand);
 		StructurePlacementData spd = new StructurePlacementData();
 		spd.setRotation(rot);
-		BlockPos origin = pos.up(yOffset);
+		spd.setUpdateNeighbors(false);
+		BlockPos size = s.getRotatedSize(rot);
+		BlockPos origin = pos.add(-size.getX()/2, 0, -size.getZ()/2);
+		if (origin.getY() == -1) {
+			origin = new BlockPos(origin.getX(), world.getTopY(Heightmap.Type.WORLD_SURFACE, origin.getX(), origin.getZ()), origin.getZ());
+		}
+		origin = origin.up(yOffset);
+		int originY = origin.getY();
 		for (BlockPos bpp : BlockPos.iterate(origin, origin.add(s.getRotatedSize(rot)))) {
 			BlockState bs = world.getBlockState(bpp);
-			if (!bs.isAir() && !bs.getMaterial().isReplaceable() && !bs.isOf(YBlocks.WASTELAND_DIRT)) {
+			if (!bs.isAir() && !bs.getMaterial().isReplaceable() && (!eatDirt || !bs.isOf(YBlocks.WASTELAND_DIRT))) {
 				return false;
 			}
 		}
+		List<BlockPos> fillIn = Lists.newArrayList();
+		if (fill) {
+			spd.addProcessor(new StructureProcessor() {
+				
+				@Override
+				public StructureBlockInfo process(WorldView world,
+						BlockPos unk, BlockPos unk2,
+						StructureBlockInfo unk3, StructureBlockInfo block,
+						StructurePlacementData structurePlacementData) {
+					if (block.pos.getY() == originY && block.state.isSideSolid(world, block.pos, Direction.DOWN, SideShapeType.FULL)) {
+						if (block.tag == null || !"yttr:quarry_hole".equals(block.tag.getString("metadata"))) {
+							fillIn.add(block.pos);
+						}
+					}
+					return block;
+				}
+				
+				@Override
+				protected StructureProcessorType<?> getType() {
+					return StructureProcessorType.NOP;
+				}
+			});
+		}
 		s.place(world, origin, spd, rand);
+		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
+			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
+				if (info.tag != null && "yttr:quarry_hole".equals(info.tag.getString("metadata"))) {
+					BlockPos.Mutable bp = info.pos.mutableCopy();
+					for (int y = info.pos.getY(); y >= 0; y--) {
+						bp.setY(y);
+						BlockState bs = world.getBlockState(bp);
+						if (bs.isOf(Blocks.BEDROCK)) break;
+						world.setBlockState(bp, Blocks.AIR.getDefaultState());
+					}
+				}
+			}
+		}
+		for (BlockPos b : fillIn) {
+			BlockPos.Mutable scan = b.mutableCopy();
+			scan.move(Direction.DOWN);
+			while (world.getBlockState(scan).isAir() || world.getBlockState(scan).getMaterial().isReplaceable()) {
+				world.setBlockState(scan, YBlocks.WASTELAND_DIRT.getDefaultState(), FLAGS, 0);
+				scan.move(Direction.DOWN);
+			}
+		}
 		return true;
 	}
 	

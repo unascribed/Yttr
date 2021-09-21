@@ -1,0 +1,42 @@
+{
+	"variants": {
+		"north=true,south=true,west=false,east=false,up=false,down=false": {
+			"model": "yttr:block/ruined_tube_straight"
+		},
+		"north=false,south=false,west=true,east=true,up=false,down=false": {
+			"model": "yttr:block/ruined_tube_straight",
+			"y": 90
+		},
+		"north=false,south=false,west=false,east=false,up=true,down=true": {
+			"model": "yttr:block/ruined_tube_straight",
+			"x": 90
+		}
+	},
+	"multipart": [
+		{ "apply": { "model": "yttr:block/ruined_tube_center" } },
+		{
+			"when": { "north": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side" }
+		},
+		{
+			"when": { "east": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side", "y": 90 }
+		},
+		{
+			"when": { "south": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side", "y": 180 }
+		},
+		{
+			"when": { "west": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side", "y": 270 }
+		},
+		{
+			"when": { "up": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side", "x": 270 }
+		},
+		{
+			"when": { "down": "true" },
+			"apply": { "model": "yttr:block/ruined_tube_side", "x": 90 }
+		}
+	]
+}

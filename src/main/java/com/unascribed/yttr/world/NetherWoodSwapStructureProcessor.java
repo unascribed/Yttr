@@ -13,7 +13,7 @@ import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 
-public class NetherWoodSwapStructueProcessor extends StructureProcessor {
+public class NetherWoodSwapStructureProcessor extends StructureProcessor {
 	
 	private static final ImmutableBiMap<Block, Block> SWAP = ImmutableBiMap.<Block, Block>builder()
 			.put(Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON)
@@ -40,7 +40,7 @@ public class NetherWoodSwapStructueProcessor extends StructureProcessor {
 	
 	private final boolean warped;
 
-	public NetherWoodSwapStructueProcessor(boolean warped) {
+	public NetherWoodSwapStructureProcessor(boolean warped) {
 		this.warped = warped;
 	}
 

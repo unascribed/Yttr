@@ -1,0 +1,29 @@
+{
+	"multipart": [
+		{ "apply": { "model": "yttr:block/ruined_frame_center" } },
+		{
+			"when": { "north": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "uvlock": true }
+		},
+		{
+			"when": { "east": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "y": 90, "uvlock": true }
+		},
+		{
+			"when": { "south": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "y": 180, "uvlock": true }
+		},
+		{
+			"when": { "west": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "y": 270, "uvlock": true }
+		},
+		{
+			"when": { "up": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "x": 270, "uvlock": true }
+		},
+		{
+			"when": { "down": "true" },
+			"apply": { "model": "yttr:block/ruined_frame_side", "x": 90, "uvlock": true }
+		}
+	]
+}

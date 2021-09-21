@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "yttr:block/ruined_pipe",
-		"particle": "yttr:block/ruined_pipe"
+		"particle": "#0"
 	},
 	"elements": [
 		{

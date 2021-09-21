@@ -5,6 +5,7 @@ import java.util.Random;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.BasicFacingBlock;
 import com.unascribed.yttr.content.block.BasicHorizontalFacingBlock;
+import com.unascribed.yttr.content.block.RCStyleMultiblock;
 import com.unascribed.yttr.content.block.RuinedPipeBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
@@ -426,8 +427,9 @@ public class YBlocks {
 		}
 	};
 	
-	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.COBBLESTONE)
-			.sounds(BlockSoundGroup.BASALT);
+	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.DIRT)
+			.sounds(BlockSoundGroup.BASALT)
+			.drops(new Identifier("yttr", "blocks/ruined"));
 	private static final Block.Settings RUINED_UNCL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.noCollision();
 	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
@@ -435,6 +437,11 @@ public class YBlocks {
 	
 	private static <T extends Block> T ruinedDevice(T block) {
 		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
+		return block;
+	}
+	
+	private static <T extends Block> T ruinedConstruct(T block) {
+		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_construct");
 		return block;
 	}
 	
@@ -454,10 +461,20 @@ public class YBlocks {
 	
 	public static final Block RUINED_DEVICE_GT_1 = ruinedDevice(new Block(RUINED_SETTINGS));
 	
+	public static final Block RUINED_DEVICE_RP_1 = ruinedDevice(new BasicFacingBlock(RUINED_SETTINGS));
+	
+	public static final Block RUINED_CONSTRUCT_RC_1 = ruinedConstruct(new RCStyleMultiblock(1, 1, 1, RUINED_SETTINGS));
+	public static final Block RUINED_CONSTRUCT_RC_2 = ruinedConstruct(new RCStyleMultiblock(1, 3, 0, RUINED_SETTINGS));
+	
 	@RenderLayer("cutout")
 	public static final Block RUINED_PIPE = new RuinedPipeBlock(RUINED_SETTINGS);
 	@RenderLayer("cutout")
-	public static final Block RUINED_FRAME = new RuinedPipeBlock(RUINED_SETTINGS);
+	public static final Block RUINED_FRAME = new RuinedPipeBlock(RUINED_SETTINGS) {
+		@Override
+		public boolean connectsTo(BlockState bs, Direction face) {
+			return bs.isOf(this);
+		}
+	};
 	@RenderLayer("cutout")
 	public static final Block RUINED_TUBE = new RuinedPipeBlock(RUINED_SETTINGS);
 	

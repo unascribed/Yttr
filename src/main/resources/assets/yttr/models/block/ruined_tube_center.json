@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "yttr:block/ruined_tube_end",
+		"particle": "yttr:block/ruined_tube"
+	},
+	"elements": [
+		{
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"faces": {
+				"north": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "east"},
+				"south": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "south"},
+				"west": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "west"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "up"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "cube inverted",
+			"from": [12, 12, 12],
+			"to": [4, 4, 4],
+			"faces": {
+				"north": {"uv": [4, 12, 12, 4], "texture": "#1", "cullface": "south"},
+				"east": {"uv": [4, 12, 12, 4], "texture": "#1", "cullface": "west"},
+				"south": {"uv": [4, 12, 12, 4], "texture": "#1", "cullface": "north"},
+				"west": {"uv": [4, 12, 12, 4], "texture": "#1", "cullface": "east"},
+				"up": {"uv": [12, 4, 4, 12], "texture": "#1", "cullface": "down"},
+				"down": {"uv": [12, 4, 4, 12], "texture": "#1", "cullface": "up"}
+			}
+		}
+	]
+}

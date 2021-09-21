@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "yttr:block/ruined_device_rp_1"
+    },
+    "facing=down": {
+      "model": "yttr:block/ruined_device_rp_1",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "yttr:block/ruined_device_rp_1",
+      "x": 270
+    },
+    "facing=south": {
+      "model": "yttr:block/ruined_device_rp_1",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "yttr:block/ruined_device_rp_1",
+      "x": 270,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "yttr:block/ruined_device_rp_1",
+      "x": 270,
+      "y": 270
+    }
+  }
+}

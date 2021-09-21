@@ -60,6 +60,7 @@
 	"item.yttr.music_disc_papillons": "Music Disc",
 	"item.yttr.music_disc_void": "§8Music Disc",
 	"item.yttr.levitation_splash_potion": "Splash Potion of Levitation",
+	"item.yttr.rubble": "§7Rubble",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -139,6 +140,7 @@
 	"block.yttr.ruined_torch": "Ruined Torch",
 	"block.yttr.ruined_lever": "Ruined Lever",
 	"block.yttr.ruined_tank": "Ruined Tank",
+	"block.yttr.ruined_construct": "Ruined Construct",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

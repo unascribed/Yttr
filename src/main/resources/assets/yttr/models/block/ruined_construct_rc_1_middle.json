@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"particle": "yttr:block/ruined_construct_rc_1_middle",
+		"north": "yttr:block/ruined_construct_rc_1_middle",
+		"south": "yttr:block/ruined_construct_rc_1_middle",
+		"east": "yttr:block/ruined_construct_rc_1_middle",
+		"west": "yttr:block/ruined_construct_rc_1_middle",
+		"up":  "yttr:block/ruined_construct_rc_1",
+		"down":  "yttr:block/ruined_construct_rc_1"
+	}
+}
