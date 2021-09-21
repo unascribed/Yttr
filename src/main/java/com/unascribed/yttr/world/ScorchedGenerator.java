@@ -4,32 +4,33 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.unascribed.yttr.init.YBlocks;
-import com.google.common.collect.ImmutableBiMap;
+
 import com.google.common.collect.Lists;
 
-import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.StructureBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.block.enums.StructureBlockMode;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.state.property.Property;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.Structure.StructureBlockInfo;
-import net.minecraft.structure.processor.StructureProcessor;
-import net.minecraft.structure.processor.StructureProcessorType;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.text.Style;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.noise.OctaveSimplexNoiseSampler;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
@@ -70,7 +71,7 @@ public class ScorchedGenerator {
 				}
 			}
 			rand.setPopulationSeed(31*worldSeed, chunk.getPos().getStartX(), chunk.getPos().getStartZ());
-			if (accessor.shouldGenerateStructures() && rand.nextInt(80) == 0) {
+			if (accessor.shouldGenerateStructures() && rand.nextInt(40) == 0) {
 				Structure s = region.toServerWorld().getStructureManager().getStructure(new Identifier("yttr", "terminus_house"));
 				BlockRotation rot = BlockRotation.random(rand);
 				List<BlockPos> chains = Lists.newArrayList();
@@ -122,70 +123,8 @@ public class ScorchedGenerator {
 				}
 				if (foundAllAnchors) {
 					boolean warped = rand.nextBoolean();
-					spd.addProcessor(new StructureProcessor() {
-						
-						private final ImmutableBiMap<Block, Block> SWAP = ImmutableBiMap.<Block, Block>builder()
-								.put(Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON)
-								.put(Blocks.CRIMSON_DOOR, Blocks.WARPED_DOOR)
-								.put(Blocks.CRIMSON_FENCE, Blocks.WARPED_FENCE)
-								.put(Blocks.CRIMSON_FENCE_GATE, Blocks.WARPED_FENCE_GATE)
-								.put(Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS)
-								.put(Blocks.CRIMSON_HYPHAE, Blocks.WARPED_HYPHAE)
-								.put(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM)
-								.put(Blocks.CRIMSON_PLANKS, Blocks.WARPED_PLANKS)
-								.put(Blocks.CRIMSON_PRESSURE_PLATE, Blocks.WARPED_PRESSURE_PLATE)
-								.put(Blocks.CRIMSON_ROOTS, Blocks.WARPED_ROOTS)
-								.put(Blocks.CRIMSON_SIGN, Blocks.WARPED_SIGN)
-								.put(Blocks.CRIMSON_SLAB, Blocks.WARPED_SLAB)
-								.put(Blocks.CRIMSON_STAIRS, Blocks.WARPED_STAIRS)
-								.put(Blocks.CRIMSON_STEM, Blocks.WARPED_STEM)
-								.put(Blocks.CRIMSON_TRAPDOOR, Blocks.WARPED_TRAPDOOR)
-								.put(Blocks.CRIMSON_WALL_SIGN, Blocks.WARPED_WALL_SIGN)
-								.put(Blocks.STRIPPED_CRIMSON_HYPHAE, Blocks.STRIPPED_WARPED_HYPHAE)
-								.put(Blocks.STRIPPED_CRIMSON_STEM, Blocks.STRIPPED_WARPED_STEM)
-								.put(Blocks.POTTED_CRIMSON_FUNGUS, Blocks.POTTED_WARPED_FUNGUS)
-								.put(Blocks.POTTED_CRIMSON_ROOTS, Blocks.POTTED_WARPED_ROOTS)
-								.build();
-						
-						@Override
-						public StructureBlockInfo process(WorldView world,
-								BlockPos unk, BlockPos unk2,
-								StructureBlockInfo unk3, StructureBlockInfo block,
-								StructurePlacementData structurePlacementData) {
-							if (warped) {
-								Block swapped = SWAP.getOrDefault(block.state.getBlock(), SWAP.inverse().get(block.state.getBlock()));
-								if (swapped != null) {
-									BlockState bs = swapped.getDefaultState();
-									for (Property prop : block.state.getProperties()) {
-										if (bs.contains(prop)) {
-											bs = bs.with(prop, block.state.get(prop));
-										}
-									}
-									return new StructureBlockInfo(block.pos, bs, block.tag);
-								}
-							}
-							if (block.tag != null && block.tag.contains("Items")) {
-								NbtList items = block.tag.getList("Items", NbtType.COMPOUND);
-								if (items.size() == 1) {
-									ItemStack item = ItemStack.fromNbt(items.getCompound(0));
-									if (item.getItem() == Items.PAPER && item.hasCustomName()) {
-										Identifier id = new Identifier(item.getName().asString());
-										Identifier finId = new Identifier(id.getNamespace(), "chests/"+id.getPath());
-										NbtCompound newTag = block.tag.copy();
-										newTag.remove("Items");
-										newTag.putString("LootTable", finId.toString());
-										return new StructureBlockInfo(block.pos, block.state, newTag);
-									}
-								}
-							}
-							return block;
-						}
-						
-						@Override
-						protected StructureProcessorType<?> getType() {
-							return StructureProcessorType.NOP;
-						}
-					});
+					spd.addProcessor(new NetherWoodSwapStructueProcessor(warped));
+					spd.addProcessor(new LootTableFromPaperStructureProcessor());
 					s.place(region, origin, spd, rand);
 					for (BlockPos chain : chains) {
 						bp.set(chain);
@@ -197,6 +136,27 @@ public class ScorchedGenerator {
 							}
 							bp.move(Direction.UP);
 						}
+					}
+					bp.set(origin);
+					bp.move(Direction.DOWN);
+					for (int i = 0; i < 100; i++) {
+						if (!region.getBlockState(bp).isAir() && !region.getBlockState(bp).isIn(BlockTags.FIRE)) {
+							break;
+						}
+						bp.move(Direction.DOWN);
+					}
+					region.setBlockState(bp, Blocks.SHROOMLIGHT.getDefaultState(), 3);
+					bp.move(Direction.UP);
+					region.setBlockState(bp, (warped ? Blocks.WARPED_PRESSURE_PLATE : Blocks.CRIMSON_PRESSURE_PLATE).getDefaultState(), 3);
+					bp.move(Direction.DOWN, 2);
+					region.setBlockState(bp, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, Direction.UP), 3);
+					BlockEntity be = region.getBlockEntity(bp);
+					if (be instanceof DispenserBlockEntity) {
+						ItemStack potion = new ItemStack(Items.SPLASH_POTION);
+						potion.setCustomName(new TranslatableText("item.yttr.levitation_splash_potion").setStyle(Style.EMPTY.withItalic(false)));
+						PotionUtil.setCustomPotionEffects(potion, Arrays.asList(new StatusEffectInstance(StatusEffects.LEVITATION, 25*20, 5)));
+						potion.getTag().putInt("CustomPotionColor", StatusEffects.LEVITATION.getColor());
+						((DispenserBlockEntity)be).setStack(4, potion);
 					}
 				}
 			}

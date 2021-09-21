@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.scorched;
+package com.unascribed.yttr.mixin.worldgen;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.world.ScorchedGenerator;
-
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;

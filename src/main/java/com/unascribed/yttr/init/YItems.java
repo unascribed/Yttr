@@ -60,6 +60,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -107,8 +108,22 @@ public class YItems {
 	public static final BlockItem NETHERTUFF = createNormalBlockItem(YBlocks.NETHERTUFF);
 	public static final BlockItem MAGTUBE = createNormalBlockItem(YBlocks.MAGTUBE);
 	public static final BlockItem EVAPORATOR = createNormalBlockItem(YBlocks.EVAPORATOR);
-	public static final BlockItem WASTELAND_DIRT = createNormalBlockItem(YBlocks.WASTELAND_DIRT);
-	public static final BlockItem WASTELAND_GRASS = createNormalBlockItem(YBlocks.WASTELAND_GRASS);
+	
+	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
+	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
+	public static final BlockItem RUINED_COBBLESTONE = createRuinedBlockItem(YBlocks.RUINED_COBBLESTONE);
+	public static final BlockItem RUINED_BRICKS = createRuinedBlockItem(YBlocks.RUINED_BRICKS);
+	public static final BlockItem RUINED_CONTAINER = createRuinedBlockItem(YBlocks.RUINED_CONTAINER);
+	public static final BlockItem RUINED_DEVICE_BC_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_1);
+	public static final BlockItem RUINED_DEVICE_BC_2 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_2);
+	public static final BlockItem RUINED_DEVICE_GT_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_GT_1);
+	public static final BlockItem RUINED_PIPE = createRuinedBlockItem(YBlocks.RUINED_PIPE);
+	public static final BlockItem RUINED_FRAME = createRuinedBlockItem(YBlocks.RUINED_FRAME);
+	public static final BlockItem RUINED_TUBE = createRuinedBlockItem(YBlocks.RUINED_TUBE);
+	public static final BlockItem RUINED_LEVER = createRuinedBlockItem(YBlocks.RUINED_LEVER);
+	public static final BlockItem RUINED_TANK = createRuinedBlockItem(YBlocks.RUINED_TANK);
+	
+	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings().group(YItemGroups.RUINED));
 	
 	@BuiltinRenderer(LampItemRenderer.class)
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
@@ -154,6 +169,10 @@ public class YItems {
 
 	private static BlockItem createNormalBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings().group(YItemGroups.MAIN));
+	}
+	
+	private static BlockItem createRuinedBlockItem(Block block) {
+		return new BlockItem(block, new Item.Settings().group(YItemGroups.RUINED));
 	}
 
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()

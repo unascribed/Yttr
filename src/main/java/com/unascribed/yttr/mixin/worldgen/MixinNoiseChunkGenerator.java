@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.scorched;
+package com.unascribed.yttr.mixin.worldgen;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

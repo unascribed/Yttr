@@ -24,6 +24,9 @@ public class YItemGroups {
 	public static final ItemGroup POTION = FabricItemGroupBuilder.create(new Identifier("yttr", "potion"))
 		.icon(() -> PotionUtil.setPotion(new ItemStack(YItems.MERCURIAL_POTION), Potions.SWIFTNESS))
 		.build();
+	public static final ItemGroup RUINED = FabricItemGroupBuilder.create(new Identifier("yttr", "ruined"))
+			.icon(() -> new ItemStack(YItems.WASTELAND_GRASS))
+			.build();
 
 	public static void init() {
 		

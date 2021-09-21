@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "yttr:block/ruined_device_bc_1",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/ruined_device_bc_1"
+    },
+    "facing=south": {
+      "model": "yttr:block/ruined_device_bc_1",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "yttr:block/ruined_device_bc_1",
+      "y": 270
+    }
+  }
+}

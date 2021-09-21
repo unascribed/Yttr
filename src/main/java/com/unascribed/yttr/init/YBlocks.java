@@ -3,6 +3,9 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.BasicFacingBlock;
+import com.unascribed.yttr.content.block.BasicHorizontalFacingBlock;
+import com.unascribed.yttr.content.block.RuinedPipeBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
@@ -41,6 +44,7 @@ import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlock;
+import com.unascribed.yttr.mixin.accessor.AccessorBlock;
 import com.unascribed.yttr.util.annotate.RenderLayer;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
@@ -53,18 +57,30 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.block.LeverBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.TorchBlock;
+import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -79,13 +95,13 @@ public class YBlocks {
 			.breakByTool(FabricToolTags.PICKAXES, 1);
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
-	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
+//	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 	
 	private static final FabricBlockSettings HOLLOWHUGE_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOWHUGE_SOUNDS)
 			.strength(8);
-	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
-			.sounds(HOLLOW_SOUNDS);
+//	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
+//			.sounds(HOLLOW_SOUNDS);
 	
 	public static final Block GADOLINITE = new Block(FabricBlockSettings.of(Material.STONE)
 			.strength(4)
@@ -409,6 +425,69 @@ public class YBlocks {
 			return false;
 		}
 	};
+	
+	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.COBBLESTONE)
+			.sounds(BlockSoundGroup.BASALT);
+	private static final Block.Settings RUINED_UNCL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
+			.noCollision();
+	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
+			.nonOpaque();
+	
+	private static <T extends Block> T ruinedDevice(T block) {
+		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
+		return block;
+	}
+	
+	public static final Block RUINED_COBBLESTONE = new Block(RUINED_SETTINGS);
+	public static final Block RUINED_BRICKS = new Block(RUINED_SETTINGS);
+	
+	public static final Block RUINED_CONTAINER = new Block(RUINED_SETTINGS);
+	@RenderLayer("cutout")
+	public static final Block RUINED_TANK = new Block(RUINED_SETTINGS) {
+		private VoxelShape SHAPE = createCuboidShape(2, 0, 2, 14, 16, 14);
+		@Override
+		public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) { return SHAPE; }
+	};
+	
+	public static final Block RUINED_DEVICE_BC_1 = ruinedDevice(new BasicHorizontalFacingBlock(RUINED_SETTINGS));
+	public static final Block RUINED_DEVICE_BC_2 = new BasicFacingBlock(RUINED_PARTIAL_SETTINGS);
+	
+	public static final Block RUINED_DEVICE_GT_1 = ruinedDevice(new Block(RUINED_SETTINGS));
+	
+	@RenderLayer("cutout")
+	public static final Block RUINED_PIPE = new RuinedPipeBlock(RUINED_SETTINGS);
+	@RenderLayer("cutout")
+	public static final Block RUINED_FRAME = new RuinedPipeBlock(RUINED_SETTINGS);
+	@RenderLayer("cutout")
+	public static final Block RUINED_TUBE = new RuinedPipeBlock(RUINED_SETTINGS);
+	
+	@RenderLayer("cutout")
+	public static final Block RUINED_TORCH = new TorchBlock(RUINED_UNCL_SETTINGS, null) {
+		@Override
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+	};
+	@RenderLayer("cutout")
+	public static final Block RUINED_WALL_TORCH = new WallTorchBlock(RUINED_UNCL_SETTINGS, null) {
+		@Override
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+	};
+	public static final Block RUINED_LEVER = new LeverBlock(RUINED_UNCL_SETTINGS) {
+		@Override
+		public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+			if (player.isCreative()) return super.onUse(state, world, pos, player, hand, hit);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, 0.6f);
+			world.breakBlock(pos, false);
+			return ActionResult.SUCCESS;
+		}
+		@Override
+		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
+		@Override
+		public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
+		@Override
+		public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
+	};
+	
+	public static final Block SPECIALTY_BEDROCK = new Block(FabricBlockSettings.copyOf(Blocks.BEDROCK));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

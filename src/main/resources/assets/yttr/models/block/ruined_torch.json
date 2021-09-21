@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "yttr:block/ruined_torch",
+		"torch": "yttr:block/ruined_torch"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 7, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 8]},
+			"faces": {
+				"north": {"uv": [7, 9, 9, 16], "texture": "#torch"},
+				"east": {"uv": [7, 9, 9, 16], "texture": "#torch"},
+				"south": {"uv": [7, 9, 9, 16], "texture": "#torch"},
+				"west": {"uv": [7, 9, 9, 16], "texture": "#torch"},
+				"up": {"uv": [7, 9, 9, 11], "texture": "#torch"},
+				"down": {"uv": [7, 14, 9, 16], "texture": "#torch"}
+			}
+		},
+		{
+			"from": [7, 7, 8],
+			"to": [8, 8, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 8]},
+			"faces": {
+				"north": {"uv": [8, 8, 9, 9], "texture": "#torch"},
+				"east": {"uv": [8, 8, 9, 9], "texture": "#torch"},
+				"south": {"uv": [8, 8, 9, 9], "texture": "#torch"},
+				"west": {"uv": [8, 8, 9, 9], "texture": "#torch"},
+				"up": {"uv": [8, 8, 9, 9], "texture": "#torch"}
+			}
+		}
+	]
+}

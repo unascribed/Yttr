@@ -43,12 +43,15 @@ import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
+import com.unascribed.yttr.world.WastelandPopulator;
+
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
@@ -62,6 +65,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -130,6 +134,13 @@ public class Yttr implements ModInitializer {
 		
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
 			Substitutes.reload(mgr.getResourceManager());
+		});
+		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+			if (WastelandPopulator.isEligible(world, chunk)) {
+				world.getServer().send(new ServerTask(world.getServer().getTicks(), () -> {
+					WastelandPopulator.populate(world.getSeed(), world, chunk.getPos());
+				}));
+			}
 		});
 	}
 

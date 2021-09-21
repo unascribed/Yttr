@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "yttr:block/ruined_wall_torch"
+    },
+    "facing=north": {
+      "model": "yttr:block/ruined_wall_torch",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "yttr:block/ruined_wall_torch",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "yttr:block/ruined_wall_torch",
+      "y": 180
+    }
+  }
+}

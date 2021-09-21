@@ -4,13 +4,18 @@ import java.util.function.Consumer;
 
 import com.unascribed.yttr.Yttr;
 
+import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.DefaultBiomeCreator;
 import net.minecraft.world.biome.GenerationSettings;
@@ -70,7 +75,7 @@ public class YBiomes {
 	public static final Biome WASTELAND = new Biome.Builder()
 			.precipitation(Biome.Precipitation.NONE)
 			.category(Biome.Category.DESERT)
-			.depth(0.1f)
+			.depth(0.05f)
 			.scale(0.015f)
 			.temperature(1.2f)
 			.downfall(0.5f)
@@ -79,6 +84,8 @@ public class YBiomes {
 					.waterFogColor(0x403E16)
 					.fogColor(0x6A7053)
 					.skyColor(0x848970)
+					.grassColor(0x58503F)
+					.foliageColor(0x58503F)
 					.moodSound(BiomeMoodSound.CAVE)
 					.music(new MusicSound(YSounds.MANUSCRIPT, 3000, 6000, true))
 					.build())
@@ -88,10 +95,10 @@ public class YBiomes {
 					.build())
 			.generationSettings(modify(new GenerationSettings.Builder(),
 						DefaultBiomeFeatures::addLandCarvers,
-						DefaultBiomeFeatures::addDefaultUndergroundStructures,
 						DefaultBiomeFeatures::addDefaultDisks,
 						DefaultBiomeFeatures::addDefaultLakes,
-						DefaultBiomeFeatures::addDefaultOres)
+						DefaultBiomeFeatures::addDefaultOres,
+						DefaultBiomeFeatures::addMineables)
 					.surfaceBuilder(YWorldGen.WASTELAND_SURFACE)
 					.feature(Feature.VEGETAL_DECORATION, YWorldGen.WASTELAND_GRASS)
 					.build()
@@ -100,6 +107,8 @@ public class YBiomes {
 	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
+		
+		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")), 0.2);
 	}
 
 	@SafeVarargs

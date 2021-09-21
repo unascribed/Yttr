@@ -1,7 +1,6 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
-
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.block.Blocks;
@@ -25,7 +24,6 @@ import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
 @SuppressWarnings("deprecation")
 public class YWorldGen {
-
 
 	public static final ConfiguredFeature<?, ?> GADOLINITE_OVERWORLD = Feature.ORE
 			.configure(new OreFeatureConfig(
@@ -58,7 +56,6 @@ public class YWorldGen {
 	
 	public static final ConfiguredSurfaceBuilder<?> WASTELAND_SURFACE = SurfaceBuilder.DEFAULT
 			.withConfig(new TernarySurfaceConfig(YBlocks.WASTELAND_DIRT.getDefaultState(), YBlocks.WASTELAND_DIRT.getDefaultState(), Blocks.STONE.getDefaultState()));
-	
 	
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);

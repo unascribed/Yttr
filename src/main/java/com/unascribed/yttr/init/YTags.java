@@ -29,6 +29,8 @@ public class YTags {
 		public static final Tag<net.minecraft.block.Block> UNCLEAVABLE = TagRegistry.block(new Identifier("yttr", "uncleavable"));
 		public static final Tag<net.minecraft.block.Block> GIFTS = TagRegistry.block(new Identifier("yttr", "gifts"));
 		public static final Tag<net.minecraft.block.Block> MAGTUBE_TARGETS = TagRegistry.block(new Identifier("yttr", "magtube_targets"));
+		public static final Tag<net.minecraft.block.Block> RUINED_DEVICES = TagRegistry.block(new Identifier("yttr", "ruined_devices"));
+		public static final Tag<net.minecraft.block.Block> ORES = TagRegistry.block(new Identifier("yttr", "ores"));
 		
 		private static void init() {}
 		
