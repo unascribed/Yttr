@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import com.unascribed.yttr.world.WastelandPopulator;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.EntityDamageSource;
@@ -42,8 +43,11 @@ public class ShearsItem extends net.minecraft.item.ShearsItem {
 	
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		WastelandPopulator.didYouKnowWeHaveVeinMiner(context.getWorld(), context.getBlockPos());
-		return ActionResult.SUCCESS;
+		if (FabricLoader.getInstance().isDevelopmentEnvironment() && context.getPlayer().isCreative()) {
+			WastelandPopulator.didYouKnowWeHaveVeinMiner(context.getWorld(), context.getBlockPos(), RANDOM);
+			return ActionResult.SUCCESS;
+		}
+		return ActionResult.PASS;
 	}
 
 }

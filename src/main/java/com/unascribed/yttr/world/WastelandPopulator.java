@@ -1,5 +1,6 @@
 package com.unascribed.yttr.world;
 
+import java.util.Random;
 import java.util.Set;
 
 import com.unascribed.yttr.init.YBlocks;
@@ -61,15 +62,15 @@ public class WastelandPopulator {
 					stripMineY = 11+rand.nextInt(6);
 				}
 				for (int i = 0; i < 1000; i++) {
-					if (!didYouKnowWeHaveVeinMiner(world, mut)) break;
+					if (!didYouKnowWeHaveVeinMiner(world, mut, rand)) break;
 					if (rand.nextInt(10) < distanceSinceTorch && !world.getBlockState(mut.offset(d.rotateYCounterclockwise())).isAir()) {
 						world.setBlockState(mut, YBlocks.RUINED_WALL_TORCH.getDefaultState().with(WallTorchBlock.FACING, d.rotateYClockwise()), FLAGS, 0);
 						distanceSinceTorch = 0;
 					}
 					mut.move(Direction.DOWN);
-					if (!didYouKnowWeHaveVeinMiner(world, mut)) break;
+					if (!didYouKnowWeHaveVeinMiner(world, mut, rand)) break;
 					mut.move(Direction.DOWN);
-					if (!didYouKnowWeHaveVeinMiner(world, mut)) break;
+					if (!didYouKnowWeHaveVeinMiner(world, mut, rand)) break;
 					mut.move(Direction.DOWN);
 					if (world.getBlockState(mut).isAir()) {
 						world.setBlockState(mut, Blocks.COBBLESTONE.getDefaultState(), FLAGS, 0);
@@ -81,14 +82,14 @@ public class WastelandPopulator {
 						Direction d2 = rand.nextBoolean() ? d.rotateYClockwise() : d.rotateYCounterclockwise();
 						for (int j = 0; j < 40+rand.nextInt(80); j++) {
 							mut2.move(d2);
-							if (!didYouKnowWeHaveVeinMiner(world, mut2)) break;
+							if (!didYouKnowWeHaveVeinMiner(world, mut2, rand)) break;
 							mut2.move(Direction.DOWN);
 							if (world.getBlockState(mut2).isAir()) {
 								world.setBlockState(mut2, Blocks.COBBLESTONE.getDefaultState(), FLAGS, 0);
 							}
 							mut2.move(Direction.UP);
 							mut2.move(Direction.UP);
-							if (!didYouKnowWeHaveVeinMiner(world, mut2)) break;
+							if (!didYouKnowWeHaveVeinMiner(world, mut2, rand)) break;
 							if (rand.nextInt(10) < distanceSinceTorch2 && !world.getBlockState(mut2.offset(d2.rotateYCounterclockwise())).isAir()) {
 								world.setBlockState(mut2, YBlocks.RUINED_WALL_TORCH.getDefaultState().with(WallTorchBlock.FACING, d2.rotateYClockwise()), FLAGS, 0);
 								distanceSinceTorch2 = 0;
@@ -102,14 +103,14 @@ public class WastelandPopulator {
 									mut3.set(mut2);
 									for (int k = 0; k < rand.nextInt(50)+20; k++) {
 										mut3.move(d3);
-										if (!didYouKnowWeHaveVeinMiner(world, mut3)) break;
+										if (!didYouKnowWeHaveVeinMiner(world, mut3, rand)) break;
 										mut3.move(Direction.DOWN);
 										if (world.getBlockState(mut3).isAir()) {
 											world.setBlockState(mut3, Blocks.COBBLESTONE.getDefaultState(), FLAGS, 0);
 										}
 										mut3.move(Direction.UP);
 										mut3.move(Direction.UP);
-										if (!didYouKnowWeHaveVeinMiner(world, mut3)) break;
+										if (!didYouKnowWeHaveVeinMiner(world, mut3, rand)) break;
 										if (rand.nextInt(10) < distanceSinceTorch3 && !world.getBlockState(mut3.offset(d3.rotateYCounterclockwise())).isAir()) {
 											world.setBlockState(mut3, YBlocks.RUINED_WALL_TORCH.getDefaultState().with(WallTorchBlock.FACING, d3.rotateYClockwise()), FLAGS, 0);
 											distanceSinceTorch3 = 0;
@@ -144,7 +145,7 @@ public class WastelandPopulator {
 		}
 	}
 	
-	public static boolean didYouKnowWeHaveVeinMiner(WorldAccess world, BlockPos pos) {
+	public static boolean didYouKnowWeHaveVeinMiner(WorldAccess world, BlockPos pos, Random rand) {
 		if (pos.getY() <= 0) return false;
 		Set<BlockPos> seen = Sets.newHashSet();
 		Set<BlockPos> scan = Sets.newHashSet();
@@ -165,6 +166,10 @@ public class WastelandPopulator {
 						BlockPos c = bp.offset(d);
 						BlockState bs2 = world.getBlockState(c);
 						if ((bs2.isIn(YTags.Block.ORES) || (d == Direction.UP && bs2.getBlock() instanceof FallingBlock)) && seen.add(c)) {
+							if (bs2.isIn(YTags.Block.LESSER_ORES) && rand.nextInt(40) < seen.size()+2) {
+								// eh, we're bored of mining this. let's get back to digging the mine
+								break;
+							}
 							nextScan.add(c);
 						}
 					}

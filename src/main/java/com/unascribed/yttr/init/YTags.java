@@ -31,6 +31,7 @@ public class YTags {
 		public static final Tag<net.minecraft.block.Block> MAGTUBE_TARGETS = TagRegistry.block(new Identifier("yttr", "magtube_targets"));
 		public static final Tag<net.minecraft.block.Block> RUINED_DEVICES = TagRegistry.block(new Identifier("yttr", "ruined_devices"));
 		public static final Tag<net.minecraft.block.Block> ORES = TagRegistry.block(new Identifier("yttr", "ores"));
+		public static final Tag<net.minecraft.block.Block> LESSER_ORES = TagRegistry.block(new Identifier("yttr", "lesser_ores"));
 		
 		private static void init() {}
 		
