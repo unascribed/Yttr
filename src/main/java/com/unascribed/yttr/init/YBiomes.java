@@ -89,7 +89,7 @@ public class YBiomes {
 					.grassColor(0x58503F)
 					.foliageColor(0x58503F)
 					.moodSound(BiomeMoodSound.CAVE)
-					.music(new MusicSound(YSounds.MANUSCRIPT, 3000, 6000, true))
+					.music(new MusicSound(YSounds.MEMORANDUM, 3000, 6000, true))
 					.build())
 			.spawnSettings(modify(new SpawnSettings.Builder(),
 						DefaultBiomeFeatures::addCaveMobs,

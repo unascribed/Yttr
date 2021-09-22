@@ -462,8 +462,8 @@
 	"desert_heat": {
 		"sounds": [ { "name": "yttr:desert_heat.yttr_xm", "stream": true } ]
 	},
-	"manuscript": {
-		"sounds": [ { "name": "yttr:manuscript", "stream": true } ]
+	"memorandum": {
+		"sounds": [ { "name": "yttr:memorandum", "stream": true } ]
 	}
 	
 }

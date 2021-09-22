@@ -17,6 +17,7 @@ import net.minecraft.block.SideShapeType;
 import net.minecraft.block.StructureBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.enums.StructureBlockMode;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
@@ -33,6 +34,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.gen.ChunkRandom;
 
 public class WastelandPopulator {
@@ -217,9 +220,40 @@ public class WastelandPopulator {
 					world.setBlockState(mut, YBlocks.RUINED_TORCH.getDefaultState(), FLAGS, 0);
 				}
 			}
+			if (rand.nextInt(40) == 0) {
+				double x = chunkStart.getX()+(rand.nextDouble()*16);
+				double z = chunkStart.getZ()+(rand.nextDouble()*16);
+				double y = (world.getTopY(Heightmap.Type.WORLD_SURFACE, (int)x, (int)z))+rand.nextGaussian();
+				explode(world, x, y, z, 4+(rand.nextFloat()*3));
+			}
+			if (rand.nextInt(500) == 0) {
+				double x = chunkStart.getX()+(rand.nextDouble()*16);
+				double z = chunkStart.getZ()+(rand.nextDouble()*16);
+				double y = (world.getTopY(Heightmap.Type.WORLD_SURFACE, (int)x, (int)z))+rand.nextGaussian();
+				System.out.println(x+", "+y+", "+z);
+				for (int i = 0; i < 30+(rand.nextInt(50)); i++) {
+					explode(world, x+(rand.nextGaussian()*20), y, z+(rand.nextGaussian()*20), 6);
+				}
+			}
 		}
 	}
 	
+	private static void explode(ServerWorld world, double x, double y, double z, float power) {
+		Explosion e = new Explosion(world, null, DamageSource.OUT_OF_WORLD, null, x, y, z, power, false, DestructionType.DESTROY);
+		e.collectBlocksAndDamageEntities();
+		for (BlockPos bp : e.getAffectedBlocks()) {
+			world.setBlockState(bp, Blocks.AIR.getDefaultState(), FLAGS, 0);
+		}
+		for (BlockPos bp : e.getAffectedBlocks()) {
+			for (Direction d : Direction.values()) {
+				BlockPos o = bp.offset(d);
+				BlockState bs = world.getBlockState(o);
+				if (!(bs.isIn(BlockTags.BASE_STONE_OVERWORLD) || bs.isIn(YTags.Block.ORES) || bs.isOf(Blocks.GRAVEL) || bs.isOf(Blocks.DIRT))) continue;
+				world.setBlockState(o, bs.isOf(Blocks.DIRT) ? YBlocks.WASTELAND_DIRT.getDefaultState() : YBlocks.WASTELAND_STONE.getDefaultState(), FLAGS, 0);
+			}
+		}
+	}
+
 	public static boolean didYouKnowWeHaveVeinMiner(WorldAccess world, BlockPos pos, Random rand) {
 		if (pos.getY() <= 0) return false;
 		Set<BlockPos> seen = Sets.newHashSet();

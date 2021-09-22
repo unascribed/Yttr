@@ -80,7 +80,7 @@ public class YSounds {
 	public static final SoundEvent PAPILLONS = create("papillons");
 	public static final SoundEvent VOID_MUSIC = create("void_music");
 	public static final SoundEvent DESERT_HEAT = create("desert_heat");
-	public static final SoundEvent MANUSCRIPT = create("manuscript");
+	public static final SoundEvent MEMORANDUM = create("memorandum");
 	
 	
 
