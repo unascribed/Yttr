@@ -82,7 +82,7 @@ public class WastelandPopulator {
 					if (!didYouKnowWeHaveVeinMiner(world, mut, rand)) break;
 					mut.move(Direction.DOWN);
 					if (world.getBlockState(mut).isAir()) {
-						world.setBlockState(mut, Blocks.COBBLESTONE.getDefaultState(), FLAGS, 0);
+						world.setBlockState(mut, mut.getY() > 50 ? YBlocks.RUINED_COBBLESTONE.getDefaultState() : Blocks.COBBLESTONE.getDefaultState(), FLAGS, 0);
 					}
 					mut.move(Direction.UP);
 					if (mut.getY() == stripMineY) {
@@ -136,12 +136,39 @@ public class WastelandPopulator {
 					distanceSinceTorch++;
 				}
 			}
-			if (rand.nextInt(100) < 15) {
+			if (rand.nextInt(200) == 0) {
+				mut.set(chunkStart);
+				mut.move(rand.nextInt(16), 0, rand.nextInt(16));
+				mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX(), mut.getZ()));
+				int w = rand.nextInt(20)+3;
+				int h = rand.nextInt(10)+2;
+				int d = rand.nextInt(20)+3;
+				for (int y = -4; y <= h+1; y++) {
+					for (int x = -2; x <= w+1; x++) {
+						for (int z = -2; z <= d+1; z++) {
+							mut2.set(mut).move(x, -y, z);
+							if (x < 0 || x >= w
+									|| y >= h
+									|| z < 0 || z >= d) {
+								BlockState bs = world.getBlockState(mut2);
+								if (!(bs.isIn(BlockTags.BASE_STONE_OVERWORLD) || bs.isIn(YTags.Block.ORES) || bs.isOf(Blocks.GRAVEL) || bs.isOf(Blocks.DIRT))) continue;
+								if (x == -2 || z == -2 || y == h+1 || x == w+1 || z == d+1) {
+									if (!rand.nextBoolean()) continue;
+								}
+								world.setBlockState(mut2, bs.isOf(Blocks.DIRT) ? YBlocks.WASTELAND_DIRT.getDefaultState() : YBlocks.WASTELAND_STONE.getDefaultState(), FLAGS, 0);
+							} else {
+								world.setBlockState(mut2, Blocks.AIR.getDefaultState(), FLAGS, 0);
+							}
+						}
+					}
+				}
+			}
+			if (rand.nextInt(20) == 0) {
 				mut.set(chunkStart);
 				mut.setY(-1);
 				tryPlaceSchematic(rand, world, mut, "yttr:ruined/twilight_portal", -2, true, false);
 			}
-			if (rand.nextInt(300) == 0) {
+			if (rand.nextInt(400) == 0) {
 				mut.set(chunkStart);
 				mut.setY(-1);
 				tryPlaceSchematic(rand, world, mut, "yttr:ruined/laundromat", 0, true, true);
@@ -170,6 +197,25 @@ public class WastelandPopulator {
 				mut.set(chunkStart);
 				mut.setY(-1);
 				tryPlaceSchematic(rand, world, mut, "yttr:ruined/quarry", 0, false, true);
+			}
+			if (rand.nextInt(300) == 0) {
+				mut.set(chunkStart);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/9x9", -1, true, true);
+			}
+			if (rand.nextInt(300) == 0) {
+				mut.set(chunkStart);
+				mut.setY(-1);
+				tryPlaceSchematic(rand, world, mut, "yttr:ruined/arboretum", -1, true, true);
+			}
+			while (rand.nextInt(3) == 0) {
+				mut.set(chunkStart);
+				mut.move(rand.nextInt(16), 0, rand.nextInt(16));
+				mut.setY(world.getTopY(Heightmap.Type.WORLD_SURFACE, mut.getX(), mut.getZ()));
+				BlockState bs = world.getBlockState(mut);
+				if ((bs.isAir() || bs.isOf(YBlocks.WASTELAND_DIRT)) && world.getBlockState(mut.down()).isOf(YBlocks.WASTELAND_DIRT)) {
+					world.setBlockState(mut, YBlocks.RUINED_TORCH.getDefaultState(), FLAGS, 0);
+				}
 			}
 		}
 	}
@@ -267,13 +313,27 @@ public class WastelandPopulator {
 		s.place(world, origin, spd, rand);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {
 			if (info != null && info.state.get(StructureBlock.MODE) == StructureBlockMode.DATA) {
-				if (info.tag != null && "yttr:quarry_hole".equals(info.tag.getString("metadata"))) {
-					BlockPos.Mutable bp = info.pos.mutableCopy();
-					for (int y = info.pos.getY(); y >= 0; y--) {
-						bp.setY(y);
-						BlockState bs = world.getBlockState(bp);
-						if (bs.isOf(Blocks.BEDROCK)) break;
-						world.setBlockState(bp, Blocks.AIR.getDefaultState());
+				if (info.tag != null) {
+					if ("yttr:quarry_hole".equals(info.tag.getString("metadata"))) {
+						BlockPos.Mutable bp = info.pos.mutableCopy();
+						for (int y = info.pos.getY(); y >= 0; y--) {
+							bp.setY(y);
+							BlockState bs = world.getBlockState(bp);
+							if (bs.isOf(Blocks.BEDROCK)) break;
+							world.setBlockState(bp, Blocks.AIR.getDefaultState());
+						}
+					} else if ("yttr:maybe_tree".equals(info.tag.getString("metadata"))) {
+						BlockPos.Mutable bp = info.pos.mutableCopy();
+						if (rand.nextInt(5) == 0) {
+							for (int i = 0; i < rand.nextInt(7)+1; i++) {
+								world.setBlockState(bp, YBlocks.WASTELAND_LOG.getDefaultState());
+								bp.move(Direction.UP);
+							}
+						} else if (rand.nextBoolean()) {
+							world.setBlockState(bp, YBlocks.WASTELAND_GRASS.getDefaultState());
+						} else {
+							world.setBlockState(bp, Blocks.AIR.getDefaultState());
+						}
 					}
 				}
 			}

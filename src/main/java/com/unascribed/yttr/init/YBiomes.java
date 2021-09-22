@@ -20,7 +20,9 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.DefaultBiomeCreator;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.GenerationStep.Feature;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 
@@ -97,10 +99,11 @@ public class YBiomes {
 						DefaultBiomeFeatures::addLandCarvers,
 						DefaultBiomeFeatures::addDefaultDisks,
 						DefaultBiomeFeatures::addDefaultLakes,
-						DefaultBiomeFeatures::addDefaultOres,
-						DefaultBiomeFeatures::addMineables)
+						DefaultBiomeFeatures::addDefaultOres)
 					.surfaceBuilder(YWorldGen.WASTELAND_SURFACE)
 					.feature(Feature.VEGETAL_DECORATION, YWorldGen.WASTELAND_GRASS)
+					.feature(GenerationStep.Feature.UNDERGROUND_ORES, ConfiguredFeatures.ORE_DIRT)
+					.feature(GenerationStep.Feature.UNDERGROUND_ORES, ConfiguredFeatures.ORE_GRAVEL)
 					.build()
 				)
 			.build();

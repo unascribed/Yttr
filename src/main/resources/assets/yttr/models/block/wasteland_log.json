@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"particle": "yttr:block/wasteland_log",
+		"north": "yttr:block/wasteland_log",
+		"east": "yttr:block/wasteland_log",
+		"south": "yttr:block/wasteland_log",
+		"west": "yttr:block/wasteland_log",
+		"up": "yttr:block/wasteland_log_top",
+		"down": "yttr:block/wasteland_log_top"
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 2,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "yttr:rubble",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 0,
+								"max": 5,
+								"type": "minecraft:uniform"
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "yttr:rubble",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 12,
+								"max": 64,
+								"type": "minecraft:uniform"
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

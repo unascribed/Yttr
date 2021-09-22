@@ -129,6 +129,8 @@
 	"block.yttr.evaporator": "Magvaporator",
 	"block.yttr.wasteland_dirt": "Wasteland Dirt",
 	"block.yttr.wasteland_grass": "Wasteland Grass",
+	"block.yttr.wasteland_log": "Wasteland Log",
+	"block.yttr.wasteland_stone": "Wasteland Stone",
 	"block.yttr.ruined_cobblestone": "Ruined Cobblestone",
 	"block.yttr.ruined_bricks": "Ruined Bricks",
 	"block.yttr.ruined_container": "Ruined Container",

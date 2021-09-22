@@ -111,6 +111,9 @@ public class YItems {
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
+	public static final BlockItem WASTELAND_LOG = createRuinedBlockItem(YBlocks.WASTELAND_LOG);
+	public static final BlockItem WASTELAND_STONE = createRuinedBlockItem(YBlocks.WASTELAND_STONE);
+	
 	public static final BlockItem RUINED_COBBLESTONE = createRuinedBlockItem(YBlocks.RUINED_COBBLESTONE);
 	public static final BlockItem RUINED_BRICKS = createRuinedBlockItem(YBlocks.RUINED_BRICKS);
 	public static final BlockItem RUINED_CONTAINER = createRuinedBlockItem(YBlocks.RUINED_CONTAINER);
@@ -118,6 +121,7 @@ public class YItems {
 	public static final BlockItem RUINED_DEVICE_BC_2 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_2);
 	public static final BlockItem RUINED_DEVICE_GT_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_GT_1);
 	public static final BlockItem RUINED_DEVICE_RP_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_RP_1);
+	public static final BlockItem RUINED_DEVICE_FO_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_FO_1);
 	public static final BlockItem RUINED_PIPE = createRuinedBlockItem(YBlocks.RUINED_PIPE);
 	public static final BlockItem RUINED_FRAME = createRuinedBlockItem(YBlocks.RUINED_FRAME);
 	public static final BlockItem RUINED_TUBE = createRuinedBlockItem(YBlocks.RUINED_TUBE);

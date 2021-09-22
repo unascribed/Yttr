@@ -63,6 +63,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.TorchBlock;
 import net.minecraft.block.WallTorchBlock;
@@ -427,6 +428,14 @@ public class YBlocks {
 		}
 	};
 	
+	public static final PillarBlock WASTELAND_LOG = new PillarBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG)
+			.strength(1.0f)
+		);
+	
+	public static final Block WASTELAND_STONE = new Block(FabricBlockSettings.copyOf(Blocks.STONE)
+			.strength(1.0f)
+		);
+	
 	private static final Block.Settings RUINED_SETTINGS = FabricBlockSettings.copyOf(Blocks.DIRT)
 			.sounds(BlockSoundGroup.BASALT)
 			.drops(new Identifier("yttr", "blocks/ruined"));
@@ -434,6 +443,8 @@ public class YBlocks {
 			.noCollision();
 	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
 			.nonOpaque();
+	private static final Block.Settings RUINED_TORCH_SETTINGS = FabricBlockSettings.copyOf(RUINED_UNCL_SETTINGS)
+			.luminance(2);
 	
 	private static <T extends Block> T ruinedDevice(T block) {
 		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
@@ -448,7 +459,8 @@ public class YBlocks {
 	public static final Block RUINED_COBBLESTONE = new Block(RUINED_SETTINGS);
 	public static final Block RUINED_BRICKS = new Block(RUINED_SETTINGS);
 	
-	public static final Block RUINED_CONTAINER = new Block(RUINED_SETTINGS);
+	public static final Block RUINED_CONTAINER = new Block(FabricBlockSettings.copyOf(RUINED_SETTINGS)
+			.drops(new Identifier("yttr", "blocks/ruined_container")));
 	@RenderLayer("cutout")
 	public static final Block RUINED_TANK = new Block(RUINED_SETTINGS) {
 		private VoxelShape SHAPE = createCuboidShape(2, 0, 2, 14, 16, 14);
@@ -467,6 +479,9 @@ public class YBlocks {
 	public static final Block RUINED_CONSTRUCT_RC_2 = ruinedConstruct(new RCStyleMultiblock(1, 3, 0, RUINED_SETTINGS));
 	
 	@RenderLayer("cutout")
+	public static final Block RUINED_DEVICE_FO_1 = ruinedDevice(new Block(RUINED_PARTIAL_SETTINGS));
+	
+	@RenderLayer("cutout")
 	public static final Block RUINED_PIPE = new RuinedPipeBlock(RUINED_SETTINGS);
 	@RenderLayer("cutout")
 	public static final Block RUINED_FRAME = new RuinedPipeBlock(RUINED_SETTINGS) {
@@ -479,12 +494,12 @@ public class YBlocks {
 	public static final Block RUINED_TUBE = new RuinedPipeBlock(RUINED_SETTINGS);
 	
 	@RenderLayer("cutout")
-	public static final Block RUINED_TORCH = new TorchBlock(RUINED_UNCL_SETTINGS, null) {
+	public static final Block RUINED_TORCH = new TorchBlock(RUINED_TORCH_SETTINGS, null) {
 		@Override
 		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
 	};
 	@RenderLayer("cutout")
-	public static final Block RUINED_WALL_TORCH = new WallTorchBlock(RUINED_UNCL_SETTINGS, null) {
+	public static final Block RUINED_WALL_TORCH = new WallTorchBlock(RUINED_TORCH_SETTINGS, null) {
 		@Override
 		public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {}
 	};

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "yttr:block/wasteland_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "yttr:block/wasteland_log"
+    },
+    "axis=z": {
+      "model": "yttr:block/wasteland_log",
+      "x": 90
+    }
+  }
+}
