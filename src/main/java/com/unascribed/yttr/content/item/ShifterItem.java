@@ -228,6 +228,7 @@ public class ShifterItem extends Item implements ItemColorProvider {
 					for (Direction d : directions) {
 						BlockPos c = bp.offset(d);
 						if (!box.contains(c.getX()+0.5, c.getY()+0.5, c.getZ()+0.5)) continue;
+						if (!includeHidden && isHidden(world, c)) continue;
 						BlockState bs2 = world.getBlockState(c);
 						if (bs2 == sample && seen.add(c)) {
 							nextScan.add(c);
