@@ -55,6 +55,7 @@
 	"accessor.AccessorNamespaceResourceManager",
 	"accessor.AccessorReloadableResourceManagerImpl",
 	"accessor.AccessorBlock",
+	"accessor.AccessorItem",
 	"diving.MixinLivingEntity",
 	"diving.MixinEntity",
 	"diving.MixinServerPlayerEntity",
@@ -132,6 +133,9 @@
 	"ibxm.MixinSound",
 	"replicator.MixinInGameHud",
 	"shifter.MixinItemRenderer",
+	"subgroup.MixinCreativeInventoryScreen",
+	"subgroup.MixinItemGroup",
+	"snare.MixinHeldItemRenderer",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

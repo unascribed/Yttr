@@ -20,3 +20,5 @@ mutable field net/minecraft/world/gen/chunk/DebugChunkGenerator Z_SIDE_LENGTH I
 
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/village/TradeOffers$SellItemFactory
+
+mutable field net/minecraft/item/Item group Lnet/minecraft/item/ItemGroup;

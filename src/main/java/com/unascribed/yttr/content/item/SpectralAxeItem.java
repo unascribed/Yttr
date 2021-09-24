@@ -71,7 +71,7 @@ public class SpectralAxeItem extends AxeItem implements TicksAlwaysItem, ItemCol
 			}
 		}, 0, 0, new Item.Settings()
 				.rarity(Rarity.UNCOMMON)
-				.group(YItemGroups.MAIN)
+				.group(YItemGroups.MISC)
 				.maxDamage(64));
 	}
 	

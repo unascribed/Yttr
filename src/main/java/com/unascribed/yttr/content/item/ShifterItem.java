@@ -58,7 +58,9 @@ public class ShifterItem extends Item implements ItemColorProvider {
 			if (!stack.hasTag()) stack.setTag(new NbtCompound());
 			boolean hidden = stack.getTag().getBoolean("ReplaceHidden");
 			stack.getTag().putBoolean("ReplaceHidden", !hidden);
-			if (hidden) {
+			if (stack.getTag().getInt("UserIsConfusedCounter") > 3) {
+				user.sendMessage(new TranslatableText("tip.yttr.shifter.not_thaumcraft"), true);
+			} else if (hidden) {
 				user.sendMessage(new TranslatableText("tip.yttr.shifter.hidden.disabled"), true);
 			} else {
 				user.sendMessage(new TranslatableText("tip.yttr.shifter.hidden.enabled"), true);
@@ -71,17 +73,32 @@ public class ShifterItem extends Item implements ItemColorProvider {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (context.getHand() == Hand.OFF_HAND) return ActionResult.PASS;
+		ItemStack stack = context.getStack();
+		ItemStack repl = context.getPlayer().getStackInHand(Hand.OFF_HAND);
 		if (context.getPlayer().isSneaking()) {
+			if (!(context.getPlayer().getStackInHand(Hand.OFF_HAND).getItem() instanceof BlockItem)) {
+				if (!stack.hasTag()) stack.setTag(new NbtCompound());
+				stack.getTag().putInt("UserIsConfusedCounter", stack.getTag().getInt("UserIsConfusedCounter") + 1);
+			} else if (stack.hasTag()) {
+				stack.getTag().remove("UserIsConfusedCounter");
+			}
 			return use(context.getWorld(), context.getPlayer(), context.getHand()).getResult();
+		} else if (stack.hasTag() && repl.getItem() instanceof BlockItem) {
+			stack.getTag().remove("UserIsConfusedCounter");
 		}
 		Set<BlockPos> blocks = getAffectedBlocks(context.getPlayer(), context.getWorld(), context.getBlockPos(), context.getStack().hasTag() && context.getStack().getTag().getBoolean("ReplaceHidden"));
-		scheduleMultiReplace(context.getPlayer(), context.getBlockPos(), context.getWorld(), blocks);
+		scheduleMultiReplace(context.getPlayer(), context.getBlockPos(), context.getWorld(), repl.copy(), blocks);
 		return ActionResult.SUCCESS;
 	}
 	
 	@Override
 	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-		performReplacement(miner, pos, world, miner.getStackInHand(Hand.OFF_HAND));
+		ItemStack stack = miner.getStackInHand(Hand.MAIN_HAND);
+		ItemStack repl = miner.getStackInHand(Hand.OFF_HAND);
+		if (stack.hasTag() && repl.getItem() instanceof BlockItem) {
+			stack.getTag().remove("UserIsConfusedCounter");
+		}
+		performReplacement(miner, pos, world, repl);
 		return false;
 	}
 	
@@ -91,10 +108,9 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		return 10000000;
 	}
 	
-	public void scheduleMultiReplace(PlayerEntity player, BlockPos center, World _world, Set<BlockPos> positions) {
+	public void scheduleMultiReplace(PlayerEntity player, BlockPos center, World _world, ItemStack replacement, Set<BlockPos> positions) {
 		if (!(_world instanceof ServerWorld)) return;
 		ServerWorld world = (ServerWorld) _world;
-		ItemStack replacement = player.getStackInHand(Hand.OFF_HAND).copy();
 		Multiset<Integer> delays = HashMultiset.create();
 		for (BlockPos pos : positions) {
 			int delay = pos.equals(center) ? 0 : (int) ((MathHelper.sqrt(pos.getSquaredDistance(center)*10))+RANDOM.nextInt(4));

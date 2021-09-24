@@ -1,9 +1,14 @@
 {
-	"itemGroup.yttr.main": "Yttr",
-	"itemGroup.yttr.snare": "Yttr Snares",
-	"itemGroup.yttr.lamp": "Yttr Lamps",
-	"itemGroup.yttr.potion": "Yttr Mercurial Potions",
-	"itemGroup.yttr.ruined": "Yttr Wasteland",
+	"itemGroup.yttr.parent": "Yttr",
+	"itemGroup.yttr.resources": "Resources",
+	"itemGroup.yttr.filtering": "Filtering",
+	"itemGroup.yttr.mechanisms": "Mechanisms",
+	"itemGroup.yttr.equipment": "Equipment",
+	"itemGroup.yttr.snare": "Full Snares",
+	"itemGroup.yttr.lamp": "Lamps",
+	"itemGroup.yttr.potion": "Potions",
+	"itemGroup.yttr.ruined": "Wasteland",
+	"itemGroup.yttr.misc": "Miscellaneous",
 	
 	"item.yttr.rifle": "Yttric Rifle",
 	"item.yttr.rifle_reinforced": "Bedrock-Reinforced Rifle",
@@ -284,6 +289,8 @@
 	
 	"tip.yttr.shifter.hidden.enabled": "§aEnabled§r replacement of hidden blocks",
 	"tip.yttr.shifter.hidden.disabled": "§cDisabled§r replacement of hidden blocks",
+	
+	"tip.yttr.shifter.not_thaumcraft": "§lTip§r: §ePut the block you want to replace with in your §loff-hand§e.",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",

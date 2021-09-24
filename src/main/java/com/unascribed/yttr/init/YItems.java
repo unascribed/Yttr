@@ -94,12 +94,12 @@ public class YItems {
 	public static final BlockItem HEAVY_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.HEAVY_YTTRIUM_PLATE);
 	public static final BlockItem CENTRIFUGE = createNormalBlockItem(YBlocks.CENTRIFUGE);
 	public static final BlockItem DOPPER = createNormalBlockItem(YBlocks.DOPPER);
-	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings().group(YItemGroups.MAIN));
+	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings());
 	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
 	public static final BlockItem SUIT_STATION = createNormalBlockItem(YBlocks.SUIT_STATION);
 	public static final BlockItem TABLE = createNormalBlockItem(YBlocks.TABLE);
-	public static final BlockItem ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
-	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().group(YItemGroups.MAIN).rarity(Rarity.UNCOMMON));
+	public static final BlockItem ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.ULTRAPURE_CARBON_BLOCK, new Item.Settings().rarity(Rarity.UNCOMMON));
+	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().rarity(Rarity.UNCOMMON));
 	public static final BlockItem ENCASED_VOID_FILTER = createNormalBlockItem(YBlocks.ENCASED_VOID_FILTER);
 	public static final BlockItem VOID_FILTER = createNormalBlockItem(YBlocks.VOID_FILTER);
 	public static final BlockItem BROOKITE_ORE = createNormalBlockItem(YBlocks.BROOKITE_ORE);
@@ -131,101 +131,79 @@ public class YItems {
 	public static final BlockItem RUINED_CONSTRUCT_RC_1 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_1);
 	public static final BlockItem RUINED_CONSTRUCT_RC_2 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_2);
 	
-	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings().group(YItemGroups.RUINED));
+	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings());
 	
 	@BuiltinRenderer(LampItemRenderer.class)
-	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings()
-			.group(YItemGroups.LAMP));
+	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings());
 
 	@BuiltinRenderer(LampItemRenderer.class)
-	public static final BlockItem FIXTURE = new LampBlockItem(YBlocks.FIXTURE, new Item.Settings()
-			.group(YItemGroups.LAMP));
+	public static final BlockItem FIXTURE = new LampBlockItem(YBlocks.FIXTURE, new Item.Settings());
 
 	@BuiltinRenderer(LampItemRenderer.class)
-	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings()
-			.group(YItemGroups.LAMP));
+	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings());
 	
-	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings());
 	
 	public static final BlockItem AWARE_HOPPER = new BlockItem(YBlocks.AWARE_HOPPER, new Item.Settings()
-			.group(YItemGroups.MAIN).maxCount(1));
+			.maxCount(1));
 
-	public static final BlockItem LEVITATION_CHAMBER = new LevitationChamberBlockItem(YBlocks.LEVITATION_CHAMBER, new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final BlockItem LEVITATION_CHAMBER = new LevitationChamberBlockItem(YBlocks.LEVITATION_CHAMBER, new Item.Settings());
 	
-	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings()
-			.group(YItemGroups.MAIN));
-	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings());
+	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings());
 	
 	@BuiltinRenderer(ReplicatorItemRenderer.class)
-	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings());
 	
 	public static final BigBlockItem MAGTANK = new BigBlockItem(YBlocks.MAGTANK, new Item.Settings()
-			.group(YItemGroups.MAIN)
 			.maxCount(4));
 	
 //	public static final BigBlockItem GIANT_COBBLESTONE = new BigBlockItem(YBlocks.GIANT_COBBLESTONE, new Item.Settings()
-//			.group(YItemGroups.MAIN)
 //			.maxCount(1));
 	
 	public static final BigBlockItem DSU = new BigBlockItem(YBlocks.DSU, new Item.Settings()
-			.group(YItemGroups.MAIN)
 			.maxCount(8));
 
 	private static BlockItem createNormalBlockItem(Block block) {
-		return new BlockItem(block, new Item.Settings().group(YItemGroups.MAIN));
+		return new BlockItem(block, new Item.Settings());
 	}
 	
 	private static BlockItem createRuinedBlockItem(Block block) {
-		return new BlockItem(block, new Item.Settings().group(YItemGroups.RUINED));
+		return new BlockItem(block, new Item.Settings());
 	}
 
-	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings());
 	
-	public static final Item YTTRIUM_NUGGET = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item YTTRIUM_NUGGET = new Item(new Item.Settings());
 	
 	public static final Item XL_IRON_INGOT = new Item(new Item.Settings()
-			.maxCount(16)
-			.group(YItemGroups.MAIN));
+			.maxCount(16));
 	
 	public static final VoidBucketItem VOID_BUCKET = new VoidBucketItem(new Item.Settings()
 			.recipeRemainder(Items.BUCKET)
-			.maxCount(1)
-			.group(YItemGroups.MAIN));
+			.maxCount(1));
 	
 	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
-			.maxCount(1)
-			.group(YItemGroups.MAIN), 1, 1, false, 0x3E5656);
+			.maxCount(1), 1, 1, false, 0x3E5656);
 	
 	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE_REINFORCED = new RifleItem(new Item.Settings()
-			.maxCount(1)
-			.group(YItemGroups.MAIN), 0.85f, 1, true, 0x223333);
+			.maxCount(1), 0.85f, 1, true, 0x223333);
 	
 	@BuiltinRenderer(RifleItemRenderer.class)
 	public static final RifleItem RIFLE_OVERCLOCKED = new RifleItem(new Item.Settings()
-			.maxCount(1)
-			.group(YItemGroups.MAIN), 1.65f, 2, false, 0x111111);
+			.maxCount(1), 1.65f, 2, false, 0x111111);
 	
 	public static final SnareItem SNARE = new SnareItem(new Item.Settings()
-			.maxDamage(40960)
-			.group(YItemGroups.MAIN));
+			.maxDamage(40960));
 	
 	public static final ShearsItem SHEARS = new ShearsItem(new Item.Settings()
-			.maxDamage(512)
-			.group(YItemGroups.MAIN));
+			.maxDamage(512));
 	
-	public static final Item BEDROCK_SHARD = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item BEDROCK_SHARD = new Item(new Item.Settings());
 	
 	public static final Item DELICACE = new SwallowableItem(new Item.Settings()
-			.group(YItemGroups.MAIN)
 			.food(new FoodComponent.Builder()
 					.alwaysEdible()
 					.hunger(1)
@@ -251,7 +229,6 @@ public class YItems {
 	};
 	
 	public static final Item GLOWING_GAS = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN)
 			.maxCount(16)
 			.recipeRemainder(Items.GLASS_BOTTLE));
 	
@@ -261,22 +238,17 @@ public class YItems {
 	};
 	
 	public static final Item CLEAVER = new CleaverItem(new Item.Settings()
-			.maxDamage(1562)
-			.group(YItemGroups.MAIN));
+			.maxDamage(1562));
 	
 	public static final Item REINFORCED_CLEAVER = new ReinforcedCleaverItem(new Item.Settings()
 			.maxDamage(3072)
-			.fireproof()
-			.group(YItemGroups.MAIN));
+			.fireproof());
 	
 	public static final EffectorItem EFFECTOR = new EffectorItem(new Item.Settings()
-			.maxCount(1)
-			.group(YItemGroups.MAIN));
+			.maxCount(1));
 	
-	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
-	public static final Item NEODYMIUM_DISC = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings());
+	public static final Item NEODYMIUM_DISC = new Item(new Item.Settings());
 	
 	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
 
@@ -324,26 +296,21 @@ public class YItems {
 	
 	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_HELMET = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.HEAD, new Item.Settings()
-			.fireproof()
-			.group(YItemGroups.MAIN));
+			.fireproof());
 	
 	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_CHESTPLATE = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.CHEST, new Item.Settings()
-			.fireproof()
-			.group(YItemGroups.MAIN));
+			.fireproof());
 	
 	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_LEGGINGS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.LEGS, new Item.Settings()
-			.fireproof()
-			.group(YItemGroups.MAIN));
+			.fireproof());
 	
 	@SimpleArmorTexture("yttr:suit")
 	public static final SuitArmorItem SUIT_BOOTS = new SuitArmorItem(SUIT_MATERIAL, EquipmentSlot.FEET, new Item.Settings()
-			.fireproof()
-			.group(YItemGroups.MAIN));
+			.fireproof());
 	
-	public static final Item ARMOR_PLATING = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item ARMOR_PLATING = new Item(new Item.Settings());
 	
 	@SimpleArmorTexture("yttr:goggles")
 	public static final ArmorItem GOGGLES = new ArmorItem(new ArmorMaterial() {
@@ -387,8 +354,7 @@ public class YItems {
 		public int getDurability(EquipmentSlot slot) {
 			return 32;
 		}
-	}, EquipmentSlot.HEAD, new Item.Settings()
-			.group(YItemGroups.MAIN)) {
+	}, EquipmentSlot.HEAD, new Item.Settings()) {
 
 
 		@Override
@@ -401,7 +367,6 @@ public class YItems {
 	public static final SpectralAxeItem SPECTRAL_AXE = new SpectralAxeItem();
 	
 	private static final Item.Settings UP_SETTINGS = new Item.Settings()
-			.group(YItemGroups.MAIN)
 			.rarity(Rarity.UNCOMMON);
 	
 	public static final Item ULTRAPURE_CARBON = new Item(UP_SETTINGS);
@@ -428,19 +393,14 @@ public class YItems {
 	public static final Item COMPRESSED_ULTRAPURE_CARBON = new Item(UP_SETTINGS);
 	
 	public static final MercurialPotionItem MERCURIAL_POTION = new MercurialPotionItem(new Item.Settings()
-			.maxCount(Items.POTION.getMaxCount())
-			.group(YItemGroups.POTION));
+			.maxCount(Items.POTION.getMaxCount()));
 	public static final MercurialSplashPotionItem MERCURIAL_SPLASH_POTION = new MercurialSplashPotionItem(new Item.Settings()
-			.maxCount(Items.SPLASH_POTION.getMaxCount())
-			.group(YItemGroups.POTION));
+			.maxCount(Items.SPLASH_POTION.getMaxCount()));
 
-	public static final Item YTTRIUM_DUST = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
-	public static final Item IRON_DUST = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item YTTRIUM_DUST = new Item(new Item.Settings());
+	public static final Item IRON_DUST = new Item(new Item.Settings());
 	
-	public static final Item BROOKITE = new Item(new Item.Settings()
-			.group(YItemGroups.MAIN));
+	public static final Item BROOKITE = new Item(new Item.Settings());
 	
 	public static final ToolMaterial BROOKITE_MATERIAL = new ToolMaterial() {
 		
@@ -475,23 +435,22 @@ public class YItems {
 		}
 	};
 	
-	public static final SwordItem BROOKITE_SWORD = new SwordItem(BROOKITE_MATERIAL, 3, -2.4f, new Item.Settings().group(YItemGroups.MAIN)) {};
-	public static final ShovelItem BROOKITE_SHOVEL = new ShovelItem(BROOKITE_MATERIAL, 1.5f, -3.0f, new Item.Settings().group(YItemGroups.MAIN)) {};
-	public static final PickaxeItem BROOKITE_PICKAXE = new PickaxeItem(BROOKITE_MATERIAL, 1, -2.8f, new Item.Settings().group(YItemGroups.MAIN)) {};
-	public static final AxeItem BROOKITE_AXE = new AxeItem(BROOKITE_MATERIAL, 6, -3.1f, new Item.Settings().group(YItemGroups.MAIN)) {};
-	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings().group(YItemGroups.MAIN)) {};
+	public static final SwordItem BROOKITE_SWORD = new SwordItem(BROOKITE_MATERIAL, 3, -2.4f, new Item.Settings()) {};
+	public static final ShovelItem BROOKITE_SHOVEL = new ShovelItem(BROOKITE_MATERIAL, 1.5f, -3.0f, new Item.Settings()) {};
+	public static final PickaxeItem BROOKITE_PICKAXE = new PickaxeItem(BROOKITE_MATERIAL, 1, -2.8f, new Item.Settings()) {};
+	public static final AxeItem BROOKITE_AXE = new AxeItem(BROOKITE_MATERIAL, 6, -3.1f, new Item.Settings()) {};
+	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings()) {};
 	
-	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(1));
-	public static final DiscOfContinuityItem DISC_OF_CONTINUITY = new DiscOfContinuityItem(new Item.Settings().group(YItemGroups.MAIN).maxCount(16));
+	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1));
+	public static final DiscOfContinuityItem DISC_OF_CONTINUITY = new DiscOfContinuityItem(new Item.Settings().maxCount(16));
 	
-	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
-	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
+	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	
-	public static final Item RUBBLE = new Item(new Item.Settings().group(YItemGroups.RUINED)) {};
+	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
-			.maxCount(1)
-			.group(YItemGroups.MAIN));
+			.maxCount(1));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

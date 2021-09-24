@@ -29,6 +29,7 @@ import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.init.YHandledScreens;
+import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YStatusEffects;
@@ -113,6 +114,7 @@ public class Yttr implements ModInitializer {
 		YTrades.init();
 		YNetwork.init();
 		YFuels.init();
+		YItemGroups.init();
 		
 		// TODO this should probably live somewhere else; this would be a nice time for an onPostInitialize {
 		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;

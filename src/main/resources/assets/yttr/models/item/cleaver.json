@@ -202,6 +202,9 @@
 		},
 		"fixed": {
 			"rotation": [0, 180, 0]
+		},
+		"gui": {
+			"translation": [-1, 0, 0]
 		}
 	},
 	"groups": [
