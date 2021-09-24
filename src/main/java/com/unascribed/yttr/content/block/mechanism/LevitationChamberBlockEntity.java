@@ -55,8 +55,8 @@ public class LevitationChamberBlockEntity extends BlockEntity implements Tickabl
 	}
 
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		cooldown = tag.getInt("Cooldown");
 	}

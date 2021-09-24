@@ -133,8 +133,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		opTocks = tag.getInt("OpTocks");
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;

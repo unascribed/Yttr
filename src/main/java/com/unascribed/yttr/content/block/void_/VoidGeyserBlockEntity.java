@@ -206,8 +206,8 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		id = tag.containsUuid("ID") ? tag.getUuid("ID") : UUID.randomUUID();
 		name = tag.getString("Name");
 	}

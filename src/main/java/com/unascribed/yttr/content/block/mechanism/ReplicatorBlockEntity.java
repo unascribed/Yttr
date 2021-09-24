@@ -74,8 +74,8 @@ public class ReplicatorBlockEntity extends BlockEntity implements BlockEntityCli
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		fromClientTag(tag);
 		owner = tag.containsUuid("Owner") ? tag.getUuid("Owner") : null;
 	}

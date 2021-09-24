@@ -124,7 +124,7 @@ public class GeysersState extends PersistentState {
 	}
 
 	@Override
-	public void fromTag(NbtCompound tag) {
+	public void readNbt(NbtCompound tag) {
 		geysers.clear();
 		geysersById.clear();
 		geysersByPos.clear();

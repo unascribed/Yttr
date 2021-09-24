@@ -222,8 +222,8 @@ public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity imple
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		recipe = tag.contains("Recipe", NbtType.STRING) ? Identifier.tryParse(tag.getString("Recipe")) : null;
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), union);
 		craftingTicks = tag.getInt("CraftingTicks");

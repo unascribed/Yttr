@@ -46,8 +46,8 @@ public class DopperBlockEntity extends HopperBlockEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		tock = tag.getBoolean("Tock");
 	}
 	

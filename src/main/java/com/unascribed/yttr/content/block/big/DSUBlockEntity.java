@@ -63,8 +63,8 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		Yttr.deserializeInv(tag.getList("Contents", NbtType.COMPOUND), contents);
 	}
 	

@@ -272,8 +272,8 @@ public class SkeletalSorterBlockEntity extends AbstractAbominationBlockEntity im
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		heldItemMainHand = ItemStack.fromNbt(tag.getCompound("MainHand"));
 		heldItemOffHand = ItemStack.fromNbt(tag.getCompound("OffHand"));
 		thinkTicks = tag.getInt("ThinkTicks");

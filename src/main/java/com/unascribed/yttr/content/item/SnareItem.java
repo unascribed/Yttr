@@ -153,7 +153,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 								incoming.remove("y");
 								incoming.remove("z");
 								data.copyFrom(incoming);
-								be.fromTag(bs, data);
+								be.readNbt(bs, data);
 							}
 						}
 					} else if (fbe.blockEntityData != null) {

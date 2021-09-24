@@ -14,7 +14,7 @@ public abstract class MixinAbstractFurnaceBlockEntityPropertyDelegate {
 	@Shadow
     public abstract int get(int index);
 	
-	@Inject(at=@At("HEAD"), method="get", cancellable=true)
+	@Inject(at=@At("HEAD"), method="get(I)I", cancellable=true)
     public void get(int index, CallbackInfoReturnable<Integer> ci) {
 		if (yttr$reentering) return;
 		try {

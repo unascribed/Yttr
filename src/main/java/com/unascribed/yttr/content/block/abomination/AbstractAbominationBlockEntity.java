@@ -65,8 +65,8 @@ public abstract class AbstractAbominationBlockEntity extends BlockEntity impleme
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		headYaw = prevHeadYaw = (tag.contains("Yaw") ? tag.getFloat("Yaw") : tag.getFloat("HeadYaw"));
 		headPitch = prevHeadPitch = (tag.contains("Pitch") ? tag.getFloat("Pitch") : tag.getFloat("HeadPitch"));
 	}

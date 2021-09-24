@@ -193,8 +193,8 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	}
 
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		fromTagInner(tag);
 	}
 	

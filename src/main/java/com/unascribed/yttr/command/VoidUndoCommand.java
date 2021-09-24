@@ -247,9 +247,9 @@ public class VoidUndoCommand {
 			if (block.contains("Entity", NbtType.COMPOUND)) {
 				NbtCompound tag = block.getCompound("Entity");
 				if (world.getBlockEntity(mut) != null) {
-					world.getBlockEntity(mut).fromTag(bs, tag);
+					world.getBlockEntity(mut).readNbt(bs, tag);
 				} else {
-					world.setBlockEntity(mut, BlockEntity.createFromTag(bs, tag));
+					world.setBlockEntity(mut, BlockEntity.createFromNbt(bs, tag));
 				}
 			}
 		}

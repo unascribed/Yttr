@@ -138,8 +138,8 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 	}
 	
 	@Override
-	public void fromTag(BlockState state, NbtCompound tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		Yttr.deserializeInv(tag.getList("Inventory", NbtType.COMPOUND), inv);
 		fuelTime = tag.getInt("FuelTime");
 		maxFuelTime = tag.getInt("MaxFuelTime");
