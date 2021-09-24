@@ -23,7 +23,10 @@ import com.unascribed.yttr.client.render.ShifterUI;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.BigBlock;
+import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.mechanism.ReplicatorBlock;
+import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
+import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YEntities;
@@ -91,6 +94,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.resource.ReloadableResourceManager;
@@ -181,6 +185,11 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 						if (en.getKey().getValue().getNamespace().equals("yttr")) {
 							checkTranslation(en.getKey().getValue(), en.getValue().getTranslationKey());
 							if (en.getValue() instanceof ReplicatorBlock) continue;
+							if (en.getValue() instanceof DivingPlateBlock) continue;
+							if (en.getValue() instanceof DormantVoidGeyserBlock) continue;
+							if (en.getValue() instanceof CleavedBlock) continue;
+							if (en.getValue().getDefaultState().isAir()) continue;
+							if (en.getValue().getLootTableId().equals(LootTables.EMPTY)) continue;
 							if (!mc.getServer().getLootManager().getTableIds().contains(en.getValue().getLootTableId())) {
 								if (en.getValue().getDroppedStacks(en.getValue().getDefaultState(), new LootContext.Builder(mc.getServer().getOverworld())
 										.parameter(LootContextParameters.TOOL, new ItemStack(Items.APPLE))

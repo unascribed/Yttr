@@ -130,6 +130,9 @@
 	"block.yttr.lazor_beam": "Lazor Beam",
 	"block.yttr.yttrium_button": "Yttrium Button",
 	"block.yttr.brookite_block": "Block of Brookite",
+	"block.yttr.temporary_light_air": "Temporary Light Air",
+	"block.yttr.permanent_light_air": "Permanent Light Air",
+	"block.yttr.core_lava": "Core Lava",
 	"block.yttr.nethertuff": "Nethertuff",
 	"block.yttr.evaporator": "Magvaporator",
 	"block.yttr.wasteland_dirt": "Wasteland Dirt",
@@ -148,6 +151,7 @@
 	"block.yttr.ruined_lever": "Ruined Lever",
 	"block.yttr.ruined_tank": "Ruined Tank",
 	"block.yttr.ruined_construct": "Ruined Construct",
+	"block.yttr.specialty_bedrock": "Specialty Bedrock",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

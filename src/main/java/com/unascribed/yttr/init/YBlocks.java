@@ -440,11 +440,14 @@ public class YBlocks {
 			.sounds(BlockSoundGroup.BASALT)
 			.drops(new Identifier("yttr", "blocks/ruined"));
 	private static final Block.Settings RUINED_UNCL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
-			.noCollision();
+			.noCollision()
+			.drops(new Identifier("yttr", "blocks/ruined"));
 	private static final Block.Settings RUINED_PARTIAL_SETTINGS = FabricBlockSettings.copyOf(RUINED_SETTINGS)
-			.nonOpaque();
+			.nonOpaque()
+			.drops(new Identifier("yttr", "blocks/ruined"));
 	private static final Block.Settings RUINED_TORCH_SETTINGS = FabricBlockSettings.copyOf(RUINED_UNCL_SETTINGS)
-			.luminance(2);
+			.luminance(2)
+			.drops(new Identifier("yttr", "blocks/ruined"));
 	
 	private static <T extends Block> T ruinedDevice(T block) {
 		((AccessorBlock)block).yttr$setTranslationKey("block.yttr.ruined_device");
@@ -519,7 +522,7 @@ public class YBlocks {
 		public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) { return 0; }
 	};
 	
-	public static final Block SPECIALTY_BEDROCK = new Block(FabricBlockSettings.copyOf(Blocks.BEDROCK));
+	public static final Block SPECIALTY_BEDROCK = new Block(FabricBlockSettings.copyOf(Blocks.BEDROCK).dropsNothing());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
