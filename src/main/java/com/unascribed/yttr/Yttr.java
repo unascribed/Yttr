@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -47,6 +48,7 @@ import com.unascribed.yttr.world.WastelandPopulator;
 
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
@@ -81,6 +83,8 @@ public class Yttr implements ModInitializer {
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
 	
 	public static boolean lessCreepyAwareHopper;
+	
+	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
 	
 	@Override
 	public void onInitialize() {
@@ -131,6 +135,19 @@ public class Yttr implements ModInitializer {
 		// }
 		
 		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
+		ServerTickEvents.START_SERVER_TICK.register((server) -> {
+			Iterator<DelayedTask> iter = delayedServerTasks.iterator();
+			int tasksRunThisTick = 0;
+			while (iter.hasNext()) {
+				if (tasksRunThisTick > 10) break;
+				DelayedTask dt = iter.next();
+				if (dt.delay-- <= 0) {
+					dt.r.run();
+					tasksRunThisTick++;
+					iter.remove();
+				}
+			}
+		});
 		
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
 			Substitutes.reload(mgr.getResourceManager());

@@ -19,6 +19,7 @@ import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
+import com.unascribed.yttr.client.render.ShifterUI;
 import com.unascribed.yttr.client.render.SuitHUDRenderer;
 import com.unascribed.yttr.client.util.TextureColorThief;
 import com.unascribed.yttr.content.block.big.BigBlock;
@@ -30,6 +31,7 @@ import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YHandledScreens;
 import com.unascribed.yttr.init.YSounds;
+import com.unascribed.yttr.mixin.accessor.client.AccessorClientPlayerInteractionManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorEntityTrackingSoundInstance;
 import com.unascribed.yttr.mixin.accessor.client.AccessorResourcePackManager;
 import com.unascribed.yttr.mixin.accessor.client.AccessorVertexBuffer;
@@ -105,6 +107,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
@@ -204,6 +207,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.tick();
 			ReplicatorRenderer.tick();
 			RifleHUDRenderer.tick();
+			if (mc.player != null && mc.player.isCreative() && mc.player.getStackInHand(Hand.MAIN_HAND).getItem() == YItems.SHIFTER) {
+				((AccessorClientPlayerInteractionManager)mc.interactionManager).yttr$setBlockBreakingCooldown(0);
+			}
 		});
 		
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
@@ -213,6 +219,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
+		WorldRenderEvents.BLOCK_OUTLINE.register(ShifterUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register((wrc, boc) -> {
 			if (boc.blockState().getBlock() instanceof BigBlock) {
 				BlockState bs = boc.blockState();

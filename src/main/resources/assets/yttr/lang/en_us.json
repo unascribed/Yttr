@@ -61,6 +61,7 @@
 	"item.yttr.music_disc_void": "§8Music Disc",
 	"item.yttr.levitation_splash_potion": "Splash Potion of Levitation",
 	"item.yttr.rubble": "§7Rubble",
+	"item.yttr.shifter": "Continuous Shifter",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
@@ -76,6 +77,10 @@
 	"item.yttr.goggles.tip.4": "",
 	"item.yttr.goggles.tip.5": "§7(Equip a Skeletal Sorter with",
 	"item.yttr.goggles.tip.6": "§7these to filter by NBT.)",
+	
+	"item.yttr.shifter.tip.1": "§7Equally trades the crust with other blocks.",
+	"item.yttr.shifter.tip.2": "§7Attack to replace one. Use to replace lots.",
+	"item.yttr.shifter.tip.3": "§7Sneak-use to toggle replacing hidden blocks.",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
@@ -272,6 +277,9 @@
 	"tip.yttr.cleaver.repeat_cut.post": "Left click to repeat last cut",
 	"tip.yttr.cleaver.repeat_cut_sneak": "Sneak left click another block to repeat this cut",
 	"tip.yttr.cleaver.repeat_cut_sneak.post": "Sneak left click to repeat last cut",
+	
+	"tip.yttr.shifter.hidden.enabled": "§aEnabled§r replacement of hidden blocks",
+	"tip.yttr.shifter.hidden.disabled": "§cDisabled§r replacement of hidden blocks",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",

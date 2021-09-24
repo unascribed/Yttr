@@ -22,8 +22,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.Structure.StructureBlockInfo;
-import net.minecraft.structure.processor.StructureProcessor;
-import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
@@ -32,7 +30,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.Explosion.DestructionType;
@@ -230,7 +227,6 @@ public class WastelandPopulator {
 				double x = chunkStart.getX()+(rand.nextDouble()*16);
 				double z = chunkStart.getZ()+(rand.nextDouble()*16);
 				double y = (world.getTopY(Heightmap.Type.WORLD_SURFACE, (int)x, (int)z))+rand.nextGaussian();
-				System.out.println(x+", "+y+", "+z);
 				for (int i = 0; i < 30+(rand.nextInt(50)); i++) {
 					explode(world, x+(rand.nextGaussian()*20), y, z+(rand.nextGaussian()*20), 6);
 				}
@@ -323,26 +319,14 @@ public class WastelandPopulator {
 		}
 		List<BlockPos> fillIn = Lists.newArrayList();
 		if (fill) {
-			spd.addProcessor(new StructureProcessor() {
-				
-				@Override
-				public StructureBlockInfo process(WorldView world,
-						BlockPos unk, BlockPos unk2,
-						StructureBlockInfo unk3, StructureBlockInfo block,
-						StructurePlacementData structurePlacementData) {
-					if (block.pos.getY() == originY && block.state.isSideSolid(world, block.pos, Direction.DOWN, SideShapeType.FULL)) {
-						if (block.tag == null || !"yttr:quarry_hole".equals(block.tag.getString("metadata"))) {
-							fillIn.add(block.pos);
-						}
+			spd.addProcessor(SimpleStructureProcessor.of((block) -> {
+				if (block.pos.getY() == originY && block.state.isSideSolid(world, block.pos, Direction.DOWN, SideShapeType.FULL)) {
+					if (block.tag == null || !"yttr:quarry_hole".equals(block.tag.getString("metadata"))) {
+						fillIn.add(block.pos);
 					}
-					return block;
 				}
-				
-				@Override
-				protected StructureProcessorType<?> getType() {
-					return StructureProcessorType.NOP;
-				}
-			});
+				return block;
+			}));
 		}
 		s.place(world, origin, spd, rand);
 		for (StructureBlockInfo info : s.getInfosForBlock(origin, spd, Blocks.STRUCTURE_BLOCK, true)) {

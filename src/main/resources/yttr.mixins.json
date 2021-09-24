@@ -117,6 +117,7 @@
 	"accessor.client.AccessorVertexBuffer",
 	"accessor.client.AccessorResourcePackManager",
 	"accessor.client.AccessorWorldRenderer",
+	"accessor.client.AccessorClientPlayerInteractionManager",
 	"diving.client.MixinSoundSystem",
 	"diving.client.MixinPlayerEntityRenderer",
 	"diving.client.MixinDeathScreen",
@@ -130,6 +131,7 @@
 	"ibxm.MixinSoundLoader",
 	"ibxm.MixinSound",
 	"replicator.MixinInGameHud",
+	"shifter.MixinItemRenderer",
 	
 	"diving.client.MixinEarsFeatureRenderer"
   ],

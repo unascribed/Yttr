@@ -20,6 +20,7 @@ import com.unascribed.yttr.content.item.HornItem;
 import com.unascribed.yttr.content.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.content.item.ShearsItem;
+import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.content.item.SnareItem;
 import com.unascribed.yttr.content.item.SpectralAxeItem;
 import com.unascribed.yttr.content.item.SuitArmorItem;
@@ -487,6 +488,10 @@ public class YItems {
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().group(YItemGroups.MAIN).maxCount(1).rarity(Rarity.RARE)) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings().group(YItemGroups.RUINED)) {};
+	
+	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
+			.maxCount(1)
+			.group(YItemGroups.MAIN));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);
