@@ -1,5 +1,6 @@
 package com.unascribed.yttr.content.item;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,10 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.util.YLog;
 
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,16 +33,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Direction.Axis;
+import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -51,23 +58,24 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		super(settings);
 	}
 
-	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		ItemStack stack = user.getStackInHand(hand);
-		if (user.isSneaking()) {
-			if (!stack.hasTag()) stack.setTag(new NbtCompound());
-			boolean hidden = stack.getTag().getBoolean("ReplaceHidden");
-			stack.getTag().putBoolean("ReplaceHidden", !hidden);
-			if (stack.getTag().getInt("UserIsConfusedCounter") > 3) {
-				user.sendMessage(new TranslatableText("tip.yttr.shifter.not_thaumcraft"), true);
-			} else if (hidden) {
-				user.sendMessage(new TranslatableText("tip.yttr.shifter.hidden.disabled"), true);
-			} else {
-				user.sendMessage(new TranslatableText("tip.yttr.shifter.hidden.enabled"), true);
-			}
-			return TypedActionResult.consume(stack);
+	public void changeMode(ServerPlayerEntity player, boolean disconnected, boolean hidden, boolean plane) {
+		ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+		boolean curDisconnected = stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected");
+		boolean curHidden = stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden");
+		boolean curPlane = stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict");
+		if (disconnected != curDisconnected) {
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.disconnected."+(disconnected ? "en" : "dis")+"abled"), true);
 		}
-		return TypedActionResult.pass(stack);
+		if (hidden != curHidden) {
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.hidden."+(hidden ? "en" : "dis")+"abled"), true);
+		}
+		if (plane != curPlane) {
+			player.sendMessage(new TranslatableText("tip.yttr.shifter.plane."+(plane ? "en" : "dis")+"abled"), true);
+		}
+		if (!stack.hasTag()) stack.setTag(new NbtCompound());
+		stack.getTag().putBoolean("ReplaceDisconnected", disconnected);
+		stack.getTag().putBoolean("ReplaceHidden", hidden);
+		stack.getTag().putBoolean("PlaneRestrict", plane);
 	}
 	
 	@Override
@@ -75,18 +83,10 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		if (context.getHand() == Hand.OFF_HAND) return ActionResult.PASS;
 		ItemStack stack = context.getStack();
 		ItemStack repl = context.getPlayer().getStackInHand(Hand.OFF_HAND);
-		if (context.getPlayer().isSneaking()) {
-			if (!(context.getPlayer().getStackInHand(Hand.OFF_HAND).getItem() instanceof BlockItem)) {
-				if (!stack.hasTag()) stack.setTag(new NbtCompound());
-				stack.getTag().putInt("UserIsConfusedCounter", stack.getTag().getInt("UserIsConfusedCounter") + 1);
-			} else if (stack.hasTag()) {
-				stack.getTag().remove("UserIsConfusedCounter");
-			}
-			return use(context.getWorld(), context.getPlayer(), context.getHand()).getResult();
-		} else if (stack.hasTag() && repl.getItem() instanceof BlockItem) {
-			stack.getTag().remove("UserIsConfusedCounter");
-		}
-		Set<BlockPos> blocks = getAffectedBlocks(context.getPlayer(), context.getWorld(), context.getBlockPos(), context.getStack().hasTag() && context.getStack().getTag().getBoolean("ReplaceHidden"));
+		Set<BlockPos> blocks = getAffectedBlocks(context.getPlayer(), context.getWorld(), context.getBlockPos(), context.getSide(),
+				stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected"),
+				stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden"),
+				stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict"));
 		scheduleMultiReplace(context.getPlayer(), context.getBlockPos(), context.getWorld(), repl.copy(), blocks);
 		return ActionResult.SUCCESS;
 	}
@@ -166,15 +166,61 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		world.spawnParticles(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 	}
 
-	public Set<BlockPos> getAffectedBlocks(PlayerEntity player, World world, BlockPos start, boolean includeHidden) {
+	public Set<BlockPos> getAffectedBlocks(PlayerEntity player, World world, BlockPos start, Direction face,
+			boolean includeDisconnected, boolean includeHidden, boolean planeRestrict) {
 		BlockState sample = world.getBlockState(start);
 		if (sample.isAir()) return Collections.emptySet();
-		return StreamSupport.stream(BlockPos.iterate(start.add(-4, -4, -4), start.add(4, 4, 4)).spliterator(), false)
-				.filter(bp -> world.getBlockState(bp) == sample)
-				.filter(bp -> world.getBlockState(bp).getHardness(world, bp) >= 0)
-				.filter(bp -> includeHidden || !isHidden(world, bp))
-				.map(BlockPos::toImmutable)
-				.collect(Collectors.toSet());
+		Iterable<Direction> directions = Arrays.asList(Direction.values());
+		if (planeRestrict) {
+			Axis axisZ = face.getAxis();
+			List<Axis> axes = Arrays.asList(Direction.Axis.values());
+			Axis axisX = Iterables.find(axes, a -> a != axisZ);
+			Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
+			directions = Iterables.filter(directions, d -> d.getAxis() == axisX || d.getAxis() == axisY);
+		}
+		BlockPos corner1 = start;
+		BlockPos corner2 = start;
+		for (Direction d : directions) {
+			if (d.getDirection() == AxisDirection.NEGATIVE) {
+				corner1 = corner1.offset(d, 4);
+			} else {
+				corner2 = corner2.offset(d, 4);
+			}
+		}
+		if (includeDisconnected) {
+			return StreamSupport.stream(BlockPos.iterate(corner1, corner2).spliterator(), false)
+					.filter(bp -> world.getBlockState(bp) == sample)
+					.filter(bp -> world.getBlockState(bp).getHardness(world, bp) >= 0)
+					.filter(bp -> includeHidden || !isHidden(world, bp))
+					.map(BlockPos::toImmutable)
+					.collect(Collectors.toSet());
+		} else {
+			Box box = new Box(corner1.getX(), corner1.getY(), corner1.getZ(), corner2.getX()+1, corner2.getY()+1, corner2.getZ()+1);
+			Set<BlockPos> seen = Sets.newHashSet();
+			Set<BlockPos> scan = Sets.newHashSet();
+			Set<BlockPos> nextScan = Sets.newHashSet();
+			int i = 0;
+			scan.add(start);
+			seen.add(start);
+			while (!scan.isEmpty()) {
+				if (i++ > 768) break;
+				for (BlockPos bp : scan) {
+					for (Direction d : directions) {
+						BlockPos c = bp.offset(d);
+						if (!box.contains(c.getX()+0.5, c.getY()+0.5, c.getZ()+0.5)) continue;
+						BlockState bs2 = world.getBlockState(c);
+						if (bs2 == sample && seen.add(c)) {
+							nextScan.add(c);
+						}
+					}
+				}
+				scan.clear();
+				scan.addAll(nextScan);
+				nextScan.clear();
+			}
+			if (!includeHidden) seen.removeIf(bp -> isHidden(world, bp));
+			return seen;
+		}
 	}
 	
 	public static boolean isHidden(World world, BlockPos bp) {

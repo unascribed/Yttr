@@ -216,6 +216,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.tick();
 			ReplicatorRenderer.tick();
 			RifleHUDRenderer.tick();
+			ShifterUI.tick();
 			if (mc.player != null && mc.player.isCreative() && mc.player.getStackInHand(Hand.MAIN_HAND).getItem() == YItems.SHIFTER) {
 				((AccessorClientPlayerInteractionManager)mc.interactionManager).yttr$setBlockBreakingCooldown(0);
 			}
@@ -224,11 +225,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			RifleHUDRenderer.render(matrixStack, tickDelta);
+			ShifterUI.render(matrixStack, tickDelta);
 		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);
-		WorldRenderEvents.BLOCK_OUTLINE.register(ShifterUI::render);
+		WorldRenderEvents.BLOCK_OUTLINE.register(ShifterUI::renderOutline);
 		WorldRenderEvents.BLOCK_OUTLINE.register((wrc, boc) -> {
 			if (boc.blockState().getBlock() instanceof BigBlock) {
 				BlockState bs = boc.blockState();

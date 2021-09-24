@@ -85,7 +85,6 @@
 	
 	"item.yttr.shifter.tip.1": "§7Equally trades the crust with other blocks.",
 	"item.yttr.shifter.tip.2": "§7Attack to replace one. Use to replace lots.",
-	"item.yttr.shifter.tip.3": "§7Sneak-use to toggle replacing hidden blocks.",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
@@ -287,10 +286,14 @@
 	"tip.yttr.cleaver.repeat_cut_sneak": "Sneak left click another block to repeat this cut",
 	"tip.yttr.cleaver.repeat_cut_sneak.post": "Sneak left click to repeat last cut",
 	
+	"tip.yttr.shifter.disconnected.enabled": "§aEnabled§r replacement of disconnected blocks",
+	"tip.yttr.shifter.disconnected.disabled": "§cDisabled§r replacement of disconnected blocks",
+	
 	"tip.yttr.shifter.hidden.enabled": "§aEnabled§r replacement of hidden blocks",
 	"tip.yttr.shifter.hidden.disabled": "§cDisabled§r replacement of hidden blocks",
 	
-	"tip.yttr.shifter.not_thaumcraft": "§lTip§r: §ePut the block you want to replace with in your §loff-hand§e.",
+	"tip.yttr.shifter.plane.enabled": "§aEnabled§r plane restriction",
+	"tip.yttr.shifter.plane.disabled": "§cDisabled§r plane restriction",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
