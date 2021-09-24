@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.BlockItem;
@@ -49,6 +50,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -147,7 +149,7 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		if (curState.getHardness(world, pos) < 0) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
 		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
-		world.setBlockState(pos, curState.getFluidState().getBlockState());
+		world.setBlockState(pos, curState.getFluidState().getBlockState(), 0, 0);
 		BlockState refinedReplState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
 		if (refinedReplState != null) {
 			replState = refinedReplState;
@@ -155,10 +157,20 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		BlockSoundGroup replSg = replState.getSoundGroup();
 		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
 		if (!player.isCreative()) {
-			for (ItemStack is : drops) {
-				player.inventory.insertStack(is);
-				if (is.getCount() > 0) {
-					Block.dropStack(world, pos, is);
+			if (world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
+				for (ItemStack is : drops) {
+					double xo = world.random.nextFloat() * 0.5F + 0.25D;
+					double yo = world.random.nextFloat() * 0.5F + 0.25D;
+					double zo = world.random.nextFloat() * 0.5F + 0.25D;
+					ItemEntity ie = new ItemEntity(world, pos.getX() + xo, pos.getY() + yo, pos.getZ() + zo, is);
+					ie.setPickupDelay(0);
+					world.spawnEntity(ie);
+					ie.onPlayerCollision(player);
+					if (ie.getStack().isEmpty()) {
+						ie.remove();
+					} else {
+						ie.setToDefaultPickupDelay();
+					}
 				}
 			}
 			int rm = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, false);
