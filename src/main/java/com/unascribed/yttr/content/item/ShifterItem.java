@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.YLog;
 
 import com.google.common.collect.HashMultiset;
@@ -35,6 +36,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -141,7 +144,10 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		if (replState == curState) return;
 		if (!replState.canPlaceAt(world, pos)) return;
 		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null);
-		if (!world.breakBlock(pos, false, player)) return;
+		if (curState.getHardness(world, pos) < 0) return;
+		BlockSoundGroup sg = curState.getSoundGroup();
+		world.playSound(null, pos, ((AccessorBlockSoundGroup)sg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curState.getSoundGroup().getVolume()+1f)/2)*0.2f, curState.getSoundGroup().getPitch()*0.8f);
+		world.setBlockState(pos, curState.getFluidState().getBlockState());
 		BlockState refinedReplState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
 		if (refinedReplState != null) {
 			replState = refinedReplState;
