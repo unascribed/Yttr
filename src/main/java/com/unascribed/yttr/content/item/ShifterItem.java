@@ -145,13 +145,15 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		if (!replState.canPlaceAt(world, pos)) return;
 		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null);
 		if (curState.getHardness(world, pos) < 0) return;
-		BlockSoundGroup sg = curState.getSoundGroup();
-		world.playSound(null, pos, ((AccessorBlockSoundGroup)sg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curState.getSoundGroup().getVolume()+1f)/2)*0.2f, curState.getSoundGroup().getPitch()*0.8f);
+		BlockSoundGroup curSg = curState.getSoundGroup();
+		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
 		world.setBlockState(pos, curState.getFluidState().getBlockState());
 		BlockState refinedReplState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
 		if (refinedReplState != null) {
 			replState = refinedReplState;
 		}
+		BlockSoundGroup replSg = replState.getSoundGroup();
+		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
 		if (!player.isCreative()) {
 			for (ItemStack is : drops) {
 				player.inventory.insertStack(is);
