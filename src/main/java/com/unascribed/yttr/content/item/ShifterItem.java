@@ -165,7 +165,7 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		BlockPos.Mutable mut = bp.mutableCopy();
 		for (Direction d : Direction.values()) {
 			mut.set(bp).move(d);
-			if (!world.getBlockState(mut).isSolidBlock(world, mut)) {
+			if (!world.getBlockState(mut).isSideSolidFullSquare(world, mut, d.getOpposite())) {
 				return false;
 			}
 		}
