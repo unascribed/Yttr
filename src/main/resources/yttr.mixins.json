@@ -80,6 +80,7 @@
 	"scorched.MixinMultiNoiseBiomeSource",
 	"scorched.MixinMultiNoiseBiomeSourcePreset",
 	"scorched.MixinLevitationCriterion",
+	"shifter.MixinServerPlayNetworkHandler",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
@@ -132,7 +133,9 @@
 	"ibxm.MixinSoundLoader",
 	"ibxm.MixinSound",
 	"replicator.MixinInGameHud",
-	"shifter.MixinItemRenderer",
+	"shifter.client.MixinItemRenderer",
+	"shifter.client.MixinPlayerInventory",
+	"shifter.client.MixinMinecraftClient",
 	"subgroup.MixinCreativeInventoryScreen",
 	"subgroup.MixinItemGroup",
 	"snare.MixinHeldItemRenderer",
