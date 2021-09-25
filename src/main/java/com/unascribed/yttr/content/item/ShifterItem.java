@@ -9,8 +9,10 @@ import java.util.stream.StreamSupport;
 
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.YLog;
+import com.unascribed.yttr.util.math.partitioner.Plane;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
@@ -129,10 +131,21 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		}
 	}
 	
-	public void performReplacement(PlayerEntity player, BlockPos pos, World _world, ItemStack replacement) {
+	public void performReplacement(PlayerEntity player, BlockPos pos, World _world, ItemStack _replacement) {
 		if (!(_world instanceof ServerWorld)) return;
 		ServerWorld world = (ServerWorld) _world;
-		if (replacement.isEmpty()) return;
+		if (_replacement.isEmpty()) return;
+		if (_replacement.getItem() instanceof ReplicatorBlockItem) {
+			_replacement = ReplicatorBlockItem.getHeldItem(_replacement);
+		} else if (_replacement.getItem() instanceof CleaverItem) {
+			CleaverItem ci = (CleaverItem)_replacement.getItem();
+			Plane p = ci.getLastCut(_replacement);
+			if (p != null && ci.performWorldCleave(world, pos, _replacement, player, p)) {
+				return;
+			}
+		}
+		if (_replacement.isEmpty()) return;
+		ItemStack replacement = _replacement;
 		BlockState curState = world.getBlockState(pos);
 		if (curState.isAir()) return;
 		int consumed = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, true);

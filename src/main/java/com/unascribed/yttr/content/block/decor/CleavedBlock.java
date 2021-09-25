@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.util.math.BlockPos;
@@ -36,15 +37,16 @@ import net.minecraft.world.WorldAccess;
 public class CleavedBlock extends Block implements BlockEntityProvider, BlockColorProvider, Waterloggable {
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	public static final IntProperty LUMINANCE = IntProperty.of("luminance", 0, 15);
 	
 	public CleavedBlock(Settings settings) {
-		super(settings);
-		setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		super(settings.luminance(bs -> bs.get(LUMINANCE)));
+		setDefaultState(getDefaultState().with(WATERLOGGED, false).with(LUMINANCE, 0));
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(WATERLOGGED);
+		builder.add(WATERLOGGED, LUMINANCE);
 	}
 	
 	@Override
@@ -103,6 +105,15 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 			return ((CleavedBlockEntity)be).getDonor().calcBlockBreakingDelta(player, world, pos);
 		}
 		return super.calcBlockBreakingDelta(state, player, world, pos);
+	}
+	
+	@Override
+	public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CleavedBlockEntity) {
+			return ((CleavedBlockEntity)be).getDonor().getOpacity(world, pos);
+		}
+		return super.getOpacity(state, world, pos);
 	}
 	
 	@Override

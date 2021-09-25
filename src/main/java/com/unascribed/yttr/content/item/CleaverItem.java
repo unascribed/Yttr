@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
@@ -174,7 +175,7 @@ public class CleaverItem extends Item implements Attackable {
 		}
 	}
 	
-	private boolean performWorldCleave(World world, BlockPos pos, ItemStack stack, PlayerEntity player, Plane plane) {
+	public boolean performWorldCleave(World world, BlockPos pos, ItemStack stack, PlayerEntity player, Plane plane) {
 		BlockState state = world.getBlockState(pos);
 		List<Polygon> shape = getShape(world, pos);
 		List<Polygon> result = performCleave(plane, shape, false);
@@ -189,7 +190,7 @@ public class CleaverItem extends Item implements Attackable {
 			if (be instanceof CleavedBlockEntity) {
 				cbe = (CleavedBlockEntity)be;
 			} else {
-				BlockState newState = YBlocks.CLEAVED_BLOCK.getDefaultState();
+				BlockState newState = YBlocks.CLEAVED_BLOCK.getDefaultState().with(CleavedBlock.LUMINANCE, state.getLuminance());
 				if (state.contains(Properties.WATERLOGGED)) {
 					newState = newState.with(Properties.WATERLOGGED, state.get(Properties.WATERLOGGED));
 				}
