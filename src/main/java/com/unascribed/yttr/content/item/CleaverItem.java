@@ -32,6 +32,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -188,7 +189,11 @@ public class CleaverItem extends Item implements Attackable {
 			if (be instanceof CleavedBlockEntity) {
 				cbe = (CleavedBlockEntity)be;
 			} else {
-				world.setBlockState(pos, YBlocks.CLEAVED_BLOCK.getDefaultState());
+				BlockState newState = YBlocks.CLEAVED_BLOCK.getDefaultState();
+				if (state.contains(Properties.WATERLOGGED)) {
+					newState = newState.with(Properties.WATERLOGGED, state.get(Properties.WATERLOGGED));
+				}
+				world.setBlockState(pos, newState);
 				cbe = ((CleavedBlockEntity)world.getBlockEntity(pos));
 				cbe.setDonor(state);
 			}
