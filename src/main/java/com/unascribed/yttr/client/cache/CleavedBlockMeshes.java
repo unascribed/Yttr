@@ -95,12 +95,14 @@ public class CleavedBlockMeshes {
 			Direction face = findClosestFace(plane.normal());
 			BakedQuad firstQuad = Iterables.getFirst(donor.getQuads(entity.getDonor(), face, rand), firstNullQuad);
 			Sprite sprite;
+			int tintIndex = -1;
 			if (firstQuad == null) {
 				sprite = particle;
 			} else {
 				uvo.reset();
 				uvo.quad(IDENTITY.peek(), firstQuad, 0, 0, 0, 0, 0);
 				sprite = DummySprite.create(uvo.getMinU(), uvo.getMinV(), uvo.getMaxU(), uvo.getMaxV());
+				tintIndex = firstQuad.getColorIndex();;
 			}
 			if (p.nPoints() <= 2) {
 				// ???
@@ -108,11 +110,13 @@ public class CleavedBlockMeshes {
 				// trivial case: triangle. make a degenerate quad
 				buildTrivial(sprite, qe, p, false);
 				qe.material(mat);
+				qe.colorIndex(tintIndex);
 				qe.emit();
 			} else if (p.nPoints() == 4) {
 				// ideal case: it's already a quad
 				buildTrivial(sprite, qe, p, false);
 				qe.material(mat);
+				qe.colorIndex(tintIndex);
 				qe.emit();
 			} else {
 				// worst case: need to triangulate
@@ -135,6 +139,7 @@ public class CleavedBlockMeshes {
 					qe.spriteBake(0, sprite, QuadEmitter.BAKE_LOCK_UV | QuadEmitter.BAKE_NORMALIZED);
 					qe.spriteColor(0, c, c, c, c);
 					qe.material(mat);
+					qe.colorIndex(tintIndex);
 					qe.emit();
 				}
 			}

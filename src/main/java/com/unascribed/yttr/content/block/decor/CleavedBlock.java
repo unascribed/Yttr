@@ -3,22 +3,29 @@ package com.unascribed.yttr.content.block.decor;
 import java.util.Collections;
 import java.util.List;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CleavedBlock extends Block implements BlockEntityProvider {
+@EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
+public class CleavedBlock extends Block implements BlockEntityProvider, BlockColorProvider {
 
 	public CleavedBlock(Settings settings) {
 		super(settings);
@@ -67,6 +74,16 @@ public class CleavedBlock extends Block implements BlockEntityProvider {
 			return ((CleavedBlockEntity)be).getDonor().calcBlockBreakingDelta(player, world, pos);
 		}
 		return super.calcBlockBreakingDelta(state, player, world, pos);
+	}
+	
+	@Override
+	@Environment(EnvType.CLIENT)
+	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CleavedBlockEntity) {
+			return MinecraftClient.getInstance().getBlockColors().getColor(((CleavedBlockEntity)be).getDonor(), world, pos, tintIndex);
+		}
+		return -1;
 	}
 	
 }
