@@ -34,6 +34,8 @@ import net.minecraft.util.shape.VoxelShape;
 
 public class CleavedBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity {
 
+	public static int SHAPE_GRANULARITY = 8;
+	
 	public static List<Polygon> cube() {
 		return Lists.newArrayList(
 			new Polygon(
@@ -106,18 +108,29 @@ public class CleavedBlockEntity extends BlockEntity implements BlockEntityClient
 	public VoxelShape getShape() {
 		if (cachedShape != null) return cachedShape;
 		world.getProfiler().push("yttr:cleaved_shapegen");
-		final int acc = 8;
+		final int acc = SHAPE_GRANULARITY;
 		
 		BitSetVoxelSet voxels = new BitSetVoxelSet(acc, acc, acc);
 		for (int x = 0; x < acc; x++) {
 			for (int y = 0; y < acc; y++) {
 				for (int z = 0; z < acc; z++) {
-					Vec3d point = new Vec3d((x+0.5)/acc, (y+0.5)/acc, (z+0.5)/acc);
+					Vec3d[] points = {
+							new Vec3d((x+0.1)/acc, (y+0.1)/acc, (z+0.1)/acc),
+							new Vec3d((x+0.9)/acc, (y+0.1)/acc, (z+0.1)/acc),
+							new Vec3d((x+0.1)/acc, (y+0.1)/acc, (z+0.9)/acc),
+							new Vec3d((x+0.9)/acc, (y+0.1)/acc, (z+0.9)/acc),
+							new Vec3d((x+0.1)/acc, (y+0.9)/acc, (z+0.1)/acc),
+							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.1)/acc),
+							new Vec3d((x+0.1)/acc, (y+0.9)/acc, (z+0.9)/acc),
+							new Vec3d((x+0.9)/acc, (y+0.9)/acc, (z+0.9)/acc),
+					};
 					boolean inside = true;
-					for (Polygon p : polygons) {
-						if (p.plane().whichSide(point) == Where.ABOVE) {
-							inside = false;
-							break;
+					glass: for (Polygon p : polygons) {
+						for (Vec3d point : points) {
+							if (p.plane().whichSide(point) == Where.ABOVE) {
+								inside = false;
+								break glass;
+							}
 						}
 					}
 					if (inside) {

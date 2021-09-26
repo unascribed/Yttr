@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
+import com.unascribed.yttr.client.render.block_entity.CleavedBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.DSUBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
@@ -55,6 +56,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<SqueezedLeavesBlockEntity> SQUEEZED_LEAVES = create(SqueezedLeavesBlockEntity::new, YBlocks.SQUEEZED_LEAVES);
 	@Renderer(LampBlockEntityRenderer.class)
 	public static final BlockEntityType<LampBlockEntity> LAMP = create(LampBlockEntity::new, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
+	@Renderer(CleavedBlockEntityRenderer.class)
 	public static final BlockEntityType<CleavedBlockEntity> CLEAVED_BLOCK = create(CleavedBlockEntity::new, YBlocks.CLEAVED_BLOCK);
 	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
 	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);

@@ -3,6 +3,12 @@ package com.unascribed.yttr.content.block.decor;
 import java.util.Collections;
 import java.util.List;
 
+import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.mixinsupport.SlopeStander;
+import com.unascribed.yttr.util.math.partitioner.DEdge;
+import com.unascribed.yttr.util.math.partitioner.Polygon;
+import com.unascribed.yttr.util.math.partitioner.Where;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
@@ -15,6 +21,7 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -26,7 +33,9 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
@@ -114,6 +123,83 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 			return ((CleavedBlockEntity)be).getDonor().getOpacity(world, pos);
 		}
 		return super.getOpacity(state, world, pos);
+	}
+	
+	public void onEntityNearby(BlockState state, World world, BlockPos pos, Entity entity) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CleavedBlockEntity) {
+			List<Polygon> shape = ((CleavedBlockEntity)be).getPolygons();
+			double checkDist = 2D/CleavedBlockEntity.SHAPE_GRANULARITY;
+			Box box = entity.getBoundingBox();
+			double x = box.getCenter().x;
+			double y = box.minY;
+			double z = box.getCenter().z;
+			int signum = -1;
+			if (box.minY < pos.getY()) {
+//				y = box.maxY;
+//				signum = 1;
+				return;
+			}
+			Polygon relevant = null;
+			for (Polygon p : shape) {
+				Vec3d normal = p.plane().normal();
+				if ((normal.x == 0 && normal.y == 0) ||
+						(normal.x == 0 && normal.z == 0) ||
+						(normal.z == 0 && normal.y == 0)) {
+					// flat face, does not need adjustment
+					continue;
+				}
+				relevant = p;
+				break;
+			}
+			x -= pos.getX();
+			y -= pos.getY();
+			z -= pos.getZ();
+			if (relevant == null) return;
+			double pMinY = 200;
+			double pMaxY = -200;
+			for (DEdge edge : relevant) {
+				pMinY = Math.min(pMinY, edge.srcPoint().y);
+				pMaxY = Math.max(pMaxY, edge.srcPoint().y);
+			}
+			if (y > pMaxY+0.05 || y < pMinY-0.05) return;
+			double origY = y;
+			y -= (checkDist*signum);
+			int steps = 64;
+			boolean found = false;
+			Vec3d up = new Vec3d(0, 1, 0);
+			float steepness = 0;
+			double dist = checkDist*4;
+			for (int i = 0; i < steps; i++) {
+				y += (dist/steps)*signum;
+				Vec3d vec = new Vec3d(x, y, z);
+				if (relevant.plane().whichSide(vec) != Where.ABOVE) {
+					found = true;
+					steepness = (float)(1-relevant.plane().normal().dotProduct(up));
+					break;
+				}
+			}
+			if (found) {
+				SlopeStander ss = ((SlopeStander)entity);
+				BlockPos below = entity.getBlockPos().down();
+				BlockState belowState = world.getBlockState(below);
+				if (!belowState.isOf(YBlocks.CLEAVED_BLOCK)) {
+					VoxelShape belowShape = belowState.getCollisionShape(world, below);
+					Vec3d point = new Vec3d(x+pos.getX(), y+pos.getY(), z+pos.getZ());
+					for (Box b : belowShape.getBoundingBoxes()) {
+						if (b.offset(below).contains(point)) {
+							// colliding with a non-cleaved block; avoid causing the player to seem to clip into normal blocks
+							return;
+						}
+					}
+				}
+				double yO = y-origY;
+				if (ss.yttr$getYOffset() == 0 || ss.yttr$getYOffset() < yO) {
+					ss.yttr$setYOffset(yO);
+				}
+				ss.yttr$setSlopeSteepness(Math.max(ss.yttr$getSlopeSteepness(), steepness));
+			}
+		}
 	}
 	
 	@Override
