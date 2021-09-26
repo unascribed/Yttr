@@ -21,7 +21,11 @@ public class RuinedEntryWidget extends EntryWidget {
 	
 	@Override
 	public @Nullable Tooltip getCurrentTooltip(Point point) {
-		return Tooltip.create(new TranslatableText("container.enchant.clue").formatted(Formatting.ITALIC));
+		if (getCurrentEntry().isEmpty()) {
+			return Tooltip.create(new TranslatableText("container.enchant.clue").formatted(Formatting.ITALIC));
+		} else {
+			return Tooltip.create(new TranslatableText("container.enchant.clue", new TranslatableText(getCurrentEntry().getItem().getTranslationKey()+".alt")).formatted(Formatting.ITALIC));
+		}
 	}
 
 }

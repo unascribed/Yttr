@@ -189,6 +189,16 @@
 	"block.yttr.cage_lamp.colored.inverted": "Inverted %s Cage Lamp",
 	"block.yttr.fixture.colored.inverted": "Inverted %s Lamp Fixture",
 	
+	"block.yttr.ruined_bricks.alt": "Bricks",
+	"block.yttr.ruined_container.alt": "Container",
+	"block.yttr.ruined_device.alt": "Device",
+	"block.yttr.ruined_device_bc_2.alt": "Piston",
+	"block.yttr.ruined_pipe.alt": "Pipe",
+	"block.yttr.ruined_frame.alt": "Frame",
+	"block.yttr.ruined_tube.alt": "Tube",
+	"block.yttr.ruined_tank.alt": "Tank",
+	"block.yttr.ruined_construct.alt": "Construct",
+	
 	"block.yttr.replicator.holding": "%s §7in %s",
 	
 	"block.yttr.magtube.flow.forward": "FLOW ▶",
