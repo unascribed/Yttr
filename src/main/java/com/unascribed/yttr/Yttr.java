@@ -36,6 +36,7 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
+import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
 import com.unascribed.yttr.mixinsupport.DiverPlayer;
@@ -137,6 +138,8 @@ public class Yttr implements ModInitializer {
 		// }
 		
 		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
+		ServerTickEvents.START_WORLD_TICK.register(SoakingHandler::startServerWorldTick);
+		ServerTickEvents.END_WORLD_TICK.register(SoakingHandler::endServerWorldTick);
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();
 			int tasksRunThisTick = 0;

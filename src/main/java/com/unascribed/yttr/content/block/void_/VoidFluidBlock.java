@@ -3,8 +3,6 @@ package com.unascribed.yttr.content.block.void_;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.init.YBlocks;
-import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mechanics.SolventDamageSource;
@@ -60,13 +58,6 @@ public class VoidFluidBlock extends FluidBlock {
 			if (entity instanceof ItemEntity) {
 				ItemStack stack = ((ItemEntity) entity).getStack();
 				if (stack.getItem().isIn(YTags.Item.VOID_IMMUNE)) return;
-				if (stack.getItem() == YItems.BEDROCK_SHARD) {
-					if (getFluidState(state).isStill()) {
-						world.setBlockState(pos, YBlocks.GLASSY_VOID.getDefaultState());
-					} else {
-						return;
-					}
-				}
 				entity.remove();
 			}
 			if (entity instanceof LivingEntity) {

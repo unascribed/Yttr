@@ -8,18 +8,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -37,8 +42,10 @@ import me.shedaniel.rei.api.plugins.REIPluginV0;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
@@ -50,6 +57,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
 
 public class YttrREIPlugin implements REIPluginV0 {
 
@@ -57,12 +65,18 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public static final VoidFilteringCategory VOID_FILTERING = new VoidFilteringCategory();
 	public static final PistonSmashingCategory PISTON_SMASHING = new PistonSmashingCategory();
 	public static final CentrifugingCategory CENTRIFUGING = new CentrifugingCategory();
+	public static final SoakingCategory SOAKING = new SoakingCategory();
+	public static final ContinuityCategory CONTINUITY = new ContinuityCategory();
+	public static final RuinedCategory RUINED = new RuinedCategory();
 	
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategory(VOID_FILTERING);
 		recipeHelper.registerCategory(PISTON_SMASHING);
 		recipeHelper.registerCategory(CENTRIFUGING);
+		recipeHelper.registerCategory(SOAKING);
+		recipeHelper.registerCategory(CONTINUITY);
+		recipeHelper.registerCategory(RUINED);
 	}
 	
 	@Override
@@ -71,6 +85,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(PistonSmashingCategory.ID, EntryStack.create(Blocks.PISTON));
 		recipeHelper.registerWorkingStations(PistonSmashingCategory.ID, EntryStack.create(Blocks.STICKY_PISTON));
 		recipeHelper.registerWorkingStations(CentrifugingCategory.ID, EntryStack.create(YBlocks.CENTRIFUGE));
+		recipeHelper.registerWorkingStations(ContinuityCategory.ID, EntryStack.create(YItems.DROP_OF_CONTINUITY));
 	}
 	
 	@Override
@@ -94,6 +109,27 @@ public class YttrREIPlugin implements REIPluginV0 {
 				return is;
 			}));
 			recipeHelper.registerDisplay(new CentrifugingEntry(r.getId(), EntryStack.ofItemStacks(inputs), EntryStack.ofItemStacks(r.getOutputs())));
+		}
+		for (SoakingRecipe r : recipeHelper.getRecipeManager().listAllOfType(YRecipeTypes.SOAKING)) {
+			recipeHelper.registerDisplay(new SoakingEntry(r.getId(),
+					EntryStack.ofIngredients(r.getIngredients()),
+					r.getCatalyst().getMatchingFluids().stream()
+						.map(EntryStack::create)
+						.collect(Collectors.toList()),
+					ImmutableList.of(EntryStack.create(r.getOutput())),
+					r.getResult().right().isPresent()
+				));
+		}
+		recipeHelper.registerDisplay(new ContinuityEntry(Collections2.transform(DropOfContinuityItem.getPossibilities(), ItemStack::new)));
+		for (Identifier id : MinecraftClient.getInstance().getResourceManager().findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
+			String name = id.getPath();
+			name = name.substring(27, name.length()-4);
+			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
+			Identifier itemId = new Identifier(id.getNamespace(), name);
+			Item result = Registry.ITEM.getOrEmpty(itemId).orElse(null);
+			if (result != null) {
+				recipeHelper.registerDisplay(new RuinedEntry(itemId, EntryStack.create(result)));
+			}
 		}
 		
 		recipeHelper.registerRecipeVisibilityHandler((cat, recipe) -> {

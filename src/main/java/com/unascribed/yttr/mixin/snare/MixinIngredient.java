@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.google.gson.JsonObject;
-import com.unascribed.yttr.crafting.EntityIngredientEntry;
+import com.unascribed.yttr.crafting.ingredient.EntityIngredientEntry;
 import com.unascribed.yttr.init.YItems;
 
 import com.google.common.base.Ascii;

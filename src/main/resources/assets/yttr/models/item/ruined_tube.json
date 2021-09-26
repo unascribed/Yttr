@@ -1,3 +1,38 @@
 {
-  "parent": "yttr:block/ruined_tube_straight"
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "yttr:block/ruined_tube",
+		"1": "yttr:block/ruined_tube_end",
+		"particle": "yttr:block/ruined_tube"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [4, 0, 12, 16], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [4, 0, 12, 16], "texture": "#0"},
+				"south": {"uv": [4, 0, 12, 16], "texture": "#0"},
+				"west": {"uv": [4, 0, 12, 16], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "rotation": 180, "texture": "#1", "cullface": "north"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#1", "cullface": "south"}
+			}
+		},
+		{
+			"name": "cube inverted",
+			"from": [12, 16, 12],
+			"to": [4, 0, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [12, 0, 4, 16], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [12, 0, 4, 16], "texture": "#0"},
+				"south": {"uv": [12, 0, 4, 16], "texture": "#0"},
+				"west": {"uv": [12, 0, 4, 16], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [4, 12, 12, 4], "rotation": 180, "texture": "#1", "cullface": "south"},
+				"down": {"uv": [4, 12, 12, 4], "texture": "#1", "cullface": "north"}
+			}
+		}
+	]
 }

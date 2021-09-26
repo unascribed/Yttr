@@ -365,9 +365,16 @@
 	"category.yttr.void_filtering": "Void Filtering",
 	"category.yttr.piston_smashing": "Piston Smashing",
 	"category.yttr.centrifuging": "Centrifuging",
+	"category.yttr.soaking": "Soaking",
+	"category.yttr.continuity": "Gifts",
+	"category.yttr.ruined": "Forgotten Crafting",
 	
 	"category.yttr.void_filtering.chance": "Chance: %s%%",
 	"category.yttr.void_filtering.chance.short": "%s%%",
+	
+	"category.yttr.soaking.consumes_catalyst": "Consumes fluid",
+	
+	"category.yttr.continuity.chance": "%s%%",
 	
 	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	

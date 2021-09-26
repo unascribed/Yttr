@@ -57,11 +57,6 @@ public class PistonSmashingEntry implements RecipeDisplay {
 	}
 	
 	@Override
-	public @NotNull List<List<EntryStack>> getRequiredEntries() {
-		return Collections.emptyList();
-	}
-	
-	@Override
 	public @NotNull List<List<EntryStack>> getResultingEntries() {
 		return Collections.singletonList(Lists.newArrayList(output, cloudOutput));
 	}

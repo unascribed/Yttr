@@ -1,4 +1,4 @@
-package com.unascribed.yttr.crafting;
+package com.unascribed.yttr.crafting.ingredient;
 
 import java.util.Collection;
 import java.util.Collections;

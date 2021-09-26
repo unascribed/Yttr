@@ -82,6 +82,8 @@
 	"scorched.MixinMultiNoiseBiomeSourcePreset",
 	"scorched.MixinLevitationCriterion",
 	"shifter.MixinServerPlayNetworkHandler",
+	"soaking.MixinItemEntity",
+	"soaking.MixinServerWorld",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",

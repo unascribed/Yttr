@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:brookite_block"
+    }
+  ],
+  "result": {
+    "item": "yttr:brookite",
+    "count": 9
+  }
+}

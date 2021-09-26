@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -84,11 +85,7 @@ public class DropOfContinuityItem extends Item {
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (!world.isClient) {
-			Set<Item> possibilities = Sets.newHashSet();
-			possibilities.addAll(YTags.Item.GIFTS.values());
-			possibilities.addAll(Collections2.transform(YTags.Block.GIFTS.values(), Block::asItem));
-			possibilities.removeAll(YTags.Item.NOT_GIFTS.values());
-			possibilities.remove(null);
+			Set<Item> possibilities = getPossibilities();
 			ItemStack gift = new ItemStack(Iterables.get(possibilities, RANDOM.nextInt(possibilities.size())));
 			gift.setCount(Math.min(gift.getMaxCount(), RANDOM.nextInt(3)+1));
 			if (user.isUsingItem()) {
@@ -111,6 +108,16 @@ public class DropOfContinuityItem extends Item {
 			}
 		}
 		return super.finishUsing(stack, world, user);
+	}
+	
+	public static Set<Item> getPossibilities() {
+		Set<Item> possibilities = Sets.newHashSet();
+		possibilities.addAll(YTags.Item.GIFTS.values());
+		possibilities.addAll(Collections2.transform(YTags.Block.GIFTS.values(), Block::asItem));
+		possibilities.removeAll(YTags.Item.NOT_GIFTS.values());
+		possibilities.remove(null);
+		possibilities.remove(Items.AIR);
+		return possibilities;
 	}
 	
 	@Override
