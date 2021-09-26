@@ -71,7 +71,10 @@
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
 	
-	"item.yttr.cleaver.tip.1": "§7Slices blocks!",
+	"item.yttr.snare.tip.1": "§7Grabs just about anything!",
+	"item.yttr.snare.tip.2": "§7Once used by a dolly on a safari.",
+	
+	"item.yttr.cleaver.tip.1": "§7Slices blocks! A carpenter's best friend.",
 	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
 	
 	"item.yttr.effector.tip.1": "§7A portable hole-making device.",
@@ -156,6 +159,17 @@
 	"block.yttr.ruined_tank": "Ruined Tank",
 	"block.yttr.ruined_construct": "Ruined Construct",
 	"block.yttr.specialty_bedrock": "Specialty Bedrock",
+	
+	"block.yttr.ruined_container.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_device.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_device_bc_2.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_pipe.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_frame.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_tube.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_tank.tip.1": "§5§oThis seems familiar...",
+	"block.yttr.ruined_construct.tip.1": "§5§oThis seems familiar...",
+	
+	"block.yttr.replicator.tip.1": "§7A cache for creatives.",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

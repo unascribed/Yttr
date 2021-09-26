@@ -22,6 +22,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -118,16 +119,17 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 	
 	@Override
 	public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof CleavedBlockEntity) {
-			return ((CleavedBlockEntity)be).getDonor().getOpacity(world, pos);
-		}
-		return super.getOpacity(state, world, pos);
+		// lie, for grass
+		return 0;
 	}
 	
 	public void onEntityNearby(BlockState state, World world, BlockPos pos, Entity entity) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CleavedBlockEntity) {
+			// we don't check onGround as then you "unsnap" while going down a slope and it looks really bad
+			if (entity instanceof FlyingEntity || (entity instanceof PlayerEntity && (((PlayerEntity)entity).isFallFlying() || ((PlayerEntity)entity).abilities.flying))) {
+				return;
+			}
 			List<Polygon> shape = ((CleavedBlockEntity)be).getPolygons();
 			double checkDist = 2D/CleavedBlockEntity.SHAPE_GRANULARITY;
 			Box box = entity.getBoundingBox();

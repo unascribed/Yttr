@@ -127,6 +127,7 @@
 	"cleaver.client.MixinParticleManager",
 	"cleaver.client.MixinEntityRenderDispatcher",
 	"cleaver.client.MixinCamera",
+	"cleaver.client.MixinBlockDustParticle",
 	"aware_hopper.client.MixinSoundSystem",
 	"bigblock.MixinBlockRenderManager",
 	"bigblock.MixinClientPlayerInteractionManager",

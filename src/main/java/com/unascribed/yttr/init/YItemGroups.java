@@ -68,7 +68,6 @@ public class YItemGroups {
 				YItems.GLOWING_GAS,
 				YItems.NEODYMIUM_DISC,
 				YItems.QUICKSILVER,
-				YItems.RUBBLE,
 				YItems.BEDROCK_SHARD,
 				YItems.GLASSY_VOID,
 				YItems.VOID_BUCKET,
@@ -128,7 +127,8 @@ public class YItemGroups {
 				YItems.GOGGLES
 			);
 		assign(RUINED,
-				YItems.RUINED_CONTAINER
+				YItems.RUINED_CONTAINER,
+				YItems.RUBBLE
 			);
 	}
 
