@@ -1,5 +1,6 @@
 package com.unascribed.yttr.compat.rei;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
@@ -49,6 +51,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -121,14 +124,24 @@ public class YttrREIPlugin implements REIPluginV0 {
 				));
 		}
 		recipeHelper.registerDisplay(new ContinuityEntry(Collections2.transform(DropOfContinuityItem.getPossibilities(), ItemStack::new)));
-		for (Identifier id : MinecraftClient.getInstance().getResourceManager().findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
+		ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
+		for (Identifier id : rm.findResources("textures/gui/ruined_recipe", path -> path.endsWith(".png"))) {
 			String name = id.getPath();
 			name = name.substring(27, name.length()-4);
 			if (id.getNamespace().equals("yttr") && (name.equals("border") || name.equals("overlay"))) continue;
 			Identifier itemId = new Identifier(id.getNamespace(), name);
 			Item result = Registry.ITEM.getOrEmpty(itemId).orElse(null);
 			if (result != null) {
-				recipeHelper.registerDisplay(new RuinedEntry(itemId, EntryStack.create(result)));
+				RuinedRecipeResourceMetadata meta = null;
+				try {
+					meta = rm.getResource(id).getMetadata(RuinedRecipeResourceMetadata.READER);
+				} catch (IOException e) {
+				}
+				Set<Integer> emptySlots = Collections.emptySet();
+				if (meta != null) {
+					emptySlots = meta.getEmptySlots();
+				}
+				recipeHelper.registerDisplay(new RuinedEntry(itemId, EntryStack.create(result), emptySlots));
 			}
 		}
 		

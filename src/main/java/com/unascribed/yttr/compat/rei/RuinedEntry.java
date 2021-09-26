@@ -2,6 +2,8 @@ package com.unascribed.yttr.compat.rei;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+
 import org.jetbrains.annotations.NotNull;
 
 import me.shedaniel.rei.api.EntryStack;
@@ -12,10 +14,12 @@ public class RuinedEntry implements RecipeDisplay {
 
 	private final Identifier id;
 	private final EntryStack result;
+	private final Set<Integer> emptySlots;
 	
-	public RuinedEntry(Identifier id, EntryStack result) {
+	public RuinedEntry(Identifier id, EntryStack result, Set<Integer> emptySlots) {
 		this.id = id;
 		this.result = result;
+		this.emptySlots = emptySlots;
 	}
 	
 	public Identifier getId() {
@@ -24,6 +28,10 @@ public class RuinedEntry implements RecipeDisplay {
 	
 	public EntryStack getResult() {
 		return result;
+	}
+	
+	public Set<Integer> getEmptySlots() {
+		return emptySlots;
 	}
 
 	@Override

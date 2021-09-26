@@ -81,7 +81,12 @@ public class RuinedCategory implements RecipeCategory<RuinedEntry> {
 		int bY = y;
 		widgets.add(new RuinedEntryWidget(new Point(bX+95, bY+19)).entry(recipe.getResult()).disableBackground());
 		for (int i = 0; i < 9; i++) {
-			widgets.add(new RuinedEntryWidget(new Point(bX+1+((i%3)*18), bY+1+((i/3)*18))).disableBackground());
+			RuinedEntryWidget widget = new RuinedEntryWidget(new Point(bX+1+((i%3)*18), bY+1+((i/3)*18)));
+			widget.disableBackground();
+			if (recipe.getEmptySlots().contains(i)) {
+				widget.disableTooltips();
+			}
+			widgets.add(widget);
 		}
 		return widgets;
 	}
