@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.void_;
 
-import com.unascribed.yttr.content.block.BasicConnectingBlock;
+import com.unascribed.yttr.content.block.basic.BasicConnectingBlock;
 import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.block.Block;

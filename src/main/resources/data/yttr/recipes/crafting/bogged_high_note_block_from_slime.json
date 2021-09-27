@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "yttr:bogged_high_note_block",
+  "ingredients": [
+    {
+      "item": "yttr:high_note_block"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "result": {
+    "item": "yttr:bogged_high_note_block",
+    "count": 1
+  }
+}

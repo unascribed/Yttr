@@ -82,6 +82,7 @@
 	"shifter.MixinServerPlayNetworkHandler",
 	"soaking.MixinItemEntity",
 	"soaking.MixinServerWorld",
+	"note.MixinNoteBlock",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
@@ -95,7 +96,9 @@
 	"aware_hopper.recipe.MixinShieldDecorationRecipe",
 	"aware_hopper.recipe.MixinShulkerBoxColoringRecipe",
 	"aware_hopper.recipe.MixinSuspiciousStewRecipe",
-	"aware_hopper.recipe.MixinTippedArrowRecipe"
+	"aware_hopper.recipe.MixinTippedArrowRecipe",
+	
+	"note.MixinFabricationNoteBlock"
   ],
   "client": [
   	"void_fluid.client.MixinGameRenderer",

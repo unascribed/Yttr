@@ -1,4 +1,4 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.ruined;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

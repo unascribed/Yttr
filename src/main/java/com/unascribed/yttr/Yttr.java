@@ -144,8 +144,8 @@ public class Yttr implements ModInitializer {
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();
 			int tasksRunThisTick = 0;
 			while (iter.hasNext()) {
-				if (tasksRunThisTick > 10) break;
 				DelayedTask dt = iter.next();
+				if (tasksRunThisTick > 10 && !dt.important) continue;
 				if (dt.delay-- <= 0) {
 					dt.r.run();
 					tasksRunThisTick++;

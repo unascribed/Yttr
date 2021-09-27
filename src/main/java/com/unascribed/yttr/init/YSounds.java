@@ -82,6 +82,40 @@ public class YSounds {
 	public static final SoundEvent DESERT_HEAT = create("desert_heat");
 	public static final SoundEvent MEMORANDUM = create("memorandum");
 	
+	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
+	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");
+	public static final SoundEvent HIGH_NOTE_BASS = create("high_note.bass");
+	public static final SoundEvent HIGH_NOTE_BELL = create("high_note.bell");
+	public static final SoundEvent HIGH_NOTE_BIT = create("high_note.bit");
+	public static final SoundEvent HIGH_NOTE_CHIME = create("high_note.chime");
+	public static final SoundEvent HIGH_NOTE_COW_BELL = create("high_note.cow_bell");
+	public static final SoundEvent HIGH_NOTE_DIDGERIDOO = create("high_note.didgeridoo");
+	public static final SoundEvent HIGH_NOTE_FLUTE = create("high_note.flute");
+	public static final SoundEvent HIGH_NOTE_GUITAR = create("high_note.guitar");
+	public static final SoundEvent HIGH_NOTE_HARP = create("high_note.harp");
+	public static final SoundEvent HIGH_NOTE_HAT = create("high_note.hat");
+	public static final SoundEvent HIGH_NOTE_IRON_XYLOPHONE = create("high_note.iron_xylophone");
+	public static final SoundEvent HIGH_NOTE_PLING = create("high_note.pling");
+	public static final SoundEvent HIGH_NOTE_SNARE = create("high_note.snare");
+	public static final SoundEvent HIGH_NOTE_XYLOPHONE = create("high_note.xylophone");
+	
+	public static final SoundEvent LOW_NOTE_BANJO = create("low_note.banjo");
+	public static final SoundEvent LOW_NOTE_BASEDRUM = create("low_note.basedrum");
+	public static final SoundEvent LOW_NOTE_BASS = create("low_note.bass");
+	public static final SoundEvent LOW_NOTE_BELL = create("low_note.bell");
+	public static final SoundEvent LOW_NOTE_BIT = create("low_note.bit");
+	public static final SoundEvent LOW_NOTE_CHIME = create("low_note.chime");
+	public static final SoundEvent LOW_NOTE_COW_BELL = create("low_note.cow_bell");
+	public static final SoundEvent LOW_NOTE_DIDGERIDOO = create("low_note.didgeridoo");
+	public static final SoundEvent LOW_NOTE_FLUTE = create("low_note.flute");
+	public static final SoundEvent LOW_NOTE_GUITAR = create("low_note.guitar");
+	public static final SoundEvent LOW_NOTE_HARP = create("low_note.harp");
+	public static final SoundEvent LOW_NOTE_HAT = create("low_note.hat");
+	public static final SoundEvent LOW_NOTE_IRON_XYLOPHONE = create("low_note.iron_xylophone");
+	public static final SoundEvent LOW_NOTE_PLING = create("low_note.pling");
+	public static final SoundEvent LOW_NOTE_SNARE = create("low_note.snare");
+	public static final SoundEvent LOW_NOTE_XYLOPHONE = create("low_note.xylophone");
+	
 	
 
 	public static void init() {

@@ -1,5 +1,6 @@
-package com.unascribed.yttr.content.block;
+package com.unascribed.yttr.content.block.ruined;
 
+import com.unascribed.yttr.content.block.basic.BasicConnectingBlock;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YTags;
 

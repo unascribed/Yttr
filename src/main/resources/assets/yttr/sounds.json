@@ -464,6 +464,203 @@
 	},
 	"memorandum": {
 		"sounds": [ { "name": "yttr:memorandum", "stream": true } ]
+	},
+	"low_note.basedrum": {
+		"sounds": [
+			"yttr:note/low/bd"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.bass": {
+		"sounds": [
+			"yttr:note/low/bassattack"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.bell": {
+		"sounds": [
+			"yttr:note/low/bell"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.chime": {
+		"sounds": [
+			"yttr:note/low/icechime"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.flute": {
+		"sounds": [
+			"yttr:note/low/flute"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.guitar": {
+		"sounds": [
+			"yttr:note/low/guitar"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.harp": {
+		"sounds": [
+			"yttr:note/low/harp2"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.hat": {
+		"sounds": [
+			"yttr:note/low/hat"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.snare": {
+		"sounds": [
+			"yttr:note/low/snare"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.xylophone": {
+		"sounds": [
+			"yttr:note/low/xylobone"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.cow_bell": {
+		"sounds": [
+			"yttr:note/low/cow_bell"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.iron_xylophone": {
+		"sounds": [
+			{
+				"name": "yttr:note/low/iron_xylophone",
+				"volume": 1
+			}
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.didgeridoo": {
+		"sounds": [
+			"yttr:note/low/didgeridoo"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.bit": {
+		"sounds": [
+			"yttr:note/low/bit"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.banjo": {
+		"sounds": [
+			"yttr:note/low/banjo"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"low_note.pling": {
+		"sounds": [
+			"yttr:note/low/pling"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.basedrum": {
+		"sounds": [
+			"yttr:note/high/bd"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.bass": {
+		"sounds": [
+			"yttr:note/high/bassattack"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.bell": {
+		"sounds": [
+			"yttr:note/high/bell"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.chime": {
+		"sounds": [
+			"yttr:note/high/icechime"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.flute": {
+		"sounds": [
+			"yttr:note/high/flute"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.guitar": {
+		"sounds": [
+			"yttr:note/high/guitar"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.harp": {
+		"sounds": [
+			"yttr:note/high/harp2"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.hat": {
+		"sounds": [
+			"yttr:note/high/hat"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.snare": {
+		"sounds": [
+			"yttr:note/high/snare"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.xylophone": {
+		"sounds": [
+			"yttr:note/high/xylobone"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.cow_bell": {
+		"sounds": [
+			"yttr:note/high/cow_bell"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.iron_xylophone": {
+		"sounds": [
+			{
+				"name": "yttr:note/high/iron_xylophone",
+				"volume": 1
+			}
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.didgeridoo": {
+		"sounds": [
+			"yttr:note/high/didgeridoo"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.bit": {
+		"sounds": [
+			"yttr:note/high/bit"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.banjo": {
+		"sounds": [
+			"yttr:note/high/banjo"
+		],
+		"subtitle": "subtitles.block.note_block.note"
+	},
+	"high_note.pling": {
+		"sounds": [
+			"yttr:note/high/pling"
+		],
+		"subtitle": "subtitles.block.note_block.note"
 	}
-	
 }

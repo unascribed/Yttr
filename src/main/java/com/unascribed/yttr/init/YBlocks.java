@@ -3,13 +3,11 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.content.block.BasicFacingBlock;
-import com.unascribed.yttr.content.block.BasicHorizontalFacingBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
-import com.unascribed.yttr.content.block.RCStyleMultiblock;
-import com.unascribed.yttr.content.block.RuinedPipeBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
+import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
+import com.unascribed.yttr.content.block.basic.BasicHorizontalFacingBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
 import com.unascribed.yttr.content.block.big.MagtankBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
@@ -37,6 +35,13 @@ import com.unascribed.yttr.content.block.natural.SqueezeLeavesBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeLogBlock;
 import com.unascribed.yttr.content.block.natural.SqueezeSaplingBlock;
 import com.unascribed.yttr.content.block.natural.SqueezedLeavesBlock;
+import com.unascribed.yttr.content.block.note.BoggedHighNoteBlock;
+import com.unascribed.yttr.content.block.note.BoggedLowNoteBlock;
+import com.unascribed.yttr.content.block.note.BoggedNoteBlock;
+import com.unascribed.yttr.content.block.note.HighNoteBlock;
+import com.unascribed.yttr.content.block.note.LowNoteBlock;
+import com.unascribed.yttr.content.block.ruined.RCStyleMultiblock;
+import com.unascribed.yttr.content.block.ruined.RuinedPipeBlock;
 import com.unascribed.yttr.content.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
@@ -534,6 +539,13 @@ public class YBlocks {
 			.allowsSpawning((state, world, pos, entity) -> false)
 			.luminance(8)
 		);
+	
+	public static final HighNoteBlock HIGH_NOTE_BLOCK = new HighNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
+	public static final LowNoteBlock LOW_NOTE_BLOCK = new LowNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
+	
+	public static final BoggedNoteBlock BOGGED_NOTE_BLOCK = new BoggedNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
+	public static final BoggedHighNoteBlock BOGGED_HIGH_NOTE_BLOCK = new BoggedHighNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
+	public static final BoggedLowNoteBlock BOGGED_LOW_NOTE_BLOCK = new BoggedLowNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

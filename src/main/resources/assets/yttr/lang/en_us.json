@@ -170,6 +170,13 @@
 	"block.yttr.ruined_construct": "Ruined Construct",
 	"block.yttr.specialty_bedrock": "Specialty Bedrock",
 	"block.yttr.continuous_platform": "Continuous Platform",
+	"block.yttr.high_note_block": "Soprano Note Block",
+	"block.yttr.low_note_block": "Baritone Note Block",
+	"block.yttr.bogged_note_block": "Bogged Note Block",
+	"block.yttr.bogged_high_note_block": "Bogged Soprano Note Block",
+	"block.yttr.bogged_low_note_block": "Bogged Baritone Note Block",
+	
+	"block.yttr.bogged_note_block.tip.1": "§7Plays after half a redstone tick.",
 	
 	"block.yttr.ruined_container.tip.1": "§5§oThis seems familiar...",
 	"block.yttr.ruined_device.tip.1": "§5§oThis seems familiar...",

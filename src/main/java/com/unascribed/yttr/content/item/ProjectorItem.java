@@ -107,7 +107,7 @@ public class ProjectorItem extends Item {
 	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return 400;
+		return 200;
 	}
 	
 	@Override
@@ -142,6 +142,24 @@ public class ProjectorItem extends Item {
 			user.fallDistance = 0;
 			if (user.getPos().y < pos.getY()+1) {
 				user.requestTeleport(user.getPos().x, pos.getY()+1, user.getPos().z);
+			}
+		}
+	}
+	
+	@Override
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+		if (user instanceof PlayerEntity) {
+			((PlayerEntity)user).getItemCooldownManager().set(this, 250);
+		}
+		return stack;
+	}
+	
+	@Override
+	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+		int ticks = getMaxUseTime(stack)-remainingUseTicks;
+		if (ticks > 20) {
+			if (user instanceof PlayerEntity) {
+				((PlayerEntity)user).getItemCooldownManager().set(this, 250-remainingUseTicks);
 			}
 		}
 	}

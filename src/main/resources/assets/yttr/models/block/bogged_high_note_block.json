@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"particle": "yttr:block/bogged_high_note_block",
+		"north": "yttr:block/bogged_high_note_block",
+		"east": "yttr:block/bogged_high_note_block",
+		"south": "yttr:block/bogged_high_note_block",
+		"west": "yttr:block/bogged_high_note_block",
+		"down": "minecraft:block/slime_block",
+		"up": "yttr:block/high_note_block"
+	}
+}
