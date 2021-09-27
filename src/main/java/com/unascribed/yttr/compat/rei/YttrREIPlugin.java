@@ -43,6 +43,7 @@ import me.shedaniel.rei.api.EntryStack.Settings;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
+import me.shedaniel.rei.plugin.stripping.DefaultStrippingDisplay;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -144,6 +145,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 				recipeHelper.registerDisplay(new RuinedEntry(itemId, EntryStack.create(result), emptySlots));
 			}
 		}
+		recipeHelper.registerDisplay(new DefaultStrippingDisplay(new ItemStack(YBlocks.SQUEEZE_LOG), new ItemStack(YBlocks.STRIPPED_SQUEEZE_LOG)));
 		
 		recipeHelper.registerRecipeVisibilityHandler((cat, recipe) -> {
 			// hide REI's built-in lamp recipe displays since they're busted
