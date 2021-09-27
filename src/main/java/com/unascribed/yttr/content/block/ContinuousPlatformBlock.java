@@ -68,7 +68,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	@Override
 	@Environment(EnvType.CLIENT)
 	public int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
-		float h1 = (((pos.getX()+pos.getY()+pos.getZ()))/20f)%1;
+		float h1 = (((pos.getX()+pos.getY()+pos.getZ()))/40f)%1;
 		if (h1 < 0) h1 += 1;
 		return MathHelper.hsvToRgb(h1, 0.3f, 1f);
 	}
@@ -103,7 +103,9 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		BlockPos down = pos.down();
 		if (!world.getBlockState(down).isSolidBlock(world, down)) {
-			world.addParticle(ParticleTypes.FIREWORK, pos.getX()+random.nextDouble(), pos.getY(), pos.getZ()+random.nextDouble(), 0, -0.05, 0);
+			if (random.nextInt((Math.max(0, state.get(AGE).ordinal()-1)*4)+2) == 0) {
+				world.addParticle(ParticleTypes.FIREWORK, pos.getX()+random.nextDouble(), pos.getY(), pos.getZ()+random.nextDouble(), 0, -0.05, 0);
+			}
 		}
 	}
 	
