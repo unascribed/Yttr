@@ -110,7 +110,6 @@ public class YItemGroups {
 				YItems.BROOKITE_HOE,
 				YItems.EFFECTOR,
 				YItems.SHIFTER,
-				YItems.DISC_OF_CONTINUITY,
 				YItems.BEDROCK_SMASHER,
 				YItems.RIFLE,
 				YItems.RIFLE_OVERCLOCKED,
@@ -124,7 +123,8 @@ public class YItemGroups {
 				YItems.SUIT_CHESTPLATE,
 				YItems.SUIT_LEGGINGS,
 				YItems.SUIT_BOOTS,
-				YItems.GOGGLES
+				YItems.GOGGLES,
+				YItems.PROJECTOR
 			);
 		assign(RUINED,
 				YItems.RUINED_CONTAINER,

@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "yttr:item/projector_0",
+    "layer1": "yttr:item/projector_1",
+    "layer2": "yttr:item/projector_2",
+    "layer3": "yttr:item/projector_3"
+  },
+  "display": {
+    "firstperson_righthand": {
+            "rotation": [-81.5, -77, 29.5],
+            "translation": [1.13, 3.2, 1.13],
+            "scale": [0.68, 0.68, 0.68]
+    },
+    "firstperson_lefthand": {
+            "rotation": [8.5, -77, 29.5],
+            "translation": [1.13, 3.2, 1.13],
+            "scale": [0.68, 0.68, 0.68]
+    }
+  }
+}

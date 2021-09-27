@@ -5,6 +5,7 @@ import java.util.Random;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.BasicFacingBlock;
 import com.unascribed.yttr.content.block.BasicHorizontalFacingBlock;
+import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.RCStyleMultiblock;
 import com.unascribed.yttr.content.block.RuinedPipeBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
@@ -523,6 +524,15 @@ public class YBlocks {
 	};
 	
 	public static final Block SPECIALTY_BEDROCK = new Block(FabricBlockSettings.copyOf(Blocks.BEDROCK).dropsNothing());
+	@RenderLayer("translucent")
+	public static final ContinuousPlatformBlock CONTINUOUS_PLATFORM = new ContinuousPlatformBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK)
+			.dropsNothing()
+			.ticksRandomly()
+			.nonOpaque()
+			.blockVision((state, world, pos) -> false)
+			.allowsSpawning((state, world, pos, entity) -> false)
+			.luminance(8)
+		);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

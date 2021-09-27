@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    " YD",
+    "Y  "
+  ],
+  "key": {
+    "D": {
+      "item": "yttr:drop_of_continuity"
+    },
+    "Y": {
+      "item": "yttr:yttrium_ingot"
+    }
+  },
+  "result": {
+    "item": "yttr:projector"
+  }
+}

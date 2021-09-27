@@ -326,6 +326,14 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (i instanceof ItemColorProvider) ColorProviderRegistry.ITEM.register((ItemColorProvider)i, i);
 			ConstantColor colAnn = f.getAnnotation(ConstantColor.class);
 			if (colAnn != null) ColorProviderRegistry.ITEM.register((stack, tintIndex) -> colAnn.value(), i);
+			YItems.ColorProvider colProvAnn = f.getAnnotation(YItems.ColorProvider.class);
+			if (colProvAnn != null) {
+				try {
+					ColorProviderRegistry.ITEM.register(colProvAnn.value().newInstance(), i);
+				} catch (Exception e1) {
+					throw new RuntimeException(e1);
+				}
+			}
 			YItems.SimpleArmorTexture satAnn = f.getAnnotation(YItems.SimpleArmorTexture.class);
 			if (satAnn != null) ArmorRenderingRegistry.registerSimpleTexture(new Identifier(satAnn.value()), i);
 			YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);

@@ -67,27 +67,37 @@
 	"item.yttr.levitation_splash_potion": "Splash Potion of Levitation",
 	"item.yttr.rubble": "§7Rubble",
 	"item.yttr.shifter": "Continuous Shifter",
+	"item.yttr.projector": "Continuous Projector",
+	"item.yttr.extrapolator": "Continuous Extrapolator",
+	
+	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
 	"item.yttr.mercurial_potion.prefix": "Mercurial %s",
 	"item.yttr.ultrapure_tool.prefix": "Ultrapure %s",
 	
+	"item.yttr.spectral_axe.tip.1": "§5§oIs this even real?",
+	
 	"item.yttr.snare.tip.1": "§7Grabs just about anything!",
-	"item.yttr.snare.tip.2": "§7Once used by a dolly on a safari.",
+	"item.yttr.snare.tip.2": "§5§oOnce used by a dolly on a safari.",
 	
-	"item.yttr.cleaver.tip.1": "§7Slices blocks! A carpenter's best friend.",
-	"item.yttr.cleaver.tip.2": "§7Too fragile to use as a weapon.",
+	"item.yttr.cleaver.tip.1": "§7Slices blocks! Resulting slopes are smooth.",
+	"item.yttr.cleaver.tip.2": "§5§oA carpenter's best friend.",
 	
-	"item.yttr.effector.tip.1": "§7A portable hole-making device.",
+	"item.yttr.reinforced_cleaver.tip.1": "§5§oAn impossibly thin and sharp blade.",
+	
+	"item.yttr.effector.tip.1": "§5§oA portable hole-making device.",
 	
 	"item.yttr.goggles.tip.1": "§7§oFine Feature Focusing§7 Goggles",
-	"item.yttr.goggles.tip.2": "§5§oReveals§5 details to mobs that",
-	"item.yttr.goggles.tip.3": "§5normally only players can see.",
+	"item.yttr.goggles.tip.2": "§5§oReveals details to mobs that",
+	"item.yttr.goggles.tip.3": "§5§onormally only players can see.",
 	"item.yttr.goggles.tip.4": "",
-	"item.yttr.goggles.tip.5": "§7(Equip a Skeletal Sorter with",
-	"item.yttr.goggles.tip.6": "§7these to filter by NBT.)",
+	"item.yttr.goggles.tip.5": "§7Allows Skeletal Sorters to filter by NBT.",
+
+	"item.yttr.shifter.tip.1": "§7Replaces blocks with what's in your offhand.",
+	"item.yttr.shifter.tip.2": "§5§oCan equally trade the shifting crust.",
 	
-	"item.yttr.shifter.tip.1": "§7Equally trades the crust with other blocks.",
-	"item.yttr.shifter.tip.2": "§7Attack to replace one. Use to replace lots.",
+	"item.yttr.projector.tip.1": "§7Creates temporary blocks in midair.",
+	"item.yttr.projector.tip.2": "§5§oBuilds imitation bifrosts, floating like an angel.",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
@@ -159,6 +169,7 @@
 	"block.yttr.ruined_tank": "Ruined Tank",
 	"block.yttr.ruined_construct": "Ruined Construct",
 	"block.yttr.specialty_bedrock": "Specialty Bedrock",
+	"block.yttr.continuous_platform": "Continuous Platform",
 	
 	"block.yttr.ruined_container.tip.1": "§5§oThis seems familiar...",
 	"block.yttr.ruined_device.tip.1": "§5§oThis seems familiar...",
@@ -169,7 +180,8 @@
 	"block.yttr.ruined_tank.tip.1": "§5§oThis seems familiar...",
 	"block.yttr.ruined_construct.tip.1": "§5§oThis seems familiar...",
 	
-	"block.yttr.replicator.tip.1": "§7A cache for creatives.",
+	"block.yttr.replicator.tip.1": "§7Duplicates cached items!",
+	"block.yttr.replicator.tip.2": "§5§oUse it creatively.",
 	
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",

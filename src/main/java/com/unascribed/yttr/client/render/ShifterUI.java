@@ -66,7 +66,7 @@ public class ShifterUI extends IHasAClient {
 					double y = -wrc.camera().getPos().y;
 					double z = -wrc.camera().getPos().z;
 					shanpe.forEachEdge((x1, y1, z1, x2, y2, z2) -> {
-						float t = mc.player.age+wrc.tickDelta();
+						float t = mc.player == null ? 0 : mc.player.age+wrc.tickDelta();
 						float h1 = (float) ((((x1+y1+z1)+(t/5))/20)%1);
 						if (h1 < 0) h1 += 1;
 						float h2 = (float) ((((x2+y2+z2)+(t/5))/20)%1);

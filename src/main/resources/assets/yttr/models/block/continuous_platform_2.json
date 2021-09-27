@@ -1,0 +1,6 @@
+{
+    "parent": "yttr:block/continuous_platform_0",
+    "textures": {
+    	"particle": "yttr:block/continuous_platform_2"
+    }
+}

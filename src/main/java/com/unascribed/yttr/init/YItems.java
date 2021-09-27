@@ -8,14 +8,15 @@ import java.lang.annotation.Target;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.client.ContinuityItemColorProvider;
 import com.unascribed.yttr.client.render.LampItemRenderer;
 import com.unascribed.yttr.client.render.ReplicatorItemRenderer;
 import com.unascribed.yttr.client.render.RifleItemRenderer;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
-import com.unascribed.yttr.content.item.DiscOfContinuityItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
+import com.unascribed.yttr.content.item.ProjectorItem;
 import com.unascribed.yttr.content.item.HornItem;
 import com.unascribed.yttr.content.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.content.item.RifleItem;
@@ -39,6 +40,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -442,14 +444,17 @@ public class YItems {
 	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings()) {};
 	
 	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1));
-	public static final DiscOfContinuityItem DISC_OF_CONTINUITY = new DiscOfContinuityItem(new Item.Settings().maxCount(16));
 	
 	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
 	
+	@ColorProvider(ContinuityItemColorProvider.class)
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
+			.maxCount(1));
+	@ColorProvider(ContinuityItemColorProvider.class)
+	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
 			.maxCount(1));
 	
 	public static void init() {
@@ -466,5 +471,11 @@ public class YItems {
 	@Target(FIELD)
 	public @interface BuiltinRenderer {
 		Class<?> value();
+	}
+	
+	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface ColorProvider {
+		Class<? extends ItemColorProvider> value();
 	}
 }

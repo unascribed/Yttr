@@ -9,7 +9,10 @@ import java.util.stream.StreamSupport;
 
 import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
+import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
+import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.math.partitioner.Plane;
@@ -20,13 +23,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -55,12 +54,8 @@ import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-@EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
-public class ShifterItem extends Item implements ItemColorProvider {
+public class ShifterItem extends Item {
 
-	public static float holderYaw = 0;
-	public static boolean holderYawValid = false;
-	
 	public ShifterItem(Settings settings) {
 		super(settings);
 	}
@@ -151,21 +146,34 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		int consumed = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, true);
 		if (consumed == 0) return;
 		Item i = replacement.getItem();
-		if (!(i instanceof BlockItem)) return;
-		Block b = ((BlockItem)i).getBlock();
-		BlockHitResult bhr = new BlockHitResult(new Vec3d(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5), Direction.UP, pos, true);
-		BlockState replState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
+		BlockState replState;
+		BlockHitResult bhr = null;
+		if (i instanceof ProjectorItem && curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) {
+			if (curState.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
+				replState = Blocks.AIR.getDefaultState();
+			} else {
+				replState = YBlocks.CONTINUOUS_PLATFORM.getDefaultState()
+						.with(ContinuousPlatformBlock.AGE, ContinuousPlatformBlock.Age.IMMORTAL);
+			}
+		} else {
+			if (!(i instanceof BlockItem)) return;
+			Block b = ((BlockItem)i).getBlock();
+			bhr = new BlockHitResult(new Vec3d(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5), Direction.UP, pos, true);
+			replState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
+		}
 		if (replState == null) return;
 		if (replState == curState) return;
 		if (!replState.canPlaceAt(world, pos)) return;
 		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null);
-		if (curState.getHardness(world, pos) < 0) return;
+		if (curState.getHardness(world, pos) < 0 && !curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
 		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
-		world.setBlockState(pos, curState.getFluidState().getBlockState(), 0, 0);
-		BlockState refinedReplState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
-		if (refinedReplState != null) {
-			replState = refinedReplState;
+		if (bhr != null) {
+			world.setBlockState(pos, curState.getFluidState().getBlockState(), 0, 0);
+			BlockState refinedReplState = replState.getBlock().getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
+			if (refinedReplState != null) {
+				replState = refinedReplState;
+			}
 		}
 		BlockSoundGroup replSg = replState.getSoundGroup();
 		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
@@ -186,12 +194,14 @@ public class ShifterItem extends Item implements ItemColorProvider {
 					}
 				}
 			}
-			int rm = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, false);
-			if (rm == 0) {
-				YLog.warn("Couldn't consume a replacement item after verifying it with a dry run?? Forcefully decrementing off-hand stack!");
-				ItemStack off = player.getStackInHand(Hand.OFF_HAND);
-				off.decrement(1);
-				player.setStackInHand(Hand.OFF_HAND, off);
+			if (!(i instanceof ProjectorItem)) {
+				int rm = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, false);
+				if (rm == 0) {
+					YLog.warn("Couldn't consume a replacement item after verifying it with a dry run?? Forcefully decrementing off-hand stack!");
+					ItemStack off = player.getStackInHand(Hand.OFF_HAND);
+					off.decrement(1);
+					player.setStackInHand(Hand.OFF_HAND, off);
+				}
 			}
 		}
 		world.setBlockState(pos, replState);
@@ -222,8 +232,8 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		}
 		if (includeDisconnected) {
 			return StreamSupport.stream(BlockPos.iterate(corner1, corner2).spliterator(), false)
-					.filter(bp -> world.getBlockState(bp) == sample)
-					.filter(bp -> world.getBlockState(bp).getHardness(world, bp) >= 0)
+					.filter(bp -> world.getBlockState(bp) == sample || areCompatiblePlatforms(sample, world.getBlockState(bp)))
+					.filter(bp -> world.getBlockState(bp).getHardness(world, bp) >= 0 || world.getBlockState(bp).isOf(YBlocks.CONTINUOUS_PLATFORM))
 					.filter(bp -> includeHidden || !isHidden(world, bp))
 					.map(BlockPos::toImmutable)
 					.collect(Collectors.toSet());
@@ -243,7 +253,7 @@ public class ShifterItem extends Item implements ItemColorProvider {
 						if (!box.contains(c.getX()+0.5, c.getY()+0.5, c.getZ()+0.5)) continue;
 						if (!includeHidden && isHidden(world, c)) continue;
 						BlockState bs2 = world.getBlockState(c);
-						if (bs2 == sample && seen.add(c)) {
+						if ((bs2 == sample || areCompatiblePlatforms(sample, bs2)) && seen.add(c)) {
 							nextScan.add(c);
 						}
 					}
@@ -257,6 +267,15 @@ public class ShifterItem extends Item implements ItemColorProvider {
 		}
 	}
 	
+	private boolean areCompatiblePlatforms(BlockState a, BlockState b) {
+		if (!a.isOf(YBlocks.CONTINUOUS_PLATFORM) || !b.isOf(YBlocks.CONTINUOUS_PLATFORM)) {
+			return false;
+		}
+		boolean aImm = a.get(ContinuousPlatformBlock.AGE) == ContinuousPlatformBlock.Age.IMMORTAL;
+		boolean bImm = b.get(ContinuousPlatformBlock.AGE) == ContinuousPlatformBlock.Age.IMMORTAL;
+		return aImm == bImm;
+	}
+
 	public static boolean isHidden(World world, BlockPos bp) {
 		BlockPos.Mutable mut = bp.mutableCopy();
 		for (Direction d : Direction.values()) {
@@ -266,29 +285,6 @@ public class ShifterItem extends Item implements ItemColorProvider {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	@Environment(EnvType.CLIENT)
-	public int getColor(ItemStack stack, int tintIndex) {
-		if (tintIndex == 0) return -1;
-		float yaw;
-		if (holderYawValid) {
-			yaw = holderYaw;
-		} else if (MinecraftClient.getInstance().player != null) {
-			yaw = MinecraftClient.getInstance().player.yaw;
-		} else {
-			yaw = 0;
-		}
-		yaw = MathHelper.wrapDegrees(yaw)+180;
-		if (tintIndex == 1) {
-			yaw -= 100;
-		} else if (tintIndex == 2) {
-			yaw += 100;
-		}
-		float hue = (yaw%360)/360f;
-		if (hue < 0) hue += 1;
-		return MathHelper.hsvToRgb(hue, 0.3f, 1.0f);
 	}
 
 }
