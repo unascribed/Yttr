@@ -251,7 +251,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			return true;
 		});
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
-		WorldRenderEvents.LAST.register(ReplicatorRenderer::render);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
 		CleavedBlockModelProvider.init();
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {

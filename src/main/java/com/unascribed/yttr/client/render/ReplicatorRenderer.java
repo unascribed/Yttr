@@ -245,6 +245,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			renderList.clear();
 			renderList.addAll(replicators);
 			renderList.addAll(removing);
+			wrc.profiler().push("prepare");
 			for (ReplicatorBlockEntity rbe : renderList) {
 				if (rbe.clientAge < 1) continue;
 				double dist = rbe.getPos().getSquaredDistance(wrc.camera().getPos(), false);
@@ -252,7 +253,9 @@ public class ReplicatorRenderer extends IHasAClient {
 					rbe.distTmp = dist;
 				}
 			}
+			wrc.profiler().swap("sort");
 			Collections.sort(renderList, (a, b) -> Double.compare(b.distTmp, a.distTmp));
+			wrc.profiler().swap("render");
 			MatrixStack matrices = wrc.matrixStack();
 			RenderSystem.pushMatrix();
 			RenderSystem.loadIdentity();
@@ -260,6 +263,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
 			for (int pass = 0; pass < 3; pass++) {
+				wrc.profiler().push("pass"+pass);
 				RenderSystem.depthMask(pass == 0);
 				RenderSystem.enableDepthTest();
 				RenderSystem.depthFunc(GL11.GL_LESS);
@@ -277,11 +281,16 @@ public class ReplicatorRenderer extends IHasAClient {
 					matrices.pop();
 				}
 				RenderSystem.depthMask(true);
+				wrc.profiler().pop();
 			}
 			matrices.pop();
 			RenderSystem.popMatrix();
+			wrc.profiler().pop();
 		}
-		wrc.profiler().swap("weather");
+		RenderSystem.depthFunc(GL11.GL_LEQUAL);
+		RenderSystem.color4f(1, 1, 1, 1);
+		RenderSystem.disableLighting();
+		wrc.profiler().swap("particles");
 	}
 	
 	public static void tick() {

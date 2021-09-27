@@ -530,6 +530,7 @@ public class YBlocks {
 			.ticksRandomly()
 			.nonOpaque()
 			.blockVision((state, world, pos) -> false)
+			.suffocates((state, world, pos) -> false)
 			.allowsSpawning((state, world, pos, entity) -> false)
 			.luminance(8)
 		);

@@ -14,7 +14,6 @@ import com.unascribed.yttr.client.render.block_entity.DSUBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.ReplicatorBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.SkeletalSorterBlockEntityRenderer;
 import com.unascribed.yttr.client.render.block_entity.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
@@ -64,7 +63,6 @@ public class YBlockEntities {
 	public static final BlockEntityType<SuitStationBlockEntity> SUIT_STATION = create(SuitStationBlockEntity::new, YBlocks.SUIT_STATION);
 	@Renderer(SkeletalSorterBlockEntityRenderer.class)
 	public static final BlockEntityType<SkeletalSorterBlockEntity> SKELETAL_SORTER = create(SkeletalSorterBlockEntity::new, YBlocks.SKELETAL_SORTER);
-	@Renderer(ReplicatorBlockEntityRenderer.class)
 	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
 	public static final BlockEntityType<VoidCauldronBlockEntity> VOID_CAULDRON = create(VoidCauldronBlockEntity::new, YBlocks.VOID_CAULDRON);
 	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
