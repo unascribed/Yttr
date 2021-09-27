@@ -40,7 +40,6 @@ public class MixinNoteBlock {
 		if (yttr$dontBog) return;
 		Object self = this;
 		if (self instanceof Bogged && world.getServer() != null) {
-			System.out.println("E");
 			Yttr.delayedServerTasks.add(new DelayedTask(1, () -> {
 				try {
 					yttr$dontBog = true;
