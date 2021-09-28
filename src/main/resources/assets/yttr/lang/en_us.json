@@ -61,6 +61,7 @@
 	"item.yttr.brookite_axe": "Brookite Axe",
 	"item.yttr.brookite_hoe": "Brookite Hoe",
 	"item.yttr.drop_of_continuity": "Drop of Continuity",
+	"item.yttr.lootbox_of_continuity": "Drop of Continuity",
 	"item.yttr.disc_of_continuity": "Disc of Continuity",
 	"item.yttr.music_disc_papillons": "Music Disc",
 	"item.yttr.music_disc_void": "§8Music Disc",
@@ -98,6 +99,8 @@
 	
 	"item.yttr.projector.tip.1": "§7Creates temporary blocks in midair.",
 	"item.yttr.projector.tip.2": "§5§oBuilds imitation bifrosts, floating like an angel.",
+	
+	"item.yttr.lootbox_of_continuity.tip.1": "§7Can't be used for crafting.",
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",

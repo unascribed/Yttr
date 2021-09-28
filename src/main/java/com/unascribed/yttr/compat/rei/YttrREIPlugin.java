@@ -90,6 +90,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(PistonSmashingCategory.ID, EntryStack.create(Blocks.STICKY_PISTON));
 		recipeHelper.registerWorkingStations(CentrifugingCategory.ID, EntryStack.create(YBlocks.CENTRIFUGE));
 		recipeHelper.registerWorkingStations(ContinuityCategory.ID, EntryStack.create(YItems.DROP_OF_CONTINUITY));
+		recipeHelper.registerWorkingStations(ContinuityCategory.ID, EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
 	}
 	
 	@Override
@@ -296,6 +297,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 	@Override
 	public void registerEntries(EntryRegistry entryRegistry) {
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOGO));
+		entryRegistry.removeEntry(EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
 	}
 	
 	@Override

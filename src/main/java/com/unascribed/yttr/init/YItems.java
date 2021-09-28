@@ -449,6 +449,9 @@ public class YItems {
 	public static final HoeItem BROOKITE_HOE = new HoeItem(BROOKITE_MATERIAL, -2, -1, new Item.Settings()) {};
 	
 	public static final DropOfContinuityItem DROP_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1));
+	public static final DropOfContinuityItem LOOTBOX_OF_CONTINUITY = new DropOfContinuityItem(new Item.Settings().maxCount(1)) {
+		@Override public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
+	};
 	
 	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
