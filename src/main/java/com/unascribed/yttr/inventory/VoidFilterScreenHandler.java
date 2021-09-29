@@ -20,7 +20,7 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 	private final Inventory voidFilter;
 	private final PropertyDelegate properties;
 	
-	private static class OutputSlot extends Slot {
+	private class OutputSlot extends Slot {
 
 		public OutputSlot(Inventory inventory, int index, int x, int y) {
 			super(inventory, index, x, y);
@@ -31,10 +31,20 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 			return false;
 		}
 		
+		@Override
+		public boolean doDrawHoveringEffect() {
+			return isIndependent();
+		}
+		
+		@Override
+		public ItemStack getStack() {
+			return isIndependent() ? super.getStack() : ItemStack.EMPTY;
+		}
+		
 	}
 	
 	public VoidFilterScreenHandler(int syncId, PlayerInventory playerInv) {
-		this(new SimpleInventory(9), syncId, playerInv, new ArrayPropertyDelegate(2));
+		this(new SimpleInventory(9), syncId, playerInv, new ArrayPropertyDelegate(3));
 	}
 	
 	public VoidFilterScreenHandler(Inventory voidFilter, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
@@ -107,6 +117,10 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 	
 	public int getMaxProgress() {
 		return properties.get(1);
+	}
+	
+	public boolean isIndependent() {
+		return properties.get(2) == 1;
 	}
 
 }

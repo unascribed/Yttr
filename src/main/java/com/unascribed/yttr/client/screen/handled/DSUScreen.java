@@ -5,9 +5,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
 
-public class HighStackGenericContainerScreen extends GenericContainerScreen {
+public class DSUScreen extends GenericContainerScreen {
 
-	public HighStackGenericContainerScreen(GenericContainerScreenHandler handler, PlayerInventory inventory, Text title) {
+	public DSUScreen(GenericContainerScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 

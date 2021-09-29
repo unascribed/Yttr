@@ -2,6 +2,8 @@ package com.unascribed.yttr.content.block.void_;
 
 import com.unascribed.yttr.content.block.basic.BasicConnectingBlock;
 import com.unascribed.yttr.init.YTags;
+import com.unascribed.yttr.world.FilterNetworks;
+import com.unascribed.yttr.world.FilterNetwork.NodeType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,11 +11,14 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 public class MagtubeBlock extends BasicConnectingBlock implements Waterloggable {
 
@@ -43,6 +48,26 @@ public class MagtubeBlock extends BasicConnectingBlock implements Waterloggable 
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+	
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		if (!state.isOf(oldState.getBlock())) {
+			if (world instanceof ServerWorld) {
+				FilterNetworks.get((ServerWorld)world).introduce(pos, NodeType.PIPE);
+			}
+		}
+	}
+	
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onStateReplaced(state, world, pos, newState, moved);
+		if (!newState.isOf(state.getBlock())) {
+			if (world instanceof ServerWorld) {
+				FilterNetworks.get((ServerWorld)world).destroy(pos);
+			}
+		}
 	}
 
 }

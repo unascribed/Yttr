@@ -1,9 +1,9 @@
 package com.unascribed.yttr.content.block.device;
 
-import java.util.Random;
-
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
+import com.unascribed.yttr.world.FilterNetworks;
+import com.unascribed.yttr.world.FilterNetwork.NodeType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -16,7 +16,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -24,43 +23,23 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class VoidFilterBlock extends Block implements BlockEntityProvider {
 	
-	public static final BooleanProperty ENABLED = Properties.ENABLED;
+	public static final BooleanProperty INDEPENDENT = BooleanProperty.of("independent");
 
 	public VoidFilterBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(ENABLED, true));
+		setDefaultState(getDefaultState().with(INDEPENDENT, true));
 	}
 
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(ENABLED);
-	}
-	
-	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		if (!world.isClient) {
-			boolean cur = state.get(ENABLED);
-			if (cur == world.isReceivingRedstonePower(pos)) {
-				if (cur) {
-					world.getBlockTickScheduler().schedule(pos, this, 4);
-				} else {
-					world.setBlockState(pos, state.with(ENABLED, false), 2);
-				}
-			}
-
-		}
-	}
-
-	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isReceivingRedstonePower(pos)) {
-			world.setBlockState(pos, state.with(ENABLED, true), 2);
-		}
+		builder.add(INDEPENDENT);
 	}
 	
 	@Override
@@ -88,6 +67,15 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 		}
 		return ActionResult.SUCCESS;
 	}
+	
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (world instanceof ServerWorld) {
+			boolean valid = world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) || world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER);
+			FilterNetworks.get((ServerWorld)world).introduce(pos, valid ? NodeType.FILTER : NodeType.DEAD_FILTER);
+		}
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+	}
 
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
@@ -96,8 +84,22 @@ public class VoidFilterBlock extends Block implements BlockEntityProvider {
 			if (be instanceof VoidFilterBlockEntity) {
 				ItemScatterer.spawn(world, pos, (VoidFilterBlockEntity)be);
 			}
+			if (world instanceof ServerWorld) {
+				FilterNetworks.get((ServerWorld)world).destroy(pos);
+			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
+	}
+	
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		if (!state.isOf(oldState.getBlock())) {
+			if (world instanceof ServerWorld) {
+				boolean valid = world.getBlockState(pos.down()).isOf(YBlocks.VOID_GEYSER) || world.getBlockState(pos.down()).isOf(YBlocks.DORMANT_VOID_GEYSER);
+				FilterNetworks.get((ServerWorld)world).introduce(pos, valid ? NodeType.FILTER : NodeType.DEAD_FILTER);
+			}
+		}
 	}
 
 }

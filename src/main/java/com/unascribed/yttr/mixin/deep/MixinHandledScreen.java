@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.unascribed.yttr.client.screen.handled.HighStackGenericContainerScreen;
+import com.unascribed.yttr.client.screen.handled.DSUScreen;
 import com.unascribed.yttr.init.YTags;
 
 import net.minecraft.client.MinecraftClient;
@@ -27,7 +27,7 @@ public class MixinHandledScreen {
 	@Inject(at=@At("HEAD"), method="drawSlot(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V")
 	public void drawSlotHead(MatrixStack matrices, Slot slot, CallbackInfo ci) {
 		Object self = this;
-		if (self instanceof HighStackGenericContainerScreen && slot.getMaxItemCount() == 1024 && slot.getStack().getItem().isIn(YTags.Item.ULTRAPURE_CUBES) && slot.getStack().getCount() > 1) {
+		if (self instanceof DSUScreen && slot.getMaxItemCount() == 1024 && slot.getStack().getItem().isIn(YTags.Item.ULTRAPURE_CUBES) && slot.getStack().getCount() > 1) {
 			yttr$storedStack = slot.getStack();
 			ItemStack copy = yttr$storedStack.copy();
 			copy.setCount(1);

@@ -4,7 +4,9 @@ import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YSounds;
-import com.unascribed.yttr.inventory.HighStackGenericContainerScreenHandler;
+import com.unascribed.yttr.inventory.DSUScreenHandler;
+import com.unascribed.yttr.world.FilterNetworks;
+import com.unascribed.yttr.world.FilterNetwork.NodeType;
 
 import com.google.common.base.Ascii;
 
@@ -134,7 +136,7 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 					
 					@Override
 					public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-						return HighStackGenericContainerScreenHandler.createGeneric9x5(syncId, inv, (DSUBlockEntity)be);
+						return new DSUScreenHandler(syncId, inv, (DSUBlockEntity)be);
 					}
 					
 					@Override
@@ -155,21 +157,36 @@ public class DSUBlock extends BigBlock implements BlockEntityProvider {
 
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		if (!state.isOf(newState.getBlock()) && state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof DSUBlockEntity) {
-				double x = pos.getX()+(xSize/2D);
-				double y = pos.getY()+(ySize/2D);
-				double z = pos.getZ()+(zSize/2D);
-				for (ItemStack is : Yttr.asList((DSUBlockEntity)be)) {
-					double xO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
-					double yO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
-					double zO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
-					ItemScatterer.spawn(world, x+xO, y+yO, z+zO, is);
+		if (!state.isOf(newState.getBlock())) {
+			if (state.get(X) == 0 && state.get(Y) == 0 && state.get(Z) == 0) {
+				BlockEntity be = world.getBlockEntity(pos);
+				if (be instanceof DSUBlockEntity) {
+					double x = pos.getX()+(xSize/2D);
+					double y = pos.getY()+(ySize/2D);
+					double z = pos.getZ()+(zSize/2D);
+					for (ItemStack is : Yttr.asList((DSUBlockEntity)be)) {
+						double xO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
+						double yO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
+						double zO = (world.random.nextDouble()-world.random.nextDouble())*0.5;
+						ItemScatterer.spawn(world, x+xO, y+yO, z+zO, is);
+					}
 				}
+			}
+			if (world instanceof ServerWorld) {
+				FilterNetworks.get((ServerWorld)world).destroy(pos);
 			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
+	}
+	
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		if (!state.isOf(oldState.getBlock())) {
+			if (world instanceof ServerWorld) {
+				FilterNetworks.get((ServerWorld)world).introduce(pos, NodeType.DSU);
+			}
+		}
 	}
 	
 }

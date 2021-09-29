@@ -44,6 +44,7 @@ import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
+import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.WastelandPopulator;
@@ -137,8 +138,11 @@ public class Yttr implements ModInitializer {
 		}
 		// }
 		
-		ServerTickEvents.START_WORLD_TICK.register(TickAlwaysItemHandler::startServerWorldTick);
-		ServerTickEvents.START_WORLD_TICK.register(SoakingHandler::startServerWorldTick);
+		ServerTickEvents.START_WORLD_TICK.register((world) -> {
+			TickAlwaysItemHandler.startServerWorldTick(world);
+			SoakingHandler.startServerWorldTick(world);
+			FilterNetworks.get(world).tick();
+		});
 		ServerTickEvents.END_WORLD_TICK.register(SoakingHandler::endServerWorldTick);
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();

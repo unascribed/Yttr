@@ -53,7 +53,11 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 		client.getTextureManager().bindTexture(BG);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableAlphaTest();
 		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+		if (!handler.isIndependent()) {
+			drawTexture(matrices, x+115, y+3, 0, 189, 54, 67, 256, 256);
+		}
 		RenderSystem.disableBlend();
 		
 		matrices.push();
@@ -70,6 +74,11 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 		RenderSystem.color4f(1, 1, 1, 0.75f);
 		drawTexture(matrices, x+titleX-2, y+titleY-2, titleX-2, titleY-2, textRenderer.getWidth(getTitle())+4, 12, 256, 256);
 		RenderSystem.disableBlend();
+	}
+	
+	@Override
+	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+		super.drawForeground(matrices, mouseX, mouseY);
 	}
 	
 	@Override

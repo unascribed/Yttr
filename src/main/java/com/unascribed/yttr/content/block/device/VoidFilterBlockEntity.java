@@ -10,6 +10,8 @@ import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.util.DelegatingInventory;
 import com.unascribed.yttr.util.SideyInventory;
+import com.unascribed.yttr.world.FilterNetwork;
+import com.unascribed.yttr.world.FilterNetworks;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -25,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
@@ -36,6 +39,8 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	public static final int TICKS_PER_TOCK = 100;
 	public static final int TOCKS_PER_OP = (20*60)/TICKS_PER_TOCK;
 	
+	public static final int MAX_PRESSURE = 72000;
+	
 	private static final Multiset<Item> statQueue = HashMultiset.create();
 	
 	private final SimpleInventory inv = new SimpleInventory(9);
@@ -43,6 +48,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	private int opTocks = 0;
 	private int maxOpTocks = TOCKS_PER_OP;
 	private UUID owner;
+	private int pressure;
 	
 	private final PropertyDelegate properties = new PropertyDelegate() {
 		@Override
@@ -50,6 +56,9 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 			switch (index) {
 				case 0: return (opTocks*TICKS_PER_TOCK)+tockProgress;
 				case 1: return maxOpTocks*TICKS_PER_TOCK;
+				case 2: return getCachedState().get(VoidFilterBlock.INDEPENDENT) ? 1 : 0;
+				case 3: return pressure;
+				case 4: return MAX_PRESSURE;
 				default: return 0;
 			}
 		}
@@ -65,7 +74,7 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 
 		@Override
 		public int size() {
-			return 2;
+			return 4;
 		}
 	};
 	
@@ -77,7 +86,14 @@ public class VoidFilterBlockEntity extends BlockEntity implements Tickable, Dele
 	@Override
 	public void tick() {
 		if (world.isClient) return;
-		if (!getCachedState().get(VoidFilterBlock.ENABLED)) return;
+		if (world instanceof ServerWorld) {
+			pressure = FilterNetworks.get((ServerWorld)world).getNetworkAt(pos).map(FilterNetwork::getPressure).orElse(0);
+		}
+		if (!getCachedState().get(VoidFilterBlock.INDEPENDENT)) {
+			opTocks = 0;
+			tockProgress = 0;
+			return;
+		}
 		if (tockProgress++ >= TICKS_PER_TOCK) {
 			tockProgress = 0;
 		} else {
