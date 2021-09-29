@@ -6,6 +6,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ return {
 		for (Path d : fs.getRootDirectories()) {
 			Files.walk(d).forEach {
 				try {
-					Files.setLastModifiedTime(it, time)
+					Files.getFileAttributeView(it, BasicFileAttributeView.class).setTimes(time, time, time)
 				} catch (e) {}
 			}
 		}
