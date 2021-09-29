@@ -1,0 +1,28 @@
+{
+	"parent": "yttr:snare_living_entity",
+	"display": {
+		"icon": {
+			"item": "yttr:aware_hopper"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_aware_hopper.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_aware_hopper.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"obtain": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:aware_hopper" }
+				]
+			}
+		}
+	}
+}

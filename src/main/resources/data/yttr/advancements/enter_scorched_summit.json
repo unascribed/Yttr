@@ -1,0 +1,28 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:nethertuff"
+		},
+		"title": {
+			"translate": "advancements.yttr.enter_scorched_summit.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.enter_scorched_summit.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:wasteland": {
+			"trigger": "minecraft:location",
+			"conditions": {
+				"location": {
+					"biome": "yttr:scorched_summit"
+				}
+			}
+		}
+	}
+}

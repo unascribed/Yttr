@@ -1,0 +1,19 @@
+{
+	"parent": "yttr:break_root_of_continuity",
+	"display": {
+		"icon": {
+			"item": "yttr:drop_of_continuity"
+		},
+		"title": {
+			"translate": "advancements.yttr.burn_drop_of_continuity.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.burn_drop_of_continuity.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "burn": { "trigger": "yttr:burn_drop_of_continuity" } }
+}

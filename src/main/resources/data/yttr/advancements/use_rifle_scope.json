@@ -1,0 +1,20 @@
+{
+	"parent": "yttr:obtain_rifle",
+	"display": {
+		"icon": {
+			"item": "yttr:rifle"
+		},
+		"title": {
+			"translate": "advancements.yttr.use_rifle_scope.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.use_rifle_scope.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "rifle_scope": { "trigger": "yttr:rifle_scope" } },
+	"requirements": [ [ "rifle_scope" ] ]
+}

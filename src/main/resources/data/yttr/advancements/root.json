@@ -1,0 +1,33 @@
+{
+	"display": {
+		"icon": {
+			"item": "yttr:logo"
+		},
+		"title": {
+			"translate": "advancements.yttr.root.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.root.desc"
+		},
+		"frame": "task",
+		"show_toast": false,
+		"announce_to_chat": false,
+		"hidden": false,
+		"background": "yttr:textures/block/yttrium_plating.png"
+	},
+	"criteria": {
+		"yttr:gadolinite": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:gadolinite" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:gadolinite"
+		]
+	]
+}

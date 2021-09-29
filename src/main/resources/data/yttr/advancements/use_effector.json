@@ -1,0 +1,21 @@
+{
+	"parent": "yttr:open_geyser",
+	"display": {
+		"icon": {
+			"item": "yttr:effector"
+		},
+		"title": {
+			"translate": "advancements.yttr.use_effector.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.use_effector.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"effect": { "trigger": "yttr:effect_block" }
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"parent": "yttr:obtain_rifle",
+	"display": {
+		"icon": {
+			"item": "yttr:bedrock_smasher"
+		},
+		"title": {
+			"translate": "advancements.yttr.break_bedrock.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.break_bedrock.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "break_bedrock": { "trigger": "yttr:break_bedrock" } },
+	"requirements": [ [ "break_bedrock" ] ]
+}

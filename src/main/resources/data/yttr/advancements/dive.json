@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:wear_full_diving_suit",
+	"display": {
+		"icon": {
+			"item": "yttr:suit_chestplate"
+		},
+		"title": {
+			"translate": "advancements.yttr.dive.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.dive.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"dive": {
+			"trigger": "yttr:dive"
+		}
+	}
+}

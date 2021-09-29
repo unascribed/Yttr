@@ -1,0 +1,28 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:squeeze_log"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_squeeze_stem.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_squeeze_stem.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"obtain": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:squeeze_log" }
+				]
+			}
+		}
+	}
+}

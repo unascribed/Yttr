@@ -5,6 +5,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -55,6 +57,9 @@ public class ProjectorItem extends Item {
 		ItemStack stack = user.getStackInHand(hand);
 		if (stack.hasTag()) stack.getTag().remove("LastBlock");
 		user.setCurrentHand(hand);
+		if (user instanceof ServerPlayerEntity) {
+			YCriteria.PROJECT.trigger((ServerPlayerEntity)user);
+		}
 		return TypedActionResult.consume(stack);
 	}
 	
@@ -139,6 +144,9 @@ public class ProjectorItem extends Item {
 		}
 		stack.getTag().put("LastBlock", NbtHelper.fromBlockPos(pos));
 		if (ticks == 0) {
+			if (user.fallDistance > 20 && user instanceof ServerPlayerEntity) {
+				YCriteria.PROJECT_WITH_LONG_FALL.trigger((ServerPlayerEntity)user);
+			}
 			user.fallDistance = 0;
 			if (user.getPos().y < pos.getY()+1) {
 				user.requestTeleport(user.getPos().x, pos.getY()+1, user.getPos().z);

@@ -1,0 +1,43 @@
+{
+	"parent": "yttr:cleave_block",
+	"display": {
+		"icon": {
+			"item": "yttr:reinforced_cleaver"
+		},
+		"title": {
+			"translate": "advancements.yttr.cleave_many_blocks.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.cleave_many_blocks.desc"
+		},
+		"frame": "goal",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:cleaved_1000_blocks": {
+			"trigger": "yttr:cleave_block",
+			"conditions": {
+				"player": {
+					"player": {
+						"stats": [
+							{
+								"type": "minecraft:custom",
+								"stat": "yttr:blocks_cleaved",
+								"value": {
+									"min": 1000
+								}
+							}
+						]
+					}
+				}
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:cleaved_1000_blocks"
+		]
+	]
+}

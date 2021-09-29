@@ -1,0 +1,60 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:high_note_block"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_special_note_block.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_special_note_block.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"high_bogged": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:bogged_high_note_block" }
+				]
+			}
+		},
+		"low_bogged": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:bogged_low_note_block" }
+				]
+			}
+		},
+		"high": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:high_note_block" }
+				]
+			}
+		},
+		"low": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:low_note_block" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"high_bogged",
+			"low_bogged",
+			"high",
+			"low"
+		]
+	]
+}

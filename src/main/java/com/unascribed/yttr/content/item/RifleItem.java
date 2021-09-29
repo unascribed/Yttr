@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item;
 import java.util.Locale;
 
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
@@ -31,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -147,6 +149,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (!held.hasTag()) held.setTag(new NbtCompound());
 		boolean scoped = held.getTag().getBoolean("Scoped");
 		held.getTag().putBoolean("Scoped", !scoped);
+		if (!scoped && user instanceof ServerPlayerEntity) {
+			YCriteria.RIFLE_SCOPE.trigger((ServerPlayerEntity)user);
+		}
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_SCOPE, SoundCategory.PLAYERS, 1, scoped ? 0.8f : 1.2f);
 	}
 	
@@ -276,6 +281,8 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 							return;
 						}
 					}
+				} else if (user instanceof ServerPlayerEntity && stack.hasTag() && stack.getTag().getBoolean("Scoped") && ehr.getEntity().squaredDistanceTo(user) > 100*100) {
+					YCriteria.SHOOT_SOMETHING_FAR_AWAY.trigger((ServerPlayerEntity)user);
 				}
 				YStats.add(user, YStats.RIFLE_SHOTS_FIRED, 1);
 				if (power > 1.1) {

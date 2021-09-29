@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.block.void_;
 
 import com.unascribed.yttr.content.block.Voidloggable;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YTags;
 
@@ -12,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
@@ -78,6 +80,9 @@ public class DivingPlateBlock extends Block implements Voidloggable {
 		VoidGeyserBlockEntity geyser = findClosestGeyser(world, pos);
 		if (geyser != null) {
 			geyser.setName(itemStack.getName().asString());
+			if (placer instanceof ServerPlayerEntity) {
+				YCriteria.NAME_GEYSER.trigger((ServerPlayerEntity)placer, pos, itemStack);
+			}
 			geyser.markDirty();
 		}
 	}

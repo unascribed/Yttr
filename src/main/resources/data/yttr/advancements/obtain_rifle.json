@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:rifle"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_rifle.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_rifle.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:rifle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:rifle" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:rifle"
+		]
+	]
+}

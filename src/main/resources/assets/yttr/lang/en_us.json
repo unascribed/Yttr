@@ -393,6 +393,119 @@
 	"stat.yttr.filters_installed": "[Yttr] Filters Installed",
 	"stat.yttr.blocks_voided": "[Yttr] Blocks Voided",
 	"stat.yttr.blocks_cleaved": "[Yttr] Blocks Cleaved",
+	"stat.yttr.blocks_shifted": "[Yttr] Blocks Shifted",
+	
+	"advancements.yttr.root.title": "Yttr  ",
+	"advancements.yttr.root.desc": "Voidtech and other goodies",
+	
+	"advancements.yttr.obtain_xl_iron_ingot.title": "Isn't It Iron",
+	"advancements.yttr.obtain_xl_iron_ingot.desc": "Obtain Big Iron",
+	
+	"advancements.yttr.break_root_of_continuity.title": "Discombobulated",
+	"advancements.yttr.break_root_of_continuity.desc": "Break a Root of Continuity",
+	
+	"advancements.yttr.burn_drop_of_continuity.title": "Free Stuff",
+	"advancements.yttr.burn_drop_of_continuity.desc": "Burn a Drop of Continuity",
+	
+	"advancements.yttr.use_shifter.title": "This For That",
+	"advancements.yttr.use_shifter.desc": "Use the Continuous Shifter",
+	
+	"advancements.yttr.use_shifter_a_lot.title": "High Gear",
+	"advancements.yttr.use_shifter_a_lot.desc": "Use the Continuous Shifter to replace 10,000 blocks",
+	
+	"advancements.yttr.use_projector.title": "Rainbow Road",
+	"advancements.yttr.use_projector.desc": "Use the Continuous Projector",
+	
+	"advancements.yttr.use_projector_for_fall.title": "Feather Falling+",
+	"advancements.yttr.use_projector_for_fall.desc": "Use the Continuous Projector to absorb a long fall",
+	
+	"advancements.yttr.immortalize_platform.title": "I Think I'll Keep It",
+	"advancements.yttr.immortalize_platform.desc": "Immortalize a platform block",
+	
+	"advancements.yttr.obtain_rifle.title": "Third Time's The Charm",
+	"advancements.yttr.obtain_rifle.desc": "Obtain the Yttric Rifle",
+	
+	"advancements.yttr.break_bedrock.title": "Not So Tough, Are You?",
+	"advancements.yttr.break_bedrock.desc": "Break Bedrock",
+	
+	"advancements.yttr.open_geyser.title": "What Lies Below",
+	"advancements.yttr.open_geyser.desc": "Open a Void Geyser",
+	
+	"advancements.yttr.name_geyser.title": "Name A Place 2",
+	"advancements.yttr.name_geyser.desc": "Name a Void Geyser",
+	
+	"advancements.yttr.use_rifle_scope.title": "Tunnel Vision",
+	"advancements.yttr.use_rifle_scope.desc": "Use the Yttric Rifle's scope",
+	
+	"advancements.yttr.shoot_something_far_away.title": "Going The Distance",
+	"advancements.yttr.shoot_something_far_away.desc": "Shoot something more than 100 blocks away while scoped with the Yttric Rifle",
+	
+	"advancements.yttr.obtain_upgraded_rifle.title": "This One Is Mine",
+	"advancements.yttr.obtain_upgraded_rifle.desc": "Upgrade the Yttric Rifle",
+	
+	"advancements.yttr.wear_full_diving_suit.title": "Tin Can",
+	"advancements.yttr.wear_full_diving_suit.desc": "Wear a full Diving Suit",
+	
+	"advancements.yttr.enter_wasteland.title": "Teeth of Time",
+	"advancements.yttr.enter_wasteland.desc": "Find the Wasteland",
+	
+	"advancements.yttr.break_ruined.title": "Oddly Familiar",
+	"advancements.yttr.break_ruined.desc": "Break a Ruined block",
+	
+	"advancements.yttr.enter_scorched_summit.title": "But Wait, There's More",
+	"advancements.yttr.enter_scorched_summit.desc": "Find the Scorched Summit",
+	
+	"advancements.yttr.levitation_in_scorched.title": "Get Me Down From Here",
+	"advancements.yttr.levitation_in_scorched.desc": "Find a Levitation dispenser",
+	
+	"advancements.yttr.cleave_block.title": "Forbidden Shapes",
+	"advancements.yttr.cleave_block.desc": "Cleave a block",
+	
+	"advancements.yttr.cleave_many_blocks.title": "Forbidden Builder",
+	"advancements.yttr.cleave_many_blocks.desc": "Cleave 1000 blocks",
+	
+	"advancements.yttr.obtain_bogged_note_block.title": "Half-Baked",
+	"advancements.yttr.obtain_bogged_note_block.desc": "Obtain a Bogged Note Block",
+	
+	"advancements.yttr.obtain_special_note_block.title": "Pitch Shift",
+	"advancements.yttr.obtain_special_note_block.desc": "Obtain a Baritone or Soprano Note Block",
+	
+	"advancements.yttr.obtain_lamp.title": "The Power of Red",
+	"advancements.yttr.obtain_lamp.desc": "Obtain any lamp",
+	
+	"advancements.yttr.snare_block_entity.title": "Translocation",
+	"advancements.yttr.snare_block_entity.desc": "Pick up an inventory block with a Snare",
+	
+	"advancements.yttr.snare_living_entity.title": "Entangled",
+	"advancements.yttr.snare_living_entity.desc": "Pick up something alive with a Snare",
+	
+	"advancements.yttr.obtain_aware_hopper.title": "What Have You Done",
+	"advancements.yttr.obtain_aware_hopper.desc": "Obtain the Aware Hopper",
+	
+	"advancements.yttr.obtain_skeletal_sorter.title": "Sort It Out",
+	"advancements.yttr.obtain_skeletal_sorter.desc": "Obtain a Skeletal Sorter",
+	
+	"advancements.yttr.use_effector.title": "Holepunch",
+	"advancements.yttr.use_effector.desc": "Use the Void Effector",
+	
+	"advancements.yttr.kill_with_effector.title": "Spleef Anywhere",
+	"advancements.yttr.kill_with_effector.desc": "Use the Void Effector to kill something",
+	
+	"advancements.yttr.obtain_chute.title": "Going Down",
+	"advancements.yttr.obtain_chute.desc": "Obtain a Chute",
+	
+	"advancements.yttr.obtain_levitation_chamber.title": "Going Up",
+	"advancements.yttr.obtain_levitation_chamber.desc": "Obtain the Levitation Chamber",
+	
+	"advancements.yttr.obtain_squeeze_stem.title": "A Tree Under The Sea",
+	"advancements.yttr.obtain_squeeze_stem.desc": "Obtain a Squeeze Stem",
+	
+	"advancements.yttr.squeeze_leaves.title": "Open The Floodgates",
+	"advancements.yttr.squeeze_leaves.desc": "Squeeze some Squeeze Leaves to fill an area",
+	
+	"advancements.yttr.dive.title": "Through The Loop",
+	"advancements.yttr.dive.desc": "Dive under bedrock",
+	
 	
 	"category.yttr.void_filtering": "Void Filtering",
 	"category.yttr.piston_smashing": "Piston Smashing",

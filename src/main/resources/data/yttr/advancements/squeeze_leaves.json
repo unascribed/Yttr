@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:obtain_squeeze_stem",
+	"display": {
+		"icon": {
+			"item": "yttr:squeeze_leaves"
+		},
+		"title": {
+			"translate": "advancements.yttr.squeeze_leaves.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.squeeze_leaves.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"squeeze": {
+			"trigger": "yttr:squeeze_leaves"
+		}
+	}
+}

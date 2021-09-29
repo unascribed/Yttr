@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:wasteland_dirt"
+		},
+		"title": {
+			"translate": "advancements.yttr.enter_wasteland.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.enter_wasteland.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:wasteland": {
+			"trigger": "minecraft:location",
+			"conditions": {
+				"location": {
+					"biome": "yttr:wasteland"
+				}
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:wasteland"
+		]
+	]
+}

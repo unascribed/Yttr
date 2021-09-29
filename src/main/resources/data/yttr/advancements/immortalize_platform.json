@@ -1,0 +1,31 @@
+{
+	"parent": "yttr:use_projector",
+	"display": {
+		"icon": {
+			"item": "yttr:continuous_platform"
+		},
+		"title": {
+			"translate": "advancements.yttr.immortalize_platform.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.immortalize_platform.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"use_projector_on_platform": {
+			"trigger": "minecraft:item_used_on_block",
+			"conditions": {
+				"location": {
+					"block": { "block": "yttr:continuous_platform" }
+				},
+				"item": {
+					"items": ["yttr:projector"]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"parent": "yttr:enter_scorched_summit",
+	"display": {
+		"icon": {
+			"item": "minecraft:dispenser"
+		},
+		"title": {
+			"translate": "advancements.yttr.levitation_in_scorched.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.levitation_in_scorched.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": true
+	},
+	"criteria": {
+		"summit": {
+			"trigger": "minecraft:location",
+			"conditions": {
+				"location": {
+					"biome": "yttr:scorched_summit"
+				}
+			}
+		},
+		"levitation": {
+			"trigger": "minecraft:effects_changed",
+			"conditions": {
+				"effects": {
+					"minecraft:levitation": { "amplifier": { "min": 2 } }
+				}
+			}
+		}
+	}
+}

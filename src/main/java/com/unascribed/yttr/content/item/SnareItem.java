@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.client.cache.SnareEntityTextureCache;
 import com.unascribed.yttr.client.util.TextureColorThief;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItemGroups;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
@@ -52,6 +53,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -197,6 +199,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 							fbe.blockEntityData = data;
 						}
 						hit = fbe;
+						if (be != null && user instanceof ServerPlayerEntity) {
+							YCriteria.SNARE_BLOCK_ENTITY.trigger((ServerPlayerEntity)user);
+						}
 					}
 				}
 			}
@@ -224,6 +229,9 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 				stack.getTag().remove("AmbientSoundCategory");
 				if (hit instanceof LivingEntity) {
 					((AccessorLivingEntity)hit).yttr$playHurtSound(DamageSource.GENERIC);
+					if (user instanceof ServerPlayerEntity) {
+						YCriteria.SNARE_LIVING_ENTITY.trigger((ServerPlayerEntity)user);
+					}
 				}
 				hit.playSound(YSounds.SNARE_PLOP, 1.0f, 0.5f);
 				hit.playSound(YSounds.SNARE_PLOP, 1.0f, 0.75f);

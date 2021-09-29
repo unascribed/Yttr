@@ -1,0 +1,51 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:bogged_note_block"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_bogged_note_block.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_bogged_note_block.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"normal": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:bogged_note_block" }
+				]
+			}
+		},
+		"high": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:bogged_high_note_block" }
+				]
+			}
+		},
+		"low": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:bogged_low_note_block" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"normal",
+			"high",
+			"low"
+		]
+	]
+}

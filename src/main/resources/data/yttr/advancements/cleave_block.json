@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:open_geyser",
+	"display": {
+		"icon": {
+			"item": "yttr:cleaver"
+		},
+		"title": {
+			"translate": "advancements.yttr.cleave_block.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.cleave_block.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"cleave": {
+			"trigger": "yttr:cleave_block"
+		}
+	}
+}

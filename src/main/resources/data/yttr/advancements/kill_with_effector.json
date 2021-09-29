@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:use_effector",
+	"display": {
+		"icon": {
+			"item": "yttr:glassy_void"
+		},
+		"title": {
+			"translate": "advancements.yttr.kill_with_effector.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.kill_with_effector.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"kill": {
+			"trigger": "yttr:kill_with_effector"
+		}
+	}
+}

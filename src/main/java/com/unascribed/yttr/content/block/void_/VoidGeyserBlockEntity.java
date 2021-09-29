@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YFluids;
 
 import com.google.common.collect.Maps;
@@ -97,6 +98,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 					diver.yttr$setDivePos(new Vec2i(pos.getX(), pos.getZ()));
 					p.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
 					p.setVelocity(0, 0, 0);
+					YCriteria.DIVE.trigger(p);
 					Yttr.syncDive(p);
 				} else {
 					seen.add(p.getUuid());

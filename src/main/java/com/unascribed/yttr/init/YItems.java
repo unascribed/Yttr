@@ -116,6 +116,8 @@ public class YItems {
 	public static final BlockItem BOGGED_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_NOTE_BLOCK);
 	public static final BlockItem BOGGED_HIGH_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_HIGH_NOTE_BLOCK);
 	public static final BlockItem BOGGED_LOW_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_LOW_NOTE_BLOCK);
+	@ConstantColor(0xCB8FC3)
+	public static final BlockItem CONTINUOUS_PLATFORM = createNormalBlockItem(YBlocks.CONTINUOUS_PLATFORM);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);

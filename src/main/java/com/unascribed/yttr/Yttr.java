@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.TriConsumer;
@@ -20,6 +21,7 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YBrewing;
 import com.unascribed.yttr.init.YCommands;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YFluids;
@@ -59,6 +61,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -74,6 +77,7 @@ import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
@@ -112,6 +116,7 @@ public class Yttr implements ModInitializer {
 		
 		// general initialization
 		YStats.init();
+		YCriteria.init();
 		YBrewing.init();
 		YTrades.init();
 		YNetwork.init();
@@ -137,6 +142,12 @@ public class Yttr implements ModInitializer {
 			YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
 		}
 		// }
+		
+		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
+			if (player instanceof ServerPlayerEntity) {
+				YCriteria.BROKE_BLOCK.trigger((ServerPlayerEntity)player, pos, state, player.getStackInHand(Hand.MAIN_HAND));
+			}
+		});
 		
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {
 			TickAlwaysItemHandler.startServerWorldTick(world);
@@ -221,6 +232,17 @@ public class Yttr implements ModInitializer {
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		eachRegisterableField(holder, type, null, (f, v, na) -> {
 			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);
+		});
+	}
+
+	/**
+	 * Scan a class {@code holder} for static final fields of type {@code type}, and register them
+	 * in the yttr namespace with a path equal to the field's name as lower case in the given
+	 * ad-hoc registry.
+	 */
+	public static <T> void autoRegister(Consumer<T> adhocRegistry, Class<?> holder, Class<T> type) {
+		eachRegisterableField(holder, type, null, (f, v, na) -> {
+			adhocRegistry.accept(v);
 		});
 	}
 

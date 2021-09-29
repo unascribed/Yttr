@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
@@ -23,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
@@ -84,6 +86,9 @@ public class EffectorItem extends Item {
 		}
 		int amt = effect(world, pos, dir, stack, context.getPlayer().getUuid(), Math.min(fuel, 32), true);
 		YStats.add(context.getPlayer(), YStats.BLOCKS_EFFECTED, amt*100);
+		if (context.getPlayer() instanceof ServerPlayerEntity) {
+			YCriteria.EFFECT_BLOCK.trigger((ServerPlayerEntity)context.getPlayer(), pos, stack);
+		}
 		if (!context.getPlayer().abilities.creativeMode) setFuel(stack, fuel-amt);
 		new MessageS2CEffectorHole(pos, dir, amt).sendToAllWatching(context.getPlayer());
 		return ActionResult.SUCCESS;

@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.natural;
 import java.util.Random;
 
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -10,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
@@ -51,6 +53,9 @@ public class SqueezedLeavesBlock extends SqueezeLeavesBlock implements BlockEnti
 					world.setBlockState(pos, state.with(SQUEEZING, true));
 					world.getBlockTickScheduler().schedule(pos, this, 4);
 					((SqueezedLeavesBlockEntity)be).step();
+					if (player instanceof ServerPlayerEntity) {
+						YCriteria.SQUEEZE_LEAVES.trigger((ServerPlayerEntity)player);
+					}
 				}
 			}
 		}

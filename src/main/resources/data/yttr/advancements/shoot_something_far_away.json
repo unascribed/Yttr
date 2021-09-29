@@ -1,0 +1,21 @@
+{
+	"parent": "yttr:use_rifle_scope",
+	"display": {
+		"icon": {
+			"item": "yttr:rifle"
+		},
+		"title": {
+			"translate": "advancements.yttr.shoot_something_far_away.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.shoot_something_far_away.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"effect": { "trigger": "yttr:shoot_something_far_away" }
+	}
+}

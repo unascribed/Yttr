@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:open_geyser",
+	"display": {
+		"icon": {
+			"item": "yttr:diving_plate"
+		},
+		"title": {
+			"translate": "advancements.yttr.name_geyser.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.name_geyser.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"name": {
+			"trigger": "yttr:name_geyser"
+		}
+	}
+}

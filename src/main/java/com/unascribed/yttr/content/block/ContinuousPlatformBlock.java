@@ -12,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
@@ -81,6 +82,11 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		} else {
 			world.setBlockState(pos, state.cycle(AGE));
 		}
+	}
+	
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return getDefaultState().with(AGE, Age.IMMORTAL);
 	}
 	
 	@Override

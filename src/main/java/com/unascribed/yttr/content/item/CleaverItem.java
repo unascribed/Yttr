@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
@@ -31,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
@@ -105,7 +107,6 @@ public class CleaverItem extends Item implements Attackable {
 					setCleaveBlock(stack, null);
 					setCleaveStart(stack, null);
 					setCleaveCorner(stack, null);
-					YStats.add(player, YStats.BLOCKS_CLEAVED, 1);
 					player.sendMessage(new TranslatableText("tip.yttr.cleaver.repeat_cut"+(requiresSneaking() ? "_sneak" : "")), true);
 				}
 			}
@@ -200,6 +201,10 @@ public class CleaverItem extends Item implements Attackable {
 			}
 			cbe.setPolygons(result);
 			stack.damage(1, player, (e) -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+			YStats.add(player, YStats.BLOCKS_CLEAVED, 1);
+			if (player instanceof ServerPlayerEntity) {
+				YCriteria.CLEAVE_BLOCK.trigger((ServerPlayerEntity)player, pos, stack);
+			}
 			return true;
 		}
 		return false;

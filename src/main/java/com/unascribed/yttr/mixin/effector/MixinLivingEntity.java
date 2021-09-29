@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 
 import net.minecraft.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
@@ -70,6 +72,16 @@ public abstract class MixinLivingEntity extends Entity {
 			}
 		}
 		return src;
+	}
+	
+	@Inject(at=@At("HEAD"), method="onDeath")
+	public void onDeath(DamageSource source, CallbackInfo ci) {
+		if (source instanceof EntityDamageSource && source.getName().equals("yttr.effector_fall")) {
+			EntityDamageSource eds = (EntityDamageSource)source;
+			if (eds.getAttacker() instanceof ServerPlayerEntity) {
+				YCriteria.KILL_WITH_EFFECTOR.trigger((ServerPlayerEntity)eds.getAttacker());
+			}
+		}
 	}
 	
 }

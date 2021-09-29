@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:snare"
+		},
+		"title": {
+			"translate": "advancements.yttr.snare_block_entity.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.snare_block_entity.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"snare": {
+			"trigger": "yttr:snare_block_entity"
+		}
+	}
+}

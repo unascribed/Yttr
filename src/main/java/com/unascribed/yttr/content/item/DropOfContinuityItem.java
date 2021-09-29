@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.Set;
 
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YTags;
 
@@ -18,6 +19,7 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
@@ -95,6 +97,9 @@ public class DropOfContinuityItem extends Item {
 			} else {
 				user.dropStack(gift);
 				stack.setCount(0);
+			}
+			if (user instanceof ServerPlayerEntity) {
+				YCriteria.BURN_DROP_OF_CONTINUITY.trigger((ServerPlayerEntity)user);
 			}
 		}
 		if (world instanceof ServerWorld) {

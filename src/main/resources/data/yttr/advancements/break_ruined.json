@@ -1,0 +1,115 @@
+{
+	"parent": "yttr:enter_wasteland",
+	"display": {
+		"icon": {
+			"item": "yttr:ruined_device_bc_2"
+		},
+		"title": {
+			"translate": "advancements.yttr.break_ruined.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.break_ruined.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"bricks": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_bricks"
+			}
+		},
+		"container": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_container"
+			}
+		},
+		"tank": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_tank"
+			}
+		},
+		"device_bc_1": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_device_bc_1"
+			}
+		},
+		"device_bc_2": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_device_bc_2"
+			}
+		},
+		"device_gt_1": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_device_gt_1"
+			}
+		},
+		"device_rp_1": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_device_rp_1"
+			}
+		},
+		"device_fo_1": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_device_fo_1"
+			}
+		},
+		"construct_rc_1": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_construct_rc_1"
+			}
+		},
+		"construct_rc_2": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_construct_rc_2"
+			}
+		},
+		"pipe": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_pipe"
+			}
+		},
+		"frame": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_frame"
+			}
+		},
+		"tube": {
+			"trigger": "yttr:broke_block",
+			"conditions": {
+				"block": "yttr:ruined_tube"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"bricks",
+			"construct_rc_1",
+			"construct_rc_2",
+			"container",
+			"device_bc_1",
+			"device_bc_2",
+			"device_fo_1",
+			"device_gt_1",
+			"device_rp_1",
+			"frame",
+			"pipe",
+			"tank",
+			"tube"
+		]
+	]
+}

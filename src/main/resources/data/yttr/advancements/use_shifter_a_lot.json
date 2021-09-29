@@ -1,0 +1,39 @@
+{
+	"parent": "yttr:use_shifter",
+	"display": {
+		"icon": {
+			"item": "yttr:shifter",
+			"nbt": "{Enchantments:[{id:\"minecraft:looting\"}]}"
+		},
+		"title": {
+			"translate": "advancements.yttr.use_shifter_a_lot.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.use_shifter_a_lot.desc"
+		},
+		"frame": "goal",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"shifted_10000_blocks": {
+			"trigger": "yttr:shift_block",
+			"conditions": {
+				"player": {
+					"player": {
+						"stats": [
+							{
+								"type": "minecraft:custom",
+								"stat": "yttr:blocks_shifted",
+								"value": {
+									"min": 10000
+								}
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

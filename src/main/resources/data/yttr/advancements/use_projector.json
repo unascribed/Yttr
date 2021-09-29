@@ -1,0 +1,19 @@
+{
+	"parent": "yttr:break_root_of_continuity",
+	"display": {
+		"icon": {
+			"item": "yttr:projector"
+		},
+		"title": {
+			"translate": "advancements.yttr.use_projector.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.use_projector.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "project": { "trigger": "yttr:project" } }
+}

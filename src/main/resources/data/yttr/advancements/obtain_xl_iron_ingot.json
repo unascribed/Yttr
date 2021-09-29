@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:xl_iron_ingot"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_xl_iron_ingot.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_xl_iron_ingot.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:xl_iron_ingot": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:xl_iron_ingot" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:xl_iron_ingot"
+		]
+	]
+}

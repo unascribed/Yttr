@@ -1,0 +1,42 @@
+{
+	"parent": "yttr:obtain_rifle",
+	"display": {
+		"icon": {
+			"item": "yttr:rifle_overclocked"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_upgraded_rifle.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_upgraded_rifle.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"reinforced": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:rifle_reinforced" }
+				]
+			}
+		},
+		"overclocked": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:rifle_overclocked" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"reinforced",
+			"overclocked"
+		]
+	]
+}

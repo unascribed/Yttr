@@ -1,0 +1,28 @@
+{
+	"parent": "yttr:obtain_chute",
+	"display": {
+		"icon": {
+			"item": "yttr:levitation_chamber"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_levitation_chamber.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_levitation_chamber.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"obtain": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:levitation_chamber" }
+				]
+			}
+		}
+	}
+}

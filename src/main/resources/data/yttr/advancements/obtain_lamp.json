@@ -1,0 +1,52 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:cage_lamp",
+			"nbt": "{LampColor:\"RED\",Inverted:1b}"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_lamp.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_lamp.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:lamp" }
+				]
+			}
+		},
+		"fixture": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:fixture" }
+				]
+			}
+		},
+		"cage_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:cage_lamp" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"lamp",
+			"fixture",
+			"cage_lamp"
+		]
+	]
+}

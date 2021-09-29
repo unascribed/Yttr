@@ -13,6 +13,8 @@ import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
+import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.math.partitioner.Plane;
@@ -203,6 +205,10 @@ public class ShifterItem extends Item {
 					player.setStackInHand(Hand.OFF_HAND, off);
 				}
 			}
+		}
+		YStats.add(player, YStats.BLOCKS_SHIFTED, 1);
+		if (player instanceof ServerPlayerEntity) {
+			YCriteria.SHIFT_BLOCK.trigger((ServerPlayerEntity)player, pos, player.getStackInHand(Hand.MAIN_HAND));
 		}
 		world.setBlockState(pos, replState);
 		world.spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);

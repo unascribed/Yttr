@@ -1,0 +1,19 @@
+{
+	"parent": "yttr:use_projector",
+	"display": {
+		"icon": {
+			"item": "minecraft:golden_boots"
+		},
+		"title": {
+			"translate": "advancements.yttr.use_projector_for_fall.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.use_projector_for_fall.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "project": { "trigger": "yttr:project_with_long_fall" } }
+}

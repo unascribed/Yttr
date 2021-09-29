@@ -1,0 +1,20 @@
+{
+	"parent": "yttr:break_bedrock",
+	"display": {
+		"icon": {
+			"item": "yttr:void_bucket"
+		},
+		"title": {
+			"translate": "advancements.yttr.open_geyser.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.open_geyser.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": { "open_geyser": { "trigger": "yttr:open_geyser" } },
+	"requirements": [ [ "open_geyser" ] ]
+}

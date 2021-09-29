@@ -38,6 +38,7 @@ public class YStats {
 	public static final Identifier TIME_IN_VOID = new Identifier("yttr", "time_in_void");
 	public static final Identifier BLOCKS_VOIDED = new Identifier("yttr", "blocks_voided");
 	public static final Identifier BLOCKS_CLEAVED = new Identifier("yttr", "blocks_cleaved");
+	public static final Identifier BLOCKS_SHIFTED = new Identifier("yttr", "blocks_shifted");
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented

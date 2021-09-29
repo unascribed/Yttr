@@ -1,0 +1,42 @@
+{
+	"parent": "yttr:snare_living_entity",
+	"display": {
+		"icon": {
+			"item": "yttr:skeletal_sorter_left_handed"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_skeletal_sorter.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_skeletal_sorter.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"left": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:skeletal_sorter_left_handed" }
+				]
+			}
+		},
+		"right": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:skeletal_sorter_right_handed" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"left",
+			"right"
+		]
+	]
+}
