@@ -151,6 +151,7 @@ public class CleaverUI extends IHasAClient {
 				List<Polygon> polys = ((CleavedBlockEntity)be).getPolygons();
 				// skip the "joiner" polygon to avoid an ugly line down the middle of the joined face
 				// TODO why does the line happen? is the joiner polygon invalid?
+				// I think it *is*, because enabling multi-cuts causes game crashes if the cut intersects the joiner polygon
 				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
 						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();

@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YTags;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -15,7 +16,7 @@ public class MixinLivingEntity {
 	@Inject(at=@At("RETURN"), method="getJumpVelocity", cancellable=true)
 	protected void getJumpVelocity(CallbackInfoReturnable<Float> ci) {
 		LivingEntity self = (LivingEntity)(Object)this;
-		if (self.isSneaking() && self.world.getBlockState(self.getBlockPos().down()).isOf(YBlocks.CLAMBER_BLOCK)) {
+		if (self.isSneaking() && self.world.getBlockState(self.getBlockPos().down()).isIn(YTags.Block.CLAMBER_BLOCKS)) {
 			ci.setReturnValue(0.05f);
 		}
 	}
@@ -25,7 +26,7 @@ public class MixinLivingEntity {
 		LivingEntity self = (LivingEntity)(Object)this;
 		if (self.getClimbingPos().isPresent()) {
 			BlockPos pos = self.getClimbingPos().get();
-			if (self.world.getBlockState(pos).isOf(YBlocks.CLAMBER_BLOCK)) {
+			if (self.world.getBlockState(pos).isIn(YTags.Block.CLAMBER_BLOCKS)) {
 				ci.setReturnValue(false);
 			}
 		}

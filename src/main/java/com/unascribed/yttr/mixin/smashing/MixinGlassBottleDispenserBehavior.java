@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
-import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.mechanics.SmashCloudLogic;
 
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;

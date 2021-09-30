@@ -1,0 +1,6 @@
+{
+	"parent": "yttr:block/clamber_block",
+	"textures": {
+		"1": "yttr:block/soul_planks"
+	}
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:clamber_block"
+    },
+    [
+	    { "item": "minecraft:soul_sand" },
+	    { "item": "minecraft:soul_soil" }
+    ]
+  ],
+  "result": {
+    "item": "yttr:soul_clamber_block",
+    "count": 1
+  }
+}

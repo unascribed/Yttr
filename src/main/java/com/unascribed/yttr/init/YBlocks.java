@@ -549,6 +549,7 @@ public class YBlocks {
 	public static final BoggedLowNoteBlock BOGGED_LOW_NOTE_BLOCK = new BoggedLowNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
 	
 	public static final ClamberBlock CLAMBER_BLOCK = new ClamberBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS).nonOpaque());
+	public static final ClamberBlock SOUL_CLAMBER_BLOCK = new ClamberBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS).nonOpaque());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
