@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import java.util.Random;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.content.block.ClamberBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
@@ -546,6 +547,8 @@ public class YBlocks {
 	public static final BoggedNoteBlock BOGGED_NOTE_BLOCK = new BoggedNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
 	public static final BoggedHighNoteBlock BOGGED_HIGH_NOTE_BLOCK = new BoggedHighNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
 	public static final BoggedLowNoteBlock BOGGED_LOW_NOTE_BLOCK = new BoggedLowNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));
+	
+	public static final ClamberBlock CLAMBER_BLOCK = new ClamberBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS).nonOpaque());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

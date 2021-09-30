@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" S ",
+		"SLS",
+		" S "
+	],
+	"key": {
+		"S": { "item": "minecraft:stick" },
+		"L": { "item": "minecraft:ladder" }
+	},
+	"result": {
+		"item": "yttr:clamber_block",
+		"count": 8
+	}
+}

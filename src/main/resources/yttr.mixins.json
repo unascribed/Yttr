@@ -83,6 +83,8 @@
 	"soaking.MixinItemEntity",
 	"soaking.MixinServerWorld",
 	"note.MixinNoteBlock",
+	"clamber.MixinEntityShapeContext",
+	"clamber.MixinLivingEntity",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
