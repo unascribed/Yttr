@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "minecraft:planks"
+    },
+    [
+	    { "item": "minecraft:soul_sand" },
+	    { "item": "minecraft:soul_soil" }
+    ]
+  ],
+  "result": {
+    "item": "yttr:soul_planks",
+    "count": 1
+  }
+}

@@ -120,6 +120,7 @@ public class YItems {
 	public static final BlockItem CONTINUOUS_PLATFORM = createNormalBlockItem(YBlocks.CONTINUOUS_PLATFORM);
 	public static final BlockItem CLAMBER_BLOCK = createNormalBlockItem(YBlocks.CLAMBER_BLOCK);
 	public static final BlockItem SOUL_CLAMBER_BLOCK = createNormalBlockItem(YBlocks.SOUL_CLAMBER_BLOCK);
+	public static final BlockItem SOUL_PLANKS = createNormalBlockItem(YBlocks.SOUL_PLANKS);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
