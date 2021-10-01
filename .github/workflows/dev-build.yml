@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - trunk
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'mkdocs.yml'
+      - 'art-src/**'
 
 jobs:
   build:
