@@ -13,7 +13,7 @@
 		"issues": "https://github.com/unascribed/Yttr/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/yttr/textures/icon.png",
+	"icon": "assets/yttr/textures/icon-32.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [ "com.unascribed.yttr.Yttr" ],
