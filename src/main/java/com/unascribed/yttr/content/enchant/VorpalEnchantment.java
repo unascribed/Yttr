@@ -2,6 +2,8 @@ package com.unascribed.yttr.content.enchant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.init.YSounds;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
@@ -11,6 +13,7 @@ import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
@@ -58,6 +61,17 @@ public class VorpalEnchantment extends Enchantment {
 						(float)b.getXLength()/2, (float)b.getYLength()/2, (float)b.getZLength()/2,
 						0, 20);
 				((ServerPlayerEntity)user).networkHandler.sendPacket(pkt);
+				SoundCategory cat = user.getSoundCategory();
+				double x = target.getPos().x;
+				double y = target.getPos().y;
+				double z = target.getPos().z;
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.5f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.7f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT1, cat, 0.5f, 0.9f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
 			}
 		}
 	}

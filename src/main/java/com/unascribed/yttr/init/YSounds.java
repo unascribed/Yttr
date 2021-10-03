@@ -81,6 +81,8 @@ public class YSounds {
 	public static final SoundEvent VOID_MUSIC = create("void_music");
 	public static final SoundEvent DESERT_HEAT = create("desert_heat");
 	public static final SoundEvent MEMORANDUM = create("memorandum");
+	public static final SoundEvent VORPALHIT1 = create("vorpalhit1");
+	public static final SoundEvent VORPALHIT2 = create("vorpalhit2");
 	
 	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
 	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");

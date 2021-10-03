@@ -465,6 +465,23 @@
 	"memorandum": {
 		"sounds": [ { "name": "yttr:memorandum", "stream": true } ]
 	},
+	"vorpalhit1": {
+		"sounds": [
+			"minecraft:entity/player/attack/knockback1",
+			"minecraft:entity/player/attack/knockback2",
+			"minecraft:entity/player/attack/knockback3",
+			"minecraft:entity/player/attack/knockback4"
+		]
+	},
+	"vorpalhit2": {
+		"sounds": [
+			"minecraft:entity/player/attack/crit1",
+			"minecraft:entity/player/attack/crit2",
+			"minecraft:entity/player/attack/crit3"
+		],
+		"subtitle": "subtitles.yttr.vorpalhit"
+	},
+	
 	"low_note.basedrum": {
 		"sounds": [
 			"yttr:note/low/bd"

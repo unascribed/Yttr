@@ -217,7 +217,7 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	public static void setDefaultName(World world, BlockPos pos, @Nullable LivingEntity creator) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof VoidGeyserBlockEntity) {
-			Biome b = world.getBiome(pos);
+			Biome b = world.getBiome(new BlockPos(pos.getX(), 64, pos.getZ()));
 			Identifier biomeId = world.getRegistryManager().get(Registry.BIOME_KEY).getId(b);
 			((VoidGeyserBlockEntity)be).setName((creator == null ? "" : creator.getName().getString()+"'s ")+Language.getInstance().get("biome."+biomeId.getNamespace()+"."+biomeId.getPath()));
 		}
