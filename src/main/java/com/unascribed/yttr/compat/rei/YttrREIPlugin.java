@@ -41,6 +41,7 @@ import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.EntryStack.Settings;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
+import me.shedaniel.rei.plugin.DefaultPlugin;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import me.shedaniel.rei.plugin.stripping.DefaultStrippingDisplay;
@@ -72,6 +73,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public static final SoakingCategory SOAKING = new SoakingCategory();
 	public static final ContinuityCategory CONTINUITY = new ContinuityCategory();
 	public static final RuinedCategory RUINED = new RuinedCategory();
+	public static final LampCraftingCategory LAMP_CRAFTING = new LampCraftingCategory();
 	
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
@@ -81,6 +83,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(SOAKING);
 		recipeHelper.registerCategory(CONTINUITY);
 		recipeHelper.registerCategory(RUINED);
+		recipeHelper.registerCategory(LAMP_CRAFTING);
 	}
 	
 	@Override
@@ -267,10 +270,16 @@ public class YttrREIPlugin implements REIPluginV0 {
 							tip.add(new TranslatableText("rei.yttr.suit_helmet_hud", new TranslatableText("color.yttr."+color.asString())
 									.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
 						}
-						DefaultCustomDisplay disp = new DefaultCustomDisplay(lr,
+						DCDCons cons;
+						if (desiredPass != 0) {
+							cons = LampDisplay::new;
+						} else {
+							cons = DefaultCustomDisplay::new;
+						}
+						DefaultCustomDisplay disp = cons.construct(lr,
 								Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, Settings.TRUE)))),
 								Collections.singletonList(EntryStack.create(result)
-										.setting(Settings.CHECK_TAGS, result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
+										.setting(Settings.CHECK_TAGS, (desiredPass != 0 || itemCount == 1) && result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
 										.setting(Settings.TOOLTIP_APPEND_EXTRA, (es) -> tip)));
 						recipeHelper.registerDisplay(disp);
 					}
@@ -278,6 +287,8 @@ public class YttrREIPlugin implements REIPluginV0 {
 			}
 		}
 	}
+	
+	private interface DCDCons { DefaultCustomDisplay construct(Recipe<?> possibleRecipe, List<List<EntryStack>> input, List<EntryStack> output); }
 	
 	private void permute(ItemStack is, Consumer<ItemStack> cb) {
 		cb.accept(is);
@@ -298,6 +309,12 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public void registerEntries(EntryRegistry entryRegistry) {
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOGO));
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
+	}
+	
+	@Override
+	public void postRegister() {
+		RecipeHelper recipeHelper = RecipeHelper.getInstance();
+		recipeHelper.registerWorkingStations(LampCraftingCategory.ID, recipeHelper.getWorkingStations(DefaultPlugin.CRAFTING).toArray(new List[0]));
 	}
 	
 	@Override
