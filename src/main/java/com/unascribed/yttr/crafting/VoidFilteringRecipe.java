@@ -76,6 +76,11 @@ public class VoidFilteringRecipe implements Recipe<Inventory> {
 		return id;
 	}
 	
+	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
+	
 	public float getChance() {
 		return chance;
 	}

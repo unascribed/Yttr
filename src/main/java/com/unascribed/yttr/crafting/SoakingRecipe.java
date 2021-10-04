@@ -110,6 +110,11 @@ public class SoakingRecipe implements Recipe<Inventory> {
 	public Identifier getId() {
 		return id;
 	}
+	
+	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
 
 	@Override
 	public RecipeType<?> getType() {

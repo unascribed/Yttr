@@ -41,6 +41,11 @@ public class LampRecipe extends ShapedRecipe {
 	}
 	
 	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
+	
+	@Override
 	public ItemStack craft(CraftingInventory inv) {
 		ItemStack stack = getOutput().copy();
 		boolean containsTorch = false;
