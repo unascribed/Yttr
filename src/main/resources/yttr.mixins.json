@@ -85,6 +85,8 @@
 	"note.MixinNoteBlock",
 	"clamber.MixinEntityShapeContext",
 	"clamber.MixinLivingEntity",
+	"mender.MixinServerWorld",
+	"mender.MixinAbstractBlockState",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",

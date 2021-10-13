@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
-import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
+import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.init.YBlockEntities;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +48,7 @@ public class VoidCauldronBlockEntity extends BlockEntity implements Inventory {
 	public void setStack(int slot, ItemStack stack) {
 		if (!stack.isEmpty()) {
 			if (world instanceof ServerWorld) {
-				((ServerWorld)world).spawnParticles(VoidFluidBlock.BLACK_DUST, pos.getX()+0.5, pos.getY()+0.9, pos.getZ()+0.5, 10, 0.15, 0.1, 0.15, 0.5);
+				((ServerWorld)world).spawnParticles(VoidFluid.BLACK_DUST, pos.getX()+0.5, pos.getY()+0.9, pos.getZ()+0.5, 10, 0.15, 0.1, 0.15, 0.5);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package com.unascribed.yttr.content.block.mechanism;
 
-import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
+import com.unascribed.yttr.content.fluid.VoidFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YSounds;
@@ -60,7 +60,7 @@ public class VoidCauldronBlock extends Block implements FluidDrainable, BlockEnt
 			player.setStackInHand(hand, ItemStack.EMPTY);
 			player.playSound(YSounds.DISSOLVE, 1, 0.8f+(world.random.nextFloat()*0.4f));
 			if (world instanceof ServerWorld) {
-				((ServerWorld)world).spawnParticles(VoidFluidBlock.BLACK_DUST, pos.getX()+0.5, pos.getY()+0.9, pos.getZ()+0.5, 30, 0.15, 0.1, 0.15, 0.5);
+				((ServerWorld)world).spawnParticles(VoidFluid.BLACK_DUST, pos.getX()+0.5, pos.getY()+0.9, pos.getZ()+0.5, 30, 0.15, 0.1, 0.15, 0.5);
 			}
 			return ActionResult.SUCCESS;
 		}
