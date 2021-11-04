@@ -100,7 +100,6 @@ public abstract class VoidFluid extends FlowableFluid {
 	
 	@Override
 	protected void randomDisplayTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (pos.getY() < -1) return;
 		if (world.isAir(pos.up())) {
 			for (int i = 0; i < 4; i++) {
 				world.addParticle(BLACK_DUST, pos.getX()+random.nextDouble(), pos.getY()+0.5, pos.getZ()+random.nextDouble(),

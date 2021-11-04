@@ -151,7 +151,7 @@
 	"subgroup.MixinItemGroup",
 	"snare.MixinHeldItemRenderer",
 	
-	"diving.client.MixinEarsFeatureRenderer"
+	"diving.client.MixinAbstractEarsRenderDelegate"
   ],
   "injectors": {
     "defaultRequire": 1
