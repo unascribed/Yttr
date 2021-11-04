@@ -96,7 +96,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements SideyInventory
 							fuelStack.decrement(1);
 							if (fuelStack.isEmpty()) {
 								Item remainder = fuelItem.getRecipeRemainder();
-								setStack(1, remainder == null ? ItemStack.EMPTY : new ItemStack(remainder));
+								setStack(5, remainder == null ? ItemStack.EMPTY : new ItemStack(remainder));
 							}
 						}
 					}
