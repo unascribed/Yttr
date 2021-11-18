@@ -31,6 +31,7 @@ public class MixinArmorFeatureRenderer {
 	private boolean yttr$secondLayer;
 	private String yttr$model;
 	
+	@SuppressWarnings("rawtypes")
 	@Inject(at=@At("HEAD"), method="renderArmorParts")
 	public void captureArgs(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
 		yttr$armorItem = armorItem;
@@ -38,6 +39,7 @@ public class MixinArmorFeatureRenderer {
 		yttr$model = string;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Inject(at=@At("RETURN"), method="renderArmorParts")
 	public void forgetArgs(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
 		yttr$armorItem = null;
@@ -78,6 +80,7 @@ public class MixinArmorFeatureRenderer {
 		this.storedEntity = livingEntity;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Inject(method = "renderArmor", at = @At("HEAD"))
 	private void storeSlot(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LivingEntity livingEntity, EquipmentSlot slot, int i, BipedEntityModel bipedEntityModel, CallbackInfo ci) {
 		// We store the current armor slot that is rendering before we render each armor piece

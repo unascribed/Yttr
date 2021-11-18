@@ -44,6 +44,7 @@ public class SnareEntityTextureCache {
 			.expireAfterAccess(5, TimeUnit.SECONDS)
 			.build();
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Identifier get(ItemStack stack) {
 		EntityType<?> type = YItems.SNARE.getEntityType(stack);
 		if (type == null) return null;

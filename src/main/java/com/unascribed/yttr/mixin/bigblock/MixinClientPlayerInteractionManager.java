@@ -28,7 +28,7 @@ public class MixinClientPlayerInteractionManager {
 			BlockState bs = client.world.getBlockState(pos);
 			if (bs.getBlock() instanceof BigBlock) {
 				BigBlock b = (BigBlock)bs.getBlock();
-				BlockPos origin = pos.add(-bs.get(b.X), -bs.get(b.Y), -bs.get(b.Z));
+				BlockPos origin = pos.add(-bs.get(b.xProp), -bs.get(b.yProp), -bs.get(b.zProp));
 				return origin;
 			}
 		}

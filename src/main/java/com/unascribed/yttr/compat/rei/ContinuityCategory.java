@@ -96,7 +96,6 @@ public class ContinuityCategory implements RecipeCategory<ContinuityEntry> {
         private final ScrollingContainer scrolling = new ScrollingContainer() {
             @Override
             public Rectangle getBounds() {
-                Rectangle bounds = ScrollableSlotsWidget.this.getBounds();
                 return new Rectangle(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2);
             }
             

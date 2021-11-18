@@ -107,6 +107,9 @@ public class DSUBlockEntityRenderer extends BlockEntityRenderer<DSUBlockEntity> 
 				case WEST:
 					ang = 90;
 					break;
+				default:
+					ang = -30;
+					break;
 			}
 			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
 			matrices.translate(-dsu.xSize/2D, -dsu.ySize/2D, -dsu.zSize/2D);

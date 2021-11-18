@@ -53,6 +53,9 @@ public class SkeletalSorterBlockEntityRenderer extends BlockEntityRenderer<Skele
 			case WEST:
 				ang = 90;
 				break;
+			default:
+				ang = -70;
+				break;
 		}
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(ang));
 		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));

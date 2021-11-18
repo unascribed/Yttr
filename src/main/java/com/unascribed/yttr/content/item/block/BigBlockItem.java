@@ -54,7 +54,7 @@ public class BigBlockItem extends BlockItem {
 								return false;
 							}
 						} else if (p == 1) {
-							if (!super.place(ctx, state.with(b.X, x).with(b.Y, y).with(b.Z, z))) {
+							if (!super.place(ctx, state.with(b.xProp, x).with(b.yProp, y).with(b.zProp, z))) {
 								return false;
 							}
 						}

@@ -12,6 +12,7 @@ import net.minecraft.util.registry.Registry;
  */
 public class Resolvable<T> {
 
+	@SuppressWarnings("rawtypes")
 	private static final ThreadLocal<Resolvable> MAP_KEY = ThreadLocal.withInitial(() -> new Resolvable<>(null, null, null));
 	
 	private Identifier id;

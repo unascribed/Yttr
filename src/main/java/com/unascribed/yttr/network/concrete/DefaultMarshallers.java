@@ -259,11 +259,9 @@ public final class DefaultMarshallers {
 	}
 	
 	private static class EnumMarshaller<T extends Enum<T>> implements Marshaller<T> {
-		private final Class<T> clazz;
 		private final T[] constants;
 		
 		public EnumMarshaller(Class<T> clazz) {
-			this.clazz = clazz;
 			this.constants = clazz.getEnumConstants();
 		}
 		
@@ -366,6 +364,7 @@ public final class DefaultMarshallers {
 		T deserialize(PacketByteBuf in);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> Marshaller<T> getByName(String name) {
 		if (name.endsWith("-list")) {
 			name = name.substring(0, name.length() - 5);
@@ -411,6 +410,7 @@ public final class DefaultMarshallers {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> Marshaller<T> getByType(Class<T> type) {
 		if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
 			return (Marshaller<T>) CHAR;

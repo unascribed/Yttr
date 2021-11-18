@@ -39,7 +39,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.Direction;
@@ -49,7 +48,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
 
-public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity implements Tickable, SidedInventory, DelegatingInventory {
+public class AwareHopperBlockEntity extends AbstractAbominationBlockEntity implements SidedInventory, DelegatingInventory {
 	
 	private Identifier recipe;
 	private CraftingInventory input = new CraftingInventory(new ScreenHandler(ScreenHandlerType.CRAFTING, -1) {

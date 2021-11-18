@@ -4,8 +4,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
-import com.google.common.base.Throwables;
-
 import net.minecraft.network.PacketByteBuf;
 
 public class ImmutableMarshallableMarshaller<T extends ImmutableMarshallable> implements Marshaller<T> {
@@ -15,7 +13,7 @@ public class ImmutableMarshallableMarshaller<T extends ImmutableMarshallable> im
 		try {
 			readFromNetwork = MethodHandles.publicLookup().findStatic(clazz, "readFromNetwork", MethodType.methodType(clazz, PacketByteBuf.class));
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -24,7 +22,7 @@ public class ImmutableMarshallableMarshaller<T extends ImmutableMarshallable> im
 		try {
 			return (T)readFromNetwork.invoke(in);
 		} catch (Throwable e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 

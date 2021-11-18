@@ -12,8 +12,6 @@ import com.unascribed.yttr.network.concrete.annotation.field.MarshalledAs;
 import com.unascribed.yttr.network.concrete.annotation.field.Optional;
 import com.unascribed.yttr.network.concrete.exception.BadMessageException;
 
-import com.google.common.base.Throwables;
-
 import net.minecraft.network.PacketByteBuf;
 
 class WireField<T> {
@@ -24,6 +22,7 @@ class WireField<T> {
 	private final Class<T> type;
 	private final boolean optional;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public WireField(Field f) {
 		f.setAccessible(true);
 		this.f = f;
@@ -32,7 +31,7 @@ class WireField<T> {
 			setter = MethodHandles.lookup().unreflectSetter(f);
 			type = (Class<T>) f.getType();
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 		MarshalledAs ma = f.getAnnotation(MarshalledAs.class);
 		if (ma != null) {
@@ -82,7 +81,7 @@ class WireField<T> {
 		try {
 			return (T)getter.invoke(owner);
 		} catch (Throwable e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -90,7 +89,7 @@ class WireField<T> {
 		try {
 			setter.invoke(owner, value);
 		} catch (Throwable e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	

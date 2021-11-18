@@ -146,6 +146,7 @@ public final class NetworkContext {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private Message readPacket(EnvType env, PacketByteBuf payload) {
 		int id = payload.readUnsignedByte();
 		if (!packetIds.containsValue(id)) {

@@ -97,6 +97,7 @@ public class SnareItem extends Item implements ItemColorProvider, TicksAlwaysIte
 		return ActionResult.PASS;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);

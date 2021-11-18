@@ -49,7 +49,6 @@ public class EffectorRenderer extends IHasAClient {
 		if (effectorHoles.isEmpty()) return;
 		ClientWorld w = wrc.world();
 		if (!(w instanceof YttrWorld)) return;
-		YttrWorld ew = (YttrWorld)w;
 		Vec3d cam = wrc.camera().getPos();
 		MatrixStack ms = new MatrixStack();
 		ms.translate(-cam.x, -cam.y, -cam.z);

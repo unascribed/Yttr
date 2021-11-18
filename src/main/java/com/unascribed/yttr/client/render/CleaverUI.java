@@ -17,6 +17,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext.BlockOutlineContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -154,8 +156,9 @@ public class CleaverUI extends IHasAClient {
 				// I think it *is*, because enabling multi-cuts causes game crashes if the cut intersects the joiner polygon
 				for (Polygon pg : polys.subList(0, polys.size()-1)) {
 					pg.forEachDEdge((de) -> {
-						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
-						boc.vertexConsumer().vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
+						VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
+						vc.vertex(wrc.matrixStack().peek().getModel(), (float)de.srcPoint().x, (float)de.srcPoint().y, (float)de.srcPoint().z).color(0, 0, 0, 0.4f).next();
+						vc.vertex(wrc.matrixStack().peek().getModel(), (float)de.dstPoint().x, (float)de.dstPoint().y, (float)de.dstPoint().z).color(0, 0, 0, 0.4f).next();
 					});
 				}
 				wrc.matrixStack().pop();

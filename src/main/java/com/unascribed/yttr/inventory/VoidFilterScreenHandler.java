@@ -11,12 +11,9 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.world.World;
 
 public class VoidFilterScreenHandler extends ScreenHandler {
 
-	private final World world;
-	
 	private final Inventory voidFilter;
 	private final PropertyDelegate properties;
 	
@@ -49,7 +46,6 @@ public class VoidFilterScreenHandler extends ScreenHandler {
 	
 	public VoidFilterScreenHandler(Inventory voidFilter, int syncId, PlayerInventory playerInv, PropertyDelegate properties) {
 		super(YHandledScreens.VOID_FILTER, syncId);
-		world = playerInv.player.world;
 		
 		this.voidFilter = voidFilter;
 		this.properties = properties;

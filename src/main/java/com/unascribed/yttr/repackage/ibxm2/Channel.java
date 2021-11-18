@@ -114,6 +114,10 @@ public class Channel {
 				break;
 		}
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	public void updateSampleIdx( int length, int sampleRate ) {
 		int step = ( freq << ( Sample.FP_SHIFT - 3 ) ) / ( sampleRate >> 3 );

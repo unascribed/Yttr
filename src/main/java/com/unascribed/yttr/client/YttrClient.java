@@ -235,9 +235,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			if (boc.blockState().getBlock() instanceof BigBlock) {
 				BlockState bs = boc.blockState();
 				BigBlock b = (BigBlock)boc.blockState().getBlock();
-				double minX = boc.blockPos().getX()-bs.get(b.X);
-				double minY = boc.blockPos().getY()-bs.get(b.Y);
-				double minZ = boc.blockPos().getZ()-bs.get(b.Z);
+				double minX = boc.blockPos().getX()-bs.get(b.xProp);
+				double minY = boc.blockPos().getY()-bs.get(b.yProp);
+				double minZ = boc.blockPos().getZ()-bs.get(b.zProp);
 				minX -= wrc.camera().getPos().x;
 				minY -= wrc.camera().getPos().y;
 				minZ -= wrc.camera().getPos().z;
@@ -309,7 +309,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doReflectionMagic() {
 		Map<String, RenderLayer> renderLayers = Maps.newHashMap();
 		renderLayers.put("cutout", RenderLayer.getCutout());
@@ -392,7 +392,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 					MethodHandle handle = MethodHandles.publicLookup().findConstructor(ann.value(), MethodType.methodType(void.class, EntityRenderDispatcher.class));
 					EntityRendererRegistry.INSTANCE.register(type, (erd, ctx) -> {
 						try {
-							return (EntityRenderer)handle.invoke(erd);
+							return (EntityRenderer<?>)handle.invoke(erd);
 						} catch (RuntimeException | Error e) {
 							throw e;
 						} catch (Throwable e) {

@@ -212,6 +212,7 @@ public class Yttr implements ModInitializer {
 	 * This is the same method used by {@link #autoRegister}, so it can be used to scan fields in
 	 * holder classes for additional information in later passes.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T, A extends Annotation> void eachRegisterableField(Class<?> holder, Class<T> type, Class<A> anno, TriConsumer<Field, T, A> cb) {
 		for (Field f : holder.getDeclaredFields()) {
 			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
@@ -229,6 +230,7 @@ public class Yttr implements ModInitializer {
 	 * in the yttr namespace with a path equal to the field's name as lower case in the given
 	 * registry.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
 		eachRegisterableField(holder, type, null, (f, v, na) -> {
 			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);

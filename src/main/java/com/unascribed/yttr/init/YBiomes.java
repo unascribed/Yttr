@@ -26,6 +26,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 
+@SuppressWarnings("deprecation")
 public class YBiomes {
 
 	public static final Biome SCORCHED_SUMMIT = new Biome.Builder()

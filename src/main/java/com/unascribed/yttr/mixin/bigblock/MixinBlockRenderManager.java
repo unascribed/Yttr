@@ -29,9 +29,9 @@ public abstract class MixinBlockRenderManager {
 		if (yttr$reentering) return;
 		if (bs.getBlock() instanceof BigBlock) {
 			BigBlock b = (BigBlock)bs.getBlock();
-			int bX = bs.get(b.X);
-			int bY = bs.get(b.Y);
-			int bZ = bs.get(b.Z);
+			int bX = bs.get(b.xProp);
+			int bY = bs.get(b.yProp);
+			int bZ = bs.get(b.zProp);
 			BlockPos origin = pos.add(-bX, -bY, -bZ);
 			yttr$reentering = true;
 			try {

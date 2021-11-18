@@ -33,9 +33,9 @@ public abstract class MixinParticleManager {
 		BlockState bs = world.getBlockState(pos);
 		if (bs.getBlock() instanceof BigBlock) {
 			BigBlock b = (BigBlock)bs.getBlock();
-			int bX = bs.get(b.X);
-			int bY = bs.get(b.Y);
-			int bZ = bs.get(b.Z);
+			int bX = bs.get(b.xProp);
+			int bY = bs.get(b.yProp);
+			int bZ = bs.get(b.zProp);
 			yttr$reentering = true;
 			try {
 				// there's probably a better way to do this, but whatever

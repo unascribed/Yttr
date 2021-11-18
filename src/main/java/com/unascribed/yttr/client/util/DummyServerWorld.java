@@ -380,11 +380,6 @@ public class DummyServerWorld extends ServerWorld {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return getDelegate().equals(obj);
-	}
-
-	@Override
 	public boolean isWater(BlockPos pos) {
 		return getDelegate().isWater(pos);
 	}

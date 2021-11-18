@@ -32,6 +32,8 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -86,18 +88,19 @@ public class ReplicatorRenderer extends IHasAClient {
 				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(t*(rand.nextFloat()*2)));
 				matrices.scale(1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f), 1.4f-(rand.nextFloat()*0.65f));
 		
+				VertexConsumer vc = wrc.consumers().getBuffer(RenderLayer.getLines());
 				switch (shape) {
 					case 0:
 						matrices.scale(0.5f, 0.5f, 0.5f);
-						ReplicatorShapes.octahedronOutline(matrices, boc.vertexConsumer(), 0, 0, 0, 0.4f);
+						ReplicatorShapes.octahedronOutline(matrices, vc, 0, 0, 0, 0.4f);
 						break;
 					case 1:
 						matrices.scale(0.509165f, 0.509165f, 0.509165f);
-						ReplicatorShapes.dodecahedronOutline(matrices, boc.vertexConsumer(), 0, 0, 0, 0.4f);
+						ReplicatorShapes.dodecahedronOutline(matrices, vc, 0, 0, 0, 0.4f);
 						break;
 					case 2:
 						matrices.scale(0.5f, 0.5f, 0.5f);
-						ReplicatorShapes.icosahedronOutline(matrices, boc.vertexConsumer(), 0, 0, 0, 0.4f);
+						ReplicatorShapes.icosahedronOutline(matrices, vc, 0, 0, 0, 0.4f);
 						break;
 				}
 				matrices.pop();

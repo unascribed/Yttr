@@ -231,7 +231,7 @@ public class Module {
 				loopStart = sampleLength;
 				loopLength = 0;
 			}
-			boolean stereo = ( moduleData.uByte( instOffset + 31 ) & 0x2 ) == 0x2;
+//			boolean stereo = ( moduleData.uByte( instOffset + 31 ) & 0x2 ) == 0x2;
 			boolean sixteenBit = ( moduleData.uByte( instOffset + 31 ) & 0x4 ) == 0x4;
 			if( packed ) throw new IllegalArgumentException( "Packed samples not supported!" );
 			int c2Rate = moduleData.uleInt( instOffset + 32 );

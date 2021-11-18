@@ -49,6 +49,7 @@ public class VoidLogic {
 
 	private static final DateFormat fmt = new SimpleDateFormat("YYYY-MM-dd_HH-mm-ss");
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void doVoid(PlayerEntity user, World _world, Vec3d _pos, int r) {
 		// TODO this really needs some optimizing; the NBT undo files are oversized and the index
 		// can't be used efficiently. not going to make a huge deal out of it right now

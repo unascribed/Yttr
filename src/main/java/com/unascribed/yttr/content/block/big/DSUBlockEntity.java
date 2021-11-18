@@ -39,9 +39,9 @@ public class DSUBlockEntity extends BlockEntity implements DelegatingInventory, 
 		BlockState state = getCachedState();
 		if (!(state.getBlock() instanceof DSUBlock)) return this;
 		BigBlock b = (BigBlock)state.getBlock();
-		int x = state.get(b.X);
-		int y = state.get(b.Y);
-		int z = state.get(b.Z);
+		int x = state.get(b.xProp);
+		int y = state.get(b.yProp);
+		int z = state.get(b.zProp);
 		if (x == 0 && y == 0 && z == 0) return this;
 		BlockEntity origin = world.getBlockEntity(pos.add(-x, -y, -z));
 		if (!(origin instanceof DSUBlockEntity)) return this;

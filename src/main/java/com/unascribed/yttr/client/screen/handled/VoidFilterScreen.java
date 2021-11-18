@@ -119,8 +119,6 @@ public class VoidFilterScreen extends HandledScreen<VoidFilterScreenHandler> {
 		public int maxAge;
 		public float gravity;
 
-		public int color = -1;
-		
 		public GuiParticle(double x, double y) {
 			posX = x;
 			posY = y;

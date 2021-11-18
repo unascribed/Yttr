@@ -44,6 +44,7 @@ public class NetherWoodSwapStructureProcessor extends StructureProcessor {
 		this.warped = warped;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public StructureBlockInfo process(WorldView world,
 			BlockPos unk, BlockPos unk2,
