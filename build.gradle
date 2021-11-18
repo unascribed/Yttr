@@ -48,6 +48,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
+	modImplementation "com.unascribed:ears-api:1.4.1"
 
 	modRuntime("io.github.prospector:modmenu:1.16.6") {
 		transitive = false

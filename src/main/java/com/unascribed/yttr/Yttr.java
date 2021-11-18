@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
+import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBiomes;
 import com.unascribed.yttr.init.YBlockEntities;
@@ -62,6 +63,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -179,6 +181,12 @@ public class Yttr implements ModInitializer {
 				}));
 			}
 		});
+		
+		if (FabricLoader.getInstance().isModLoaded("ears")) {
+			try {
+				EarsCompat.init();
+			} catch (Throwable t) {}
+		}
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {

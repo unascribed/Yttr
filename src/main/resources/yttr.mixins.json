@@ -150,8 +150,6 @@
 	"subgroup.MixinCreativeInventoryScreen",
 	"subgroup.MixinItemGroup",
 	"snare.MixinHeldItemRenderer",
-	
-	"diving.client.MixinAbstractEarsRenderDelegate"
   ],
   "injectors": {
     "defaultRequire": 1
