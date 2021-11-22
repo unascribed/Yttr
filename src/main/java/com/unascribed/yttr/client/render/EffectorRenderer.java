@@ -49,72 +49,77 @@ public class EffectorRenderer extends IHasAClient {
 		if (effectorHoles.isEmpty()) return;
 		ClientWorld w = wrc.world();
 		if (!(w instanceof YttrWorld)) return;
-		Vec3d cam = wrc.camera().getPos();
-		MatrixStack ms = new MatrixStack();
-		ms.translate(-cam.x, -cam.y, -cam.z);
-		BlockPos.Mutable mut = new BlockPos.Mutable();
-		List<Axis> axes = Arrays.asList(Direction.Axis.values());
-		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder bb = tess.getBuffer();
-		for (EffectorHole hole : effectorHoles) {
-			Axis axisZ = hole.dir.getAxis();
-			Axis axisX = Iterables.find(axes, a -> a != axisZ);
-			Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
-			float t = hole.age+wrc.tickDelta();
-			float a;
-			if (t <= 4) {
-				a = 1-Interp.sCurve5(1-(t/4));
-			} else if (t >= 130) {
-				a = Interp.sCurve5((150-t)/20);
-			} else {
-				a = 1;
+		((YttrWorld)w).yttr$setUnmask(true);
+		try {
+			Vec3d cam = wrc.camera().getPos();
+			MatrixStack ms = new MatrixStack();
+			ms.translate(-cam.x, -cam.y, -cam.z);
+			BlockPos.Mutable mut = new BlockPos.Mutable();
+			List<Axis> axes = Arrays.asList(Direction.Axis.values());
+			Tessellator tess = Tessellator.getInstance();
+			BufferBuilder bb = tess.getBuffer();
+			for (EffectorHole hole : effectorHoles) {
+				Axis axisZ = hole.dir.getAxis();
+				Axis axisX = Iterables.find(axes, a -> a != axisZ);
+				Axis axisY = Iterables.find(Lists.reverse(axes), a -> a != axisZ);
+				float t = hole.age+wrc.tickDelta();
+				float a;
+				if (t <= 4) {
+					a = 1-Interp.sCurve5(1-(t/4));
+				} else if (t >= 130) {
+					a = Interp.sCurve5((150-t)/20);
+				} else {
+					a = 1;
+				}
+				if (a < 0.05) a = 0;
+				if (a > 0.95) a = 1;
+				if (a != 1) {
+					drawVoidCap(w, ms, mut, hole.length, axisX, axisY, a, hole.start, hole.dir);
+					drawVoidCap(w, ms, mut, 0, axisX, axisY, a, hole.start.offset(hole.dir, hole.length-1), hole.dir.getOpposite());
+				}
+				bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
+				for (int z = 0; z < hole.length; z++) {
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -2);
+					EffectorItem.move(mut, axisX, -1);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.POSITIVE));
+						EffectorItem.move(mut, axisX, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, 2);
+					EffectorItem.move(mut, axisX, -1);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.NEGATIVE));
+						EffectorItem.move(mut, axisX, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -1);
+					EffectorItem.move(mut, axisX, -2);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.POSITIVE));
+						EffectorItem.move(mut, axisY, 1);
+					}
+					mut.set(hole.start).move(hole.dir, z);
+					EffectorItem.move(mut, axisY, -1);
+					EffectorItem.move(mut, axisX, 2);
+					for (int i = 0; i < 3; i++) {
+						drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.NEGATIVE));
+						EffectorItem.move(mut, axisY, 1);
+					}
+				}
+				GlStateManager.depthMask(false);
+				GlStateManager.disableTexture();
+				GlStateManager.enablePolygonOffset();
+				GlStateManager.polygonOffset(-3, -3);
+				tess.draw();
+				GlStateManager.enableTexture();
+				GlStateManager.depthMask(true);
+				GlStateManager.depthFunc(GL11.GL_LESS);
+				GlStateManager.disablePolygonOffset();
 			}
-			if (a < 0.05) a = 0;
-			if (a > 0.95) a = 1;
-			if (a != 1) {
-				drawVoidCap(w, ms, mut, hole.length, axisX, axisY, a, hole.start, hole.dir);
-				drawVoidCap(w, ms, mut, 0, axisX, axisY, a, hole.start.offset(hole.dir, hole.length-1), hole.dir.getOpposite());
-			}
-			bb.begin(GL11.GL_QUADS, RenderLayer.getSolid().getVertexFormat());
-			for (int z = 0; z < hole.length; z++) {
-				mut.set(hole.start).move(hole.dir, z);
-				EffectorItem.move(mut, axisY, -2);
-				EffectorItem.move(mut, axisX, -1);
-				for (int i = 0; i < 3; i++) {
-					drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.POSITIVE));
-					EffectorItem.move(mut, axisX, 1);
-				}
-				mut.set(hole.start).move(hole.dir, z);
-				EffectorItem.move(mut, axisY, 2);
-				EffectorItem.move(mut, axisX, -1);
-				for (int i = 0; i < 3; i++) {
-					drawVoidFace(w, ms, bb, mut, Direction.from(axisY, AxisDirection.NEGATIVE));
-					EffectorItem.move(mut, axisX, 1);
-				}
-				mut.set(hole.start).move(hole.dir, z);
-				EffectorItem.move(mut, axisY, -1);
-				EffectorItem.move(mut, axisX, -2);
-				for (int i = 0; i < 3; i++) {
-					drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.POSITIVE));
-					EffectorItem.move(mut, axisY, 1);
-				}
-				mut.set(hole.start).move(hole.dir, z);
-				EffectorItem.move(mut, axisY, -1);
-				EffectorItem.move(mut, axisX, 2);
-				for (int i = 0; i < 3; i++) {
-					drawVoidFace(w, ms, bb, mut, Direction.from(axisX, AxisDirection.NEGATIVE));
-					EffectorItem.move(mut, axisY, 1);
-				}
-			}
-			GlStateManager.depthMask(false);
-			GlStateManager.disableTexture();
-			GlStateManager.enablePolygonOffset();
-			GlStateManager.polygonOffset(-3, -3);
-			tess.draw();
-			GlStateManager.enableTexture();
-			GlStateManager.depthMask(true);
-			GlStateManager.depthFunc(GL11.GL_LESS);
-			GlStateManager.disablePolygonOffset();
+		} finally {
+			((YttrWorld)w).yttr$setUnmask(false);
 		}
 	}
 	

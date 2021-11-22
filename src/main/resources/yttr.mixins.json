@@ -26,6 +26,7 @@
 	"effector.MixinEntity",
 	"effector.MixinRaycastContext",
 	"effector.MixinWorld",
+	"effector.MixinWorldChunk",
 	"effector.MixinLivingEntity",
 	"effector.MixinVoxelShapes",
 	"crafting_sound.MixinCraftingRecipeSerializers",
@@ -112,7 +113,6 @@
 	"rifle.client.MixinGameRenderer",
 	"rifle.client.MixinEntity",
 	"tooltip.client.MixinItemStack",
-	"effector.client.MixinChunkRendererRegion",
 	"effector.client.MixinClientWorld",
 	"effector.client.MixinInGameOverlayRenderer",
 	"effector.client.MixinItemRenderer",
@@ -150,6 +150,8 @@
 	"subgroup.MixinCreativeInventoryScreen",
 	"subgroup.MixinItemGroup",
 	"snare.MixinHeldItemRenderer",
+	
+	"effector.sodium.MixinWorldSlice"
   ],
   "injectors": {
     "defaultRequire": 1
