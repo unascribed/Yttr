@@ -70,6 +70,10 @@
 	"item.yttr.shifter": "Continuous Shifter",
 	"item.yttr.projector": "Continuous Projector",
 	"item.yttr.extrapolator": "Continuous Extrapolator",
+	"item.yttr.promethium_speck": "Promethium Speck",
+	"item.yttr.promethium_lump": "Promethium Lump",
+	"item.yttr.promethium_glob": "Promethium Glob",
+	"item.yttr.magcapsule": "Magcapsule",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -104,6 +108,7 @@
 	
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
+	"item.yttr.neodymium_disc.desc": "???",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Block of Yttrium",

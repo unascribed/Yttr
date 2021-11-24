@@ -47,7 +47,6 @@ import com.unascribed.yttr.content.block.void_.BedrockSmasherBlock;
 import com.unascribed.yttr.content.block.void_.DivingPlateBlock;
 import com.unascribed.yttr.content.block.void_.DormantVoidGeyserBlock;
 import com.unascribed.yttr.content.block.void_.ErodedBedrockBlock;
-import com.unascribed.yttr.content.block.void_.EvaporatorBlock;
 import com.unascribed.yttr.content.block.void_.MagtubeBlock;
 import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
@@ -108,7 +107,8 @@ public class YBlocks {
 	
 	private static final FabricBlockSettings HOLLOWHUGE_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 			.sounds(HOLLOWHUGE_SOUNDS)
-			.strength(8);
+			.strength(8)
+			.nonOpaque();
 //	private static final FabricBlockSettings HOLLOW_SETTINGS = FabricBlockSettings.copyOf(METALLIC_SETTINGS)
 //			.sounds(HOLLOW_SOUNDS);
 	
@@ -415,8 +415,6 @@ public class YBlocks {
 	
 	@RenderLayer("cutout")
 	public static final MagtubeBlock MAGTUBE = new MagtubeBlock(METALLIC_SETTINGS);
-	
-	public static final EvaporatorBlock EVAPORATOR = new EvaporatorBlock(METALLIC_SETTINGS);
 	
 	public static final Block WASTELAND_DIRT = new Block(FabricBlockSettings.copyOf(Blocks.DIRT)
 			.strength(0.8f)

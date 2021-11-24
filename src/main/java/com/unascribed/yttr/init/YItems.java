@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.ContinuityItemColorProvider;
 import com.unascribed.yttr.client.render.LampItemRenderer;
@@ -39,6 +41,8 @@ import com.unascribed.yttr.util.annotate.ConstantColor;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
@@ -110,7 +114,6 @@ public class YItems {
 	public static final BlockItem BROOKITE_BLOCK = createNormalBlockItem(YBlocks.BROOKITE_BLOCK);
 	public static final BlockItem NETHERTUFF = createNormalBlockItem(YBlocks.NETHERTUFF);
 	public static final BlockItem MAGTUBE = createNormalBlockItem(YBlocks.MAGTUBE);
-	public static final BlockItem EVAPORATOR = createNormalBlockItem(YBlocks.EVAPORATOR);
 	public static final BlockItem HIGH_NOTE_BLOCK = createNormalBlockItem(YBlocks.HIGH_NOTE_BLOCK);
 	public static final BlockItem LOW_NOTE_BLOCK = createNormalBlockItem(YBlocks.LOW_NOTE_BLOCK);
 	public static final BlockItem BOGGED_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_NOTE_BLOCK);
@@ -260,7 +263,13 @@ public class YItems {
 			.maxCount(1));
 	
 	public static final Item NEODYMIUM_DUST = new Item(new Item.Settings());
-	public static final Item NEODYMIUM_DISC = new Item(new Item.Settings());
+	public static final MusicDiscItem NEODYMIUM_DISC = new MusicDiscItem(15, YSounds.BUZZ, new Item.Settings()) {
+		@Override
+		@Environment(EnvType.CLIENT)
+		public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+			// no-op to remove music disc tooltip
+		}
+	};
 	
 	private static final ArmorMaterial SUIT_MATERIAL = new ArmorMaterial() {
 
@@ -462,6 +471,12 @@ public class YItems {
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	
 	public static final Item RUBBLE = new Item(new Item.Settings()) {};
+	
+	public static final Item PROMETHIUM_SPECK = new Item(new Item.Settings().rarity(Rarity.EPIC));
+	public static final Item PROMETHIUM_LUMP = new Item(new Item.Settings().rarity(Rarity.EPIC));
+	public static final Item PROMETHIUM_GLOB = new Item(new Item.Settings().rarity(Rarity.EPIC));
+	
+	public static final Item MAGCAPSULE = new Item(new Item.Settings().maxCount(1));
 	
 	@ColorProvider(ContinuityItemColorProvider.class)
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()

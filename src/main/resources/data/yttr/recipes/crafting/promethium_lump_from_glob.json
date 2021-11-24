@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:promethium_glob"
+    }
+  ],
+  "result": {
+    "item": "yttr:promethium_lump",
+    "count": 4
+  }
+}

@@ -11,6 +11,7 @@ import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
+import com.unascribed.yttr.content.block.big.BigBlock;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
@@ -160,6 +161,7 @@ public class ShifterItem extends Item {
 		} else {
 			if (!(i instanceof BlockItem)) return;
 			Block b = ((BlockItem)i).getBlock();
+			if (b instanceof BigBlock) return;
 			bhr = new BlockHitResult(new Vec3d(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5), Direction.UP, pos, true);
 			replState = b.getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
 		}

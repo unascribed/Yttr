@@ -85,8 +85,7 @@ public class YItemGroups {
 				YItems.VOID_FILTER,
 				YItems.MAGTANK,
 				YItems.MAGTUBE,
-				YItems.DSU,
-				YItems.EVAPORATOR
+				YItems.DSU
 			);
 		assign(MECHANISMS,
 				YItems.POWER_METER,

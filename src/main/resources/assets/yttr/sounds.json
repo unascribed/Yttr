@@ -481,6 +481,9 @@
 		],
 		"subtitle": "subtitles.yttr.vorpalhit"
 	},
+	"buzz": {
+		"sounds": [ { "name": "yttr:buzz" } ]
+	},
 	
 	"low_note.basedrum": {
 		"sounds": [

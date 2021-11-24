@@ -37,7 +37,6 @@ public class FilterNetwork {
 		DEAD_FILTER,
 		DSU,
 		TANK,
-		EVAPORATOR,
 	}
 	
 	public static class Node {
@@ -71,7 +70,6 @@ public class FilterNetwork {
 	private final Multimap<NodeType, Node> membersByType = HashMultimap.create();
 	
 	private int totalFluidCapacity;
-	private int evaporationPerTick;
 	private int fluidProductionPerTick;
 	
 	private int fluidContent;
@@ -202,15 +200,12 @@ public class FilterNetwork {
 				owner.world.setBlockState(n.pos, bs.with(VoidFilterBlock.INDEPENDENT, !complete));
 			}
 		}
-		evaporationPerTick = membersByType.get(NodeType.EVAPORATOR).size()*150;
-		totalFluidCapacity = (membersByType.get(NodeType.PIPE).size()*100) + (membersByType.get(NodeType.TANK).size()*32000);
-		fluidProductionPerTick = membersByType.get(NodeType.FILTER).size()*400;
-		System.out.println("evaporation per tick: "+evaporationPerTick);
+		totalFluidCapacity = (membersByType.get(NodeType.PIPE).size()*100) + (membersByType.get(NodeType.TANK).size()*64000);
+		fluidProductionPerTick = membersByType.get(NodeType.FILTER).size()*2;
 		System.out.println("total capacity: "+totalFluidCapacity);
 		System.out.println("production per tick: "+fluidProductionPerTick);
-		if (fluidProductionPerTick > evaporationPerTick) {
-			int effective = fluidProductionPerTick-evaporationPerTick;
-			System.out.println("time to destruction: "+(totalFluidCapacity/effective));
+		if (fluidProductionPerTick > 0) {
+			System.out.println("time to destruction: "+((totalFluidCapacity/fluidProductionPerTick)/1200)+"m");
 		} else {
 			System.out.println("time to destruction: ∞");
 		}
@@ -224,7 +219,6 @@ public class FilterNetwork {
 		membersByPos.clear();
 		membersByType.clear();
 		totalFluidCapacity = 0;
-		evaporationPerTick = 0;
 	}
 
 	public FilterNetworks getOwner() {
@@ -248,7 +242,7 @@ public class FilterNetwork {
 	}
 	
 	public boolean isComplete() {
-		return (membersByType.containsKey(NodeType.TANK) || membersByType.containsKey(NodeType.EVAPORATOR))
+		return membersByType.containsKey(NodeType.TANK)
 				&& membersByType.containsKey(NodeType.DSU)
 				&& membersByType.containsKey(NodeType.FILTER);
 	}
