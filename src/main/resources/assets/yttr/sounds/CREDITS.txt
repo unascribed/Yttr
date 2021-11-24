@@ -13,6 +13,7 @@ aware_hopper_say3.ogg:
 aware_hopper_scream.ogg:
 	Vanilla Minecraft mob/zombie/hurt1
 	Vanilla Minecraft mob/endermen/scream2
+buzz.ogg: https://freesound.org/people/Ev-Dawg/sounds/337434/
 centrifuge1.ogg: https://freesound.org/people/TheMinkman/sounds/359135/
 centrifuge2.ogg: https://freesound.org/people/TheMinkman/sounds/359134/
 craft_aware_hopper.ogg:
@@ -49,6 +50,7 @@ honk.ogg: https://freesound.org/people/AmishRob/sounds/423990/
 melt_glowstone.ogg:
 	https://freesound.org/people/sniperous/sounds/365071/
 	https://freesound.org/people/LloydEvans09/sounds/221488/
+memorandum.ogg: Based on VoxelMenu menu1.ogg
 metal_button.ogg: Vanilla Minecraft random/click
 papillons.yttr_xm: https://modarchive.org/index.php?request=view_by_moduleid&query=185304
 replicator_appear.ogg: https://freesound.org/people/LittleRobotSoundFactory/sounds/290380/
