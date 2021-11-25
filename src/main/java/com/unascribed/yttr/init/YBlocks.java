@@ -20,6 +20,9 @@ import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
+import com.unascribed.yttr.content.block.inred.InRedBlock;
+import com.unascribed.yttr.content.block.inred.InRedCableBlock;
+import com.unascribed.yttr.content.block.inred.InRedScaffoldBlock;
 import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
 import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
@@ -557,6 +560,18 @@ public class YBlocks {
 	public static final Block SOUL_PLANKS = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
 			.materialColor(MapColor.BROWN)
 		);
+
+	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
+			.materialColor(MapColor.MAGENTA)
+	);
+
+	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
+			.strength(0F, 8F)
+	);
+
+	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
+			.strength(0F, 8F)
+	);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

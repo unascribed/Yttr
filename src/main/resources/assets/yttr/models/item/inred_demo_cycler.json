@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "yttr:block/inred_demo_cycler"
+  }
+}
