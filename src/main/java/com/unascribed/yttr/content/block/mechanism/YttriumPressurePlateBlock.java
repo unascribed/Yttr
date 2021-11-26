@@ -1,12 +1,13 @@
 package com.unascribed.yttr.content.block.mechanism;
 
+import com.unascribed.yttr.init.YSounds;
+
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractPressurePlateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
@@ -41,12 +42,12 @@ public class YttriumPressurePlateBlock extends AbstractPressurePlateBlock {
 
 	@Override
 	protected void playPressSound(WorldAccess world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3f, 0.9f);
+		world.playSound(null, pos, YSounds.METAL_PLATE_ON, SoundCategory.BLOCKS, 0.3f, 0.6f);
 	}
 
 	@Override
 	protected void playDepressSound(WorldAccess world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3f, 0.75f);
+		world.playSound(null, pos, YSounds.METAL_PLATE_OFF, SoundCategory.BLOCKS, 0.3f, 0.5f);
 	}
 
 	@Override

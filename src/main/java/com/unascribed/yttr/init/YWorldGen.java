@@ -64,7 +64,7 @@ public class YWorldGen {
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
 	}
 
-	private static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {
+	protected static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {
 		return RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", path));
 	}
 

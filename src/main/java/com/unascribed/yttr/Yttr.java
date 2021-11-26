@@ -22,6 +22,7 @@ import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YBrewing;
 import com.unascribed.yttr.init.YCommands;
+import com.unascribed.yttr.init.YCopper;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YEntities;
@@ -72,6 +73,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -83,9 +85,19 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.chunk.DebugChunkGenerator;
 
 public class Yttr implements ModInitializer {
+	
+	public static Yttr INST;
+	
+	public Yttr() {
+		if (INST != null) throw new AssertionError("Double initialized!");
+		INST = this;
+	}
+	
+	public static boolean COPPER_FALLBACK_ACTIVE = false;
 	
 	public static final int DIVING_BLOCKS_PER_TICK = 2;
 	
@@ -124,26 +136,6 @@ public class Yttr implements ModInitializer {
 		YNetwork.init();
 		YFuels.init();
 		YItemGroups.init();
-		
-		// TODO this should probably live somewhere else; this would be a nice time for an onPostInitialize {
-		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
-		Set<BlockState> known = Sets.newHashSet(states);
-		List<BlockState> newStates = Registry.BLOCK.stream()
-			.flatMap(b -> b.getStateManager().getStates().stream())
-			.filter(bs -> !known.contains(bs))
-			.collect(Collectors.toList());
-		if (newStates.isEmpty()) {
-			YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
-		} else {
-			YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
-			states.addAll(newStates);
-			int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
-			int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
-			DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
-			DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
-			YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
-		}
-		// }
 		
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
 			if (player instanceof ServerPlayerEntity) {
@@ -186,6 +178,41 @@ public class Yttr implements ModInitializer {
 			try {
 				EarsCompat.init();
 			} catch (Throwable t) {}
+		}
+	}
+	
+	public void onPostInitialize() {
+		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
+		Set<BlockState> known = Sets.newHashSet(states);
+		List<BlockState> newStates = Registry.BLOCK.stream()
+			.flatMap(b -> b.getStateManager().getStates().stream())
+			.filter(bs -> !known.contains(bs))
+			.collect(Collectors.toList());
+		if (newStates.isEmpty()) {
+			YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
+		} else {
+			YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
+			states.addAll(newStates);
+			int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
+			int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
+			DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
+			DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
+			YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
+		}
+		
+		boolean foundCopper = false;
+		for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntries()) {
+			if (id.getKey().getValue().getPath().contains("copper_ingot")) {
+				YLog.info("Found a copper ingot supplied by {}", id.getKey().getValue().getNamespace());
+				YLog.info("Note that this check does not guarantee this copper ingot will be recognized by Yttr; if it isn't, make sure it's in the c:copper_ingots tag.");
+				foundCopper = true;
+				break;
+			}
+		}
+		if (!foundCopper) {
+			YLog.warn("I can't find a copper ingot, so I'm adding my own!");
+			COPPER_FALLBACK_ACTIVE = true;
+			YCopper.init();
 		}
 	}
 

@@ -18,6 +18,7 @@
 	"entrypoints": {
 		"main": [ "com.unascribed.yttr.Yttr" ],
 		"client": [ "com.unascribed.yttr.client.YttrClient" ],
+		"server": [ "com.unascribed.yttr.YttrServer" ],
 		"rei_plugins": [ "com.unascribed.yttr.compat.rei.YttrREIPlugin" ]
 	},
 	"mixins": [

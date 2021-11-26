@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:yttrium_plating"
+    }
+  ],
+  "result": {
+    "item": "yttr:yttrium_nugget",
+    "count": 2
+  }
+}

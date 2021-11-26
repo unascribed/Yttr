@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CC"
+  ],
+  "key": {
+    "C": { "item": "yttr:cuprosteel_ingot" }
+  },
+  "result": {
+    "item": "yttr:cuprosteel_plate"
+  }
+}

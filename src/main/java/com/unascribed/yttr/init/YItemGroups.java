@@ -76,7 +76,12 @@ public class YItemGroups {
 				YItems.ROOT_OF_CONTINUITY,
 				YItems.DROP_OF_CONTINUITY,
 				YItems.NETHERTUFF,
-				YItems.GLASSY_VOID_PANE
+				YItems.GLASSY_VOID_PANE,
+				YItems.PROMETHIUM_SPECK,
+				YItems.PROMETHIUM_LUMP,
+				YItems.PROMETHIUM_GLOB,
+				YItems.CUPROSTEEL_INGOT,
+				YItems.CUPROSTEEL_BLOCK
 			);
 		assign(FILTERING,
 				YItems.COMPRESSED_ULTRAPURE_CARBON,
@@ -85,7 +90,8 @@ public class YItemGroups {
 				YItems.VOID_FILTER,
 				YItems.MAGTANK,
 				YItems.MAGTUBE,
-				YItems.DSU
+				YItems.DSU,
+				YItems.MAGCAPSULE
 			);
 		assign(MECHANISMS,
 				YItems.POWER_METER,
@@ -104,7 +110,8 @@ public class YItemGroups {
 				YItems.LOW_NOTE_BLOCK,
 				YItems.BOGGED_NOTE_BLOCK,
 				YItems.BOGGED_HIGH_NOTE_BLOCK,
-				YItems.BOGGED_LOW_NOTE_BLOCK
+				YItems.BOGGED_LOW_NOTE_BLOCK,
+				YItems.CUPROSTEEL_PLATE
 			);
 		assign(EQUIPMENT,
 				YItems.BROOKITE_SWORD,

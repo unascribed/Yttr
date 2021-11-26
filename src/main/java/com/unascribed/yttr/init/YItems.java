@@ -124,6 +124,8 @@ public class YItems {
 	public static final BlockItem CLAMBER_BLOCK = createNormalBlockItem(YBlocks.CLAMBER_BLOCK);
 	public static final BlockItem SOUL_CLAMBER_BLOCK = createNormalBlockItem(YBlocks.SOUL_CLAMBER_BLOCK);
 	public static final BlockItem SOUL_PLANKS = createNormalBlockItem(YBlocks.SOUL_PLANKS);
+	public static final BlockItem CUPROSTEEL_BLOCK = createNormalBlockItem(YBlocks.CUPROSTEEL_BLOCK);
+	public static final BlockItem CUPROSTEEL_PLATE = createNormalBlockItem(YBlocks.CUPROSTEEL_PLATE);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
@@ -477,6 +479,7 @@ public class YItems {
 	public static final Item PROMETHIUM_GLOB = new Item(new Item.Settings().rarity(Rarity.EPIC));
 	
 	public static final Item MAGCAPSULE = new Item(new Item.Settings().maxCount(1));
+	public static final Item CUPROSTEEL_INGOT = new Item(new Item.Settings());
 	
 	@ColorProvider(ContinuityItemColorProvider.class)
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()

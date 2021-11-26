@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "yttr:block/cuprosteel_plate"
+    },
+    "powered=true": {
+      "model": "yttr:block/cuprosteel_plate_down"
+    }
+  }
+}

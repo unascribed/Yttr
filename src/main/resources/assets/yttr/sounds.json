@@ -484,6 +484,14 @@
 	"buzz": {
 		"sounds": [ { "name": "yttr:buzz" } ]
 	},
+	"metal_plate_on": {
+		"sounds": [ "yttr:metal_button" ],
+		"subtitle": "subtitles.block.pressure_plate.click"
+	},
+	"metal_plate_off": {
+		"sounds": [ "yttr:metal_button" ],
+		"subtitle": "subtitles.block.pressure_plate.click"
+	},
 	
 	"low_note.basedrum": {
 		"sounds": [

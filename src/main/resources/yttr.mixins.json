@@ -88,6 +88,7 @@
 	"clamber.MixinLivingEntity",
 	"mender.MixinServerWorld",
 	"mender.MixinAbstractBlockState",
+	"only_if.MixinJsonDataLoader",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",

@@ -131,6 +131,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	@Override
 	public void onInitializeClient() {
+		Yttr.INST.onPostInitialize();
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			additionalSprites.forEach(registry::register);
 		});

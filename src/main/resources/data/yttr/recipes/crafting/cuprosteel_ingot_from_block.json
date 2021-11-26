@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "cuprosteel_ingot",
+  "ingredients": [
+    {
+      "item": "yttr:cuprosteel_block"
+    }
+  ],
+  "result": {
+    "item": "yttr:cuprosteel_ingot",
+    "count": 9
+  }
+}

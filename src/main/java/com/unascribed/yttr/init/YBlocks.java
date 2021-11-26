@@ -23,6 +23,7 @@ import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
 import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
+import com.unascribed.yttr.content.block.mechanism.CuprosteelPressurePlateBlock;
 import com.unascribed.yttr.content.block.mechanism.DopperBlock;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlock;
 import com.unascribed.yttr.content.block.mechanism.LevitationChamberBlock;
@@ -557,6 +558,9 @@ public class YBlocks {
 	public static final Block SOUL_PLANKS = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
 			.materialColor(MapColor.BROWN)
 		);
+	
+	public static final Block CUPROSTEEL_BLOCK = new Block(METALLIC_SETTINGS);
+	public static final CuprosteelPressurePlateBlock CUPROSTEEL_PLATE = new CuprosteelPressurePlateBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

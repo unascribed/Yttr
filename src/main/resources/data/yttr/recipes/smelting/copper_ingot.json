@@ -1,0 +1,10 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "yttr:copper_ore"
+	},
+	"yttr:only_if": "copper_fallback",
+	"result": "yttr:copper_ingot",
+	"experience": 0.7,
+	"cookingtime": 200
+}

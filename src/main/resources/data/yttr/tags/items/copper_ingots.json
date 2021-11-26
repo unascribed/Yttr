@@ -1,0 +1,10 @@
+{
+	"values": [
+		"#c:copper_ingots",
+		"yttr:ultrapure_copper",
+		{
+			"id": "cavesandcliffs:copper_ingot",
+			"required": false
+		}
+	]
+}

@@ -74,6 +74,8 @@
 	"item.yttr.promethium_lump": "Promethium Lump",
 	"item.yttr.promethium_glob": "Promethium Glob",
 	"item.yttr.magcapsule": "Magcapsule",
+	"item.yttr.cuprosteel_ingot": "Cuprosteel Ingot",
+	"item.yttr.copper_ingot": "Copper Ingot",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -186,6 +188,9 @@
 	"block.yttr.clamber_block": "Clamber Block",
 	"block.yttr.soul_clamber_block": "Soul Clamber Block",
 	"block.yttr.soul_planks": "Soul Planks",
+	"block.yttr.cuprosteel_block": "Block of Cuprosteel",
+	"block.yttr.cuprosteel_plate": "Cuprosteel Pressure Plate",
+	"block.yttr.copper_ore": "Copper Ore",
 	
 	"block.yttr.bogged_note_block.tip.1": "§7Plays after half a redstone tick.",
 	

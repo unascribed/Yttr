@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "cuprosteel_ingot",
+  "ingredients": [
+    { "tag": "yttr:copper_ingots" },
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "result": {
+    "item": "yttr:cuprosteel_ingot",
+    "count": 2
+  }
+}
