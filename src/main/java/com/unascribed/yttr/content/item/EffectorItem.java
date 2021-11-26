@@ -41,7 +41,7 @@ import net.minecraft.world.RaycastContext.FluidHandling;
 
 public class EffectorItem extends Item {
 
-	public static final int MAX_FUEL = 512;
+	public static final int MAX_FUEL = 2048;
 	
 	public EffectorItem(Settings settings) {
 		super(settings);
