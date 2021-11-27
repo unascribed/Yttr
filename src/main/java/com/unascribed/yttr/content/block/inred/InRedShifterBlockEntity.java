@@ -70,6 +70,7 @@ public class InRedShifterBlockEntity extends InRedDeviceBlockEntity {
 		}
 		eject.setNextSignalValue(0);
 		eject.setSignalValue(0);
+		world.setBlockState(pos, getCachedState().with(InRedShifterBlock.SELECTION, selection));
 		sync();
 	}
 

@@ -579,12 +579,14 @@ public class YBlocks {
 	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
 			.materialColor(MapColor.MAGENTA)
 	);
-	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
-			.strength(0F, 8F)
-	);
 	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(0F, 8F)
 			.breakInstantly()
+	);
+	@RenderLayer("cutout")
+	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
+			.strength(0F, 8F)
+			.nonOpaque()
 	);
 	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
 	public static final InRedNotGateBlock INRED_NOT_GATE = new InRedNotGateBlock(INRED_DEVICE_SETTINGS);

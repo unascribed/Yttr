@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "yttr:block/inred_transistor" },
+    "facing=south": { "model": "yttr:block/inred_transistor", "y": 180 },
+    "facing=west":  { "model": "yttr:block/inred_transistor", "y": 270 },
+    "facing=east":  { "model": "yttr:block/inred_transistor", "y": 90 }
+  }
+}

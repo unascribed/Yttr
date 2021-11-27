@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public abstract class InRedDeviceBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
@@ -48,5 +49,11 @@ public abstract class InRedDeviceBlockEntity extends BlockEntity implements Tick
 	@Override
 	public NbtCompound toClientTag(NbtCompound tag) {
 		return writeNbt(tag);
+	}
+
+	@Override
+	public void sync() {
+		BlockEntityClientSerializable.super.sync();
+		world.updateNeighborsAlways(pos, getCachedState().getBlock());
 	}
 }

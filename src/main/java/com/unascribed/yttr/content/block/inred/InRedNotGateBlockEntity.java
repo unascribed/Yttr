@@ -61,7 +61,8 @@ public class InRedNotGateBlockEntity extends InRedDeviceBlockEntity {
 			booleanMode = true;
 			world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.55f);
 		}
-		markDirty();
+		world.setBlockState(pos, getCachedState().with(InRedNotGateBlock.BOOLEAN_MODE, booleanMode));
+		sync();
 	}
 
 	@Override

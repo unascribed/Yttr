@@ -7,8 +7,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -19,6 +23,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class InRedCableBlock extends Block implements Waterloggable {
 	public static final EnumProperty<CableConnection> NORTH = EnumProperty.of("north", CableConnection.class);
@@ -70,6 +75,11 @@ public class InRedCableBlock extends Block implements Waterloggable {
 		return result;
 	}
 
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return VoxelShapes.empty();
+	}
+
 	private CableConnection getCableConnections(BlockView world, BlockPos pos, Direction dir) {
 		if (InRedLogic.canConnect(world, pos.offset(dir), dir.getOpposite())) return CableConnection.CONNECTED;
 
@@ -98,5 +108,47 @@ public class InRedCableBlock extends Block implements Waterloggable {
 				.with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
 	}
 
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		world.updateNeighborsAlways(pos, this);
+		world.updateNeighborsAlways(pos.up(), this);
+		world.updateNeighborsAlways(pos.down(), this);
+	}
 
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onStateReplaced(state, world, pos, newState, moved);
+		world.updateNeighborsAlways(pos, this);
+		world.updateNeighborsAlways(pos.up(), this);
+		world.updateNeighborsAlways(pos.down(), this);
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBreak(world, pos, state, player);
+		world.updateNeighborsAlways(pos, this);
+		world.updateNeighborsAlways(pos.up(), this);
+		world.updateNeighborsAlways(pos.down(), this);
+	}
+
+	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		super.neighborUpdate(state, world, pos, block, fromPos, notify);
+		if (state.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		world.setBlockState(pos, this.getDefaultState()
+				.with(NORTH, getCableConnections(world, pos, Direction.NORTH))
+				.with(SOUTH, getCableConnections(world, pos, Direction.SOUTH))
+				.with(EAST, getCableConnections(world, pos, Direction.EAST))
+				.with(WEST, getCableConnections(world, pos, Direction.WEST))
+				.with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER));
+
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
 }

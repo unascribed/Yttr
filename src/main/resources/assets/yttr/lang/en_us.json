@@ -74,6 +74,8 @@
 	"item.yttr.promethium_lump": "Promethium Lump",
 	"item.yttr.promethium_glob": "Promethium Glob",
 	"item.yttr.magcapsule": "Magcapsule",
+	"item.yttr.inred_multimeter": "Multimeter",
+	"item.yttr.inred_pcb": "PCB",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -186,6 +188,18 @@
 	"block.yttr.clamber_block": "Clamber Block",
 	"block.yttr.soul_clamber_block": "Soul Clamber Block",
 	"block.yttr.soul_planks": "Soul Planks",
+	"block.yttr.inred_block": "InfraRedstone Block",
+	"block.yttr.inred_cable": "InfraRedstone Cable",
+	"block.yttr.inred_scaffold": "InfraRedstone Scaffold",
+	"block.yttr.inred_and_gate": "AND Gate",
+	"block.yttr.inred_not_gate": "NOT Gate",
+	"block.yttr.inred_xor_gate": "XOR Gate",
+	"block.yttr.inred_diode": "Diode",
+	"block.yttr.inred_shifter": "Shifter",
+	"block.yttr.inred_transistor": "Transistor",
+	"block.yttr.inred_encoder": "Encoder",
+	"block.yttr.inred_oscillator": "Oscillator",
+	"block.yttr.inred_demo_cycler": "Demo Cycler",
 	
 	"block.yttr.bogged_note_block.tip.1": "§7Plays after half a redstone tick.",
 	
@@ -350,9 +364,9 @@
 	"tip.yttr.shifter.plane.enabled": "§aEnabled§r plane restriction",
 	"tip.yttr.shifter.plane.disabled": "§cDisabled§r plane restriction",
 
-	"tip.yttr.inred.multimeter.direction": "Signal input from {}: {}",
-	"tip.yttr.inred.multimeter.out": "Module signal output: {}",
-	"tip.yttr.inred.multimeter.cable": "Signal passing through cable: {}",
+	"tip.yttr.inred.multimeter.direction": "Signal input from %s: %s",
+	"tip.yttr.inred.multimeter.out": "Module signal output: %s",
+	"tip.yttr.inred.multimeter.cable": "Signal passing through cable: %s",
 	"tip.yttr.inred.multimeter.block": "Block emits value of 0b11_1111 (63)",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",

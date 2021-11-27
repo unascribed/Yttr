@@ -67,6 +67,7 @@ public class InRedXorGateBlockEntity extends InRedDeviceBlockEntity {
 			booleanMode = true;
 			world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.55f);
 		}
+		world.setBlockState(pos, getCachedState().with(InRedXorGateBlock.BOOLEAN_MODE, booleanMode));
 		sync();
 	}
 

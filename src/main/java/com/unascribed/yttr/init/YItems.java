@@ -125,6 +125,19 @@ public class YItems {
 	public static final BlockItem CLAMBER_BLOCK = createNormalBlockItem(YBlocks.CLAMBER_BLOCK);
 	public static final BlockItem SOUL_CLAMBER_BLOCK = createNormalBlockItem(YBlocks.SOUL_CLAMBER_BLOCK);
 	public static final BlockItem SOUL_PLANKS = createNormalBlockItem(YBlocks.SOUL_PLANKS);
+
+	public static final BlockItem INRED_BLOCK = createNormalBlockItem(YBlocks.INRED_BLOCK);
+	public static final BlockItem INRED_CABLE = createNormalBlockItem(YBlocks.INRED_CABLE);
+	public static final BlockItem INRED_SCAFFOLD = createNormalBlockItem(YBlocks.INRED_SCAFFOLD);
+	public static final BlockItem INRED_AND_GATE = createNormalBlockItem(YBlocks.INRED_AND_GATE);
+	public static final BlockItem INRED_NOT_GATE = createNormalBlockItem(YBlocks.INRED_NOT_GATE);
+	public static final BlockItem INRED_XOR_GATE = createNormalBlockItem(YBlocks.INRED_XOR_GATE);
+	public static final BlockItem INRED_DIODE = createNormalBlockItem(YBlocks.INRED_DIODE);
+	public static final BlockItem INRED_SHIFTER = createNormalBlockItem(YBlocks.INRED_SHIFTER);
+	public static final BlockItem INRED_TRANSISTOR = createNormalBlockItem(YBlocks.INRED_TRANSISTOR);
+	public static final BlockItem INRED_ENCODER = createNormalBlockItem(YBlocks.INRED_ENCODER);
+	public static final BlockItem INRED_OSCILLATOR = createNormalBlockItem(YBlocks.INRED_OSCILLATOR);
+	public static final BlockItem INRED_DEMO_CYCLER = createNormalBlockItem(YBlocks.INRED_DEMO_CYCLER);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
@@ -488,6 +501,7 @@ public class YItems {
 
 	public static final InRedMultimeterItem INRED_MULTIMETER = new InRedMultimeterItem(new Item.Settings()
 			.maxCount(1));
+	public static final Item INRED_PCB = new Item(new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

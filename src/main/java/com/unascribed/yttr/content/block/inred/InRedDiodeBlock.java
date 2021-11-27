@@ -27,6 +27,8 @@ public class InRedDiodeBlock extends InRedLogicTileBlock {
 	public static final BooleanProperty BIT_4 = BooleanProperty.of("bit_4");
 	public static final BooleanProperty BIT_5 = BooleanProperty.of("bit_5");
 
+	public static final BooleanProperty[] BITS = new BooleanProperty[]{BIT_0, BIT_1, BIT_2, BIT_3, BIT_4, BIT_5};
+
 	public static final VoxelShape CLICK_BIT_0 = Block.createCuboidShape(10, 2.9, 10, 11, 4.1, 14);
 	public static final VoxelShape CLICK_BIT_1 = Block.createCuboidShape(9, 2.9, 8, 10, 4.1, 12);
 	public static final VoxelShape CLICK_BIT_2 = Block.createCuboidShape(8, 2.9, 10, 9, 4.1, 14);
@@ -57,7 +59,7 @@ public class InRedDiodeBlock extends InRedLogicTileBlock {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if(!world.isClient() && !player.isSneaking() && be instanceof InRedDiodeBlockEntity) {
-			Vec3d blockCenteredHit = hit.getPos();
+			Vec3d blockCenteredHit = new Vec3d(hit.getPos().getX() - hit.getBlockPos().getX(), hit.getPos().getY() - hit.getBlockPos().getY(), hit.getPos().getZ() - hit.getBlockPos().getZ());
 			blockCenteredHit = blockCenteredHit.subtract(0.5, 0.5, 0.5);
 			switch (state.get(FACING)) {
 				case SOUTH:
@@ -124,7 +126,7 @@ public class InRedDiodeBlock extends InRedLogicTileBlock {
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection()).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
+		return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override

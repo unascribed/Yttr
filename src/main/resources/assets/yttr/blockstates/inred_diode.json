@@ -1,0 +1,507 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "yttr:block/inred_diode"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "yttr:block/inred_diode",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "yttr:block/inred_diode",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "yttr:block/inred_diode",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_0": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_0": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_0": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_0": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_0": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_0": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_0": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_0": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_0_blocked",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_1": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_1": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_1": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_1": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_1": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_1": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_1": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_1": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_1_blocked",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_2": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_2": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_2": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_2": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_2": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_2": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_2": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_2": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_2_blocked",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_3": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_3": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_3": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_3": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_3": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_3": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_3": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_3": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_3_blocked",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_4": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_4": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_4": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_4": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_4": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_4": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_4": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_4": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_4_blocked",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_5": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bit_5": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5_blocked"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_5": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bit_5": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5_blocked",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_5": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bit_5": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5_blocked",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_5": true
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bit_5": false
+      },
+      "apply": {
+        "model": "yttr:block/diode/bit_5_blocked",
+        "y": 270
+      }
+    }
+  ]
+}

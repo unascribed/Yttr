@@ -46,6 +46,7 @@ public class InRedDiodeBlockEntity extends InRedDeviceBlockEntity {
 	public void setMask(int bit) {
 		mask ^= (1 << bit);
 		world.playSound(null, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3f, 0.45f);
+		world.setBlockState(pos, getCachedState().with(InRedDiodeBlock.BITS[bit], (mask & (1 << bit)) > 0));
 		sync();
 	}
 

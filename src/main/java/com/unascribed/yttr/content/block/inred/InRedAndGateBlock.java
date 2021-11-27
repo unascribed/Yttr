@@ -46,7 +46,7 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if(!world.isClient() && !player.isSneaking() && be instanceof InRedAndGateBlockEntity) {
-			Vec3d blockCenteredHit = hit.getPos();
+			Vec3d blockCenteredHit = new Vec3d(hit.getPos().getX() - hit.getBlockPos().getX(), hit.getPos().getY() - hit.getBlockPos().getY(), hit.getPos().getZ() - hit.getBlockPos().getZ());
 			blockCenteredHit = blockCenteredHit.subtract(0.5, 0.5, 0.5);
 			switch (state.get(InRedAndGateBlock.FACING)) {
 				case SOUTH:
@@ -101,7 +101,7 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection()).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
+		return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override

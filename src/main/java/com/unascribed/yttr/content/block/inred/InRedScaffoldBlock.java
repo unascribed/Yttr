@@ -9,6 +9,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class InRedScaffoldBlock extends Block implements Waterloggable {
 	public static final BooleanProperty NORTH = BooleanProperty.of("north");
@@ -82,6 +84,7 @@ public class InRedScaffoldBlock extends Block implements Waterloggable {
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		super.neighborUpdate(state, world, pos, block, fromPos, notify);
 		if (state.get(WATERLOGGED)) {
 			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
@@ -98,16 +101,20 @@ public class InRedScaffoldBlock extends Block implements Waterloggable {
 
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		for (Direction dir : Direction.values()) {
-			world.updateNeighborsAlways(pos.offset(dir), this);
-		}
+		super.onBlockAdded(state, world, pos, oldState, notify);
+		world.updateNeighborsAlways(pos, this);
 	}
 
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		for (Direction dir : Direction.values()) {
-			world.updateNeighborsAlways(pos.offset(dir), this);
-		}
+		super.onStateReplaced(state, world, pos, newState, moved);
+		world.updateNeighborsAlways(pos, this);
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBreak(world, pos, state, player);
+		world.updateNeighborsAlways(pos, this);
 	}
 
 	public FluidState getFluidState(BlockState state) {

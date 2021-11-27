@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
   "textures": {
     "side": "yttr:block/inred_pcb_slate",
-    "base": "yttr:block/inred_shifter",
-    "particle": "yttr:block/inred_shifter"
+    "base": "yttr:block/inred_not_gate",
+    "particle": "yttr:block/inred_not_gate"
   },
   "elements": [
     {

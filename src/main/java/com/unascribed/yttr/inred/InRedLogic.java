@@ -17,11 +17,11 @@ public class InRedLogic {
 	private static final int INTER_IR_TICKS = 1;
 	public static int tickCount = 0;
 
-	public static Consumer<MinecraftServer> onServerTick = server -> { //TODO: hook to server tick event
+	public static void onServerTick() {
 		tickCount++;
 		if (tickCount > INTER_IR_TICKS)
 			tickCount = 0;
-	};
+	}
 
 	public static boolean isIRTick() {
 		return (tickCount == 0);
