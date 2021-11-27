@@ -20,6 +20,7 @@ import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
+import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
 import com.unascribed.yttr.content.block.inred.InRedBlock;
 import com.unascribed.yttr.content.block.inred.InRedCableBlock;
 import com.unascribed.yttr.content.block.inred.InRedScaffoldBlock;
@@ -104,6 +105,12 @@ public class YBlocks {
 			.sounds(BlockSoundGroup.METAL)
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1);
+
+	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.of(Material.DECORATION)
+			.strength(0.5F, 8)
+			.breakByHand(true)
+			.breakInstantly()
+			.materialColor(MapColor.CYAN);
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 //	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
@@ -571,7 +578,10 @@ public class YBlocks {
 
 	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(0F, 8F)
+			.breakInstantly()
 	);
+
+	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

@@ -1,7 +1,7 @@
 package com.unascribed.yttr.content.block.inred;
 
 import com.unascribed.yttr.inred.InRedDevice;
-import com.unascribed.yttr.inred.InRedLogic;
+import com.unascribed.yttr.inred.InRedHandler;
 import com.unascribed.yttr.inred.InRedProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,6 +17,6 @@ public class InRedBlock extends Block implements InRedProvider {
 
 	@Override
 	public InRedDevice getDevice(BlockView world, BlockPos pos, BlockState state, Direction inspectingFrom) {
-		return () -> InRedLogic.MAX_SIGNAL;
+		return InRedHandler.ALWAYS_MAX;
 	}
 }

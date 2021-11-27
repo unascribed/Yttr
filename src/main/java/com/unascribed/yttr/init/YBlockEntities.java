@@ -25,6 +25,7 @@ import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.block.device.VoidFilterBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedAndGateBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
@@ -68,6 +69,8 @@ public class YBlockEntities {
 	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
 	@Renderer(DSUBlockEntityRenderer.class)
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
+	//TODO: rendering for all of these, probably
+	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

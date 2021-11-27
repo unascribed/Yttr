@@ -41,6 +41,7 @@ public class InRedLogic {
 	 * @return The IR value, or the redstone level if no IR is present, or 0 if
 	 *         nothing is present.
 	 */
+	//TODO: colored cables/bundles?
 	public static int findIRValue(World world, BlockPos devicePos, Direction dir) {
 		BlockPos initialPos = devicePos.offset(dir);
 
@@ -205,7 +206,7 @@ public class InRedLogic {
 				return comp.getSignalValue();
 			}
 		}
-//        if (world.getEmittedRedstonePower(pos, dir) != 0) return 1; TODO: maybe have this? maybe not
+//        if (world.getEmittedRedstonePower(pos, dir) != 0) return 1; TODO: maybe have this? it'd mean cables can conect to redstone wire
 		return null;
 	}
 

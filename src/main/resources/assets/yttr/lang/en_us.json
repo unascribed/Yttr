@@ -349,6 +349,11 @@
 	
 	"tip.yttr.shifter.plane.enabled": "§aEnabled§r plane restriction",
 	"tip.yttr.shifter.plane.disabled": "§cDisabled§r plane restriction",
+
+	"tip.yttr.inred.multimeter.direction": "Signal input from {}: {}",
+	"tip.yttr.inred.multimeter.out": "Module signal output: {}",
+	"tip.yttr.inred.multimeter.cable": "Signal passing through cable: {}",
+	"tip.yttr.inred.multimeter.block": "Block emits value of 0b11_1111 (63)",
 	
 	"commands.yttr.void_undo.clean": "Deleted %s undo files",
 	"commands.yttr.void_undo.location": "At %s, %s, %s (%sm away)",
