@@ -11,24 +11,27 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
 import com.unascribed.yttr.compat.EarsCompat;
+import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBiomes;
 import com.unascribed.yttr.init.YBlockEntities;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YBrewing;
 import com.unascribed.yttr.init.YCommands;
-import com.unascribed.yttr.init.YCopper;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YEntities;
 import com.unascribed.yttr.init.YFluids;
 import com.unascribed.yttr.init.YFuels;
 import com.unascribed.yttr.init.YItems;
+import com.unascribed.yttr.init.YLatches;
 import com.unascribed.yttr.init.YNetwork;
 import com.unascribed.yttr.init.YRecipeSerializers;
 import com.unascribed.yttr.init.YRecipeTypes;
@@ -40,6 +43,8 @@ import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.init.YTags;
 import com.unascribed.yttr.init.YTrades;
 import com.unascribed.yttr.init.YWorldGen;
+import com.unascribed.yttr.init.conditional.YCopper;
+import com.unascribed.yttr.init.conditional.YTrinkets;
 import com.unascribed.yttr.mechanics.SoakingHandler;
 import com.unascribed.yttr.mechanics.SuitResource;
 import com.unascribed.yttr.mechanics.TickAlwaysItemHandler;
@@ -48,6 +53,7 @@ import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
 import com.unascribed.yttr.util.YLog;
+import com.unascribed.yttr.util.annotate.RegisteredAs;
 import com.unascribed.yttr.world.FilterNetworks;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
@@ -66,6 +72,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -106,6 +113,9 @@ public class Yttr implements ModInitializer {
 	public static boolean lessCreepyAwareHopper;
 	
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
+	
+	public static Function<PlayerEntity, ItemStack> getSoleTrinket = pe -> ItemStack.EMPTY;
+	public static Predicate<PlayerEntity> isWearingBoots = pe -> !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
 	
 	@Override
 	public void onInitialize() {
@@ -179,6 +189,12 @@ public class Yttr implements ModInitializer {
 				EarsCompat.init();
 			} catch (Throwable t) {}
 		}
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			try {
+				YttrTrinketsCompat.init();
+				YTrinkets.init();
+			} catch (Throwable t) {}
+		}
 	}
 	
 	public void onPostInitialize() {
@@ -214,6 +230,8 @@ public class Yttr implements ModInitializer {
 			COPPER_FALLBACK_ACTIVE = true;
 			YCopper.init();
 		}
+		
+		YLatches.latchAll();
 	}
 
 	public static Multiset<SuitResource> determineAvailableResources(PlayerEntity player) {
@@ -252,6 +270,7 @@ public class Yttr implements ModInitializer {
 		for (Field f : holder.getDeclaredFields()) {
 			if (type.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
 				try {
+					f.setAccessible(true);
 					cb.accept(f, (T)f.get(null), anno == null ? null : f.getAnnotation(anno));
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -267,8 +286,18 @@ public class Yttr implements ModInitializer {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void autoRegister(Registry<T> registry, Class<?> holder, Class<? super T> type) {
-		eachRegisterableField(holder, type, null, (f, v, na) -> {
-			Registry.register(registry, "yttr:"+f.getName().toLowerCase(Locale.ROOT), (T)v);
+		eachRegisterableField(holder, type, RegisteredAs.class, (f, v, ann) -> {
+			String id;
+			if (ann != null) {
+				if (ann.value().contains(":")) {
+					id = ann.value();
+				} else {
+					id = "yttr:"+ann.value();
+				}
+			} else {
+				id = "yttr:"+f.getName().toLowerCase(Locale.ROOT);
+			}
+			Registry.register(registry, id, (T)v);
 		});
 	}
 
@@ -429,6 +458,18 @@ public class Yttr implements ModInitializer {
 			}
 			
 		};
+	}
+
+	public static int getSpringingLevel(PlayerEntity p) {
+		ItemStack is = getSoleTrinket.apply(p);
+		if (YEnchantments.SPRINGING.isPresent()) {
+			return EnchantmentHelper.getLevel(YEnchantments.SPRINGING.get(), is);
+		}
+		return 0;
+	}
+
+	public static boolean isWearingCoil(PlayerEntity e) {
+		return YItems.CUPROSTEEL_COIL.is(getSoleTrinket.apply(e).getItem());
 	}
 	
 }

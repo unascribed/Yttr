@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:cleave_block",
+	"display": {
+		"icon": {
+			"item": "yttr:reinforced_cleaver"
+		},
+		"title": {
+			"translate": "advancements.yttr.break_armor_with_cleaver.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.break_armor_with_cleaver.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"snare": {
+			"trigger": "yttr:break_armor_with_cleaver"
+		}
+	}
+}

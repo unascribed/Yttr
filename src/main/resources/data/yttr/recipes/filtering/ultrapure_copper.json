@@ -1,5 +1,5 @@
 {
 	"type": "yttr:void_filtering",
 	"output": { "item": "yttr:ultrapure_copper" },
-	"chance": 1.200
+	"chance": 1.75
 }

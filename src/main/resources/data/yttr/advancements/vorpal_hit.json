@@ -1,0 +1,24 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:brookite_sword",
+			"nbt": "{Enchantments:[{id:\"yttr:vorpal\"}]}"
+		},
+		"title": {
+			"translate": "advancements.yttr.vorpal_hit.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.vorpal_hit.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"snare": {
+			"trigger": "yttr:vorpal_hit"
+		}
+	}
+}

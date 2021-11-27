@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:obtain_yttrium_ingot",
+	"display": {
+		"icon": {
+			"item": "yttr:snare"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_snare.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_snare.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:snare": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:snare" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:snare"
+		]
+	]
+}

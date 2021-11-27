@@ -86,6 +86,7 @@ public class YSounds {
 	public static final SoundEvent BUZZ = create("buzz");
 	public static final SoundEvent METAL_PLATE_ON = create("metal_plate_on");
 	public static final SoundEvent METAL_PLATE_OFF = create("metal_plate_off");
+	public static final SoundEvent SMALL_ZAP = create("small_zap");
 	
 	public static final SoundEvent HIGH_NOTE_BANJO = create("high_note.banjo");
 	public static final SoundEvent HIGH_NOTE_BASEDRUM = create("high_note.basedrum");

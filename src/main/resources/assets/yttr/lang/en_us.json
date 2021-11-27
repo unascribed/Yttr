@@ -76,6 +76,7 @@
 	"item.yttr.magcapsule": "Magcapsule",
 	"item.yttr.cuprosteel_ingot": "Cuprosteel Ingot",
 	"item.yttr.copper_ingot": "Copper Ingot",
+	"item.yttr.cuprosteel_coil": "Cuprosteel Coil",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -257,6 +258,8 @@
 	
 	"enchantment.yttr.disjunction": "Disjunction",
 	"enchantment.yttr.vorpal": "Vorpal",
+	"enchantment.yttr.springing": "Springing",
+	"enchantment.yttr.stabilization": "Stabilization",
 	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
@@ -300,6 +303,7 @@
 	"subtitles.yttr.drop_cast": "Drop casting",
 	"subtitles.yttr.drop_cast_cancel": "Drop casting stops",
 	"subtitles.yttr.vorpalhit": "Vorpal attack",
+	"subtitles.yttr.small_zap": "Cuprosteel Plate activates",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",
@@ -413,13 +417,13 @@
 	"advancements.yttr.root.desc": "Voidtech and other goodies",
 	
 	"advancements.yttr.obtain_xl_iron_ingot.title": "Isn't It Iron",
-	"advancements.yttr.obtain_xl_iron_ingot.desc": "Obtain Big Iron",
+	"advancements.yttr.obtain_xl_iron_ingot.desc": "Obtain Big Iron by smelting Gadolinite",
 	
 	"advancements.yttr.break_root_of_continuity.title": "Discombobulated",
-	"advancements.yttr.break_root_of_continuity.desc": "Break a Root of Continuity",
+	"advancements.yttr.break_root_of_continuity.desc": "Break a Root of Continuity, and head for cover",
 	
 	"advancements.yttr.burn_drop_of_continuity.title": "Free Stuff",
-	"advancements.yttr.burn_drop_of_continuity.desc": "Burn a Drop of Continuity",
+	"advancements.yttr.burn_drop_of_continuity.desc": "Burn a Drop of Continuity, gaining a random gift",
 	
 	"advancements.yttr.use_shifter.title": "This For That",
 	"advancements.yttr.use_shifter.desc": "Use the Continuous Shifter",
@@ -437,19 +441,19 @@
 	"advancements.yttr.immortalize_platform.desc": "Immortalize a platform block",
 	
 	"advancements.yttr.obtain_rifle.title": "Third Time's The Charm",
-	"advancements.yttr.obtain_rifle.desc": "Obtain the Yttric Rifle",
+	"advancements.yttr.obtain_rifle.desc": "Obtain the Yttric Rifle, third of its name",
 	
 	"advancements.yttr.break_bedrock.title": "Not So Tough, Are You?",
 	"advancements.yttr.break_bedrock.desc": "Break Bedrock",
 	
 	"advancements.yttr.open_geyser.title": "What Lies Below",
-	"advancements.yttr.open_geyser.desc": "Open a Void Geyser",
+	"advancements.yttr.open_geyser.desc": "Break a hole in the bedrock, opening a Void Geyser",
 	
 	"advancements.yttr.name_geyser.title": "Name A Place 2",
-	"advancements.yttr.name_geyser.desc": "Name a Void Geyser",
+	"advancements.yttr.name_geyser.desc": "Name a Void Geyser by placing a renamed Diving Plate near it",
 	
 	"advancements.yttr.use_rifle_scope.title": "Tunnel Vision",
-	"advancements.yttr.use_rifle_scope.desc": "Use the Yttric Rifle's scope",
+	"advancements.yttr.use_rifle_scope.desc": "Use the Yttric Rifle's scope by attacking while holding it",
 	
 	"advancements.yttr.shoot_something_far_away.title": "Going The Distance",
 	"advancements.yttr.shoot_something_far_away.desc": "Shoot something more than 100 blocks away while scoped with the Yttric Rifle",
@@ -470,10 +474,10 @@
 	"advancements.yttr.enter_scorched_summit.desc": "Find the Scorched Summit",
 	
 	"advancements.yttr.levitation_in_scorched.title": "Get Me Down From Here",
-	"advancements.yttr.levitation_in_scorched.desc": "Find a Levitation dispenser",
+	"advancements.yttr.levitation_in_scorched.desc": "Find a Levitation dispenser in the Scorched Summit",
 	
 	"advancements.yttr.cleave_block.title": "Forbidden Shapes",
-	"advancements.yttr.cleave_block.desc": "Cleave a block",
+	"advancements.yttr.cleave_block.desc": "Use the Void Cleaver to reshape a block",
 	
 	"advancements.yttr.cleave_many_blocks.title": "Forbidden Builder",
 	"advancements.yttr.cleave_many_blocks.desc": "Cleave 1000 blocks",
@@ -493,16 +497,16 @@
 	"advancements.yttr.snare_living_entity.title": "Entangled",
 	"advancements.yttr.snare_living_entity.desc": "Pick up something alive with a Snare",
 	
-	"advancements.yttr.obtain_aware_hopper.title": "What Have You Done",
-	"advancements.yttr.obtain_aware_hopper.desc": "Obtain the Aware Hopper",
+	"advancements.yttr.obtain_aware_hopper.title": "Slice'N'Splice",
+	"advancements.yttr.obtain_aware_hopper.desc": "In a fit of poor judgement, splice together a Zombie and Enderman into an Aware Hopper",
 	
 	"advancements.yttr.obtain_skeletal_sorter.title": "Sort It Out",
-	"advancements.yttr.obtain_skeletal_sorter.desc": "Obtain a Skeletal Sorter",
+	"advancements.yttr.obtain_skeletal_sorter.desc": "Convert a Skeleton into a Skeletal Sorter",
 	
 	"advancements.yttr.use_effector.title": "Holepunch",
-	"advancements.yttr.use_effector.desc": "Use the Void Effector",
+	"advancements.yttr.use_effector.desc": "Use the Void Effector to travel through solid blocks",
 	
-	"advancements.yttr.kill_with_effector.title": "Spleef Anywhere",
+	"advancements.yttr.kill_with_effector.title": "Spleef Tournament",
 	"advancements.yttr.kill_with_effector.desc": "Use the Void Effector to kill something",
 	
 	"advancements.yttr.obtain_chute.title": "Going Down",
@@ -512,13 +516,43 @@
 	"advancements.yttr.obtain_levitation_chamber.desc": "Obtain the Levitation Chamber",
 	
 	"advancements.yttr.obtain_squeeze_stem.title": "A Tree Under The Sea",
-	"advancements.yttr.obtain_squeeze_stem.desc": "Obtain a Squeeze Stem",
+	"advancements.yttr.obtain_squeeze_stem.desc": "Find and destroy a Squeeze Tree",
 	
 	"advancements.yttr.squeeze_leaves.title": "Open The Floodgates",
 	"advancements.yttr.squeeze_leaves.desc": "Squeeze some Squeeze Leaves to fill an area",
 	
 	"advancements.yttr.dive.title": "Through The Loop",
 	"advancements.yttr.dive.desc": "Dive under bedrock",
+	
+	"advancements.yttr.obtain_yttrium_ingot.title": "It Isn't Iron",
+	"advancements.yttr.obtain_yttrium_ingot.desc": "Obtain an Yttrium Ingot by blasting Gadolinite",
+	
+	"advancements.yttr.obtain_brookite_tool.title": "It Isn't Iron Pick",
+	"advancements.yttr.obtain_brookite_tool.desc": "Construct any Brookite tool",
+	
+	"advancements.yttr.obtain_snare.title": "Fit For A Safari",
+	"advancements.yttr.obtain_snare.desc": "Construct a Snare",
+	
+	"advancements.yttr.obtain_glowing_gas.title": "Don't Breathe This",
+	"advancements.yttr.obtain_glowing_gas.desc": "Collect some Glowdamp by crushing a Shroomlight between Yttrium blocks",
+	
+	"advancements.yttr.activate_cuprosteel_plate.title": "Electrodynamics",
+	"advancements.yttr.activate_cuprosteel_plate.desc": "Activate a Cuprosteel Plate by stepping on it with conductive boots",
+	
+	"advancements.yttr.dive_far.title": "Here Is There",
+	"advancements.yttr.dive_far.desc": "Travel over 5km via Void Diving",
+	
+	"advancements.yttr.discover_geyser.title": "What's This?",
+	"advancements.yttr.discover_geyser.desc": "Find a Void Geyser while diving",
+	
+	"advancements.yttr.vorpal_hit.title": "Fair & Balanced",
+	"advancements.yttr.vorpal_hit.desc": "Have the Vorpal enchantment activate",
+	
+	"advancements.yttr.hit_with_full_suit.title": "Immovable Object",
+	"advancements.yttr.hit_with_full_suit.desc": "Get attacked while wearing a full Diving Suit",
+	
+	"advancements.yttr.break_armor_with_cleaver.title": "Unstoppable Force",
+	"advancements.yttr.break_armor_with_cleaver.desc": "Break an adversary's armor using a Reinforced Void Cleaver",
 	
 	
 	"category.yttr.void_filtering": "Void Filtering",
@@ -538,6 +572,8 @@
 	
 	"category.yttr.piston_smashing.cloud_output_hint": "Use a Glass Bottle on the resulting cloud",
 	
-	"rei.yttr.suit_helmet_hud": "HUD Color: %s"
+	"rei.yttr.suit_helmet_hud": "HUD Color: %s",
+	
+	"trinkets.slot.feet.sole": "Sole"
 	
 }

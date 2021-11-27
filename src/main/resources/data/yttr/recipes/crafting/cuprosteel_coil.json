@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "  C",
+    "CCC"
+  ],
+  "yttr:only_if": "trinkets",
+  "key": {
+    "C": { "item": "yttr:cuprosteel_ingot" }
+  },
+  "result": {
+    "item": "yttr:cuprosteel_coil"
+  }
+}

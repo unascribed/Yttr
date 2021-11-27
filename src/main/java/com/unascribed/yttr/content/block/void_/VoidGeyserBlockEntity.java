@@ -22,7 +22,6 @@ import com.unascribed.yttr.util.math.Vec2i;
 import com.unascribed.yttr.world.Geyser;
 import com.unascribed.yttr.world.GeysersState;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -153,20 +152,20 @@ public class VoidGeyserBlockEntity extends BlockEntity implements Tickable {
 	}
 
 	private void destroyIfAble(BlockPos pos) {
-		Block block = YBlocks.VOID;
-//		Block block = Blocks.GRAY_WOOL;
+		BlockState targetState = YBlocks.VOID.getDefaultState();
+//		BlockState block = Blocks.GRAY_WOOL.getDefaultState();
 		BlockState bs = world.getBlockState(pos);
-		if (!bs.isOf(block) && !bs.isOf(YBlocks.DIVING_PLATE) && (bs.isAir() || bs.getHardness(world, pos) >= 0)) {
+		if (bs != targetState && !bs.isOf(YBlocks.DIVING_PLATE) && (bs.isAir() || bs.getHardness(world, pos) >= 0)) {
 			if (bs.getFluidState().isIn(FluidTags.LAVA)) {
 				world.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
 			} else {
-				if (!bs.isAir()) {
+				if (!bs.isAir() && !bs.isOf(YBlocks.VOID)) {
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 20, 0.2, 0.2, 0.2, 0);
 					}
 					world.playSound(null, pos, YSounds.DISSOLVE, SoundCategory.BLOCKS, 1, 0.8f+(world.random.nextFloat()*0.4f));
 				}
-				world.setBlockState(pos, block.getDefaultState());
+				world.setBlockState(pos, targetState);
 				world.getFluidTickScheduler().schedule(pos, YFluids.VOID, 1);
 			}
 		}

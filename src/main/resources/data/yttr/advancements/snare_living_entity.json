@@ -1,8 +1,8 @@
 {
-	"parent": "yttr:root",
+	"parent": "yttr:obtain_snare",
 	"display": {
 		"icon": {
-			"item": "yttr:snare"
+			"item": "minecraft:zombie_head"
 		},
 		"title": {
 			"translate": "advancements.yttr.snare_living_entity.title"

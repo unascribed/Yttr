@@ -1,0 +1,28 @@
+{
+	"parent": "yttr:obtain_yttrium_ingot",
+	"display": {
+		"icon": {
+			"item": "yttr:glowing_gas"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_glowing_gas.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_glowing_gas.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"obtain": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:glowing_gas" }
+				]
+			}
+		}
+	}
+}

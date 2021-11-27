@@ -9,7 +9,7 @@ public enum SuitResource {
 	FUEL {
 		@Override
 		public int getConsumptionPerBlock(int pressure) {
-			return 6;
+			return 5;
 		}
 		@Override
 		public int getConsumptionPerTick(int pressure) {
@@ -32,11 +32,11 @@ public enum SuitResource {
 		
 		@Override
 		public int getConsumptionPerBlock(int pressure) {
-			return 3*((pressure+699)/700);
+			return 2*((pressure+699)/700);
 		}
 		@Override
 		public int getConsumptionPerTick(int pressure) {
-			return 6*((pressure+699)/700);
+			return 5*((pressure+699)/700);
 		}
 		@Override
 		public int getMaximum() {

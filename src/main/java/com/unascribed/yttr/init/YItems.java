@@ -6,7 +6,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
@@ -36,6 +35,7 @@ import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.content.item.block.SkeletalSorterBlockItem;
 import com.unascribed.yttr.content.item.potion.MercurialPotionItem;
 import com.unascribed.yttr.content.item.potion.MercurialSplashPotionItem;
+import com.unascribed.yttr.util.LatchReference;
 import com.unascribed.yttr.util.annotate.ConstantColor;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -165,6 +165,8 @@ public class YItems {
 			.maxCount(1));
 
 	public static final BlockItem LEVITATION_CHAMBER = new LevitationChamberBlockItem(YBlocks.LEVITATION_CHAMBER, new Item.Settings());
+	
+	public static final LatchReference<BlockItem> COPPER_ORE = YLatches.create();
 	
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings());
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings());
@@ -469,6 +471,13 @@ public class YItems {
 		@Override public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
 	};
 	
+	@ColorProvider(ContinuityItemColorProvider.class)
+	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
+			.maxCount(1));
+	@ColorProvider(ContinuityItemColorProvider.class)
+	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
+			.maxCount(1));
+	
 	public static final MusicDiscItem MUSIC_DISC_PAPILLONS = new MusicDiscItem(14, YSounds.PAPILLONS, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	public static final MusicDiscItem MUSIC_DISC_VOID = new MusicDiscItem(14, YSounds.VOID_MUSIC, new Item.Settings().maxCount(1).rarity(Rarity.RARE)) {};
 	
@@ -481,12 +490,9 @@ public class YItems {
 	public static final Item MAGCAPSULE = new Item(new Item.Settings().maxCount(1));
 	public static final Item CUPROSTEEL_INGOT = new Item(new Item.Settings());
 	
-	@ColorProvider(ContinuityItemColorProvider.class)
-	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
-			.maxCount(1));
-	@ColorProvider(ContinuityItemColorProvider.class)
-	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
-			.maxCount(1));
+	public static final LatchReference<Item> COPPER_INGOT = YLatches.create();
+	
+	public static final LatchReference<Item> CUPROSTEEL_COIL = YLatches.create();
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

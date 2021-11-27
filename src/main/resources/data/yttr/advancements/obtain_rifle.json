@@ -1,5 +1,5 @@
 {
-	"parent": "yttr:root",
+	"parent": "yttr:obtain_yttrium_ingot",
 	"display": {
 		"icon": {
 			"item": "yttr:rifle"

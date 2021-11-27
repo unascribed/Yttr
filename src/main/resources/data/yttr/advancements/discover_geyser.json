@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:dive",
+	"display": {
+		"icon": {
+			"item": "yttr:suit_leggings"
+		},
+		"title": {
+			"translate": "advancements.yttr.discover_geyser.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.discover_geyser.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": false,
+		"hidden": false
+	},
+	"criteria": {
+		"discover_geyser": {
+			"trigger": "yttr:discover_geyser"
+		}
+	}
+}

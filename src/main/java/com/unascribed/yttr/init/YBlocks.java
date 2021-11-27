@@ -53,6 +53,7 @@ import com.unascribed.yttr.content.block.void_.PureVoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidFluidBlock;
 import com.unascribed.yttr.content.block.void_.VoidGeyserBlock;
 import com.unascribed.yttr.mixin.accessor.AccessorBlock;
+import com.unascribed.yttr.util.LatchReference;
 import com.unascribed.yttr.util.annotate.RenderLayer;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
@@ -558,6 +559,8 @@ public class YBlocks {
 	public static final Block SOUL_PLANKS = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
 			.materialColor(MapColor.BROWN)
 		);
+	
+	public static final LatchReference<Block> COPPER_ORE = YLatches.create();
 	
 	public static final Block CUPROSTEEL_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final CuprosteelPressurePlateBlock CUPROSTEEL_PLATE = new CuprosteelPressurePlateBlock(METALLIC_SETTINGS);

@@ -77,6 +77,7 @@ roothit2.ogg:
 	https://freesound.org/people/natemarler/sounds/338694/
 	https://freesound.org/people/zgump/sounds/75228/
 rootstep.ogg: https://freesound.org/people/zgump/sounds/75228/
+small_zap.ogg: https://freesound.org/people/LittleRobotSoundFactory/sounds/274201/
 spectral_axe_disappear.ogg: https://freesound.org/people/tigersound/sounds/9081/
 thud.ogg: https://freesound.org/people/yummy9987/sounds/494931/
 use_plate.ogg: https://freesound.org/people/jasonLON/sounds/125404/

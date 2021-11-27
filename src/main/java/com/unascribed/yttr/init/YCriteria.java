@@ -26,6 +26,12 @@ public class YCriteria {
 	public static final BasicCriterion SQUEEZE_LEAVES = new BasicCriterion("yttr:squeeze_leaves");
 	public static final BasicCriterion DIVE = new BasicCriterion("yttr:dive");
 	public static final BasicCriterion SHOOT_SOMETHING_FAR_AWAY = new BasicCriterion("yttr:shoot_something_far_away");
+	public static final BasicCriterion ACTIVATE_CUPROSTEEL_PLATE = new BasicCriterion("yttr:activate_cuprosteel_plate");
+	public static final BasicCriterion DIVE_FAR = new BasicCriterion("yttr:dive_far");
+	public static final BasicCriterion DISCOVER_GEYSER = new BasicCriterion("yttr:discover_geyser");
+	public static final BasicCriterion VORPAL_HIT = new BasicCriterion("yttr:vorpal_hit");
+	public static final BasicCriterion HIT_WITH_FULL_SUIT = new BasicCriterion("yttr:hit_with_full_suit");
+	public static final BasicCriterion BREAK_ARMOR_WITH_CLEAVER = new BasicCriterion("yttr:break_armor_with_cleaver");
 	
 	public static void init() {
 		Yttr.autoRegister(CriterionRegistry::register, YCriteria.class, Criterion.class);

@@ -32,6 +32,13 @@ public class YRenderLayers extends RenderPhase {
 				.texture(new RenderPhase.Texture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, false, true))
 				.transparency(ADDITIVE_WITH_ALPHA_TRANSPARENCY)
 				.writeMaskState(new RenderPhase.WriteMaskState(true, false))
+				.layering(new RenderPhase.Layering("polygon_offset_layering_reverse", () -> {
+						RenderSystem.polygonOffset(1, -10);
+						RenderSystem.enablePolygonOffset();
+					}, () -> {
+						RenderSystem.polygonOffset(0, 0);
+						RenderSystem.disablePolygonOffset();
+					}))
 				.build(false));
 	
 	private static final RenderLayer SHIFTER_LINES = RenderLayer.of("yttr_shifter_lines", VertexFormats.POSITION_COLOR, GL11.GL_LINES, 256, RenderLayer.MultiPhaseParameters.builder()

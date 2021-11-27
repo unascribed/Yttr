@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.SuitResource;
@@ -84,6 +85,9 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 				BlockPos pos = yttr$fastDiveTarget;
 				if (yttr$fastDiveTime > 0) {
 					yttr$fastDiveTime--;
+					if (pos.getSquaredDistance(self.getPos(), false) > 5000*5000) {
+						YCriteria.DIVE_FAR.trigger(self);
+					}
 					// teleport prematurely to load chunks
 					self.teleport(pos.getX()+0.5, -12, pos.getZ()+0.5);
 				} else {
@@ -114,6 +118,7 @@ public class MixinServerPlayerEntity implements DiverPlayer {
 				for (Geyser g : gs.getGeysersInRange(yttr$divePos.x, yttr$divePos.z, 64)) {
 					if (!yttr$knownGeysers.contains(g.id)) {
 						Yttr.discoverGeyser(g.id, self);
+						YCriteria.DISCOVER_GEYSER.trigger(self);
 					}
 				}
 			}

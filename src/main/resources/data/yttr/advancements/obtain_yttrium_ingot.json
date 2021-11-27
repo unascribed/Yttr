@@ -1,0 +1,33 @@
+{
+	"parent": "yttr:obtain_xl_iron_ingot",
+	"display": {
+		"icon": {
+			"item": "yttr:yttrium_ingot"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_yttrium_ingot.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_yttrium_ingot.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:yttrium_ingot": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:yttrium_ingot" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:yttrium_ingot"
+		]
+	]
+}

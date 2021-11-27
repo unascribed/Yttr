@@ -15,5 +15,5 @@ public class YttriumButtonBlock extends AbstractButtonBlock {
 	protected SoundEvent getClickSound(boolean powered) {
 		return YSounds.METAL_BUTTON;
 	}
-
+	
 }

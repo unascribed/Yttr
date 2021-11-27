@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.enchant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YSounds;
 
 import net.minecraft.enchantment.Enchantment;
@@ -72,6 +73,7 @@ public class VorpalEnchantment extends Enchantment {
 				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
 				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
 				user.world.playSound(null, x, y, z, YSounds.VORPALHIT2, cat, 0.5f, 1.5f);
+				YCriteria.VORPAL_HIT.trigger(((ServerPlayerEntity)user));
 			}
 		}
 	}

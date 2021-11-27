@@ -13,6 +13,7 @@
 	"cleaver.MixinEnchantmentTargets",
 	"cleaver.MixinMobEntity",
 	"cleaver.MixinEntity",
+	"cleaver.MixinPlayerEntity",
 	"smashing.MixinPistonHandler",
 	"smashing.MixinGlassBottleItem",
 	"smashing.MixinGlassBottleDispenserBehavior",
@@ -89,6 +90,9 @@
 	"mender.MixinServerWorld",
 	"mender.MixinAbstractBlockState",
 	"only_if.MixinJsonDataLoader",
+	"coil.MixinEnchantmentHelper",
+	"coil.MixinLivingEntity",
+	"coil.MixinPlayerEntity",
 	"MixinRegistry",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",

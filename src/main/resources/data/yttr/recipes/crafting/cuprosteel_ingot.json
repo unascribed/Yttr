@@ -3,10 +3,11 @@
   "group": "cuprosteel_ingot",
   "ingredients": [
     { "tag": "yttr:copper_ingots" },
+    { "tag": "yttr:copper_ingots" },
     { "item": "minecraft:iron_ingot" }
   ],
   "result": {
     "item": "yttr:cuprosteel_ingot",
-    "count": 2
+    "count": 3
   }
 }

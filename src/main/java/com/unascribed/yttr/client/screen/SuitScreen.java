@@ -71,6 +71,8 @@ public class SuitScreen extends Screen {
 	
 	private SuitSound music;
 	
+	private float zoom = 1;
+	
 	public SuitScreen(int x, int z, List<Geyser> geysers) {
 		super(new LiteralText(""));
 		posX = x+0.5f;
@@ -295,7 +297,7 @@ public class SuitScreen extends Screen {
 		sr.drawText(matrices, "s", cX-2, cY+83, delta);
 		sr.drawText(matrices, "w", cX-95, cY-4, delta);
 		
-		int scale = 25;
+		int scale = (int)(25*zoom);
 		
 		mouseOver = null;
 		for (Geyser g : geysers) {
@@ -319,7 +321,14 @@ public class SuitScreen extends Screen {
 		int cornerY = (height-200)/2;
 		sr.drawElement(matrices, "map-border", cornerX, cornerY, 80, 0, 200, 200, delta);
 		sr.drawElement(matrices, "scale-indicator", cornerX+160, cornerY+185, 0, 69, 32, 6, delta);
-		sr.drawText(matrices, "scale-indicator=-num", (scale*32)+"m", cornerX+160, cornerY+173, delta);
+		int scaleMeter = scale*32;
+		String indicator;
+		if (scaleMeter > 1000) {
+			indicator = (scaleMeter/1000)+"."+((scaleMeter/100)%10)+"km";
+		} else {
+			indicator = scaleMeter+"m";
+		}
+		sr.drawText(matrices, "scale-indicator-num", indicator, cornerX+160, cornerY+173, delta);
 		
 		if (fastDiving) {
 			sr.drawText(matrices, "navigating", 8, 8, delta);
@@ -350,6 +359,31 @@ public class SuitScreen extends Screen {
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
+	}
+	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+		if (amount < 0) {
+			if (zoom < 0.2f) {
+				if (zoom+0.01f > 0.2f) {
+					zoom = 0.2f;
+				} else {
+					zoom += 0.01f;
+				}
+			} else {
+				zoom += 0.1f;
+			}
+			if (zoom > 4) zoom = 4;
+		}
+		if (amount > 0) {
+			if (zoom <= 0.2f) {
+				zoom -= 0.01f;
+			} else {
+				zoom -= 0.1f;
+			}
+			if (zoom < 0.05f) zoom = 0.05f;
+		}
+		return super.mouseScrolled(mouseX, mouseY, amount);
 	}
 	
 	@Override

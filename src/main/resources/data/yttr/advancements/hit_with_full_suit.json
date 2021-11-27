@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:wear_full_diving_suit",
+	"display": {
+		"icon": {
+			"item": "yttr:armor_plating"
+		},
+		"title": {
+			"translate": "advancements.yttr.hit_with_full_suit.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.hit_with_full_suit.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"snare": {
+			"trigger": "yttr:hit_with_full_suit"
+		}
+	}
+}

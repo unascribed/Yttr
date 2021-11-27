@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:cuprosteel_plate"
+		},
+		"title": {
+			"translate": "advancements.yttr.activate_cuprosteel_plate.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.activate_cuprosteel_plate.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"dive": {
+			"trigger": "yttr:activate_cuprosteel_plate"
+		}
+	}
+}

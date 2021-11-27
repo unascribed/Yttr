@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YStatusEffects;
 import com.unascribed.yttr.util.EquipmentSlots;
 
@@ -19,6 +20,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -64,8 +66,13 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 			target.addStatusEffect(new StatusEffectInstance(YStatusEffects.BLEEDING, duration, cur.getAmplifier(), false, false, true));
 		}
 		for (EquipmentSlot es : EquipmentSlots.ARMOR) {
-			if (attacker.world.random.nextInt(5) == 0) {
-				target.getEquippedStack(es).damage(4, target, (e) -> target.sendEquipmentBreakStatus(es));
+			if (attacker.world.random.nextInt(3) == 0) {
+				target.getEquippedStack(es).damage(12, target, (e) -> {
+					target.sendEquipmentBreakStatus(es);
+					if (attacker instanceof ServerPlayerEntity) {
+						YCriteria.BREAK_ARMOR_WITH_CLEAVER.trigger((ServerPlayerEntity)attacker);
+					}
+				});
 			}
 		}
 		return true;
@@ -100,12 +107,12 @@ public class ReinforcedCleaverItem extends CleaverItem implements DynamicAttribu
 	
 	@Override
 	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, @Nullable LivingEntity user) {
-		return tag == FabricToolTags.SWORDS ? 6.5f : 5.5f;
+		return tag == FabricToolTags.SWORDS ? 8.5f : 4.5f;
 	}
 	
 	@Override
 	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		return 5.5f;
+		return 4.5f;
 	}
 	
 	@Override

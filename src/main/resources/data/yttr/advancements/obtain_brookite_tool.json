@@ -1,0 +1,69 @@
+{
+	"parent": "yttr:root",
+	"display": {
+		"icon": {
+			"item": "yttr:brookite_pickaxe"
+		},
+		"title": {
+			"translate": "advancements.yttr.obtain_brookite_tool.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.obtain_brookite_tool.desc"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"yttr:brookite_sword": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:brookite_sword" }
+				]
+			}
+		},
+		"yttr:brookite_shovel": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:brookite_shovel" }
+				]
+			}
+		},
+		"yttr:brookite_pickaxe": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:brookite_pickaxe" }
+				]
+			}
+		},
+		"yttr:brookite_axe": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:brookite_axe" }
+				]
+			}
+		},
+		"yttr:brookite_hoe": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{ "item": "yttr:brookite_hoe" }
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"yttr:brookite_sword",
+			"yttr:brookite_shovel",
+			"yttr:brookite_pickaxe",
+			"yttr:brookite_axe",
+			"yttr:brookite_hoe"
+		]
+	]
+}

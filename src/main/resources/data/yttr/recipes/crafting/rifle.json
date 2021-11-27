@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "D  ",
+    "DC ",
     " YR",
     " SY"
   ],
@@ -10,7 +10,10 @@
       "item": "minecraft:diamond"
     },
     "R": {
-      "item": "minecraft:redstone_block"
+      "item": "yttr:centrifuge"
+    },
+    "C": {
+      "tag": "yttr:copper_ingots"
     },
     "Y": {
       "item": "yttr:yttrium_ingot"

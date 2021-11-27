@@ -492,6 +492,10 @@
 		"sounds": [ "yttr:metal_button" ],
 		"subtitle": "subtitles.block.pressure_plate.click"
 	},
+	"small_zap": {
+		"sounds": [ { "name": "yttr:small_zap" } ],
+		"subtitle": "subtitles.yttr.small_zap"
+	},
 	
 	"low_note.basedrum": {
 		"sounds": [

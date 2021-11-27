@@ -1,0 +1,23 @@
+{
+	"parent": "yttr:dive",
+	"display": {
+		"icon": {
+			"item": "yttr:suit_boots"
+		},
+		"title": {
+			"translate": "advancements.yttr.dive_far.title"
+		},
+		"description": {
+			"translate": "advancements.yttr.dive_far.desc"
+		},
+		"frame": "goal",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"dive_far": {
+			"trigger": "yttr:dive_far"
+		}
+	}
+}

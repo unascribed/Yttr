@@ -1,6 +1,8 @@
 package com.unascribed.yttr.init;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.util.LatchReference;
+
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.block.Blocks;
@@ -46,6 +48,8 @@ public class YWorldGen {
 			.spreadHorizontally()
 			.repeat(4);
 	
+	public static final LatchReference<ConfiguredFeature<?, ?>> COPPER_OVERWORLD = YLatches.create();
+	
 	public static final ConfiguredFeature<?, ?> WASTELAND_GRASS = Feature.RANDOM_PATCH
 			.configure(new RandomPatchFeatureConfig.Builder(
 					new SimpleBlockStateProvider(YBlocks.WASTELAND_GRASS.getDefaultState()), SimpleBlockPlacer.INSTANCE)
@@ -64,7 +68,7 @@ public class YWorldGen {
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
 	}
 
-	protected static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {
+	public static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {
 		return RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("yttr", path));
 	}
 

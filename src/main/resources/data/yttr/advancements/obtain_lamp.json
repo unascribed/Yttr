@@ -1,5 +1,5 @@
 {
-	"parent": "yttr:root",
+	"parent": "yttr:obtain_glowing_gas",
 	"display": {
 		"icon": {
 			"item": "yttr:cage_lamp",

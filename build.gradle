@@ -27,15 +27,32 @@ group = project.maven_group
 repositories {
 	maven {
 		url 'https://repo.unascribed.com'
-	}
-	maven {
-		name = "JitPack"
-		url = "https://jitpack.io"
 		content {
-			includeGroup 'io.github.prospector'
+			includeGroup 'com.unascribed'
 		}
 	}
-	maven { url "https://maven.shedaniel.me/" }
+	maven {
+		url "https://maven.shedaniel.me/"
+		content {
+			includeGroup 'me.shedaniel'
+			includeGroup 'me.shedaniel.cloth'
+			includeGroup 'me.shedaniel.cloth.api'
+			includeGroup 'dev.architectury'
+		}
+	}
+	maven {
+		url 'https://maven.terraformersmc.com/releases/'
+		content {
+			includeGroup 'dev.emi'
+			includeGroup 'com.terraformersmc'
+		}
+	}
+	maven {
+		url 'https://ladysnake.jfrog.io/artifactory/mods'
+		content {
+			includeGroup 'io.github.onyxstudios.Cardinal-Components-API'
+		}
+	}
 }
 
 dependencies {
@@ -49,8 +66,12 @@ dependencies {
 
 	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
 	modImplementation "com.unascribed:ears-api:1.4.1"
+	
+	modImplementation "dev.emi:trinkets:2.6.7"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.8.3"
 
-	modRuntime("io.github.prospector:modmenu:1.16.6") {
+	modRuntime("com.terraformersmc:modmenu:1.16.22") {
 		transitive = false
 	}
 }

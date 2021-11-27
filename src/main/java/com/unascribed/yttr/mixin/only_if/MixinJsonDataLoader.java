@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.unascribed.yttr.Yttr;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -30,6 +31,8 @@ public class MixinJsonDataLoader {
 				boolean active = false;
 				if ("copper_fallback".equals(when)) {
 					active = Yttr.COPPER_FALLBACK_ACTIVE;
+				} else if ("trinkets".equals(when)) {
+					active = FabricLoader.getInstance().isModLoaded("trinkets");
 				}
 				if (!active) {
 					iter.remove();
