@@ -1,6 +1,5 @@
 package com.unascribed.yttr.content.block.inred;
 
-import com.unascribed.yttr.inred.InactiveSelection;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -8,75 +7,61 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class InRedAndGateBlock extends InRedLogicTileBlock {
-	public static final EnumProperty<InactiveSelection> INACTIVE = EnumProperty.of("inactive", InactiveSelection.class);
-
-	private static final VoxelShape CLICK_LEFT = Block.createCuboidShape( 0, 2.9,  6,  3, 4.1, 10);
-	private static final VoxelShape CLICK_BACK = Block.createCuboidShape( 6, 2.9, 13, 10, 4.1, 16);
-	private static final VoxelShape CLICK_RIGHT = Block.createCuboidShape(13, 2.9,  6, 16, 4.1, 10);
-
-	public InRedAndGateBlock(Settings settings) {
+public class InRedXorGateBlock extends InRedLogicTileBlock {
+	public InRedXorGateBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false).with(INACTIVE, InactiveSelection.NONE));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(BOOLEAN_MODE, false).with(WATERLOGGED, false));
 	}
 
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
-		builder.add(BOOLEAN_MODE, INACTIVE);
-	}
-
+	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedAndGateBlockEntity();
+		return new InRedXorGateBlockEntity();
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if(!world.isClient() && !player.isSneaking() && be instanceof InRedAndGateBlockEntity) {
+		if(!world.isClient() && !player.isSneaking() && be instanceof InRedXorGateBlockEntity) {
 			Vec3d blockCenteredHit = hit.getPos();
 			blockCenteredHit = blockCenteredHit.subtract(0.5, 0.5, 0.5);
-			switch (state.get(InRedAndGateBlock.FACING)) {
+			switch (state.get(FACING)) {
 				case SOUTH:
 					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI);
 					break;
 				case EAST:
-					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI / 2);
+					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI/2);
 					break;
 				case WEST:
-					blockCenteredHit = blockCenteredHit.rotateY(3 * (float)Math.PI / 2);
+					blockCenteredHit = blockCenteredHit.rotateY(3*(float)Math.PI/2);
 					break;
 				default:
 					break;
 			}
 			blockCenteredHit = blockCenteredHit.add(0.5, 0.5, 0.5);
-			InRedAndGateBlockEntity beAndGate = (InRedAndGateBlockEntity)be;
+//			blockCenteredHit = blockCenteredHit.multiply(16);
+			InRedXorGateBlockEntity beXorGate = (InRedXorGateBlockEntity)be;
 			if (CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleBooleanMode();
-			}
-			if (CLICK_LEFT.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.LEFT);
-			}
-			if (CLICK_BACK.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.BACK);
-			}
-			if (CLICK_RIGHT.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.RIGHT);
+				beXorGate.toggleBooleanMode();
 			}
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder);
+		builder.add(BOOLEAN_MODE);
 	}
 
 	@Override
@@ -88,8 +73,8 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction side) {
 		if (side!=state.get(FACING).getOpposite()) return 0;
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof InRedAndGateBlockEntity) {
-			return ((InRedAndGateBlockEntity) be).isActive()? 16 : 0;
+		if (be instanceof InRedXorGateBlockEntity) {
+			return ((InRedXorGateBlockEntity)be).isActive()?16:0;
 		}
 		return 0;
 	}
@@ -117,10 +102,9 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof InRedAndGateBlockEntity) {
+			if (be instanceof InRedXorGateBlockEntity) {
 				world.setBlockState(pos, state
-						.with(BOOLEAN_MODE, ((InRedAndGateBlockEntity)be).booleanMode)
-						.with(INACTIVE, ((InRedAndGateBlockEntity)be).inactive));
+						.with(BOOLEAN_MODE, ((InRedXorGateBlockEntity) be).booleanMode));
 			}
 		}
 	}

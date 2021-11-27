@@ -31,35 +31,6 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public InRedDevice getDevice(Direction inspectingFrom) {
-		if (inspectingFrom == Direction.DOWN || inspectingFrom == Direction.UP) return null;
-		if (world==null) return InRedHandler.ALWAYS_OFF;
-		if (inspectingFrom == null) return signal;
-
-		BlockState state = world.getBlockState(pos);
-		if (state.getBlock() == YBlocks.INRED_AND_GATE) {
-			Direction andGateFront = state.get(InRedAndGateBlock.FACING);
-			if (andGateFront == inspectingFrom) {
-				return signal;
-			} else if (andGateFront == inspectingFrom.getOpposite()) {
-				return InRedHandler.ALWAYS_OFF;
-			} else if (andGateFront == inspectingFrom.rotateYCounterclockwise()) {
-				return InRedHandler.ALWAYS_OFF;
-			} else if (andGateFront == inspectingFrom.rotateYClockwise()) {
-				return InRedHandler.ALWAYS_OFF;
-			} else {
-				return null;
-			}
-		}
-		return InRedHandler.ALWAYS_OFF; //We can't tell what our front face is, so supply a dummy that's always-off.
-	}
-
-	@Override
-	public Text getProbeMessage() {
-		return new TranslatableText("msg.inred.multimeter.out", getValue(signal));
-	}
-
-	@Override
 	public void tick() {
 		//TODO: do we need the firstTick stuff still?
 		if (world.isClient || !hasWorld()) return;
@@ -154,30 +125,49 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 		sync();
 	}
 
+	@Override
+	public InRedDevice getDevice(Direction inspectingFrom) {
+		if (inspectingFrom == Direction.DOWN || inspectingFrom == Direction.UP) return null;
+		if (world == null) return InRedHandler.ALWAYS_OFF;
+		if (inspectingFrom == null) return signal;
+
+		BlockState state = getCachedState();
+		if (state.getBlock() == YBlocks.INRED_AND_GATE) {
+			Direction andGateFront = state.get(InRedAndGateBlock.FACING);
+			if (andGateFront == inspectingFrom) {
+				return signal;
+			} else if (andGateFront == inspectingFrom.getOpposite()) {
+				return InRedHandler.ALWAYS_OFF;
+			} else if (andGateFront == inspectingFrom.rotateYCounterclockwise()) {
+				return InRedHandler.ALWAYS_OFF;
+			} else if (andGateFront == inspectingFrom.rotateYClockwise()) {
+				return InRedHandler.ALWAYS_OFF;
+			} else {
+				return null;
+			}
+		}
+		return InRedHandler.ALWAYS_OFF; //We can't tell what our front face is, so supply a dummy that's always-off.
+	}
+
 	public boolean isActive() {
 		return signal.getSignalValue() != 0;
 	}
 
 	public boolean isLeftActive() {
-		return valLeft!=0;
+		return valLeft != 0;
 	}
+
 	public boolean isBackActive() {
-		return valBack!=0;
+		return valBack != 0;
 	}
+
 	public boolean isRightActive() {
-		return valRight!=0;
+		return valRight != 0;
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound compound) {
-		NbtCompound tag = super.writeNbt(compound);
-		tag.put("Signal", signal.serialize());
-		tag.putBoolean("BooleanMode", booleanMode);
-		tag.putInt("Left", valLeft);
-		tag.putInt("Back", valBack);
-		tag.putInt("Right", valRight);
-		tag.putString("Inactive", inactive.asString());
-		return tag;
+	public Text getProbeMessage() {
+		return new TranslatableText("msg.inred.multimeter.out", getValue(signal));
 	}
 
 	@Override
@@ -192,12 +182,15 @@ public class InRedAndGateBlockEntity extends InRedDeviceBlockEntity {
 	}
 
 	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		return writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound compound) {
+		NbtCompound tag = super.writeNbt(compound);
+		tag.put("Signal", signal.serialize());
+		tag.putBoolean("BooleanMode", booleanMode);
+		tag.putInt("Left", valLeft);
+		tag.putInt("Back", valBack);
+		tag.putInt("Right", valRight);
+		tag.putString("Inactive", inactive.asString());
+		return tag;
 	}
 
-	@Override
-	public void fromClientTag(NbtCompound tag) {
-		readNbt(this.getCachedState(), tag);
-	}
 }

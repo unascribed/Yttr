@@ -5,6 +5,7 @@ import com.unascribed.yttr.inred.InRedHandler;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
@@ -37,5 +38,15 @@ public abstract class InRedDeviceBlockEntity extends BlockEntity implements Tick
 		int bit5 = ((signal & 0b01_0000) != 0) ? 1:0;
 		int bit6 = ((signal & 0b10_0000) != 0) ? 1:0;
 		return "0b"+bit6+bit5+"_"+bit4+bit3+bit2+bit1+" ("+signal+")";
+	}
+
+	@Override
+	public void fromClientTag(NbtCompound tag) {
+		readNbt(getCachedState(), tag);
+	}
+
+	@Override
+	public NbtCompound toClientTag(NbtCompound tag) {
+		return writeNbt(tag);
 	}
 }

@@ -20,6 +20,7 @@ import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.ProjectorItem;
 import com.unascribed.yttr.content.item.HornItem;
+import com.unascribed.yttr.content.item.InRedMultimeterItem;
 import com.unascribed.yttr.content.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.content.item.ShearsItem;
@@ -483,6 +484,9 @@ public class YItems {
 			.maxCount(1));
 	@ColorProvider(ContinuityItemColorProvider.class)
 	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
+			.maxCount(1));
+
+	public static final InRedMultimeterItem INRED_MULTIMETER = new InRedMultimeterItem(new Item.Settings()
 			.maxCount(1));
 	
 	public static void init() {

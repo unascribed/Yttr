@@ -8,11 +8,13 @@ import java.lang.annotation.Target;
 
 import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
 import com.unascribed.yttr.client.screen.handled.DSUScreen;
+import com.unascribed.yttr.client.screen.handled.InRedOscillatorScreen;
 import com.unascribed.yttr.client.screen.handled.MagtankScreen;
 import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
 import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
+import com.unascribed.yttr.inventory.InRedOscillatorScreenHandler;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
@@ -34,6 +36,8 @@ public class YHandledScreens {
 	public static final ScreenHandlerType<DSUScreenHandler> DSU = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "dsu"), DSUScreenHandler::new);
 	@Screen(MagtankScreen.class)
 	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "magtank"), MagtankScreenHandler::new);
+	@Screen(InRedOscillatorScreen.class)
+	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "inred_oscillator"), InRedOscillatorScreenHandler::new);
 	
 	public static void init() {}
 	

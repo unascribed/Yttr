@@ -1,6 +1,5 @@
 package com.unascribed.yttr.content.block.inred;
 
-import com.unascribed.yttr.inred.InactiveSelection;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -8,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -18,65 +16,54 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class InRedAndGateBlock extends InRedLogicTileBlock {
-	public static final EnumProperty<InactiveSelection> INACTIVE = EnumProperty.of("inactive", InactiveSelection.class);
+public class InRedNotGateBlock extends InRedLogicTileBlock {
+	public static final VoxelShape NOT_CLICK_BOOLEAN = Block.createCuboidShape( 6, 2.9,  2, 10, 4.1,  6);
 
-	private static final VoxelShape CLICK_LEFT = Block.createCuboidShape( 0, 2.9,  6,  3, 4.1, 10);
-	private static final VoxelShape CLICK_BACK = Block.createCuboidShape( 6, 2.9, 13, 10, 4.1, 16);
-	private static final VoxelShape CLICK_RIGHT = Block.createCuboidShape(13, 2.9,  6, 16, 4.1, 10);
-
-	public InRedAndGateBlock(Settings settings) {
+	public InRedNotGateBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false).with(INACTIVE, InactiveSelection.NONE));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(BOOLEAN_MODE, false).with(WATERLOGGED, false));
 	}
 
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
-		builder.add(BOOLEAN_MODE, INACTIVE);
-	}
-
+	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new InRedAndGateBlockEntity();
+		return new InRedNotGateBlockEntity();
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if(!world.isClient() && !player.isSneaking() && be instanceof InRedAndGateBlockEntity) {
+		if(!world.isClient() && !player.isSneaking() && be instanceof InRedNotGateBlockEntity) {
 			Vec3d blockCenteredHit = hit.getPos();
 			blockCenteredHit = blockCenteredHit.subtract(0.5, 0.5, 0.5);
-			switch (state.get(InRedAndGateBlock.FACING)) {
+			switch (state.get(FACING)) {
 				case SOUTH:
 					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI);
 					break;
 				case EAST:
-					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI / 2);
+					blockCenteredHit = blockCenteredHit.rotateY((float)Math.PI/2);
 					break;
 				case WEST:
-					blockCenteredHit = blockCenteredHit.rotateY(3 * (float)Math.PI / 2);
+					blockCenteredHit = blockCenteredHit.rotateY(3*(float)Math.PI/2);
 					break;
 				default:
 					break;
 			}
 			blockCenteredHit = blockCenteredHit.add(0.5, 0.5, 0.5);
-			InRedAndGateBlockEntity beAndGate = (InRedAndGateBlockEntity)be;
-			if (CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleBooleanMode();
-			}
-			if (CLICK_LEFT.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.LEFT);
-			}
-			if (CLICK_BACK.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.BACK);
-			}
-			if (CLICK_RIGHT.getBoundingBox().contains(blockCenteredHit)) {
-				beAndGate.toggleInactive(InactiveSelection.RIGHT);
+			InRedNotGateBlockEntity beNotGate = (InRedNotGateBlockEntity)be;
+			if (NOT_CLICK_BOOLEAN.getBoundingBox().contains(blockCenteredHit)) {
+				beNotGate.toggleBooleanMode();
 			}
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder);
+		builder.add(BOOLEAN_MODE);
 	}
 
 	@Override
@@ -88,8 +75,8 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction side) {
 		if (side!=state.get(FACING).getOpposite()) return 0;
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof InRedAndGateBlockEntity) {
-			return ((InRedAndGateBlockEntity) be).isActive()? 16 : 0;
+		if (be instanceof InRedNotGateBlockEntity) {
+			return ((InRedNotGateBlockEntity)be).isActive()?16:0;
 		}
 		return 0;
 	}
@@ -106,6 +93,9 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		if (state.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
 		if (!this.canBlockStay(world, pos)) {
 			world.breakBlock(pos, true);
 
@@ -113,14 +103,10 @@ public class InRedAndGateBlock extends InRedLogicTileBlock {
 				world.updateNeighborsAlways(pos.offset(dir), this);
 			}
 		} else {
-			if (state.get(WATERLOGGED)) {
-				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-			}
 			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof InRedAndGateBlockEntity) {
+			if (be instanceof InRedNotGateBlockEntity) {
 				world.setBlockState(pos, state
-						.with(BOOLEAN_MODE, ((InRedAndGateBlockEntity)be).booleanMode)
-						.with(INACTIVE, ((InRedAndGateBlockEntity)be).inactive));
+						.with(BOOLEAN_MODE, ((InRedNotGateBlockEntity) be).booleanMode));
 			}
 		}
 	}

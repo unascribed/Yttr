@@ -23,7 +23,15 @@ import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
 import com.unascribed.yttr.content.block.inred.InRedBlock;
 import com.unascribed.yttr.content.block.inred.InRedCableBlock;
+import com.unascribed.yttr.content.block.inred.InRedDemoCyclerBlock;
+import com.unascribed.yttr.content.block.inred.InRedDiodeBlock;
+import com.unascribed.yttr.content.block.inred.InRedEncoderBlock;
+import com.unascribed.yttr.content.block.inred.InRedNotGateBlock;
+import com.unascribed.yttr.content.block.inred.InRedOscillatorBlock;
 import com.unascribed.yttr.content.block.inred.InRedScaffoldBlock;
+import com.unascribed.yttr.content.block.inred.InRedShifterBlock;
+import com.unascribed.yttr.content.block.inred.InRedTransistorBlock;
+import com.unascribed.yttr.content.block.inred.InRedXorGateBlock;
 import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
 import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
@@ -571,17 +579,22 @@ public class YBlocks {
 	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
 			.materialColor(MapColor.MAGENTA)
 	);
-
 	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(0F, 8F)
 	);
-
 	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
 			.strength(0F, 8F)
 			.breakInstantly()
 	);
-
 	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedNotGateBlock INRED_NOT_GATE = new InRedNotGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedXorGateBlock INRED_XOR_GATE = new InRedXorGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedDiodeBlock INRED_DIODE = new InRedDiodeBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedShifterBlock INRED_SHIFTER = new InRedShifterBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedTransistorBlock INRED_TRANSISTOR = new InRedTransistorBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedEncoderBlock INRED_ENCODER = new InRedEncoderBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedOscillatorBlock INRED_OSCILLATOR = new InRedOscillatorBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedDemoCyclerBlock INRED_DEMO_CYCLER = new InRedDemoCyclerBlock(INRED_DEVICE_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
