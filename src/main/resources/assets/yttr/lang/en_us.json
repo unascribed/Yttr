@@ -79,7 +79,7 @@
 	"item.yttr.cuprosteel_coil": "Cuprosteel Coil",
 	"item.yttr.ammo_can": "Rifle Canister",
 	"item.yttr.empty_ammo_can": "Empty Rifle Canister",
-	"item.yttr.ammo_pack": "Rifle Canister Pack",
+	"item.yttr.ammo_pack": "Rifle Canister Multiplexer",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -117,8 +117,7 @@
 	"item.yttr.neodymium_disc.desc": "???",
 	
 	"item.yttr.ammo_can.prefixed": "%s Rifle Canister",
-	"item.yttr.ammo_can.shots.one": "1/%s shot",
-	"item.yttr.ammo_can.shots.many": "%s/%s shots",
+	"item.yttr.ammo_can.shots": "%s/%s shots",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Block of Yttrium",

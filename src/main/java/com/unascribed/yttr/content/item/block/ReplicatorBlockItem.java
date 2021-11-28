@@ -16,10 +16,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.ThrowablePotionItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
@@ -77,8 +80,23 @@ public class ReplicatorBlockItem extends BlockItem {
 		if (held.isFood() && user.canConsume(held.getItem().getFoodComponent().isAlwaysEdible())) {
 			user.setCurrentHand(hand);
 			return TypedActionResult.consume(stack);
+		} else if (held.getItem() instanceof ThrowablePotionItem) {
+			user.setStackInHand(hand, held);
+			TypedActionResult<ItemStack> res = held.getItem().use(world, user, hand);
+			user.setStackInHand(hand, stack);
+			return new TypedActionResult<>(res.getResult(), stack);
 		}
 		return TypedActionResult.pass(stack);
+	}
+	
+	@Override
+	public ActionResult useOnBlock(ItemUsageContext context) {
+		ItemStack stack = context.getStack();
+		ItemStack held = getHeldItem(stack);
+		if (!context.getPlayer().isSneaking() && (held.isFood() || held.getItem() instanceof ThrowablePotionItem)) {
+			return ActionResult.PASS;
+		}
+		return super.useOnBlock(context);
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.List;
-
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 
 import com.google.common.base.Ascii;
@@ -30,9 +29,9 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	
 	@Override
 	public Text getName(ItemStack stack) {
-		if (!stack.hasTag()) return super.getName(stack);
+		if (!stack.hasTag()) return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("multiplayer.status.unknown"));
 		RifleMode mode = Enums.getIfPresent(RifleMode.class, stack.getTag().getString("Mode")).orNull();
-		if (mode == null) return super.getName(stack);
+		if (mode == null) return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("multiplayer.status.unknown"));
 		return new TranslatableText("item.yttr.ammo_can.prefixed", new TranslatableText("yttr.rifle_mode."+Ascii.toLowerCase(mode.name())));
 	}
 	
@@ -40,21 +39,25 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		int shots = stack.hasTag() ? stack.getTag().getInt("Shots") : 0;
-		if (shots == 1) {
-			tooltip.add(new TranslatableText("item.yttr.ammo_can.shots.one", CAPACITY).formatted(Formatting.GRAY));
-		} else {
-			tooltip.add(new TranslatableText("item.yttr.ammo_can.shots.many", shots, CAPACITY).formatted(Formatting.GRAY));
-		}
+		tooltip.add(new TranslatableText("item.yttr.ammo_can.shots", shots, CAPACITY).formatted(Formatting.GRAY));
 	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
 	public int getColor(ItemStack stack, int tintIndex) {
-		if (tintIndex != 1) return -1;
-		if (!stack.hasTag()) return -1;
+		if (tintIndex == 0) return -1;
+		if (!stack.hasTag()) {
+			if (tintIndex == 2) return 0;
+			return 0xFFFF00FF;
+		}
 		RifleMode mode = Enums.getIfPresent(RifleMode.class, stack.getTag().getString("Mode")).orNull();
 		if (mode == null) return -1;
-		return mode.color;
+		float v = stack.getTag().getInt("Shots")/(float)CAPACITY;
+		if (v < 0.15f) {
+			// ensure nearly-empty canisters are still differentiable
+			v = 0.15f;
+		}
+		return RifleItem.getPortionColor(tintIndex-1, 3, v, mode.color, 0xFF284946);
 	}
 
 }

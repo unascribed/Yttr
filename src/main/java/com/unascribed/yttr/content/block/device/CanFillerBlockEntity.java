@@ -73,7 +73,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 			ItemStack can = getStack(2);
 			if (isRifleAmmo(ammo) && isPropellant(propellant) && isCan(can)) {
 				RifleMode ammoType = getRifleAmmoType(ammo);
-				maxWorkTime = 80;
+				maxWorkTime = can.getItem() == YItems.EMPTY_AMMO_CAN ? 160 : 80;
 				if (can.getItem() == YItems.AMMO_CAN && can.hasTag()) {
 					if (!ammoType.name().equals(can.getTag().getString("Mode"))) {
 						workTime = 0;
@@ -99,7 +99,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 					workTime = 0;
 					return;
 				}
-				if (workTime < (can.getCount() == 1 ? maxWorkTime-20 : maxWorkTime)) {
+				if (workTime < (can.getCount() == 1 ? ((maxWorkTime*3)/4)-1 : maxWorkTime)) {
 					workTime++;
 				} else {
 					if (ammoRemainder != null) {
@@ -124,7 +124,7 @@ public class CanFillerBlockEntity extends BlockEntity implements SideyInventory,
 						result.getTag().putString("Mode", ammoType.name());
 					}
 					int shots = result.getTag().getInt("Shots");
-					shots += (ammoType.shotsPerItem*3)/2;
+					shots += ((ammoType.shotsPerItem*3)+1)/2;
 					if (shots > AmmoCanItem.CAPACITY) {
 						shots = AmmoCanItem.CAPACITY;
 					}

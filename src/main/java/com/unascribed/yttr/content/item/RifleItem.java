@@ -188,6 +188,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		return ammo;
 	}
 	
+	public boolean isAmmoCanned(PlayerEntity user, RifleMode mode) {
+		return mode == RifleMode.DAMAGE;
+	}
+	
 	public void changeMode(PlayerEntity user, RifleMode mode) {
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
@@ -439,18 +443,23 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	@Environment(EnvType.CLIENT)
 	public int getColor(ItemStack stack, int tintIndex) {
 		if (tintIndex == 0) return baseColor;
-		tintIndex--;
+		RifleItem item = ((RifleItem)stack.getItem());
 		RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
-		float ammo = (((RifleItem)stack.getItem()).getRemainingAmmo(stack)/(float)(((RifleItem)stack.getItem()).getMaxAmmo(stack)))*6;
-		int ammoI = (int)ammo;
-		if (ammoI > tintIndex) return mode.color;
-		float a = ammoI < tintIndex ? 1 : 1-(ammo%1);
-		float rF = NativeImage.getBlue(mode.color)/255f;
-		float gF = NativeImage.getGreen(mode.color)/255f;
-		float bF = NativeImage.getRed(mode.color)/255f;
-		float rE = (((baseColor>>16)&0xFF)/255f)+0.05f;
-		float gE = (((baseColor>>8)&0xFF)/255f)+0.05f;
-		float bE = ((baseColor&0xFF)/255f)+0.15f;
+		return getPortionColor(tintIndex-1, 6, (item.getRemainingAmmo(stack)/(float)(item.getMaxAmmo(stack))), mode.color, baseColor);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static int getPortionColor(int idx, int portions, float v, int filledColor, int emptyColor) {
+		v *= portions;
+		int vi = (int)v;
+		if (vi > idx) return filledColor;
+		float a = vi < idx ? 1 : 1-(v%1);
+		float rF = NativeImage.getBlue(filledColor)/255f;
+		float gF = NativeImage.getGreen(filledColor)/255f;
+		float bF = NativeImage.getRed(filledColor)/255f;
+		float rE = (((emptyColor>>16)&0xFF)/255f)+0.05f;
+		float gE = (((emptyColor>>8)&0xFF)/255f)+0.05f;
+		float bE = ((emptyColor&0xFF)/255f)+0.15f;
 		float r = rF+((rE-rF)*a);
 		float g = gF+((gE-gF)*a);
 		float b = bF+((bE-bF)*a);

@@ -85,6 +85,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -166,6 +167,12 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"))));
 			Yttr.lessCreepyAwareHopper = rm.containsResource(new Identifier("yttr", "lcah-marker"));
 		});
+		
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+				out.accept(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
+			});
+		}
 		
 		
 		FabricModelPredicateProviderRegistry.register(YItems.SNARE, new Identifier("yttr", "filled"), (stack, world, entity) -> {

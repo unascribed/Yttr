@@ -8,6 +8,7 @@ import com.unascribed.yttr.mixin.accessor.client.AccessorWorldRenderer;
 import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.util.math.Interp;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
@@ -27,6 +28,8 @@ public class RifleHUDRenderer extends IHasAClient {
 	private static final Identifier MODES = new Identifier("yttr", "textures/gui/rifle_modes.png");
 	private static final Identifier SCOPE = new Identifier("yttr", "textures/gui/riflescope.png");
 	private static final Identifier SCOPEAMMO = new Identifier("yttr", "textures/gui/riflescopeammo.png");
+	private static final Identifier TINYNUMBERS = new Identifier("yttr", "textures/gui/tiny_numbers.png");
+	private static final Identifier CANICON = new Identifier("yttr", "textures/gui/riflecanicon.png");
 	
 	private static int ticksSinceOpen = -1;
 	private static int ticksSinceClose = -1;
@@ -141,6 +144,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					if (a < 0) a = 0;
 					mc.getTextureManager().bindTexture(MODES);
 					int ammo = rifleItem.getPotentialAmmoCount(mc.player, mode);
+					boolean canned = rifleItem.isAmmoCanned(mc.player, mode);
 					if (ammo == 0) {
 						RenderSystem.color4f(0.25f, 0.25f, 0.25f, a);
 					} else {
@@ -154,10 +158,37 @@ public class RifleHUDRenderer extends IHasAClient {
 					RenderSystem.defaultBlendFunc();
 					DrawableHelper.drawTexture(matrices, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.VALUES.size()*16, 16);
 					if (a > 0.1f) {
-						String ammoStr = (ammo == -1 ? "∞" : Integer.toString(ammo));
-						int textCol = 0x00FFFFFF;
-						textCol |= ((int)(a*255)&0xFF)<<24;
-						mc.textRenderer.drawWithShadow(matrices, ammoStr, x+16-(mc.textRenderer.getWidth(ammoStr)), y+8, textCol);
+						if (ammo == -1) {
+							int textCol = 0x00FFFFFF;
+							textCol |= ((int)(a*255)&0xFF)<<24;
+							mc.textRenderer.drawWithShadow(matrices, "∞", x+16-(mc.textRenderer.getWidth("∞")), y+8, textCol);
+						} else {
+							String str = Integer.toString(ammo);
+							int w = str.length()*4;
+							for (int p = 0; p < 2; p++) {
+								int cx = x+18-w;
+								int cy = y+12;
+								if (p == 0) {
+									RenderSystem.color4f(0.25f, 0.25f, 0.25f, a);
+								} else {
+									RenderSystem.color4f(1, 1, 1, a);
+									cx--;
+									cy--;
+								}
+								if (canned) {
+									MinecraftClient.getInstance().getTextureManager().bindTexture(CANICON);
+									DrawableHelper.drawTexture(matrices, x+18-5, y+12-7, 300, 0, 0, 5, 5, 5, 5);
+								}
+								MinecraftClient.getInstance().getTextureManager().bindTexture(TINYNUMBERS);
+								for (int ci = 0; ci < str.length(); ci++) {
+									int cj = str.charAt(ci)-'0';
+									int u = (cj%5)*3;
+									int v = (cj/5)*5;
+									DrawableHelper.drawTexture(matrices, cx, cy, 300, u, v, 3, 5, 10, 15);
+									cx += 4;
+								}
+							}
+						}
 					}
 				}
 			matrices.pop();

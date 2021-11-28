@@ -65,6 +65,8 @@
 	"sorter.MixinChestBlockEntity",
 	"replicator.MixinDropperBlock",
 	"replicator.MixinLivingEntity",
+	"replicator.MixinEnchantmentLapisSlot",
+	"replicator.MixinEnchantmentScreenHandler",
 	"disjunction.MixinLivingEntity",
 	"substitute.MixinIngredient",
 	"substitute.MixinIngredientStackEntry",
