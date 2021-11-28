@@ -77,6 +77,8 @@
 	"item.yttr.cuprosteel_ingot": "Cuprosteel Ingot",
 	"item.yttr.copper_ingot": "Copper Ingot",
 	"item.yttr.cuprosteel_coil": "Cuprosteel Coil",
+	"item.yttr.ammo_can": "Rifle Canister",
+	"item.yttr.empty_ammo_can": "Empty Rifle Canister",
 	
 	"item.yttr.rifle.tip.1": "§5§oA laser gun! Not for mining.",
 	
@@ -112,6 +114,10 @@
 	"item.yttr.music_disc_papillons.desc": "xyce & malmen - papillons",
 	"item.yttr.music_disc_void.desc": "§0Aureate - void",
 	"item.yttr.neodymium_disc.desc": "???",
+	
+	"item.yttr.ammo_can.prefixed": "%s Rifle Canister",
+	"item.yttr.ammo_can.shots.one": "1/%s shot",
+	"item.yttr.ammo_can.shots.many": "%s/%s shots",
 	
 	"block.yttr.gadolinite": "Gadolinite",
 	"block.yttr.yttrium_block": "Block of Yttrium",
@@ -192,6 +198,7 @@
 	"block.yttr.cuprosteel_block": "Block of Cuprosteel",
 	"block.yttr.cuprosteel_plate": "Cuprosteel Pressure Plate",
 	"block.yttr.copper_ore": "Copper Ore",
+	"block.yttr.can_filler": "Canister Filler",
 	
 	"block.yttr.bogged_note_block.tip.1": "§7Plays after half a redstone tick.",
 	

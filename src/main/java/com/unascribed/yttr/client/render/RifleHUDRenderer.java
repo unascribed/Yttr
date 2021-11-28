@@ -202,9 +202,9 @@ public class RifleHUDRenderer extends IHasAClient {
 			RifleMode next = current;
 			// drain timesPressed to prevent vanilla behavior
 			while (mc.options.keySwapHands.wasPressed()) {}
-			if (mc.options.keyAttack.wasPressed()) {
-				while (mc.options.keyAttack.wasPressed()) {}
-				mc.options.keyAttack.setPressed(false);
+			if (mc.options.keyUse.wasPressed()) {
+				while (mc.options.keyUse.wasPressed()) {}
+				mc.options.keyUse.setPressed(false);
 				if (changeSignum == 0) {
 					ticksSinceChange = 0;
 				} else {
@@ -213,9 +213,9 @@ public class RifleHUDRenderer extends IHasAClient {
 				changeSignum++;
 				next = current.next();
 			}
-			if (mc.options.keyUse.wasPressed()) {
-				while (mc.options.keyUse.wasPressed()) {}
-				mc.options.keyUse.setPressed(false);
+			if (mc.options.keyAttack.wasPressed()) {
+				while (mc.options.keyAttack.wasPressed()) {}
+				mc.options.keyAttack.setPressed(false);
 				if (changeSignum == 0) {
 					ticksSinceChange = 0;
 				} else {

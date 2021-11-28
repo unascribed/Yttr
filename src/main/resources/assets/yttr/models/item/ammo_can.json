@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "yttr:item/ammo_can",
+    "layer1": "yttr:item/ammo_can_1"
+  }
+}

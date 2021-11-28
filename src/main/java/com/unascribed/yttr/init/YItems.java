@@ -13,6 +13,7 @@ import com.unascribed.yttr.client.ContinuityItemColorProvider;
 import com.unascribed.yttr.client.render.LampItemRenderer;
 import com.unascribed.yttr.client.render.ReplicatorItemRenderer;
 import com.unascribed.yttr.client.render.RifleItemRenderer;
+import com.unascribed.yttr.content.item.AmmoCanItem;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
@@ -126,6 +127,7 @@ public class YItems {
 	public static final BlockItem SOUL_PLANKS = createNormalBlockItem(YBlocks.SOUL_PLANKS);
 	public static final BlockItem CUPROSTEEL_BLOCK = createNormalBlockItem(YBlocks.CUPROSTEEL_BLOCK);
 	public static final BlockItem CUPROSTEEL_PLATE = createNormalBlockItem(YBlocks.CUPROSTEEL_PLATE);
+	public static final BlockItem CAN_FILLER = createNormalBlockItem(YBlocks.CAN_FILLER);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
@@ -493,6 +495,9 @@ public class YItems {
 	public static final LatchReference<Item> COPPER_INGOT = YLatches.create();
 	
 	public static final LatchReference<Item> CUPROSTEEL_COIL = YLatches.create();
+	
+	public static final Item EMPTY_AMMO_CAN = new Item(new Item.Settings().maxCount(16));
+	public static final AmmoCanItem AMMO_CAN = new AmmoCanItem(new Item.Settings().maxCount(1));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

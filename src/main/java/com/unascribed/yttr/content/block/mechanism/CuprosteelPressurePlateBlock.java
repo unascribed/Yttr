@@ -60,7 +60,32 @@ public class CuprosteelPressurePlateBlock extends AbstractPressurePlateBlock {
 	@Override
 	protected void playPressSound(WorldAccess world, BlockPos pos) {
 		if (world instanceof ServerWorld) {
-			((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.1, pos.getZ()+0.5, 2, 0.2, 0, 0.2, 0);
+			BlockState bs = world.getBlockState(pos);
+			if (bs.isOf(this)) {
+				if (bs.get(AXIS) == Axis.X) {
+					((ServerWorld)world).spawnParticles(ParticleTypes.CRIT,
+							pos.getX()+0.5, pos.getY()+0.1, pos.getZ()+0.25,
+							1,
+							0.25, 0, 0.1,
+							0);
+					((ServerWorld)world).spawnParticles(ParticleTypes.CRIT,
+							pos.getX()+0.5, pos.getY()+0.1, pos.getZ()+0.75,
+							1,
+							0.25, 0, 0.1,
+							0);
+				} else {
+					((ServerWorld)world).spawnParticles(ParticleTypes.CRIT,
+							pos.getX()+0.25, pos.getY()+0.1, pos.getZ()+0.5,
+							1,
+							0.1, 0, 0.25,
+							0);
+					((ServerWorld)world).spawnParticles(ParticleTypes.CRIT,
+							pos.getX()+0.75, pos.getY()+0.1, pos.getZ()+0.5,
+							1,
+							0.1, 0, 0.25,
+							0);
+				}
+			}
 		}
 		world.playSound(null, pos, YSounds.SMALL_ZAP, SoundCategory.BLOCKS, 0.5f, (world.getRandom().nextFloat()/2)+0.7f);
 	}

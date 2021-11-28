@@ -6,11 +6,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.unascribed.yttr.client.screen.handled.CanFillerScreen;
 import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
 import com.unascribed.yttr.client.screen.handled.DSUScreen;
 import com.unascribed.yttr.client.screen.handled.MagtankScreen;
 import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
 import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
+import com.unascribed.yttr.inventory.CanFillerScreenHandler;
 import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
@@ -34,6 +36,8 @@ public class YHandledScreens {
 	public static final ScreenHandlerType<DSUScreenHandler> DSU = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "dsu"), DSUScreenHandler::new);
 	@Screen(MagtankScreen.class)
 	public static final ScreenHandlerType<MagtankScreenHandler> MAGTANK = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "magtank"), MagtankScreenHandler::new);
+	@Screen(CanFillerScreen.class)
+	public static final ScreenHandlerType<CanFillerScreenHandler> CAN_FILLER = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "can_filler"), CanFillerScreenHandler::new);
 	
 	public static void init() {}
 	

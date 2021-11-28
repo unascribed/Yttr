@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "yttr:block/can_filler",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/can_filler"
+    },
+    "facing=south": {
+      "model": "yttr:block/can_filler",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "yttr:block/can_filler",
+      "y": 270
+    }
+  }
+}

@@ -15,6 +15,7 @@ import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.block.decor.WallLampBlock;
+import com.unascribed.yttr.content.block.device.CanFillerBlock;
 import com.unascribed.yttr.content.block.device.CentrifugeBlock;
 import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
@@ -564,6 +565,8 @@ public class YBlocks {
 	
 	public static final Block CUPROSTEEL_BLOCK = new Block(METALLIC_SETTINGS);
 	public static final CuprosteelPressurePlateBlock CUPROSTEEL_PLATE = new CuprosteelPressurePlateBlock(METALLIC_SETTINGS);
+	
+	public static final CanFillerBlock CAN_FILLER = new CanFillerBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

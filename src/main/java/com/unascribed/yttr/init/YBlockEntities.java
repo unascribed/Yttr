@@ -21,6 +21,7 @@ import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.block.decor.LampBlockEntity;
+import com.unascribed.yttr.content.block.device.CanFillerBlockEntity;
 import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
@@ -68,6 +69,7 @@ public class YBlockEntities {
 	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
 	@Renderer(DSUBlockEntityRenderer.class)
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
+	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);

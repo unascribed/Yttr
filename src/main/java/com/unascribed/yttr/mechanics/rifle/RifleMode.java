@@ -135,7 +135,7 @@ public enum RifleMode {
 		}
 		
 	},
-	LIGHT(Formatting.YELLOW, 0xFFFF00, () -> YItems.GLOWING_GAS, 8, 2f) {
+	LIGHT(Formatting.YELLOW, 0xFFFF00, () -> Items.GLOWSTONE_DUST, 8, 2f) {
 		@Override
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			Vec3d start = RifleItem.getMuzzlePos(user, false);
