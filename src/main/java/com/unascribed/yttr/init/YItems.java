@@ -495,6 +495,7 @@ public class YItems {
 	public static final LatchReference<Item> COPPER_INGOT = YLatches.create();
 	
 	public static final LatchReference<Item> CUPROSTEEL_COIL = YLatches.create();
+	public static final LatchReference<Item> AMMO_PACK = YLatches.create();
 	
 	public static final Item EMPTY_AMMO_CAN = new Item(new Item.Settings().maxCount(16));
 	public static final AmmoCanItem AMMO_CAN = new AmmoCanItem(new Item.Settings().maxCount(1));
