@@ -6,7 +6,9 @@ steps:
   image: openjdk:11
   commands:
   - ./gradlew clean build
-  - "git log --pretty=tformat:%B -n1 > note.txt"
+  - "echo 10 most recent commits: > note.txt"
+  - "git log --pretty=tformat:%B -n10 >> note.txt"
+  - "rm build/libs/*-dev.jar"
 - name: release
   image: mac89/drone-gitea-release
   settings:
