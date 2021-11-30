@@ -1,0 +1,20 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: openjdk:11
+  commands:
+  - ./gradlew clean build
+  - "git log --pretty=tformat:%B -n1 > note.txt"
+- name: release
+  image: plugins/gitea-release
+  settings:
+    api_key:
+      from_secret: gitea_key
+    base_url: https://git.sleeping.town
+    files:
+      - build/libs/yttr-*.jar
+    title: Dev Build
+    prerelease: true
+    note: note.txt
