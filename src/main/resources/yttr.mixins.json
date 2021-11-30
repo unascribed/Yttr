@@ -97,6 +97,7 @@
 	"coil.MixinPlayerEntity",
 	"MixinRegistry",
 	"MixinUtil",
+	"MixinTitleScreen",
 	
 	"aware_hopper.recipe.MixinArmorDyeRecipe",
 	"aware_hopper.recipe.MixinBannerDuplicateRecipe",

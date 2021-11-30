@@ -12,10 +12,13 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=ItemColorProvider.class, value=EnvType.CLIENT)
@@ -58,6 +61,19 @@ public class AmmoCanItem extends Item implements ItemColorProvider {
 			v = 0.15f;
 		}
 		return RifleItem.getPortionColor(tintIndex-1, 3, v, mode.color, 0xFF284946);
+	}
+	
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		if (isIn(group)) {
+			for (RifleMode mode : RifleMode.VALUES) {
+				ItemStack stack = new ItemStack(this);
+				stack.setTag(new NbtCompound());
+				stack.getTag().putString("Mode", mode.name());
+				stack.getTag().putInt("Shots", CAPACITY);
+				stacks.add(stack);
+			}
+		}
 	}
 
 }
