@@ -8,7 +8,7 @@ steps:
   - ./gradlew clean build
   - "git log --pretty=tformat:%B -n1 > note.txt"
 - name: release
-  image: mac89/gitea-release
+  image: mac89/drone-gitea-release
   settings:
     api_key:
       from_secret: gitea_key
