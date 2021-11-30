@@ -21,3 +21,4 @@ steps:
     prerelease: true
     tag: dev
     note: note.txt
+    allow_edit: true
