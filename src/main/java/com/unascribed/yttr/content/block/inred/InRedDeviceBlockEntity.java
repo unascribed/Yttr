@@ -53,6 +53,7 @@ public abstract class InRedDeviceBlockEntity extends BlockEntity implements Tick
 
 	@Override
 	public void sync() {
+		markDirty();
 		BlockEntityClientSerializable.super.sync();
 		world.updateNeighborsAlways(pos, getCachedState().getBlock());
 	}
