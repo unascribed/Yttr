@@ -12,6 +12,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.block.big.BigBlock;
+import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
@@ -29,6 +30,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -43,6 +46,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -144,7 +149,8 @@ public class ShifterItem extends Item {
 		}
 		if (_replacement.isEmpty()) return;
 		ItemStack replacement = _replacement;
-		BlockState curState = world.getBlockState(pos);
+		BlockEntity be = world.getBlockEntity(pos);
+		BlockState curState = getEffectiveBlockState(world, pos);
 		if (curState.isAir()) return;
 		int consumed = Inventories.remove(player.inventory, (is) -> ItemStack.areItemsEqual(is, replacement) && ItemStack.areTagsEqual(is, replacement), 1, true);
 		if (consumed == 0) return;
@@ -172,13 +178,15 @@ public class ShifterItem extends Item {
 		if (curState.getHardness(world, pos) < 0 && !curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
 		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
-		if (bhr != null) {
+		if (bhr != null && be == null) {
 			world.setBlockState(pos, curState.getFluidState().getBlockState(), 0, 0);
 			BlockState refinedReplState = replState.getBlock().getPlacementState(new ItemPlacementContext(player, Hand.OFF_HAND, replacement, bhr));
 			if (refinedReplState != null) {
 				replState = refinedReplState;
 			}
 		}
+		replState = copySafeProperties(curState, replState);
+		if (be instanceof CleavedBlockEntity && !CleaverItem.canCleave(world, pos, replState)) return;
 		BlockSoundGroup replSg = replState.getSoundGroup();
 		world.playSound(null, pos, replSg.getPlaceSound(), SoundCategory.BLOCKS, ((replSg.getVolume()+1f)/2)*0.2f, replSg.getPitch()*0.8f);
 		if (!player.isCreative()) {
@@ -212,14 +220,42 @@ public class ShifterItem extends Item {
 		if (player instanceof ServerPlayerEntity) {
 			YCriteria.SHIFT_BLOCK.trigger((ServerPlayerEntity)player, pos, player.getStackInHand(Hand.MAIN_HAND));
 		}
-		world.setBlockState(pos, replState);
+		if (be instanceof CleavedBlockEntity) {
+			((CleavedBlockEntity)be).setDonor(replState);
+		} else {
+			world.setBlockState(pos, replState);
+		}
 		world.spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 		world.spawnParticles(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 	}
 
+	private BlockState copySafeProperties(BlockState src, BlockState dst) {
+		dst = maybeCopy(Properties.AXIS, src, dst);
+		dst = maybeCopy(Properties.HORIZONTAL_AXIS, src, dst);
+		dst = maybeCopy(Properties.FACING, src, dst);
+		dst = maybeCopy(Properties.HOPPER_FACING, src, dst);
+		dst = maybeCopy(Properties.HORIZONTAL_FACING, src, dst);
+		dst = maybeCopy(Properties.RAIL_SHAPE, src, dst);
+		dst = maybeCopy(Properties.STRAIGHT_RAIL_SHAPE, src, dst);
+		dst = maybeCopy(Properties.ROTATION, src, dst);
+		if (src.contains(Properties.SLAB_TYPE) && dst.contains(Properties.SLAB_TYPE)) {
+			if (src.get(Properties.SLAB_TYPE) != SlabType.DOUBLE && dst.get(Properties.SLAB_TYPE) != SlabType.DOUBLE) {
+				dst = dst.with(Properties.SLAB_TYPE, src.get(Properties.SLAB_TYPE));
+			}
+		}
+		return dst;
+	}
+
+	private <T extends Comparable<T>> BlockState maybeCopy(Property<T> p, BlockState src, BlockState dst) {
+		if (src.contains(p) && dst.contains(p)) {
+			dst = dst.with(p, src.get(p));
+		}
+		return dst;
+	}
+
 	public Set<BlockPos> getAffectedBlocks(PlayerEntity player, World world, BlockPos start, Direction face,
 			boolean includeDisconnected, boolean includeHidden, boolean planeRestrict) {
-		BlockState sample = world.getBlockState(start);
+		BlockState sample = getEffectiveBlockState(world, start);
 		if (sample.isAir()) return Collections.emptySet();
 		Iterable<Direction> directions = Arrays.asList(Direction.values());
 		if (planeRestrict) {
@@ -240,8 +276,8 @@ public class ShifterItem extends Item {
 		}
 		if (includeDisconnected) {
 			return StreamSupport.stream(BlockPos.iterate(corner1, corner2).spliterator(), false)
-					.filter(bp -> world.getBlockState(bp) == sample || areCompatiblePlatforms(sample, world.getBlockState(bp)))
-					.filter(bp -> world.getBlockState(bp).getHardness(world, bp) >= 0 || world.getBlockState(bp).isOf(YBlocks.CONTINUOUS_PLATFORM))
+					.filter(bp -> getEffectiveBlockState(world, bp) == sample || areCompatiblePlatforms(sample, getEffectiveBlockState(world, bp)))
+					.filter(bp -> getEffectiveBlockState(world, bp).getHardness(world, bp) >= 0 || getEffectiveBlockState(world, bp).isOf(YBlocks.CONTINUOUS_PLATFORM))
 					.filter(bp -> includeHidden || !isHidden(world, bp))
 					.map(BlockPos::toImmutable)
 					.collect(Collectors.toSet());
@@ -260,7 +296,7 @@ public class ShifterItem extends Item {
 						BlockPos c = bp.offset(d);
 						if (!box.contains(c.getX()+0.5, c.getY()+0.5, c.getZ()+0.5)) continue;
 						if (!includeHidden && isHidden(world, c)) continue;
-						BlockState bs2 = world.getBlockState(c);
+						BlockState bs2 = getEffectiveBlockState(world, c);
 						if ((bs2 == sample || areCompatiblePlatforms(sample, bs2)) && seen.add(c)) {
 							nextScan.add(c);
 						}
@@ -275,6 +311,17 @@ public class ShifterItem extends Item {
 		}
 	}
 	
+	private BlockState getEffectiveBlockState(World world, BlockPos pos) {
+		BlockState bs = world.getBlockState(pos);
+		if (bs.isOf(YBlocks.CLEAVED_BLOCK)) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof CleavedBlockEntity) {
+				return ((CleavedBlockEntity)be).getDonor();
+			}
+		}
+		return bs;
+	}
+
 	private boolean areCompatiblePlatforms(BlockState a, BlockState b) {
 		if (!a.isOf(YBlocks.CONTINUOUS_PLATFORM) || !b.isOf(YBlocks.CONTINUOUS_PLATFORM)) {
 			return false;

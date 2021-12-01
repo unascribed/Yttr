@@ -2,6 +2,7 @@ package com.unascribed.yttr.mechanics.rifle;
 
 import java.util.function.Supplier;
 
+import com.unascribed.yttr.content.entity.RifleDummyEntity;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YItems;
@@ -14,7 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +38,7 @@ public enum RifleMode {
 		public void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit) {
 			if (hit instanceof EntityHitResult) {
 				int damage = (int)Math.ceil(power*14);
-				((EntityHitResult) hit).getEntity().damage(new EntityDamageSource("yttr.rifle", user), damage);
+				((EntityHitResult) hit).getEntity().damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.world), user), damage);
 			}
 			if (power > 1.2f) {
 				user.world.createExplosion(null, DamageSource.explosion(user), null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2*power, false, DestructionType.NONE);
@@ -87,7 +88,7 @@ public enum RifleMode {
 				Entity e = ((EntityHitResult) hit).getEntity();
 				e.setFireTicks((int)(200*power));
 				int damage = (int)Math.ceil(power*6);
-				e.damage(new EntityDamageSource("yttr.rifle", user), damage);
+				e.damage(new ProjectileDamageSource("yttr.rifle", new RifleDummyEntity(user.world), user), damage);
 			} else if (power > 0.5f && hit instanceof BlockHitResult) {
 				BlockHitResult bhr = (BlockHitResult)hit;
 				if (bhr.getType() == Type.MISS) return;

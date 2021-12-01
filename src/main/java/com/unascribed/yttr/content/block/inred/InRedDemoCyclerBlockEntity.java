@@ -74,7 +74,7 @@ public class InRedDemoCyclerBlockEntity extends InRedDeviceBlockEntity {
 
 	@Override
 	public Text getProbeMessage() {
-		return new TranslatableText("msg.inred.multimeter.out", getValue(signal));
+		return new TranslatableText("tip.yttr.inred.multimeter.out", getValue(signal));
 	}
 
 	@Override

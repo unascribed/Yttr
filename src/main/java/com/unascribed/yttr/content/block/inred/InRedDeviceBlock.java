@@ -55,6 +55,6 @@ public abstract class InRedDeviceBlock extends BlockWithEntity implements InRedP
 			return ((InRedDeviceBlockEntity) be).getProbeMessage();
 		}
 		//TODO: better fallback message? this should never happen anyway lol
-		return new TranslatableText("msg.inred.multimeter.block");
+		return new TranslatableText("tip.yttr.inred.multimeter.block");
 	}
 }
