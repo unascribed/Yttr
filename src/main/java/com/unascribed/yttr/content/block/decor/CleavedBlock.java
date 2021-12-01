@@ -123,6 +123,16 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 		return 0;
 	}
 	
+	@Override
+	@Environment(EnvType.CLIENT)
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof CleavedBlockEntity) {
+			return ((CleavedBlockEntity)be).getDonor().getBlock().getPickStack(world, pos, ((CleavedBlockEntity)be).getDonor());
+		}
+		return super.getPickStack(world, pos, state);
+	}
+	
 	public void onEntityNearby(BlockState state, World world, BlockPos pos, Entity entity) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof CleavedBlockEntity) {
