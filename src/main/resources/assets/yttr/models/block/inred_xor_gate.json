@@ -1,22 +1,47 @@
 {
-  "credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
-  "textures": {
-    "side": "yttr:block/inred_pcb_slate",
-    "base": "yttr:block/inred_xor_gate",
-    "particle": "yttr:block/inred_xor_gate"
-  },
-  "elements": [
-    {
-      "from": [0, 0, 0],
-      "to": [16, 3, 16],
-      "faces": {
-        "north": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "east": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "south": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "west": {"uv": [0, 0, 16, 3], "texture": "#side"},
-        "up": {"uv": [0, 0, 16, 16], "texture": "#base"},
-        "down": {"uv": [0, 0, 16, 16], "texture": "#side"}
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"textures": {
+		"side": "yttr:block/inred_pcb_slate",
+		"particle": "yttr:block/inred_xor_gate",
+		"base": "yttr:block/inred_xor_gate",
+		"lights": "yttr:block/inred_lights"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 3], "texture": "#side"},
+				"east": {"uv": [0, 0, 16, 3], "texture": "#side"},
+				"south": {"uv": [0, 0, 16, 3], "texture": "#side"},
+				"west": {"uv": [0, 0, 16, 3], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#base"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#side"}
+			}
+		},
+		{
+			"from": [0, 3, 7],
+			"to": [2, 5, 9],
+			"faces": {
+				"north": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"east": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"south": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"west": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"up": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"down": {"uv": [9, 7, 11, 9], "texture": "#lights"}
+			}
+		},
+		{
+			"from": [14, 3, 7],
+			"to": [16, 5, 9],
+			"faces": {
+				"north": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"east": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"south": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"west": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"up": {"uv": [9, 7, 11, 9], "texture": "#lights"},
+				"down": {"uv": [9, 7, 11, 9], "texture": "#lights"}
+			}
+		}
+	]
 }
