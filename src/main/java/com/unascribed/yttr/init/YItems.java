@@ -6,6 +6,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
@@ -20,6 +21,7 @@ import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.content.item.ProjectorItem;
 import com.unascribed.yttr.content.item.HornItem;
+import com.unascribed.yttr.content.item.InRedMultimeterItem;
 import com.unascribed.yttr.content.item.ReinforcedCleaverItem;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.content.item.ShearsItem;
@@ -128,6 +130,19 @@ public class YItems {
 	public static final BlockItem CUPROSTEEL_BLOCK = createNormalBlockItem(YBlocks.CUPROSTEEL_BLOCK);
 	public static final BlockItem CUPROSTEEL_PLATE = createNormalBlockItem(YBlocks.CUPROSTEEL_PLATE);
 	public static final BlockItem CAN_FILLER = createNormalBlockItem(YBlocks.CAN_FILLER);
+
+	public static final BlockItem INRED_BLOCK = createNormalBlockItem(YBlocks.INRED_BLOCK);
+	public static final BlockItem INRED_CABLE = createNormalBlockItem(YBlocks.INRED_CABLE);
+	public static final BlockItem INRED_SCAFFOLD = createNormalBlockItem(YBlocks.INRED_SCAFFOLD);
+	public static final BlockItem INRED_AND_GATE = createNormalBlockItem(YBlocks.INRED_AND_GATE);
+	public static final BlockItem INRED_NOT_GATE = createNormalBlockItem(YBlocks.INRED_NOT_GATE);
+	public static final BlockItem INRED_XOR_GATE = createNormalBlockItem(YBlocks.INRED_XOR_GATE);
+	public static final BlockItem INRED_DIODE = createNormalBlockItem(YBlocks.INRED_DIODE);
+	public static final BlockItem INRED_SHIFTER = createNormalBlockItem(YBlocks.INRED_SHIFTER);
+	public static final BlockItem INRED_TRANSISTOR = createNormalBlockItem(YBlocks.INRED_TRANSISTOR);
+	public static final BlockItem INRED_ENCODER = createNormalBlockItem(YBlocks.INRED_ENCODER);
+	public static final BlockItem INRED_OSCILLATOR = createNormalBlockItem(YBlocks.INRED_OSCILLATOR);
+	public static final BlockItem INRED_DEMO_CYCLER = createNormalBlockItem(YBlocks.INRED_DEMO_CYCLER);
 	
 	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
 	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
@@ -499,6 +514,10 @@ public class YItems {
 	
 	public static final Item EMPTY_AMMO_CAN = new Item(new Item.Settings().maxCount(16));
 	public static final AmmoCanItem AMMO_CAN = new AmmoCanItem(new Item.Settings().maxCount(1));
+
+	public static final InRedMultimeterItem INRED_MULTIMETER = new InRedMultimeterItem(new Item.Settings()
+			.maxCount(1));
+	public static final Item INRED_PCB = new Item(new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

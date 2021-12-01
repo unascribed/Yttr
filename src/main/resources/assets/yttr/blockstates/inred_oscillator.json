@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "yttr:block/inred_oscillator" },
+    "facing=south": { "model": "yttr:block/inred_oscillator", "y": 180 },
+    "facing=west":  { "model": "yttr:block/inred_oscillator", "y": 270 },
+    "facing=east":  { "model": "yttr:block/inred_oscillator", "y": 90 }
+  }
+}

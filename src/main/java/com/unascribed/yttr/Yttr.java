@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import com.unascribed.yttr.compat.EarsCompat;
@@ -160,6 +161,7 @@ public class Yttr implements ModInitializer {
 		});
 		ServerTickEvents.END_WORLD_TICK.register(SoakingHandler::endServerWorldTick);
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
+			InRedLogic.onServerTick();
 			Iterator<DelayedTask> iter = delayedServerTasks.iterator();
 			int tasksRunThisTick = 0;
 			while (iter.hasNext()) {

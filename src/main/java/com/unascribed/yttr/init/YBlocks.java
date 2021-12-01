@@ -21,6 +21,18 @@ import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
+import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
+import com.unascribed.yttr.content.block.inred.InRedBlock;
+import com.unascribed.yttr.content.block.inred.InRedCableBlock;
+import com.unascribed.yttr.content.block.inred.InRedDemoCyclerBlock;
+import com.unascribed.yttr.content.block.inred.InRedDiodeBlock;
+import com.unascribed.yttr.content.block.inred.InRedEncoderBlock;
+import com.unascribed.yttr.content.block.inred.InRedNotGateBlock;
+import com.unascribed.yttr.content.block.inred.InRedOscillatorBlock;
+import com.unascribed.yttr.content.block.inred.InRedScaffoldBlock;
+import com.unascribed.yttr.content.block.inred.InRedShifterBlock;
+import com.unascribed.yttr.content.block.inred.InRedTransistorBlock;
+import com.unascribed.yttr.content.block.inred.InRedXorGateBlock;
 import com.unascribed.yttr.content.block.lazor.LazorBeamBlock;
 import com.unascribed.yttr.content.block.lazor.LazorEmitterBlock;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlock;
@@ -104,6 +116,12 @@ public class YBlocks {
 			.sounds(BlockSoundGroup.METAL)
 			.breakByHand(false)
 			.breakByTool(FabricToolTags.PICKAXES, 1);
+
+	private static final FabricBlockSettings INRED_DEVICE_SETTINGS = FabricBlockSettings.of(Material.DECORATION)
+			.strength(0.5F, 8)
+			.breakByHand(true)
+			.breakInstantly()
+			.materialColor(MapColor.CYAN);
 	
 	public static final BlockSoundGroup HOLLOWHUGE_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAKHUGE, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACEHUGE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
 //	public static final BlockSoundGroup HOLLOW_SOUNDS = new BlockSoundGroup(0.8f, 1, YSounds.HOLLOWBREAK, YSounds.HOLLOWSTEP, YSounds.HOLLOWPLACE, YSounds.HOLLOWHIT, YSounds.HOLLOWSTEP);
@@ -560,6 +578,28 @@ public class YBlocks {
 	public static final Block SOUL_PLANKS = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
 			.materialColor(MapColor.BROWN)
 		);
+
+	public static final InRedBlock INRED_BLOCK = new InRedBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_BLOCK)
+			.materialColor(MapColor.MAGENTA)
+	);
+	public static final InRedCableBlock INRED_CABLE = new InRedCableBlock(FabricBlockSettings.of(Material.DECORATION)
+			.strength(0F, 8F)
+			.breakInstantly()
+	);
+	@RenderLayer("cutout")
+	public static final InRedScaffoldBlock INRED_SCAFFOLD = new InRedScaffoldBlock(FabricBlockSettings.of(Material.DECORATION)
+			.strength(0F, 8F)
+			.nonOpaque()
+	);
+	public static final InRedAndGateBlock INRED_AND_GATE = new InRedAndGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedNotGateBlock INRED_NOT_GATE = new InRedNotGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedXorGateBlock INRED_XOR_GATE = new InRedXorGateBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedDiodeBlock INRED_DIODE = new InRedDiodeBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedShifterBlock INRED_SHIFTER = new InRedShifterBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedTransistorBlock INRED_TRANSISTOR = new InRedTransistorBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedEncoderBlock INRED_ENCODER = new InRedEncoderBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedOscillatorBlock INRED_OSCILLATOR = new InRedOscillatorBlock(INRED_DEVICE_SETTINGS);
+	public static final InRedDemoCyclerBlock INRED_DEMO_CYCLER = new InRedDemoCyclerBlock(INRED_DEVICE_SETTINGS);
 	
 	public static final LatchReference<Block> COPPER_ORE = YLatches.create();
 	

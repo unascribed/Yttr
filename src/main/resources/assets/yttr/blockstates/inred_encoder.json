@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "yttr:block/inred_encoder" },
+    "facing=south": { "model": "yttr:block/inred_encoder", "y": 180 },
+    "facing=west":  { "model": "yttr:block/inred_encoder", "y": 270 },
+    "facing=east":  { "model": "yttr:block/inred_encoder", "y": 90 }
+  }
+}

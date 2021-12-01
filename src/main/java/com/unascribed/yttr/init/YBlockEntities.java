@@ -26,6 +26,15 @@ import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.block.device.VoidFilterBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedAndGateBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedDemoCyclerBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedDiodeBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedEncoderBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedNotGateBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedOscillatorBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedShifterBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedTransistorBlockEntity;
+import com.unascribed.yttr.content.block.inred.InRedXorGateBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.ChuteBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.DopperBlockEntity;
 import com.unascribed.yttr.content.block.mechanism.FlopperBlockEntity;
@@ -70,6 +79,16 @@ public class YBlockEntities {
 	@Renderer(DSUBlockEntityRenderer.class)
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
+	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)
+	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);
+	public static final BlockEntityType<InRedNotGateBlockEntity> INRED_NOT_GATE = create(InRedNotGateBlockEntity::new, YBlocks.INRED_NOT_GATE);
+	public static final BlockEntityType<InRedXorGateBlockEntity> INRED_XOR_GATE = create(InRedXorGateBlockEntity::new, YBlocks.INRED_XOR_GATE);
+	public static final BlockEntityType<InRedDiodeBlockEntity> INRED_DIODE = create(InRedDiodeBlockEntity::new, YBlocks.INRED_DIODE);
+	public static final BlockEntityType<InRedShifterBlockEntity> INRED_SHIFTER = create(InRedShifterBlockEntity::new, YBlocks.INRED_SHIFTER);
+	public static final BlockEntityType<InRedTransistorBlockEntity> INRED_TRANSISTOR = create(InRedTransistorBlockEntity::new, YBlocks.INRED_TRANSISTOR);
+	public static final BlockEntityType<InRedEncoderBlockEntity> INRED_ENCODER = create(InRedEncoderBlockEntity::new, YBlocks.INRED_ENCODER);
+	public static final BlockEntityType<InRedOscillatorBlockEntity> INRED_OSCILLATOR = create(InRedOscillatorBlockEntity::new, YBlocks.INRED_OSCILLATOR);
+	public static final BlockEntityType<InRedDemoCyclerBlockEntity> INRED_DEMO_CYCLER = create(InRedDemoCyclerBlockEntity::new, YBlocks.INRED_DEMO_CYCLER);
 	
 	private static <T extends BlockEntity> BlockEntityType<T> create(Supplier<T> cons, Block... acceptableBlocks) {
 		return new BlockEntityType<>(cons, ImmutableSet.copyOf(acceptableBlocks), null);
