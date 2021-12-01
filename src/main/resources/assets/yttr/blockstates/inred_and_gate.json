@@ -36,92 +36,116 @@
       }
     },
     {
-      "when": {
-        "OR": [
-          { "facing": "north", "boolean_mode": true },
-          { "facing": "east", "inactive": "left" },
-          { "facing": "south", "inactive": "back" },
-          { "facing": "west", "inactive": "right" }
-        ]
-      },
+      "when": { "facing": "north", "boolean_mode": true },
       "apply": { "model": "yttr:block/boolean_on" }
     },
     {
-      "when": {
-        "OR": [
-          { "facing": "north", "boolean_mode": false },
-          { "facing": "east", "inactive": "back|right|none" },
-          { "facing": "south", "inactive": "left|right|none" },
-          { "facing": "west", "inactive": "left|back|none" }
-        ]
-      },
+      "when": { "facing": "north", "boolean_mode": false },
       "apply": { "model": "yttr:block/boolean_off" }
     },
     {
       "when": {
         "OR": [
-          { "facing": "east", "boolean_mode": true },
-          { "facing": "south", "inactive": "left" },
-          { "facing": "west", "inactive": "back" },
-          { "facing": "north", "inactive": "right" }
+          { "facing": "east", "inactive": "left" },
+          { "facing": "south", "inactive": "back" },
+          { "facing": "west", "inactive": "right" }
         ]
       },
-      "apply": { "model": "yttr:block/boolean_on", "y": 90 }
+      "apply": { "model": "yttr:block/and_input_on" }
     },
     {
       "when": {
         "OR": [
-          { "facing": "east", "boolean_mode": false },
-          { "facing": "south", "inactive": "back|right|none" },
-          { "facing": "west", "inactive": "left|right|none" },
-          { "facing": "north", "inactive": "left|back|none" }
+          { "facing": "east", "inactive": "back|right|none" },
+          { "facing": "south", "inactive": "left|right|none" },
+          { "facing": "west", "inactive": "left|back|none" }
         ]
       },
+      "apply": { "model": "yttr:block/and_input_off" }
+    },
+    {
+      "when": { "facing": "east", "boolean_mode": true },
+      "apply": { "model": "yttr:block/boolean_on", "y": 90 }
+    },
+    {
+      "when": { "facing": "east", "boolean_mode": false },
       "apply": { "model": "yttr:block/boolean_off", "y": 90 }
     },
     {
       "when": {
         "OR": [
-          { "facing": "south", "boolean_mode": true },
-          { "facing": "west", "inactive": "left" },
-          { "facing": "north", "inactive": "back" },
-          { "facing": "east", "inactive": "right" }
+          { "facing": "south", "inactive": "left" },
+          { "facing": "west", "inactive": "back" },
+          { "facing": "north", "inactive": "right" }
         ]
       },
-      "apply": { "model": "yttr:block/boolean_on", "y": 180 }
+      "apply": { "model": "yttr:block/and_input_on", "y": 90 }
     },
     {
       "when": {
         "OR": [
-          { "facing": "south", "boolean_mode": false },
-          { "facing": "west", "inactive": "back|right|none" },
-          { "facing": "north", "inactive": "left|right|none" },
-          { "facing": "east", "inactive": "left|back|none" }
+          { "facing": "south", "inactive": "back|right|none" },
+          { "facing": "west", "inactive": "left|right|none" },
+          { "facing": "north", "inactive": "left|back|none" }
         ]
       },
+      "apply": { "model": "yttr:block/and_input_off", "y": 90 }
+    },
+    {
+      "when": { "facing": "south", "boolean_mode": true },
+      "apply": { "model": "yttr:block/boolean_on", "y": 180 }
+    },
+    {
+      "when": { "facing": "south", "boolean_mode": false },
       "apply": { "model": "yttr:block/boolean_off", "y": 180 }
     },
     {
       "when": {
         "OR": [
-          { "facing": "west", "boolean_mode": true },
+          { "facing": "west", "inactive": "left" },
+          { "facing": "north", "inactive": "back" },
+          { "facing": "east", "inactive": "right" }
+        ]
+      },
+      "apply": { "model": "yttr:block/and_input_on", "y": 180 }
+    },
+    {
+      "when": {
+        "OR": [
+          { "facing": "west", "inactive": "back|right|none" },
+          { "facing": "north", "inactive": "left|right|none" },
+          { "facing": "east", "inactive": "left|back|none" }
+        ]
+      },
+      "apply": { "model": "yttr:block/and_input_off", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "boolean_mode": true },
+      "apply": { "model": "yttr:block/boolean_on", "y": 270 }
+    },
+    {
+      "when": { "facing": "west", "boolean_mode": false },
+      "apply": { "model": "yttr:block/boolean_off", "y": 270 }
+    },
+    {
+      "when": {
+        "OR": [
           { "facing": "north", "inactive": "left" },
           { "facing": "east", "inactive": "back" },
           { "facing": "south", "inactive": "right" }
         ]
       },
-      "apply": { "model": "yttr:block/boolean_on", "y": 270 }
+      "apply": { "model": "yttr:block/and_input_on", "y": 270 }
     },
     {
       "when": {
         "OR": [
-          { "facing": "west", "boolean_mode": false },
           { "facing": "north", "inactive": "back|right|none" },
           { "facing": "east", "inactive": "left|right|none" },
           { "facing": "south", "inactive": "left|back|none" }
         ]
       },
-      "apply": { "model": "yttr:block/boolean_off", "y": 270 }
+      "apply": { "model": "yttr:block/and_input_off", "y": 270 }
     }
   ]
 }

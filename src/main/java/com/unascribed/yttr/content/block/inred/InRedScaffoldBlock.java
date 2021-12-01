@@ -58,7 +58,7 @@ public class InRedScaffoldBlock extends Block implements Waterloggable {
 		if (entity.horizontalCollision) {
 			entity.setVelocity(entity.getVelocity().x, 0.35, entity.getVelocity().z);
 		} else if (entity.isSneaking()) {
-			entity.setVelocity(entity.getVelocity().x, 0.08, entity.getVelocity().z); //Stop, but also counteract EntityLivingBase-applied microgravity
+			entity.setVelocity(entity.getVelocity().x, 0.08, entity.getVelocity().z); //Stop, but also counteract LivingEntity-applied microgravity
 		} else if (entity.getVelocity().y<=0.20) {
 			entity.setVelocity(entity.getVelocity().x, -0.20, entity.getVelocity().z);
 		}

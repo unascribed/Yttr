@@ -37,6 +37,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (!world.isClient && !player.isSneaking() && be instanceof InRedOscillatorBlockEntity) {
+			//FIXME: I NPE here!
 			player.openHandledScreen(new NamedScreenHandlerFactory() {
 				@Override
 				public Text getDisplayName() {
@@ -46,7 +47,7 @@ public class InRedOscillatorBlock extends InRedLogicTileBlock {
 				@Nullable
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-					return new InRedOscillatorScreenHandler(syncId, pos,  player);
+					return new InRedOscillatorScreenHandler(syncId, pos, player);
 				}
 			});
 		}
