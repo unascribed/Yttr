@@ -96,7 +96,8 @@
 	"coil.MixinEnchantmentHelper",
 	"coil.MixinLivingEntity",
 	"coil.MixinPlayerEntity",
-	"MixinRegistry",
+	"debug.MixinRegistry",
+	"debug.MixinServerNetworkIoChannelInitializer",
 	"MixinUtil",
 	"MixinTitleScreen",
 	
@@ -122,6 +123,7 @@
 	"rifle.client.MixinInGameHud",
 	"rifle.client.MixinGameRenderer",
 	"rifle.client.MixinEntity",
+	"rifle.client.MixinClientWorld",
 	"tooltip.client.MixinItemStack",
 	"effector.client.MixinClientWorld",
 	"effector.client.MixinInGameOverlayRenderer",

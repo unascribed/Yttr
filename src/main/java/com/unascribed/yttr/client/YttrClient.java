@@ -14,6 +14,7 @@ import com.unascribed.yttr.util.YLog;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.EmbeddedResourcePack;
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
@@ -234,6 +235,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			SuitHUDRenderer.render(matrixStack, tickDelta);
 			RifleHUDRenderer.render(matrixStack, tickDelta);
 			ShifterUI.render(matrixStack, tickDelta);
+			if (YConfig.Debug.simulateLatency > 0) {
+				int latency = YConfig.Debug.simulateLatency+(YConfig.Debug.simulateLatencyJitter/2);
+				MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, "\u26A0 §lSIMULATING NETWORK LATENCY§r: ~"+latency+"ms", 2, 2, 0xFFFFFF55);
+			}
 		});
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);

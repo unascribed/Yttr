@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YCriteria;
@@ -14,6 +15,7 @@ import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mechanics.rifle.RifleMode;
 import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
+import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.util.Attackable;
 import com.unascribed.yttr.util.InventoryProviderItem;
@@ -26,7 +28,9 @@ import com.google.common.base.Predicates;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
@@ -152,9 +156,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 			float speed = mode.speed*speedMod;
 			if (speed > 2) {
 				speed /= 1.75f;
-				world.playSoundFromEntity(null, user, YSounds.RIFLE_CHARGE_FAST, user.getSoundCategory(), 1, speed);
+				world.playSoundFromEntity(YConfig.General.trustPlayers ? user : null, user, YSounds.RIFLE_CHARGE_FAST, user.getSoundCategory(), 1, speed);
 			} else {
-				world.playSoundFromEntity(null, user, YSounds.RIFLE_CHARGE, user.getSoundCategory(), 1, speed);
+				world.playSoundFromEntity(YConfig.General.trustPlayers ? user : null, user, YSounds.RIFLE_CHARGE, user.getSoundCategory(), 1, speed);
 			}
 			user.setCurrentHand(hand);
 			return TypedActionResult.success(stack, false);
@@ -265,15 +269,37 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return (int)(140/(getMode(stack).speed*speedMod));
+		float max = (140/(getMode(stack).speed*speedMod));
+		if (YConfig.General.trustPlayers) {
+			if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT || !isClientThread()) {
+				max *= 1.25f;
+			}
+		}
+		return (int)max;
 	}
 	
+	@Environment(EnvType.CLIENT)
+	private boolean isClientThread() {
+		return MinecraftClient.getInstance().isOnThread();
+	}
+
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity _user, int remainingUseTicks) {
-		super.onStoppedUsing(stack, world, _user, remainingUseTicks);
 		if (!(_user instanceof PlayerEntity)) return;
 		PlayerEntity user = (PlayerEntity)_user;
-		world.playSoundFromEntity(null, user, YSounds.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
+		if (YConfig.General.trustPlayers) {
+			if (world.isClient) {
+				world.playSoundFromEntity(user, user, YSounds.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
+				playFireSoundAndSetCooldown(user, calculatePower(calcAdjustedUseTime(stack, remainingUseTicks)));
+				new MessageC2STrustedRifleFire(remainingUseTicks).sendToServer();
+			}
+		} else {
+			doOnStoppedUsing(stack, world, user, remainingUseTicks);
+		}
+	}
+		
+	public void doOnStoppedUsing(ItemStack stack, World world, PlayerEntity user, int remainingUseTicks) {
+		world.playSoundFromEntity(YConfig.General.trustPlayers ? user : null, user, YSounds.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
 		float power = calculatePower(useTicks);
 		RifleMode mode = getMode(stack);
@@ -305,28 +331,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (!mode.canFire(user, stack, power)) {
 			user.playSound(YSounds.RIFLE_FIRE_DUD, 1, 1);
 		} else {
-			if (power > 1.1) {
-				if (power > 1.2) {
-					if (power >= 1.29) {
-						user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
-						user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
-						user.playSound(YSounds.RIFLE_FIRE, 2, 2f);
-						user.playSound(YSounds.RIFLE_FIRE, 2, 1f);
-					}
-					user.playSound(YSounds.RIFLE_FIRE, 2, 0.75f);
-					user.playSound(YSounds.RIFLE_FIRE, 2, 0.65f);
-				}
-				user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
-				user.playSound(YSounds.RIFLE_FIRE, 1, 1);
-				user.playSound(YSounds.RIFLE_FIRE, 1, 2);
-				user.playSound(YSounds.RIFLE_FIRE, 1, 1.25f);
-				user.getItemCooldownManager().set(this, 30);
-			} else {
-				user.playSound(YSounds.RIFLE_FIRE, 1, 0.9f+(power/4));
-				if (power > 1) {
-					user.playSound(YSounds.RIFLE_FIRE, 1, 0.75f);
-				}
-			}
+			playFireSoundAndSetCooldown(user, power);
 			if (world instanceof ServerWorld) {
 				Vec3d preStart = user.getCameraPosVec(0);
 				Vec3d preEnd = user.getCameraPosVec(0).add(user.getRotationVec(0).multiply(64));
@@ -369,6 +374,31 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		}
 	}
 	
+	protected void playFireSoundAndSetCooldown(PlayerEntity user, float power) {
+		if (power > 1.1) {
+			if (power > 1.2) {
+				if (power >= 1.29) {
+					user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
+					user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
+					user.playSound(YSounds.RIFLE_FIRE, 2, 2f);
+					user.playSound(YSounds.RIFLE_FIRE, 2, 1f);
+				}
+				user.playSound(YSounds.RIFLE_FIRE, 2, 0.75f);
+				user.playSound(YSounds.RIFLE_FIRE, 2, 0.65f);
+			}
+			user.playSound(YSounds.RIFLE_FIRE, 2, 0.5f);
+			user.playSound(YSounds.RIFLE_FIRE, 1, 1);
+			user.playSound(YSounds.RIFLE_FIRE, 1, 2);
+			user.playSound(YSounds.RIFLE_FIRE, 1, 1.25f);
+			user.getItemCooldownManager().set(this, 30);
+		} else {
+			user.playSound(YSounds.RIFLE_FIRE, 1, 0.9f+(power/4));
+			if (power > 1) {
+				user.playSound(YSounds.RIFLE_FIRE, 1, 0.75f);
+			}
+		}
+	}
+
 	private EntityHitResult correctEntityHit(EntityHitResult ehr, Vec3d start, Vec3d end) {
 		if (ehr == null) return null;
 		return new EntityHitResult(ehr.getEntity(), ehr.getEntity().getBoundingBox().expand(0.3).raycast(start, end).get());

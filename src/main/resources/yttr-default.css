@@ -108,3 +108,16 @@
 	 */
 	continuity: on;
 }
+
+#debug {
+	/*
+	 * Print out verbose debug information about everything going on in the game's registries.
+	 */
+	registries: off;
+	
+	/*
+	 * Simulate this many milliseconds of network latency, even in singleplayer.
+	 */
+	simulate-latency: 0;
+	simulate-latency-jitter: 15;
+}

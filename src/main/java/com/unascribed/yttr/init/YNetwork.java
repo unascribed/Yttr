@@ -6,6 +6,7 @@ import com.unascribed.yttr.network.MessageC2SDiveTo;
 import com.unascribed.yttr.network.MessageC2SOscillatorShift;
 import com.unascribed.yttr.network.MessageC2SRifleMode;
 import com.unascribed.yttr.network.MessageC2SShifterMode;
+import com.unascribed.yttr.network.MessageC2STrustedRifleFire;
 import com.unascribed.yttr.network.MessageS2CAnimateFastDive;
 import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
@@ -39,6 +40,7 @@ public class YNetwork {
 		CONTEXT.register(MessageC2SRifleMode.class);
 		CONTEXT.register(MessageC2SShifterMode.class);
 		CONTEXT.register(MessageC2SOscillatorShift.class);
+		CONTEXT.register(MessageC2STrustedRifleFire.class);
 	}
 	
 }

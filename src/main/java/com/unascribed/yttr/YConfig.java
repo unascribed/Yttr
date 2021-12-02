@@ -56,6 +56,7 @@ public class YConfig {
 		General.touch();
 		Rifle.touch();
 		WorldGen.touch();
+		Debug.touch();
 	}
 	
 	public static final class General {
@@ -90,6 +91,15 @@ public class YConfig {
 		
 		private static void touch() {}
 		private WorldGen() {}
+	}
+	
+	public static final class Debug {
+		public static final boolean registries            = data.getBoolean("debug.registries").orElse(false);
+		public static final int     simulateLatency       = data.getInt("debug.simulate-latency").orElse(0);
+		public static final int     simulateLatencyJitter = data.getInt("debug.simulate-latency-jitter").orElse(15);
+		
+		private static void touch() {}
+		private Debug() {}
 	}
 	
 }
