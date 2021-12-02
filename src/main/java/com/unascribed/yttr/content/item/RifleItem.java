@@ -1,7 +1,11 @@
 package com.unascribed.yttr.content.item;
 
 import java.util.Locale;
+import java.util.function.Predicate;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YCriteria;
 import com.unascribed.yttr.init.YItems;
@@ -12,6 +16,8 @@ import com.unascribed.yttr.mechanics.rifle.Shootable;
 import com.unascribed.yttr.mixin.accessor.AccessorEntity;
 import com.unascribed.yttr.network.MessageS2CBeam;
 import com.unascribed.yttr.util.Attackable;
+import com.unascribed.yttr.util.InventoryProviderItem;
+import com.unascribed.yttr.util.SlotReference;
 
 import com.google.common.base.Enums;
 import com.google.common.base.MoreObjects;
@@ -28,6 +34,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -73,62 +80,73 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (hand == Hand.MAIN_HAND) {
-			int ammo = getRemainingAmmo(stack);
 			RifleMode mode = getMode(stack);
-			int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
-			if (ammo <= 0) {
-				if (user.abilities.creativeMode) {
-					ammo = mode.shotsPerItem;
-				} else {
-					for (int i = 0; i < user.inventory.size(); i++) {
-						boolean replicator = false;
-						ItemStack is = user.inventory.getStack(i);
-						if (is.getItem() == YItems.REPLICATOR) {
-							is = ReplicatorBlockItem.getHeldItem(is);
-							is.setCount(64);
-							replicator = true;
-						}
-						if (is.getItem() == mode.item.get().asItem() && is.getCount() >= need) {
-							Item remainder = is.getItem().getRecipeRemainder();
-							if (!replicator && remainder != null) {
-								if (is.getCount() == need) {
-									user.inventory.setStack(i, new ItemStack(remainder));
+			SlotReference can = getAmmoCanSlot(user, mode);
+			if (can == null) {
+				if (stack.hasTag()) {
+					stack.getTag().remove("FiringFromCan");
+					stack.getTag().remove("LastCanFullness");
+				}
+				int ammo = getRemainingAmmo(stack);
+				int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
+				if (ammo <= 0) {
+					if (user.abilities.creativeMode) {
+						ammo = mode.shotsPerItem;
+					} else {
+						for (int i = 0; i < user.inventory.size(); i++) {
+							boolean replicator = false;
+							ItemStack is = user.inventory.getStack(i);
+							if (is.getItem() == YItems.REPLICATOR) {
+								is = ReplicatorBlockItem.getHeldItem(is);
+								is.setCount(64);
+								replicator = true;
+							}
+							if (is.getItem() == mode.item.get().asItem() && is.getCount() >= need) {
+								Item remainder = is.getItem().getRecipeRemainder();
+								if (!replicator && remainder != null) {
+									if (is.getCount() == need) {
+										user.inventory.setStack(i, new ItemStack(remainder));
+									} else {
+										is.decrement(need);
+										user.inventory.offerOrDrop(user.world, new ItemStack(remainder));
+									}
 								} else {
 									is.decrement(need);
-									user.inventory.offerOrDrop(user.world, new ItemStack(remainder));
 								}
-							} else {
-								is.decrement(need);
+								if (mode == RifleMode.VOID) {
+									ammo = Math.max(1, mode.shotsPerItem/ammoMod);
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+								} else if (mode == RifleMode.LIGHT) {
+									ammo = (mode.shotsPerItem*need)/ammoMod;
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, user.getSoundCategory(), 1, 1);
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
+								} else {
+									ammo = (mode.shotsPerItem*need)/ammoMod;
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
+									user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
+								}
+								break;
 							}
-							if (mode == RifleMode.VOID) {
-								ammo = Math.max(1, mode.shotsPerItem/ammoMod);
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BUCKET_EMPTY, user.getSoundCategory(), 1, 1);
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
-							} else if (mode == RifleMode.LIGHT) {
-								ammo = (mode.shotsPerItem*need)/ammoMod;
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, user.getSoundCategory(), 1, 1);
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 0.1f, 1f);
-							} else {
-								ammo = (mode.shotsPerItem*need)/ammoMod;
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 2f);
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.75f);
-								user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_LOAD, user.getSoundCategory(), 3, 1.5f);
-							}
-							break;
 						}
 					}
 				}
-			}
-			if (ammo <= 0) {
-				user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
-				if (need > 1) {
-					user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
-				} else {
-					user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+				if (ammo <= 0) {
+					user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.25f);
+					if (need > 1) {
+						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo_multi", need, new ItemStack(mode.item.get()).getName()), true);
+					} else {
+						user.sendMessage(new TranslatableText("tip.yttr.rifle_no_ammo", new ItemStack(mode.item.get()).getName()), true);
+					}
+					return TypedActionResult.fail(stack);
 				}
-				return TypedActionResult.fail(stack);
+				setRemainingAmmo(stack, ammo);
+			} else {
+				if (!stack.hasTag()) stack.setTag(new NbtCompound());
+				stack.getTag().putBoolean("FiringFromCan", true);
+				stack.getTag().putFloat("LastCanFullness", can.getStack().getTag().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
 			}
-			setRemainingAmmo(stack, ammo);
 			user.playSound(YSounds.RIFLE_FIRE_DUD, 1, 1.75f);
 			float speed = mode.speed*speedMod;
 			if (speed > 2) {
@@ -157,6 +175,10 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	
 	public int getPotentialAmmoCount(PlayerEntity user, RifleMode mode) {
 		if (user.isCreative()) return -1;
+		SlotReference can = getAmmoCanSlot(user, mode);
+		if (can != null) {
+			return can.getStack().getTag().getInt("Shots");
+		}
 		int need = mode != RifleMode.VOID && mode.shotsPerItem < ammoMod ? ammoMod : 1;
 		int ammo = 0;
 		for (int i = 0; i < user.inventory.size(); i++) {
@@ -189,9 +211,27 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	public boolean isAmmoCanned(PlayerEntity user, RifleMode mode) {
-		return mode == RifleMode.DAMAGE;
+		return getAmmoCanSlot(user, mode) != null;
 	}
 	
+	public @Nullable SlotReference getAmmoCanSlot(PlayerEntity user, RifleMode mode) {
+		ItemStack backpack = Yttr.getBackTrinket.apply(user);
+		if (YItems.AMMO_PACK.is(backpack.getItem())) {
+			Inventory inv = ((InventoryProviderItem)backpack.getItem()).asInventory(backpack);
+			SlotReference ref = Yttr.scanInventory(inv, isMatchingCan(mode));
+			if (ref != null) return ref;
+		}
+		return Yttr.scanInventory(user.inventory, isMatchingCan(mode));
+	}
+	
+	private Predicate<ItemStack> isMatchingCan(RifleMode mode) {
+		return is -> isMatchingCan(is, mode);
+	}
+	
+	private boolean isMatchingCan(ItemStack is, RifleMode mode) {
+		return is.getItem() == YItems.AMMO_CAN && is.hasTag() && mode.name().equals(is.getTag().getString("Mode")) && is.getTag().getInt("Shots") > 0;
+	}
+
 	public void changeMode(PlayerEntity user, RifleMode mode) {
 		ItemStack stack = user.getMainHandStack();
 		if (stack.hasTag() && stack.getTag().getBoolean("ModeLocked")) return;
@@ -207,6 +247,17 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				((ServerWorld)user.world).spawnParticles(new DustParticleEffect(r, g, b, 1), user.getPos().x, user.getPos().y+0.1, user.getPos().z, 12, 0.2, 0.1, 0.2, 1);
 			}
 		}
+		SlotReference can = getAmmoCanSlot(user, mode);
+		if (can == null) {
+			if (stack.hasTag()) {
+				stack.getTag().remove("FiringFromCan");
+				stack.getTag().remove("LastCanFullness");
+			}
+		} else {
+			if (!stack.hasTag()) stack.setTag(new NbtCompound());
+			stack.getTag().putBoolean("FiringFromCan", true);
+			stack.getTag().putFloat("LastCanFullness", can.getStack().getTag().getInt("Shots")/(float)AmmoCanItem.CAPACITY);
+		}
 		user.setStackInHand(Hand.MAIN_HAND, stack);
 		user.world.playSound(null, user.getPos().x, user.getPos().y, user.getPos().z, YSounds.RIFLE_FIRE_DUD, user.getSoundCategory(), 1, 1.3f+(mode.ordinal()*0.1f));
 	}
@@ -217,16 +268,38 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	@Override
-	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-		super.onStoppedUsing(stack, world, user, remainingUseTicks);
+	public void onStoppedUsing(ItemStack stack, World world, LivingEntity _user, int remainingUseTicks) {
+		super.onStoppedUsing(stack, world, _user, remainingUseTicks);
+		if (!(_user instanceof PlayerEntity)) return;
+		PlayerEntity user = (PlayerEntity)_user;
 		world.playSoundFromEntity(null, user, YSounds.RIFLE_CHARGE_CANCEL, user.getSoundCategory(), 1, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
 		float power = calculatePower(useTicks);
 		RifleMode mode = getMode(stack);
-		int ammo = getRemainingAmmo(stack);
-		if (useTicks > 30) {
-			ammo--;
-			setRemainingAmmo(stack, ammo);
+		SlotReference can = getAmmoCanSlot(user, mode);
+		if (can == null) {
+			int ammo = getRemainingAmmo(stack);
+			if (useTicks > 30) {
+				ammo--;
+				setRemainingAmmo(stack, ammo);
+			}
+			if (stack.hasTag()) {
+				stack.getTag().remove("FiringFromCan");
+				stack.getTag().remove("LastCanFullness");
+			}
+		} else {
+			if (useTicks > 30) {
+				int shots = can.getStack().getTag().getInt("Shots");
+				shots--;
+				if (shots <= 0) {
+					can.setStack(new ItemStack(YItems.EMPTY_AMMO_CAN));
+				} else {
+					can.getStack().getTag().putInt("Shots", shots);
+				}
+				if (!stack.hasTag()) stack.setTag(new NbtCompound());
+				stack.getTag().putBoolean("FiringFromCan", true);
+				stack.getTag().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
+			}
 		}
 		if (!mode.canFire(user, stack, power)) {
 			user.playSound(YSounds.RIFLE_FIRE_DUD, 1, 1);
@@ -246,9 +319,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 				user.playSound(YSounds.RIFLE_FIRE, 1, 1);
 				user.playSound(YSounds.RIFLE_FIRE, 1, 2);
 				user.playSound(YSounds.RIFLE_FIRE, 1, 1.25f);
-				if (user instanceof PlayerEntity) {
-					((PlayerEntity) user).getItemCooldownManager().set(this, 30);
-				}
+				user.getItemCooldownManager().set(this, 30);
 			} else {
 				user.playSound(YSounds.RIFLE_FIRE, 1, 0.9f+(power/4));
 				if (power > 1) {
@@ -321,6 +392,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (cur == mode) return false;
 		stack.getTag().putString("Mode", mode.name());
 		stack.getTag().putBoolean("WasSelected", false);
+		stack.getTag().putBoolean("FiringFromCan", false);
 		int ammo = getRemainingAmmo(stack);
 		setRemainingAmmo(stack, 0);
 		return ammo > 0;
@@ -445,7 +517,13 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		if (tintIndex == 0) return baseColor;
 		RifleItem item = ((RifleItem)stack.getItem());
 		RifleMode mode = ((RifleItem)stack.getItem()).getMode(stack);
-		return getPortionColor(tintIndex-1, 6, (item.getRemainingAmmo(stack)/(float)(item.getMaxAmmo(stack))), mode.color, baseColor);
+		float v;
+		if (stack.hasTag() && stack.getTag().getBoolean("FiringFromCan")) {
+			v = stack.getTag().getFloat("LastCanFullness");
+		} else {
+			v = (item.getRemainingAmmo(stack)/(float)(item.getMaxAmmo(stack)));
+		}
+		return getPortionColor(tintIndex-1, 6, v, mode.color, baseColor);
 	}
 
 	@Environment(EnvType.CLIENT)

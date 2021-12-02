@@ -97,7 +97,7 @@ public class ShifterItem extends Item {
 				stack.hasTag() && stack.getTag().getBoolean("ReplaceDisconnected"),
 				stack.hasTag() && stack.getTag().getBoolean("ReplaceHidden"),
 				stack.hasTag() && stack.getTag().getBoolean("PlaneRestrict"));
-		scheduleMultiReplace(context.getPlayer(), context.getBlockPos(), context.getWorld(), repl.copy(), blocks);
+		scheduleMultiReplace(stack, context.getPlayer(), context.getBlockPos(), context.getWorld(), repl.copy(), blocks);
 		return ActionResult.SUCCESS;
 	}
 	
@@ -105,10 +105,7 @@ public class ShifterItem extends Item {
 	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
 		ItemStack stack = miner.getStackInHand(Hand.MAIN_HAND);
 		ItemStack repl = miner.getStackInHand(Hand.OFF_HAND);
-		if (stack.hasTag() && repl.getItem() instanceof BlockItem) {
-			stack.getTag().remove("UserIsConfusedCounter");
-		}
-		performReplacement(miner, pos, world, repl);
+		performReplacement(stack, miner, pos, world, repl);
 		return false;
 	}
 	
@@ -118,23 +115,23 @@ public class ShifterItem extends Item {
 		return 10000000;
 	}
 	
-	public void scheduleMultiReplace(PlayerEntity player, BlockPos center, World _world, ItemStack replacement, Set<BlockPos> positions) {
+	public void scheduleMultiReplace(ItemStack shifter, PlayerEntity player, BlockPos center, World _world, ItemStack replacement, Set<BlockPos> positions) {
 		if (!(_world instanceof ServerWorld)) return;
 		ServerWorld world = (ServerWorld) _world;
 		Multiset<Integer> delays = HashMultiset.create();
 		for (BlockPos pos : positions) {
-			int delay = pos.equals(center) ? 0 : (int) ((MathHelper.sqrt(pos.getSquaredDistance(center)*10))+RANDOM.nextInt(4));
+			int delay = pos.equals(center) ? 0 : (int) ((MathHelper.sqrt(pos.getSquaredDistance(center)*4))+RANDOM.nextInt(5));
 			while (delays.count(delay) > 4) {
 				delay++;
 			}
 			delays.add(delay);
 			Yttr.delayedServerTasks.add(new DelayedTask(delay, () -> {
-				performReplacement(player, pos, world, replacement);
+				performReplacement(shifter, player, pos, world, replacement);
 			}));
 		}
 	}
 	
-	public void performReplacement(PlayerEntity player, BlockPos pos, World _world, ItemStack _replacement) {
+	public void performReplacement(ItemStack shifter, PlayerEntity player, BlockPos pos, World _world, ItemStack _replacement) {
 		if (!(_world instanceof ServerWorld)) return;
 		ServerWorld world = (ServerWorld) _world;
 		if (_replacement.isEmpty()) return;
@@ -174,7 +171,7 @@ public class ShifterItem extends Item {
 		if (replState == null) return;
 		if (replState == curState) return;
 		if (!replState.canPlaceAt(world, pos)) return;
-		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null);
+		List<ItemStack> drops = Block.getDroppedStacks(curState, world, pos, curState.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null, player, shifter);
 		if (curState.getHardness(world, pos) < 0 && !curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) return;
 		BlockSoundGroup curSg = curState.getSoundGroup();
 		world.playSound(null, pos, ((AccessorBlockSoundGroup)curSg).yttr$getBreakSound(), SoundCategory.BLOCKS, ((curSg.getVolume()+1f)/2)*0.2f, curSg.getPitch()*0.8f);
@@ -269,9 +266,9 @@ public class ShifterItem extends Item {
 		BlockPos corner2 = start;
 		for (Direction d : directions) {
 			if (d.getDirection() == AxisDirection.NEGATIVE) {
-				corner1 = corner1.offset(d, 4);
+				corner1 = corner1.offset(d, 5);
 			} else {
-				corner2 = corner2.offset(d, 4);
+				corner2 = corner2.offset(d, 5);
 			}
 		}
 		if (includeDisconnected) {

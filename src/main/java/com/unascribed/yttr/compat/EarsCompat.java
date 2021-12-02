@@ -33,7 +33,7 @@ public class EarsCompat {
 			return false;
 		});
 		
-		Yttr.isWearingBoots = pe -> EarsStateOverriderRegistry.isActive(EarsStateType.WEARING_BOOTS, pe, !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty()).getValue();
+		Yttr.isVisuallyWearingBoots = pe -> EarsStateOverriderRegistry.isActive(EarsStateType.WEARING_BOOTS, pe, !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty()).getValue();
 	}
 	
 }

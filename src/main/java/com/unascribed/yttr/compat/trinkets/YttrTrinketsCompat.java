@@ -13,6 +13,7 @@ public class YttrTrinketsCompat {
 	
 	public static void init() {
 		Yttr.getSoleTrinket = pe -> TrinketsApi.getTrinketComponent(pe).getStack(SlotGroups.FEET, YTrinkets.SOLE);
+		Yttr.getBackTrinket = pe -> TrinketsApi.getTrinketComponent(pe).getStack(SlotGroups.CHEST, Slots.BACKPACK);
 		
 		TrinketSlots.addSlot(SlotGroups.FEET, YTrinkets.SOLE, new Identifier("trinkets", "textures/item/empty_trinket_slot_sole.png"));
 		TrinketSlots.addSlot(SlotGroups.CHEST, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));

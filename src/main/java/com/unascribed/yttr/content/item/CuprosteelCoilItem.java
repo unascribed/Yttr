@@ -44,10 +44,10 @@ public class CuprosteelCoilItem extends TrinketItem {
 	public void render(String slot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
 		VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutout(TEXTURE));
-		boolean hasBoots = Yttr.isWearingBoots.test(player);
+		boolean hasBoots = Yttr.isVisuallyWearingBoots.test(player);
 		renderCoil(vc, matrices, model.leftLeg, hasBoots, light, true);
 		renderCoil(vc, matrices, model.rightLeg, hasBoots, light, false);
-		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(SlotGroups.FEET, YTrinkets.SOLE);
+		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(slot);
 		if (is.getItem() == this && is.hasGlint()) {
 			vc = vertexConsumer.getBuffer(RenderLayer.getEntityGlint());
 			renderCoil(vc, matrices, model.leftLeg, hasBoots, light, true);

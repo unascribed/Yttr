@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
@@ -53,6 +54,7 @@ import com.unascribed.yttr.mixinsupport.DiverPlayer;
 import com.unascribed.yttr.network.MessageS2CDiscoveredGeyser;
 import com.unascribed.yttr.network.MessageS2CDive;
 import com.unascribed.yttr.util.EquipmentSlots;
+import com.unascribed.yttr.util.SlotReference;
 import com.unascribed.yttr.util.YLog;
 import com.unascribed.yttr.util.annotate.RegisteredAs;
 import com.unascribed.yttr.world.FilterNetworks;
@@ -116,7 +118,8 @@ public class Yttr implements ModInitializer {
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
 	
 	public static Function<PlayerEntity, ItemStack> getSoleTrinket = pe -> ItemStack.EMPTY;
-	public static Predicate<PlayerEntity> isWearingBoots = pe -> !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
+	public static Function<PlayerEntity, ItemStack> getBackTrinket = pe -> ItemStack.EMPTY;
+	public static Predicate<PlayerEntity> isVisuallyWearingBoots = pe -> !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
 	
 	@Override
 	public void onInitialize() {
@@ -472,6 +475,16 @@ public class Yttr implements ModInitializer {
 
 	public static boolean isWearingCoil(PlayerEntity e) {
 		return YItems.CUPROSTEEL_COIL.is(getSoleTrinket.apply(e).getItem());
+	}
+
+	public static @Nullable SlotReference scanInventory(Inventory inv, Predicate<ItemStack> predicate) {
+		for (int i = 0; i < inv.size(); i++) {
+			ItemStack is = inv.getStack(i);
+			if (predicate.test(is)) {
+				return new SlotReference(inv, i);
+			}
+		}
+		return null;
 	}
 	
 }

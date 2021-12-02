@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LYL",
+		"YCY",
+		"YYY"
+	],
+	"yttr:only_if": "trinkets",
+	"key": {
+		"L": { "item": "minecraft:leather" },
+		"Y": { "item": "yttr:yttrium_ingot" },
+		"C": { "tag": "yttr:copper_ingots" }
+	},
+	"result": {
+		"item": "yttr:ammo_pack"
+	}
+}

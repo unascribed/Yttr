@@ -84,6 +84,7 @@
 	"scorched.MixinMultiNoiseBiomeSourcePreset",
 	"scorched.MixinLevitationCriterion",
 	"shifter.MixinServerPlayNetworkHandler",
+	"shifter.MixinEnchantment",
 	"soaking.MixinItemEntity",
 	"soaking.MixinServerWorld",
 	"note.MixinNoteBlock",

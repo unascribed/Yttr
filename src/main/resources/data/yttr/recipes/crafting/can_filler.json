@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"YYY",
+		"CcC",
+		"YYY"
+	],
+	"key": {
+		"Y": { "item": "yttr:yttrium_ingot" },
+		"C": { "tag": "yttr:copper_ingots" },
+		"c": { "item": "yttr:empty_ammo_can" }
+	},
+	"result": {
+		"item": "yttr:can_filler"
+	}
+}

@@ -1,13 +1,20 @@
 package com.unascribed.yttr.content.item;
 
+import java.util.List;
+
+import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
+import com.unascribed.yttr.util.InventoryProviderItem;
+
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.Slots;
 import dev.emi.trinkets.api.TrinketItem;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -19,15 +26,22 @@ import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.world.World;
 
-public class AmmoPackItem extends TrinketItem {
+public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 
 	public AmmoPackItem(Settings settings) {
 		super(settings);
@@ -57,11 +71,46 @@ public class AmmoPackItem extends TrinketItem {
 		if (comp.isEmpty()) return ItemStack.EMPTY;
 		return ItemStack.fromNbt(comp);
 	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
+		for (int i = 0; i < getSize(stack); i++) {
+			ItemStack is = getStack(stack, i);
+			if (!is.isEmpty()) {
+				tooltip.add(is.getName());
+				is.getItem().appendTooltip(is, world, tooltip, context);
+			}
+		}
+	}
+	
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		if (player.isSneaking()) {
+			ItemStack stack = player.getStackInHand(hand);
+			player.openHandledScreen(new NamedScreenHandlerFactory() {
+				
+				@Override
+				public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+					return new AmmoPackScreenHandler(asInventory(stack), syncId, inv);
+				}
+				
+				@Override
+				public Text getDisplayName() {
+					return stack.getName();
+				}
+			});
+			return TypedActionResult.consume(stack);
+		}
+		return super.use(world, player, hand);
+	}
 	
 	public void clear(ItemStack pack) {
 		if (pack.hasTag()) pack.getTag().remove("Contents");
 	}
 	
+	@Override
 	public Inventory asInventory(ItemStack pack) {
 		return new Inventory() {
 			
@@ -137,8 +186,9 @@ public class AmmoPackItem extends TrinketItem {
 	
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void render(String slot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
+	public void render(String trinketsSlot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
+		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(trinketsSlot);
 		BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(MODEL);
 		matrices.push();
 			model.body.rotate(matrices);
@@ -150,9 +200,15 @@ public class AmmoPackItem extends TrinketItem {
 			}
 			for (Direction d : Direction.values()) {
 				int i = d.ordinal();
-				if (i != 1) continue;
-				for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), d, RANDOM)) {
-					vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+				ItemStack slot = getStack(is, i);
+				if (!slot.isEmpty()) {
+					int color = slot.getItem() instanceof AmmoCanItem ? ((AmmoCanItem)slot.getItem()).getColor(slot, 1) : 0xFF284946;
+					float r = ((color>>16)&0xFF)/255f;
+					float g = ((color>> 8)&0xFF)/255f;
+					float b = ((color>> 0)&0xFF)/255f;
+					for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), d, RANDOM)) {
+						vc.quad(matrices.peek(), bq, bq.hasColor() ? r : 1, bq.hasColor() ? g : 1, bq.hasColor() ? b : 1, light, OverlayTexture.DEFAULT_UV);
+					}
 				}
 			}
 		matrices.pop();
