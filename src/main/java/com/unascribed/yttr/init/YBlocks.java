@@ -557,7 +557,6 @@ public class YBlocks {
 			.blockVision((state, world, pos) -> false)
 			.suffocates((state, world, pos) -> false)
 			.allowsSpawning((state, world, pos, entity) -> false)
-			.luminance(8)
 		);
 	
 	public static final HighNoteBlock HIGH_NOTE_BLOCK = new HighNoteBlock(FabricBlockSettings.copyOf(Blocks.NOTE_BLOCK));

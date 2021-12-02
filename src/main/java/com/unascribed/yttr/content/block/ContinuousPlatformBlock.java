@@ -2,16 +2,21 @@ package com.unascribed.yttr.content.block;
 
 import java.util.Random;
 
+import com.unascribed.yttr.init.YFluids;
+
 import com.google.common.base.Ascii;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -49,21 +54,50 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		}
 	}
 	
+	public enum LogFluid implements StringIdentifiable {
+		AIR(Fluids.EMPTY),
+		WATER(Fluids.WATER),
+		LAVA(Fluids.LAVA),
+		VOID(YFluids.VOID)
+		;
+		private final String name;
+		public final Fluid fluid;
+		LogFluid(Fluid fluid) {
+			name = Ascii.toLowerCase(name());
+			this.fluid = fluid;
+		}
+		@Override
+		public String asString() {
+			return name;
+		}
+		
+		public static LogFluid by(Fluid f) {
+			for (LogFluid lf : values()) {
+				if (lf.fluid == f) {
+					return lf;
+				}
+			}
+			return AIR;
+		}
+	}
+	
 	public static final EnumProperty<Age> AGE = EnumProperty.of("age", Age.class);
+	public static final EnumProperty<LogFluid> LOGGED = EnumProperty.of("logged", LogFluid.class);
 	
 	public ContinuousPlatformBlock(Settings settings) {
-		super(settings);
-		setDefaultState(getDefaultState().with(AGE, Age._0));
+		super(FabricBlockSettings.copyOf(settings)
+				.luminance(bs -> Math.max(8, bs.get(LOGGED).fluid.getDefaultState().getBlockState().getLuminance())));
+		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, LogFluid.AIR));
 	}
 	
 	@Override
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
-		return stateFrom == state;
+		return stateFrom.isOf(this) && stateFrom.get(AGE) == state.get(AGE);
 	}
 	
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(AGE);
+		builder.add(AGE, LOGGED);
 	}
 	
 	@Override
@@ -78,7 +112,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(AGE) == Age.IMMORTAL) return;
 		if (state.get(AGE) == Age._3) {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			world.setBlockState(pos, state.get(LOGGED).fluid.getDefaultState().getBlockState());
 		} else {
 			world.setBlockState(pos, state.cycle(AGE));
 		}
@@ -86,7 +120,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return getDefaultState().with(AGE, Age.IMMORTAL);
+		return getDefaultState().with(AGE, Age.IMMORTAL).with(LOGGED, LogFluid.by(ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid()));
 	}
 	
 	@Override
@@ -120,6 +154,11 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 		if (state.get(AGE) != Age.IMMORTAL) {
 			world.getBlockTickScheduler().schedule(pos, this, 150+world.random.nextInt(20));
 		}
+	}
+	
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(LOGGED).fluid.getDefaultState();
 	}
 	
 }

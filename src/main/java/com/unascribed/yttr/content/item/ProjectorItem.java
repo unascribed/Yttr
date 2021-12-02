@@ -4,6 +4,7 @@ import com.unascribed.yttr.DelayedTask;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
+import com.unascribed.yttr.content.block.ContinuousPlatformBlock.LogFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
 
@@ -73,7 +74,7 @@ public class ProjectorItem extends Item {
 				if (bs.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
 					world.breakBlock(pos, false);
 				} else {
-					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState().with(ContinuousPlatformBlock.AGE, Age.IMMORTAL));
+					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL));
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 14, 0.5, 0.5, 0.5, 0.05);
 					}
@@ -95,7 +96,7 @@ public class ProjectorItem extends Item {
 				pos.set(origin).move(x, 0, z);
 				BlockState bs = world.getBlockState(pos);
 				if (canReplace(bs)) {
-					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState());
+					world.setBlockState(pos, YBlocks.CONTINUOUS_PLATFORM.getDefaultState().with(ContinuousPlatformBlock.LOGGED, LogFluid.by(world.getFluidState(pos).getFluid())));
 				}
 			}
 		}
