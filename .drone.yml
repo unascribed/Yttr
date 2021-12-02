@@ -22,3 +22,6 @@ steps:
     tag: dev
     note: note.txt
     allow_edit: true
+  when:
+    branch:
+    - trunk
