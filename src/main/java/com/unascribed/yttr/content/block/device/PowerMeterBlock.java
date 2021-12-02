@@ -94,7 +94,7 @@ public class PowerMeterBlock extends HorizontalFacingBlock implements BlockEntit
 
 	@Override
 	public boolean onShotByRifle(World world, BlockState bs, LivingEntity user, RifleMode mode, float power, BlockPos pos, BlockHitResult bhr) {
-		if (mode == RifleMode.DAMAGE && bhr.getSide() == Direction.UP || bhr.getSide() == bs.get(PowerMeterBlock.FACING)) {
+		if (mode == RifleMode.DAMAGE && (bhr.getSide() == Direction.UP || bhr.getSide() == bs.get(PowerMeterBlock.FACING))) {
 			BlockEntity be = user.world.getBlockEntity(bhr.getBlockPos());
 			if (be instanceof PowerMeterBlockEntity) {
 				((PowerMeterBlockEntity)be).sendReadout((int)(power*500));

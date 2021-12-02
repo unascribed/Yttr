@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.content.block.natural.RootOfContinuityBlock;
 import com.unascribed.yttr.init.YBlocks;
 
@@ -23,6 +24,7 @@ public class MixinEndIslandFeature {
 
 	@Inject(at=@At("TAIL"), method="generate")
 	public void generate(StructureWorldAccess structureWorldAccess, ChunkGenerator chunkGenerator, Random random, BlockPos blockPos, DefaultFeatureConfig defaultFeatureConfig, CallbackInfoReturnable<Boolean> ci) {
+		if (!YConfig.WorldGen.continuity) return;
 		if (ci.getReturnValueZ()) {
 			BlockPos.Mutable cur = blockPos.mutableCopy();
 			BlockState bs = structureWorldAccess.getBlockState(cur);

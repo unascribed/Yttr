@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.mixinsupport.ScorchedEnablement;
 
 import net.minecraft.world.biome.Biome;
@@ -18,6 +19,7 @@ public class MixinMultiNoiseBiomeSource implements ScorchedEnablement {
 	
 	@Inject(at=@At("HEAD"), method="getBiomeForNoiseGen(III)Lnet/minecraft/world/biome/Biome;", cancellable=true)
 	public void getBiomeForNoiseGen(int bX, int bY, int bZ, CallbackInfoReturnable<Biome> ci) {
+		if (!YConfig.WorldGen.scorched) return;
 		if (yttr$scorchedSummit != null) {
 			if (bY > (192>>2) && yttr$scorchedTerminus != null) {
 				ci.setReturnValue(yttr$scorchedTerminus);

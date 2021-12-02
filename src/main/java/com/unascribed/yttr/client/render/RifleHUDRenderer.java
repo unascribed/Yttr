@@ -77,7 +77,7 @@ public class RifleHUDRenderer extends IHasAClient {
 						float v = 0;
 						float width = 2;
 						float height = 2;
-						int textureWidth = RifleMode.VALUES.size()*2;
+						int textureWidth = RifleMode.ALL_VALUES.size()*2;
 						int textureHeight = 2;
 						Matrix4f mat = matrices.peek().getModel();
 						float x1 = 4.4f-(p/8f);
@@ -136,7 +136,7 @@ public class RifleHUDRenderer extends IHasAClient {
 				matrices.translate(mc.getWindow().getScaledWidth()/2, mc.getWindow().getScaledHeight()/2, 0);
 				float t = Interp.sCurve5(1-(Math.min(ticksSinceChange+delta, ANIM_TIME)/ANIM_TIMEf))*changeSignum;
 				for (int i = -3-(Math.abs(changeSignum)); i <= 3+(Math.abs(changeSignum)); i++) {
-					int j = (current.ordinal()+i)%RifleMode.VALUES.size();
+					int j = (current.effectiveOrdinal()+i)%RifleMode.VALUES.size();
 					if (j < 0) j = RifleMode.VALUES.size()+j;
 					RifleMode mode = RifleMode.VALUES.get(j);
 					float f = (float)((1-((i+t)/8f))*Math.PI);
@@ -156,7 +156,7 @@ public class RifleHUDRenderer extends IHasAClient {
 					RenderSystem.disableAlphaTest();
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
-					DrawableHelper.drawTexture(matrices, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.VALUES.size()*16, 16);
+					DrawableHelper.drawTexture(matrices, x, y, mode.ordinal()*16, 0, 16, 16, RifleMode.ALL_VALUES.size()*16, 16);
 					if (a > 0.1f) {
 						if (ammo == -1) {
 							int textCol = 0x00FFFFFF;

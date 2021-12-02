@@ -2,6 +2,7 @@ package com.unascribed.yttr.init;
 
 import java.util.function.Consumer;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 
 import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
@@ -112,7 +113,9 @@ public class YBiomes {
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.BIOME, YBiomes.class, Biome.class);
 		
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")), 0.2);
+		if (YConfig.WorldGen.wasteland) {
+			OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, RegistryKey.of(Registry.BIOME_KEY, new Identifier("yttr", "wasteland")), 0.2);
+		}
 	}
 
 	@SafeVarargs

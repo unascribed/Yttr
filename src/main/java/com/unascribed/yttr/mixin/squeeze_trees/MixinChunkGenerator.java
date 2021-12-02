@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.world.SqueezeSaplingGenerator;
 
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,7 @@ public abstract class MixinChunkGenerator {
 	
 	@Inject(at=@At("TAIL"), method="generateFeatures")
 	public void generateFeatures(ChunkRegion region, StructureAccessor accessor, CallbackInfo ci) {
+		if (!YConfig.WorldGen.squeezeTrees) return;
 		ChunkRandom chunkRandom = new ChunkRandom();
 		chunkRandom.setPopulationSeed(region.getSeed(), region.getCenterChunkX(), region.getCenterChunkZ());
 		if (chunkRandom.nextInt(40) == 0) {

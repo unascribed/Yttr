@@ -81,6 +81,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 		ItemStack stack = user.getStackInHand(hand);
 		if (hand == Hand.MAIN_HAND) {
 			RifleMode mode = getMode(stack);
+			if (!mode.isEnabled()) return TypedActionResult.fail(stack);
 			SlotReference can = getAmmoCanSlot(user, mode);
 			if (can == null) {
 				if (stack.hasTag()) {

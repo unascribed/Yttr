@@ -19,6 +19,7 @@ import com.unascribed.yttr.inred.InRedLogic;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
+import com.unascribed.yttr.YConfig.Trilean;
 import com.unascribed.yttr.compat.EarsCompat;
 import com.unascribed.yttr.compat.trinkets.YttrTrinketsCompat;
 import com.unascribed.yttr.content.item.SuitArmorItem;
@@ -203,36 +204,41 @@ public class Yttr implements ModInitializer {
 	}
 	
 	public void onPostInitialize() {
-		List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
-		Set<BlockState> known = Sets.newHashSet(states);
-		List<BlockState> newStates = Registry.BLOCK.stream()
-			.flatMap(b -> b.getStateManager().getStates().stream())
-			.filter(bs -> !known.contains(bs))
-			.collect(Collectors.toList());
-		if (newStates.isEmpty()) {
-			YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
-		} else {
-			YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
-			states.addAll(newStates);
-			int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
-			int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
-			DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
-			DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
-			YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
-		}
-		
-		boolean foundCopper = false;
-		for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntries()) {
-			if (id.getKey().getValue().getPath().contains("copper_ingot")) {
-				YLog.info("Found a copper ingot supplied by {}", id.getKey().getValue().getNamespace());
-				YLog.info("Note that this check does not guarantee this copper ingot will be recognized by Yttr; if it isn't, make sure it's in the c:copper_ingots tag.");
-				foundCopper = true;
-				break;
+		if (YConfig.General.fixupDebugWorld) {
+			List<BlockState> states = DebugChunkGenerator.BLOCK_STATES;
+			Set<BlockState> known = Sets.newHashSet(states);
+			List<BlockState> newStates = Registry.BLOCK.stream()
+				.flatMap(b -> b.getStateManager().getStates().stream())
+				.filter(bs -> !known.contains(bs))
+				.collect(Collectors.toList());
+			if (newStates.isEmpty()) {
+				YLog.info("Looks like someone else already fixed the debug world.", newStates.size());
+			} else {
+				YLog.info("Adding {} missing blockstates to the debug world.", newStates.size());
+				states.addAll(newStates);
+				int oldX = DebugChunkGenerator.X_SIDE_LENGTH;
+				int oldZ = DebugChunkGenerator.Z_SIDE_LENGTH;
+				DebugChunkGenerator.X_SIDE_LENGTH = MathHelper.ceil(MathHelper.sqrt(states.size()));
+				DebugChunkGenerator.Z_SIDE_LENGTH = MathHelper.ceil(states.size() / (float)DebugChunkGenerator.X_SIDE_LENGTH);
+				YLog.info("Ok. Your debug world is now {}x{} instead of {}x{}.", DebugChunkGenerator.X_SIDE_LENGTH, DebugChunkGenerator.Z_SIDE_LENGTH, oldX, oldZ);
 			}
 		}
-		if (!foundCopper) {
-			YLog.warn("I can't find a copper ingot, so I'm adding my own!");
-			COPPER_FALLBACK_ACTIVE = true;
+		
+		if (YConfig.WorldGen.copper == Trilean.AUTO) {
+			boolean foundCopper = false;
+			for (Map.Entry<RegistryKey<Item>, Item> id : Registry.ITEM.getEntries()) {
+				if (id.getKey().getValue().getPath().contains("copper_ingot")) {
+					YLog.info("Found a copper ingot supplied by {}", id.getKey().getValue().getNamespace());
+					YLog.info("Note that this check does not guarantee this copper ingot will be recognized by Yttr; if it isn't, make sure it's in the c:copper_ingots tag.");
+					foundCopper = true;
+					break;
+				}
+			}
+			if (!foundCopper) {
+				YLog.warn("I can't find a copper ingot, so I'm adding my own!");
+				YCopper.init();
+			}
+		} else if (YConfig.WorldGen.copper == Trilean.ON) {
 			YCopper.init();
 		}
 		

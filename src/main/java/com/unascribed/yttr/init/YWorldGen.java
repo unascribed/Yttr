@@ -1,5 +1,6 @@
 package com.unascribed.yttr.init;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.util.LatchReference;
 
@@ -64,8 +65,12 @@ public class YWorldGen {
 	public static void init() {
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YWorldGen.class, ConfiguredFeature.class);
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, YWorldGen.class, ConfiguredSurfaceBuilder.class);
-		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld"));
-		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
+		if (YConfig.WorldGen.gadolinite) {
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("gadolinite_overworld"));
+		}
+		if (YConfig.WorldGen.brookite) {
+			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, key("brookite_overworld"));
+		}
 	}
 
 	public static RegistryKey<ConfiguredFeature<?, ?>> key(String path) {

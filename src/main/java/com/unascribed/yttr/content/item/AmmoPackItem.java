@@ -68,7 +68,7 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 		NbtList inv = pack.getTag().getList("Contents", NbtType.COMPOUND);
 		ensureSize(inv, size);
 		NbtCompound comp = inv.getCompound(i);
-		if (comp.isEmpty()) return ItemStack.EMPTY;
+		if (comp.getSize() == 0) return ItemStack.EMPTY;
 		return ItemStack.fromNbt(comp);
 	}
 

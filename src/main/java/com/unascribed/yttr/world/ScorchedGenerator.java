@@ -3,6 +3,7 @@ package com.unascribed.yttr.world;
 import java.util.Arrays;
 import java.util.List;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBlocks;
 
 import com.google.common.collect.Lists;
@@ -39,6 +40,7 @@ import net.minecraft.world.gen.StructureAccessor;
 public class ScorchedGenerator {
 
 	public static void populate(long worldSeed, ChunkRegion region, StructureAccessor accessor) {
+		if (!YConfig.WorldGen.scorched) return;
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
 			Chunk chunk = region.getChunk(region.getCenterChunkX(), region.getCenterChunkZ());
@@ -166,7 +168,7 @@ public class ScorchedGenerator {
 	public static void buildSurface(ChunkRegion region, Chunk chunk) {
 		if (region.toServerWorld().getRegistryKey().getValue().equals(DimensionType.THE_NETHER_ID)) {
 			BlockPos.Mutable bp = new BlockPos.Mutable(0, 0, 0);
-			if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+			if (YConfig.WorldGen.coreLava && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
 				for (int x = 0; x < 16; x++) {
 					for (int z = 0; z < 16; z++) {
 						bp.set(x, 0, z);
@@ -183,7 +185,7 @@ public class ScorchedGenerator {
 				}
 			}
 			bp.setY(127);
-			if (chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
+			if (YConfig.WorldGen.scorched && chunk.getBlockState(bp).isOf(Blocks.BEDROCK)) {
 				ChunkRandom rand = new ChunkRandom(region.getSeed());
 				OctaveSimplexNoiseSampler noise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(1, 4, 8));
 				OctaveSimplexNoiseSampler fireNoise = new OctaveSimplexNoiseSampler(rand, Arrays.asList(0, 2, 10));

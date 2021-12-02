@@ -1,7 +1,9 @@
 package com.unascribed.yttr.mechanics.rifle;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.content.entity.RifleDummyEntity;
 import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.init.YBlocks;
@@ -53,6 +55,10 @@ public enum RifleMode {
 		@Override
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			user.world.createExplosion(null, DamageSource.explosion(user), null, user.getPos().x, user.getPos().y, user.getPos().z, 5.5f, false, DestructionType.DESTROY);
+		}
+		@Override
+		public boolean isEnabled() {
+			return YConfig.Rifle.allowExplode;
 		}
 	},
 	TELEPORT(Formatting.LIGHT_PURPLE, 0xFF00FF, () -> Items.CHORUS_FRUIT, 3, 1.5f) {
@@ -121,6 +127,11 @@ public enum RifleMode {
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			user.setOnFireFor(20);
 		}
+		
+		@Override
+		public boolean isEnabled() {
+			return YConfig.Rifle.allowFire;
+		}
 	},
 	VOID(Formatting.BLACK, 0x000000, () -> YItems.VOID_BUCKET, 1, 0.75f) {
 		@Override
@@ -133,6 +144,11 @@ public enum RifleMode {
 		public void handleBackfire(LivingEntity user, ItemStack stack) {
 			if (!(user instanceof PlayerEntity)) return;
 			VoidLogic.doVoid((PlayerEntity)user, user.world, user.getPos(), 12);
+		}
+		
+		@Override
+		public boolean isEnabled() {
+			return YConfig.Rifle.allowVoid;
 		}
 		
 	},
@@ -183,13 +199,16 @@ public enum RifleMode {
 		}
 	}
 	;
-	public static final ImmutableList<RifleMode> VALUES = ImmutableList.copyOf(values());
+	public static final ImmutableList<RifleMode> VALUES = Arrays.stream(values()).filter(RifleMode::isEnabled).collect(ImmutableList.toImmutableList());
+	public static final ImmutableList<RifleMode> ALL_VALUES = ImmutableList.copyOf(values());
 	
 	public final Formatting chatColor;
 	public final int color;
 	public final Supplier<ItemConvertible> item;
 	public final int shotsPerItem;
 	public final float speed;
+	
+	private int effectiveOrdinal = -1;
 	
 	RifleMode(Formatting chatColor, int color, Supplier<ItemConvertible> item, int shotsPerItem, float speed) {
 		this.chatColor = chatColor;
@@ -203,16 +222,33 @@ public enum RifleMode {
 		return power > 0;
 	}
 	
+	public int effectiveOrdinal() {
+		return effectiveOrdinal;
+	}
+	
 	public abstract void handleFire(LivingEntity user, ItemStack stack, float power, HitResult hit);
 	public void handleBackfire(LivingEntity user, ItemStack stack) {}
 	
+	public boolean isEnabled() {
+		return true;
+	}
+	
 	public RifleMode next() {
-		return VALUES.get((ordinal()+1)%VALUES.size());
+		if (!VALUES.contains(this)) return VALUES.get(0);
+		return VALUES.get((VALUES.indexOf(this)+1)%VALUES.size());
 	}
 	
 	public RifleMode prev() {
-		if (ordinal() == 0) return VALUES.get(VALUES.size()-1);
-		return VALUES.get(ordinal()-1);
+		if (!VALUES.contains(this)) return VALUES.get(0);
+		int idx = VALUES.indexOf(this);
+		if (idx == 0) return VALUES.get(VALUES.size()-1);
+		return VALUES.get(idx-1);
+	}
+	
+	static {
+		for (int i = 0; i < VALUES.size(); i++) {
+			VALUES.get(i).effectiveOrdinal = i;
+		}
 	}
 	
 }

@@ -1,0 +1,110 @@
+/* Yttr config file. Based on a subset of CSS. My crusade to make cursed configs continues... */
+
+#general {
+	/*
+	 * If set to "on", some quality-of-life changes to compensate for latency will be made. However,
+	 * these changes also make cheating easier, so they should only be used on a whitelisted server
+	 * with a trusted playerbase.
+	 * 
+	 * Currently, this causes the rifle firing system to trust the player instead of performing
+	 * timing on the server side. This makes timing firing the rifle feel much better, but a hacked
+	 * client can get perfect shots every time.
+	 */
+	trust-players: off;
+	
+	/*
+	 * If set to "on", Yttr will add all modded blockstates to the debug world after mods have
+	 * initialized.
+	 */
+	fixup-debug-world: on;
+}
+
+#rifle {
+	/*
+	 * If set to "off", the Void rifle mode will be disabled. It provides an easy way to destroy
+	 * massive amounts of blocks very cheaply (once sufficiently far into Yttr's progression) and
+	 * can be a griefing tool.
+	 * 
+	 * Yttr adds a command, /yttr:void_undo, that allows operators to undo individual voids or all
+	 * voids performed by a player. Additionally, voids are logged to console.
+	 */
+	allow-void: on;
+	/*
+	 * If set to "off", the Explode rifle mode will be disabled. It provides a relatively cheap way
+	 * to create normal vanilla explosions.
+	 */
+	allow-explode: on;
+	/*
+	 * If set to "off", the Fire rifle mode will be disabled. It provides a way to light fires, and
+	 * destroy blocks in #yttr:fire_mode_instabreak instantly.
+	 */
+	allow-fire: on;
+}
+
+#worldgen {
+	/**
+	 * Generate Gadolinite ore in the overworld, a source of Yttrium and Neodymium, plus a bonus
+	 * source of iron.
+	 * 
+	 * DISABLING THIS BREAKS YTTR'S PROGRESSION. You need to provide an alternate way to get
+	 * Yttrium and Neodymium.
+	 */
+	gadolinite: on;
+	/**
+	 * Generate Brookite ore in the overworld, an ore specifically for tools and decorative blocks.
+	 * 
+	 * In the future, Yttr progression will require Brookite; for now, disabling this is safe.
+	 */
+	brookite: on;
+	/**
+	 * Yttr will attempt to detect if another mod adds copper during launch. If none do, it will
+	 * register its own copper. If one does, it will not register its copper at all.
+	 * 
+	 * You can use this as an override if you need it. "off" always disables copper, "auto" performs
+	 * the above detection, "on" always enables copper.
+	 * 
+	 * Copper is required for Yttr progression. Only disable this if the detection is malfunctioning
+	 * or if you've modified recipes to not require copper.
+	 */
+	copper: auto;
+	
+	/**
+	 * Generate Squeeze Trees in the overworld, providing an easy source of sponges, Delicace, and
+	 * a convenient way to flood areas with water.
+	 * 
+	 * Squeeze Trees are not required for Yttr progression.
+	 */
+	squeeze-trees: on;
+	/*
+	 * Generate the Wasteland biome.
+	 * 
+	 * The Wasteland is not required for Yttr progression.
+	 */
+	wasteland: on;
+	
+	/**
+	 * Replace the Nether's bottom bedrock with unremovable "Core Lava" and barriers. This exists
+	 * to help tie together Yttr's lore, but it provides an easy source of infinite lava, may break
+	 * other mods that expect bedrock under the nether, and it's hard to get out of if you fall in.
+	 */
+	core-lava: on;
+	/**
+	 * Replace the Nether's ceiling and top bedrock with the "Scorched Summit", a new biome.
+	 * 
+	 * In the future, Yttr progression will require visiting the Summit; for now, disabling this is
+	 * safe.
+	 * 
+	 * If you're concerned about balance, accessing the Nether ceiling is already a solved problem
+	 * without any mods. Just removing the bedrock and providing this much more interesting
+	 * replacement makes more sense than you think.
+	 */
+	scorched: on;
+	
+	/**
+	 * Generate "Roots of Continuity" on the underside of small End islands.
+	 * 
+	 * DISABLING THIS BREAKS YTTR'S PROGRESSION. You need to provide an alternate way to access
+	 * Drops of Continuity.
+	 */
+	continuity: on;
+}

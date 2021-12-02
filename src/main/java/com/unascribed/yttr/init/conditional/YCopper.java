@@ -39,6 +39,7 @@ public class YCopper {
 			.repeat(6);
 	
 	public static void init() {
+		Yttr.COPPER_FALLBACK_ACTIVE = true;
 		Yttr.autoRegister(Registry.BLOCK, YCopper.class, Block.class);
 		Yttr.autoRegister(Registry.ITEM, YCopper.class, Item.class);
 		Yttr.autoRegister(BuiltinRegistries.CONFIGURED_FEATURE, YCopper.class, ConfiguredFeature.class);
