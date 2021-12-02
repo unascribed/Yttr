@@ -19,6 +19,14 @@
 	fixup-debug-world: on;
 }
 
+#client {
+	/*
+	 * If set to "on", cleaved slopes will try to feel smooth. Kind of buggy, but when it works it's
+	 * awesome.
+	 */
+	slope-smoothing: on;
+}
+
 #rifle {
 	/*
 	 * If set to "off", the Void rifle mode will be disabled. It provides an easy way to destroy

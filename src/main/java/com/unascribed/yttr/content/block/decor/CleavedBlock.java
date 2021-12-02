@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.block.decor;
 import java.util.Collections;
 import java.util.List;
 
+import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.mixinsupport.SlopeStander;
 import com.unascribed.yttr.util.math.partitioner.DEdge;
@@ -205,9 +206,11 @@ public class CleavedBlock extends Block implements BlockEntityProvider, BlockCol
 						}
 					}
 				}
-				double yO = y-origY;
-				if (ss.yttr$getYOffset() == 0 || ss.yttr$getYOffset() < yO) {
-					ss.yttr$setYOffset(yO);
+				if (YConfig.Client.slopeSmoothing) {
+					double yO = y-origY;
+					if (ss.yttr$getYOffset() == 0 || ss.yttr$getYOffset() < yO) {
+						ss.yttr$setYOffset(yO);
+					}
 				}
 				ss.yttr$setSlopeSteepness(Math.max(ss.yttr$getSlopeSteepness(), steepness));
 			}

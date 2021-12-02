@@ -54,6 +54,7 @@ public class YConfig {
 		data = defaults.merge(dataTmp);
 		
 		General.touch();
+		Client.touch();
 		Rifle.touch();
 		WorldGen.touch();
 		Debug.touch();
@@ -65,6 +66,13 @@ public class YConfig {
 		
 		private static void touch() {}
 		private General() {}
+	}
+	
+	public static final class Client {
+		public static final boolean slopeSmoothing = data.getBoolean("client.slope-smoothing").orElse(true);
+		
+		private static void touch() {}
+		private Client() {}
 	}
 	
 	public static final class Rifle {
