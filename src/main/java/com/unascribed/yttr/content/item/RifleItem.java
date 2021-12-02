@@ -444,19 +444,33 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 
 	@Override
-	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity _user) {
+		if (!(_user instanceof PlayerEntity)) return stack;
+		PlayerEntity user = (PlayerEntity)_user;
 		user.playSound(YSounds.RIFLE_OVERCHARGE, 1, 1);
 		user.damage(new DamageSource("yttr.rifle_overcharge") {}, 8*speedMod);
 		user.setOnFireFor((int)(3*speedMod));
 		if (!stack.hasTag()) stack.setTag(new NbtCompound());
-		setRemainingAmmo(stack, 0);
+		SlotReference can = getAmmoCanSlot(user, getMode(stack));
+		if (can == null) {
+			setRemainingAmmo(stack, 0);
+		} else {
+			int shots = can.getStack().getTag().getInt("Shots");
+			shots -= 10;
+			if (shots <= 0) {
+				can.setStack(new ItemStack(YItems.EMPTY_AMMO_CAN));
+			} else {
+				can.getStack().getTag().putInt("Shots", shots);
+			}
+			if (!stack.hasTag()) stack.setTag(new NbtCompound());
+			stack.getTag().putBoolean("FiringFromCan", true);
+			stack.getTag().putFloat("LastCanFullness", shots/(float)AmmoCanItem.CAPACITY);
+		}
 		if (!world.isClient) {
 			getMode(stack).handleBackfire(user, stack);
 		}
 		YStats.add(user, YStats.RIFLE_SHOTS_BACKFIRED, 1);
-		if (user instanceof PlayerEntity) {
-			((PlayerEntity) user).getItemCooldownManager().set(this, (int)(160*speedMod));
-		}
+		user.getItemCooldownManager().set(this, (int)(160*speedMod));
 		return stack;
 	}
 	
