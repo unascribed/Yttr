@@ -139,6 +139,7 @@ public class ShifterItem extends Item {
 			_replacement = ReplicatorBlockItem.getHeldItem(_replacement);
 		} else if (_replacement.getItem() instanceof CleaverItem) {
 			CleaverItem ci = (CleaverItem)_replacement.getItem();
+			if (world.getBlockState(pos).isOf(YBlocks.CLEAVED_BLOCK)) return;
 			Plane p = ci.getLastCut(_replacement);
 			if (p != null && ci.performWorldCleave(world, pos, _replacement, player, p)) {
 				return;
