@@ -42,7 +42,7 @@
 }
 
 #worldgen {
-	/**
+	/*
 	 * Generate Gadolinite ore in the overworld, a source of Yttrium and Neodymium, plus a bonus
 	 * source of iron.
 	 * 
@@ -50,13 +50,13 @@
 	 * Yttrium and Neodymium.
 	 */
 	gadolinite: on;
-	/**
+	/*
 	 * Generate Brookite ore in the overworld, an ore specifically for tools and decorative blocks.
 	 * 
 	 * In the future, Yttr progression will require Brookite; for now, disabling this is safe.
 	 */
 	brookite: on;
-	/**
+	/*
 	 * Yttr will attempt to detect if another mod adds copper during launch. If none do, it will
 	 * register its own copper. If one does, it will not register its copper at all.
 	 * 
@@ -68,7 +68,7 @@
 	 */
 	copper: auto;
 	
-	/**
+	/*
 	 * Generate Squeeze Trees in the overworld, providing an easy source of sponges, Delicace, and
 	 * a convenient way to flood areas with water.
 	 * 
@@ -82,13 +82,13 @@
 	 */
 	wasteland: on;
 	
-	/**
+	/*
 	 * Replace the Nether's bottom bedrock with unremovable "Core Lava" and barriers. This exists
 	 * to help tie together Yttr's lore, but it provides an easy source of infinite lava, may break
 	 * other mods that expect bedrock under the nether, and it's hard to get out of if you fall in.
 	 */
 	core-lava: on;
-	/**
+	/*
 	 * Replace the Nether's ceiling and top bedrock with the "Scorched Summit", a new biome.
 	 * 
 	 * In the future, Yttr progression will require visiting the Summit; for now, disabling this is
@@ -100,7 +100,7 @@
 	 */
 	scorched: on;
 	
-	/**
+	/*
 	 * Generate "Roots of Continuity" on the underside of small End islands.
 	 * 
 	 * DISABLING THIS BREAKS YTTR'S PROGRESSION. You need to provide an alternate way to access
