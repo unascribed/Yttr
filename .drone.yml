@@ -10,7 +10,7 @@ steps:
   - "git log --pretty=tformat:%B -n10 >> note.txt"
   - "rm build/libs/*-dev.jar"
 - name: release
-  image: mac89/drone-gitea-release
+  image: unascribed/drone-gitea-release
   settings:
     api_key:
       from_secret: gitea_key
