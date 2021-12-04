@@ -28,9 +28,7 @@ import com.google.common.base.Predicates;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.entity.Entity;
@@ -269,18 +267,15 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		float max = (140/(getMode(stack).speed*speedMod));
+		float max = getTrueMaxUseTime(stack);
 		if (YConfig.General.trustPlayers) {
-			if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT || !isClientThread()) {
-				max *= 1.25f;
-			}
+			max *= 1.25f;
 		}
 		return (int)max;
 	}
 	
-	@Environment(EnvType.CLIENT)
-	private boolean isClientThread() {
-		return MinecraftClient.getInstance().isOnThread();
+	public int getTrueMaxUseTime(ItemStack stack) {
+		return (int)(140/(getMode(stack).speed*speedMod));
 	}
 
 	@Override
@@ -409,7 +404,9 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	public float calcAdjustedUseTime(ItemStack stack, float remainingUseTicks) {
-		int max = getMaxUseTime(stack);
+		int diff = getMaxUseTime(stack)-getTrueMaxUseTime(stack);
+		remainingUseTicks -= diff;
+		int max = getTrueMaxUseTime(stack);
 		return (((max-remainingUseTicks)/max)*140);
 	}
 
@@ -509,6 +506,14 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 		YStats.add(user, YStats.RIFLE_CHARGING_TIME, 1);
 		int useTicks = calcAdjustedUseTime(stack, remainingUseTicks);
+		if (useTicks >= 140 && YConfig.General.trustPlayers) {
+			if (world.isClient) {
+				user.clearActiveItem();
+				finishUsing(stack, world, user);
+				new MessageC2STrustedRifleFire(0).sendToServer();
+				return;
+			}
+		}
 		if (remainingUseTicks%5 == 0) {
 			user.playSound(YSounds.RIFLE_CHARGE_CONTINUE, 1, 1);
 			if (useTicks >= 100) {
