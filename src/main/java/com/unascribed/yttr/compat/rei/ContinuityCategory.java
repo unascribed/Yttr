@@ -149,8 +149,11 @@ public class ContinuityCategory implements RecipeCategory<ContinuityEntry> {
                     int index = y * 8 + x;
                     if (widgets.size() <= index)
                         break;
+                    // Yttr: Don't render slots outside of the bounds of the scrolling area
+                    int yp = (int) (bounds.y + 1 + y * 18 - scrolling.scrollAmount);
+                    if (yp < bounds.y-16 || yp > bounds.getMaxY()-1) continue;
                     Slot widget = widgets.get(index);
-                    widget.getBounds().setLocation(bounds.x + 1 + x * 18, (int) (bounds.y + 1 + y * 18 - scrolling.scrollAmount));
+                    widget.getBounds().setLocation(bounds.x + 1 + x * 18, yp);
                     widget.render(matrices, mouseX, mouseY, delta);
                 }
             }

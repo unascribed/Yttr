@@ -1,0 +1,18 @@
+{
+	"scorched": {
+		"name": "yttr:scorched",
+		"panoramaId": "yttr:textures/panoramas/scorched/panorama"
+	},
+	"effector": {
+		"name": "yttr:effector",
+		"panoramaId": "yttr:textures/panoramas/effector/panorama"
+	},
+	"wasteland": {
+		"name": "yttr:wasteland",
+		"panoramaId": "yttr:textures/panoramas/wasteland/panorama"
+	},
+	"geyser": {
+		"name": "yttr:geyser",
+		"panoramaId": "yttr:textures/panoramas/geyser/panorama"
+	}
+}
