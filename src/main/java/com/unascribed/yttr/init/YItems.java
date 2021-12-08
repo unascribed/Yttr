@@ -10,10 +10,6 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.ContinuityItemColorProvider;
-import com.unascribed.yttr.client.render.LampItemRenderer;
-import com.unascribed.yttr.client.render.ReplicatorItemRenderer;
-import com.unascribed.yttr.client.render.RifleItemRenderer;
 import com.unascribed.yttr.content.item.AmmoCanItem;
 import com.unascribed.yttr.content.item.BlueCubeItem;
 import com.unascribed.yttr.content.item.CleaverItem;
@@ -47,7 +43,6 @@ import com.google.common.collect.Multimap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
-import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -167,13 +162,13 @@ public class YItems {
 	
 	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings());
 	
-	@BuiltinRenderer(LampItemRenderer.class)
+	@BuiltinRenderer("LampItemRenderer")
 	public static final BlockItem LAMP = new LampBlockItem(YBlocks.LAMP, new Item.Settings());
 
-	@BuiltinRenderer(LampItemRenderer.class)
+	@BuiltinRenderer("LampItemRenderer")
 	public static final BlockItem FIXTURE = new LampBlockItem(YBlocks.FIXTURE, new Item.Settings());
 
-	@BuiltinRenderer(LampItemRenderer.class)
+	@BuiltinRenderer("LampItemRenderer")
 	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings());
 	
 	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings());
@@ -188,7 +183,7 @@ public class YItems {
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_RIGHT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.RIGHT, new Item.Settings());
 	public static final SkeletalSorterBlockItem SKELETAL_SORTER_LEFT_HANDED = new SkeletalSorterBlockItem(YBlocks.SKELETAL_SORTER, Arm.LEFT, new Item.Settings());
 	
-	@BuiltinRenderer(ReplicatorItemRenderer.class)
+	@BuiltinRenderer("ReplicatorItemRenderer")
 	public static final ReplicatorBlockItem REPLICATOR = new ReplicatorBlockItem(YBlocks.REPLICATOR, new Item.Settings());
 	
 	public static final BigBlockItem MAGTANK = new BigBlockItem(YBlocks.MAGTANK, new Item.Settings()
@@ -219,15 +214,15 @@ public class YItems {
 			.recipeRemainder(Items.BUCKET)
 			.maxCount(1));
 	
-	@BuiltinRenderer(RifleItemRenderer.class)
+	@BuiltinRenderer("RifleItemRenderer")
 	public static final RifleItem RIFLE = new RifleItem(new Item.Settings()
 			.maxCount(1), 1, 1, false, 0x3E5656);
 	
-	@BuiltinRenderer(RifleItemRenderer.class)
+	@BuiltinRenderer("RifleItemRenderer")
 	public static final RifleItem RIFLE_REINFORCED = new RifleItem(new Item.Settings()
 			.maxCount(1), 0.85f, 1, true, 0x223333);
 	
-	@BuiltinRenderer(RifleItemRenderer.class)
+	@BuiltinRenderer("RifleItemRenderer")
 	public static final RifleItem RIFLE_OVERCLOCKED = new RifleItem(new Item.Settings()
 			.maxCount(1), 1.65f, 2, false, 0x111111);
 	
@@ -488,10 +483,10 @@ public class YItems {
 		@Override public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {}
 	};
 	
-	@ColorProvider(ContinuityItemColorProvider.class)
+	@ColorProvider("ContinuityItemColorProvider")
 	public static final ShifterItem SHIFTER = new ShifterItem(new Item.Settings()
 			.maxCount(1));
-	@ColorProvider(ContinuityItemColorProvider.class)
+	@ColorProvider("ContinuityItemColorProvider")
 	public static final ProjectorItem PROJECTOR = new ProjectorItem(new Item.Settings()
 			.maxCount(1));
 	
@@ -532,12 +527,12 @@ public class YItems {
 	@Retention(RUNTIME)
 	@Target(FIELD)
 	public @interface BuiltinRenderer {
-		Class<?> value();
+		String value();
 	}
 	
 	@Retention(RUNTIME)
 	@Target(FIELD)
 	public @interface ColorProvider {
-		Class<? extends ItemColorProvider> value();
+		String value();
 	}
 }

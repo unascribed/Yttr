@@ -8,14 +8,6 @@ import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
 import com.unascribed.yttr.Yttr;
-import com.unascribed.yttr.client.render.block_entity.AwareHopperBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.CleavedBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.DSUBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.LampBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.LevitationChamberBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.PowerMeterBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.SkeletalSorterBlockEntityRenderer;
-import com.unascribed.yttr.client.render.block_entity.SqueezedLeavesBlockEntityRenderer;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlockEntity;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlockEntity;
 import com.unascribed.yttr.content.block.big.DSUBlockEntity;
@@ -48,35 +40,34 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.util.registry.Registry;
 
 public class YBlockEntities {
 
-	@Renderer(AwareHopperBlockEntityRenderer.class)
+	@Renderer("AwareHopperBlockEntityRenderer")
 	public static final BlockEntityType<AwareHopperBlockEntity> AWARE_HOPPER = create(AwareHopperBlockEntity::new, YBlocks.AWARE_HOPPER);
-	@Renderer(PowerMeterBlockEntityRenderer.class)
+	@Renderer("PowerMeterBlockEntityRenderer")
 	public static final BlockEntityType<PowerMeterBlockEntity> POWER_METER = create(PowerMeterBlockEntity::new, YBlocks.POWER_METER);
-	@Renderer(LevitationChamberBlockEntityRenderer.class)
+	@Renderer("LevitationChamberBlockEntityRenderer")
 	public static final BlockEntityType<LevitationChamberBlockEntity> LEVITATION_CHAMBER = create(LevitationChamberBlockEntity::new, YBlocks.LEVITATION_CHAMBER);
 	public static final BlockEntityType<ChuteBlockEntity> CHUTE = create(ChuteBlockEntity::new, YBlocks.CHUTE);
 	public static final BlockEntityType<VoidGeyserBlockEntity> VOID_GEYSER = create(VoidGeyserBlockEntity::new, YBlocks.VOID_GEYSER);
-	@Renderer(SqueezedLeavesBlockEntityRenderer.class)
+	@Renderer("SqueezedLeavesBlockEntityRenderer")
 	public static final BlockEntityType<SqueezedLeavesBlockEntity> SQUEEZED_LEAVES = create(SqueezedLeavesBlockEntity::new, YBlocks.SQUEEZED_LEAVES);
-	@Renderer(LampBlockEntityRenderer.class)
+	@Renderer("LampBlockEntityRenderer")
 	public static final BlockEntityType<LampBlockEntity> LAMP = create(LampBlockEntity::new, YBlocks.LAMP, YBlocks.FIXTURE, YBlocks.CAGE_LAMP);
-	@Renderer(CleavedBlockEntityRenderer.class)
+	@Renderer("CleavedBlockEntityRenderer")
 	public static final BlockEntityType<CleavedBlockEntity> CLEAVED_BLOCK = create(CleavedBlockEntity::new, YBlocks.CLEAVED_BLOCK);
 	public static final BlockEntityType<CentrifugeBlockEntity> CENTRIFUGE = create(CentrifugeBlockEntity::new, YBlocks.CENTRIFUGE);
 	public static final BlockEntityType<DopperBlockEntity> DOPPER = create(DopperBlockEntity::new, YBlocks.DOPPER);
 	public static final BlockEntityType<FlopperBlockEntity> FLOPPER = create(FlopperBlockEntity::new, YBlocks.FLOPPER);
 	public static final BlockEntityType<SuitStationBlockEntity> SUIT_STATION = create(SuitStationBlockEntity::new, YBlocks.SUIT_STATION);
-	@Renderer(SkeletalSorterBlockEntityRenderer.class)
+	@Renderer("SkeletalSorterBlockEntityRenderer")
 	public static final BlockEntityType<SkeletalSorterBlockEntity> SKELETAL_SORTER = create(SkeletalSorterBlockEntity::new, YBlocks.SKELETAL_SORTER);
 	public static final BlockEntityType<ReplicatorBlockEntity> REPLICATOR = create(ReplicatorBlockEntity::new, YBlocks.REPLICATOR);
 	public static final BlockEntityType<VoidCauldronBlockEntity> VOID_CAULDRON = create(VoidCauldronBlockEntity::new, YBlocks.VOID_CAULDRON);
 	public static final BlockEntityType<VoidFilterBlockEntity> VOID_FILTER = create(VoidFilterBlockEntity::new, YBlocks.VOID_FILTER);
-	@Renderer(DSUBlockEntityRenderer.class)
+	@Renderer("DSUBlockEntityRenderer")
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
 	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)
@@ -101,7 +92,7 @@ public class YBlockEntities {
 	@Retention(RUNTIME)
 	@Target(FIELD)
 	public @interface Renderer {
-		Class<? extends BlockEntityRenderer<?>> value();
+		String value();
 	}
 	
 }

@@ -342,7 +342,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			YItems.ColorProvider colProvAnn = f.getAnnotation(YItems.ColorProvider.class);
 			if (colProvAnn != null) {
 				try {
-					ColorProviderRegistry.ITEM.register(colProvAnn.value().newInstance(), i);
+					ColorProviderRegistry.ITEM.register((ItemColorProvider)Class.forName("com.unascribed.yttr.client."+colProvAnn.value()).newInstance(), i);
 				} catch (Exception e1) {
 					throw new RuntimeException(e1);
 				}
@@ -352,7 +352,8 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			YItems.BuiltinRenderer birAnn = f.getAnnotation(YItems.BuiltinRenderer.class);
 			if (birAnn != null) {
 				try {
-					MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(birAnn.value(), "render", MethodType.methodType(void.class, ItemStack.class, Mode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
+					Class<?> rend = Class.forName("com.unascribed.yttr.client.render."+birAnn.value());
+					MethodHandle renderHandle = MethodHandles.publicLookup().findStatic(rend, "render", MethodType.methodType(void.class, ItemStack.class, Mode.class, MatrixStack.class, VertexConsumerProvider.class, int.class, int.class));
 					BuiltinItemRendererRegistry.INSTANCE.register(i, (is, mode, matrices, vcp, light, overlay) -> {
 						try {
 							renderHandle.invoke(is, mode, matrices, vcp, light, overlay);
@@ -363,7 +364,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 						}
 					});
 					try {
-						MethodHandle registerModelsHandle = MethodHandles.publicLookup().findStatic(birAnn.value(), "registerModels", MethodType.methodType(void.class, Consumer.class));
+						MethodHandle registerModelsHandle = MethodHandles.publicLookup().findStatic(rend, "registerModels", MethodType.methodType(void.class, Consumer.class));
 						ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 							try {
 								registerModelsHandle.invoke(out);
@@ -384,7 +385,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Yttr.eachRegisterableField(YBlockEntities.class, BlockEntityType.class, YBlockEntities.Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
-					MethodHandle handle = MethodHandles.publicLookup().findConstructor(ann.value(), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
+					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render.block_entity."+ann.value()), MethodType.methodType(void.class, BlockEntityRenderDispatcher.class));
 					BlockEntityRendererRegistry.INSTANCE.register(type, berd -> {
 						try {
 							return (BlockEntityRenderer<?>)handle.invoke(berd);
@@ -402,7 +403,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		Yttr.eachRegisterableField(YEntities.class, EntityType.class, YEntities.Renderer.class, (f, type, ann) -> {
 			if (ann != null) {
 				try {
-					MethodHandle handle = MethodHandles.publicLookup().findConstructor(ann.value(), MethodType.methodType(void.class, EntityRenderDispatcher.class));
+					MethodHandle handle = MethodHandles.publicLookup().findConstructor(Class.forName("com.unascribed.yttr.client.render."+ann.value()), MethodType.methodType(void.class, EntityRenderDispatcher.class));
 					EntityRendererRegistry.INSTANCE.register(type, (erd, ctx) -> {
 						try {
 							return (EntityRenderer<?>)handle.invoke(erd);
