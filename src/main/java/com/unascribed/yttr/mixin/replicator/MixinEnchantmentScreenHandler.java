@@ -49,7 +49,7 @@ public abstract class MixinEnchantmentScreenHandler extends ScreenHandler {
 		return lapis;
 	}
 	
-	@Inject(at=@At("HEAD"), method="getLapisCount", cancellable=true)
+	@Inject(at=@At("HEAD"), method="getLapisCount", cancellable=true, require=0)
 	public void getLapisCount(CallbackInfoReturnable<Integer> ci) {
 		ItemStack lapis = slots.get(1).getStack();
 		if (lapis.getItem() == YItems.REPLICATOR && slots.get(1).canInsert(ReplicatorBlockItem.getHeldItem(lapis))) {
