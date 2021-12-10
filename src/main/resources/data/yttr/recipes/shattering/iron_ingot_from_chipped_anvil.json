@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "chipped_anvil" },
+	"result": {
+		"item": "iron_ingot",
+		"count": 12
+	}
+}

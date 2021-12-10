@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "packed_ice" },
+	"result": {
+		"item": "ice",
+		"count": 9
+	}
+}

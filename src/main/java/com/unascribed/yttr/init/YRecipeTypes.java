@@ -3,6 +3,7 @@ package com.unascribed.yttr.init;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.ShatteringRecipe;
 import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 
@@ -16,6 +17,7 @@ public class YRecipeTypes {
 	public static final RecipeType<VoidFilteringRecipe> VOID_FILTERING = create("void_filtering");
 	public static final RecipeType<PistonSmashingRecipe> PISTON_SMASHING = create("piston_smashing");
 	public static final RecipeType<SoakingRecipe> SOAKING = create("soaking");
+	public static final RecipeType<ShatteringRecipe> SHATTERING = create("shattering");
 
 	public static void init() {
 		Yttr.autoRegister(Registry.RECIPE_TYPE, YRecipeTypes.class, RecipeType.class);

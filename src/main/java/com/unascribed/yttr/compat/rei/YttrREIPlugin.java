@@ -18,15 +18,18 @@ import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.ShatteringRecipe;
 import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
 import com.unascribed.yttr.init.YBlocks;
+import com.unascribed.yttr.init.YEnchantments;
 import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.YRecipeTypes;
 import com.unascribed.yttr.mechanics.LampColor;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -45,14 +48,20 @@ import me.shedaniel.rei.plugin.DefaultPlugin;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import me.shedaniel.rei.plugin.stripping.DefaultStrippingDisplay;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Style;
@@ -74,6 +83,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public static final ContinuityCategory CONTINUITY = new ContinuityCategory();
 	public static final RuinedCategory RUINED = new RuinedCategory();
 	public static final LampCraftingCategory LAMP_CRAFTING = new LampCraftingCategory();
+	public static final ShatteringCategory SHATTERING = new ShatteringCategory();
 	
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
@@ -84,6 +94,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(CONTINUITY);
 		recipeHelper.registerCategory(RUINED);
 		recipeHelper.registerCategory(LAMP_CRAFTING);
+		recipeHelper.registerCategory(SHATTERING);
 	}
 	
 	@Override
@@ -94,6 +105,11 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(CentrifugingCategory.ID, EntryStack.create(YBlocks.CENTRIFUGE));
 		recipeHelper.registerWorkingStations(ContinuityCategory.ID, EntryStack.create(YItems.DROP_OF_CONTINUITY));
 		recipeHelper.registerWorkingStations(ContinuityCategory.ID, EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
+		for (Item i : FabricToolTags.PICKAXES.values()) {
+			ItemStack is = new ItemStack(i);
+	    	EnchantmentHelper.set(ImmutableMap.of(YEnchantments.SHATTERING_CURSE, 1), is);
+			recipeHelper.registerWorkingStations(ShatteringCategory.ID, EntryStack.create(is).setting(Settings.CHECK_TAGS, () -> true));
+		}
 	}
 	
 	@Override
@@ -284,6 +300,19 @@ public class YttrREIPlugin implements REIPluginV0 {
 						recipeHelper.registerDisplay(disp);
 					}
 				}
+			}
+		}
+		recipeHelper.registerRecipes(ShatteringCategory.ID, ShatteringRecipe.class, ShatteringEntry::new);
+		for (CraftingRecipe recipe : recipeHelper.getRecipeManager().listAllOfType(RecipeType.CRAFTING)) {
+			if (recipe.fits(1, 1)) {
+				recipeHelper.registerDisplay(new ShatteringEntry(recipe));
+			}
+		}
+		for (StonecuttingRecipe sr : recipeHelper.getRecipeManager().listAllOfType(RecipeType.STONECUTTING)) {
+			if (sr.getOutput().getCount() == 1) {
+				ItemStack input = new ItemStack(Item.byRawId(sr.getIngredients().get(0).getMatchingItemIds().getInt(0)));
+				recipeHelper.registerDisplay(new ShatteringEntry(new ShapelessRecipe(sr.getId(), null,
+						input, DefaultedList.ofSize(1, Ingredient.ofStacks(sr.getOutput())))));
 			}
 		}
 	}

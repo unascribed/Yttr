@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "honeycomb_block" },
+	"result": {
+		"item": "honeycomb",
+		"count": 4
+	}
+}

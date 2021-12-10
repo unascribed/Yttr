@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "nether_wart_block" },
+	"result": {
+		"item": "nether_wart",
+		"count": 2
+	}
+}

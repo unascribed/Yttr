@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "ladder" },
+	"result": {
+		"item": "stick",
+		"count": 2
+	}
+}

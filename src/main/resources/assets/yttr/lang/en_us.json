@@ -281,6 +281,7 @@
 	"enchantment.yttr.vorpal": "Vorpal",
 	"enchantment.yttr.springing": "Springing",
 	"enchantment.yttr.stabilization": "Stabilization",
+	"enchantment.yttr.shattering_curse": "Curse of Shattering",
 	
 	"subtitles.yttr.rifle_charge": "Yttric Rifle charging",
 	"subtitles.yttr.rifle_charge_rattle": "Yttric Rifle rattles",
@@ -588,6 +589,7 @@
 	"category.yttr.continuity": "Gifts",
 	"category.yttr.ruined": "Forgotten Crafting",
 	"category.yttr.lamp_crafting": "Misc. Lamp Crafting",
+	"category.yttr.shattering": "Shattering",
 	
 	"category.yttr.void_filtering.chance": "Chance: %s%%",
 	"category.yttr.void_filtering.chance.short": "%s%%",

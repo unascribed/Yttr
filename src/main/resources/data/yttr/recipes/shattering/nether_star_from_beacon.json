@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "beacon" },
+	"result": {
+		"item": "nether_star",
+		"count": 1
+	}
+}

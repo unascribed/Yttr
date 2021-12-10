@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "nether_bricks" },
+	"result": {
+		"item": "nether_brick",
+		"count": 4
+	}
+}
