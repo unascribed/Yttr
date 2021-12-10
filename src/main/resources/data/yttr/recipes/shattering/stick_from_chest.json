@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "chest" },
+	"result": {
+		"item": "stick",
+		"count": 16
+	}
+}

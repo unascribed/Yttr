@@ -28,6 +28,14 @@ public class ShatteringEntry implements RecipeDisplay {
 		this.exclusive = recipe instanceof ShatteringRecipe;
 	}
 	
+	public ShatteringEntry(Identifier id, List<EntryStack> input,
+			EntryStack output, boolean exclusive) {
+		this.id = id;
+		this.input = input;
+		this.output = output;
+		this.exclusive = exclusive;
+	}
+
 	@Override
 	public @NotNull Identifier getRecipeCategory() {
 		return ShatteringCategory.ID;

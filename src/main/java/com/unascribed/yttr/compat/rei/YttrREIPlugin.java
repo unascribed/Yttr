@@ -60,7 +60,6 @@ import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
@@ -304,15 +303,15 @@ public class YttrREIPlugin implements REIPluginV0 {
 		}
 		recipeHelper.registerRecipes(ShatteringCategory.ID, ShatteringRecipe.class, ShatteringEntry::new);
 		for (CraftingRecipe recipe : recipeHelper.getRecipeManager().listAllOfType(RecipeType.CRAFTING)) {
-			if (recipe.fits(1, 1)) {
+			if (recipe.fits(1, 1) && !recipe.getIngredients().isEmpty()) {
 				recipeHelper.registerDisplay(new ShatteringEntry(recipe));
 			}
 		}
 		for (StonecuttingRecipe sr : recipeHelper.getRecipeManager().listAllOfType(RecipeType.STONECUTTING)) {
-			if (sr.getOutput().getCount() == 1) {
-				ItemStack input = new ItemStack(Item.byRawId(sr.getIngredients().get(0).getMatchingItemIds().getInt(0)));
-				recipeHelper.registerDisplay(new ShatteringEntry(new ShapelessRecipe(sr.getId(), null,
-						input, DefaultedList.ofSize(1, Ingredient.ofStacks(sr.getOutput())))));
+			if (sr.getOutput().getCount() == 1 && !sr.getIngredients().isEmpty()) {
+				recipeHelper.registerDisplay(new ShatteringEntry(sr.getId(),
+						Collections.singletonList(EntryStack.create(sr.getOutput())),
+						EntryStack.ofIngredient(sr.getIngredients().get(0)).get(0), true));
 			}
 		}
 	}

@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "furnace" },
+	"result": {
+		"item": "cobblestone",
+		"count": 7
+	}
+}

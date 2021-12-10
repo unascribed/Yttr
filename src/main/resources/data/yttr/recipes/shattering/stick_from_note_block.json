@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "note_block" } ,
+	"result": {
+		"item": "stick",
+		"count": 14
+	}
+}

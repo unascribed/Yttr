@@ -1,6 +1,6 @@
 {
 	"type": "yttr:shattering",
-	"ingredient": { "item": "prismarine_bricks" },
+	"ingredient": { "item": "dark_prismarine" },
 	"result": {
 		"item": "prismarine_shard",
 		"count": 7
