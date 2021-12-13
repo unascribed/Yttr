@@ -7,8 +7,8 @@ import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 
-public class ShatteringCurseEnchantment extends Enchantment {
-	public ShatteringCurseEnchantment() {
+public class AnnihilationCurseEnchantment extends Enchantment {
+	public AnnihilationCurseEnchantment() {
 		super(Rarity.VERY_RARE, EnchantmentTarget.DIGGER, EquipmentSlot.values());
 	}
 
@@ -34,7 +34,7 @@ public class ShatteringCurseEnchantment extends Enchantment {
 	
 	@Override
 	protected boolean canAccept(Enchantment other) {
-		return super.canAccept(other) && other != Enchantments.SILK_TOUCH && other != YEnchantments.ANNIHILATION_CURSE;
+		return super.canAccept(other) && other != Enchantments.SILK_TOUCH && other != Enchantments.FORTUNE && other != YEnchantments.SHATTERING_CURSE;
 	}
 	
 }

@@ -98,7 +98,7 @@
 	"coil.MixinPlayerEntity",
 	"debug.MixinRegistry",
 	"debug.MixinServerNetworkIoChannelInitializer",
-	"shattering.MixinBlock",
+	"curse.MixinBlock",
 	"MixinUtil",
 	"MixinTitleScreen",
 	

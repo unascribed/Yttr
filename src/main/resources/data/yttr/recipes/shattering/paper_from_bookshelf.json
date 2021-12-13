@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "bookshelf" },
+	"result": {
+		"item": "paper",
+		"count": 8
+	}
+}

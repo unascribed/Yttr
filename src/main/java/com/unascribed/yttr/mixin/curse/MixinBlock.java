@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.shattering;
+package com.unascribed.yttr.mixin.curse;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,8 +48,13 @@ public class MixinBlock {
 	private static boolean yttr$shattering;
 	private static int yttr$shatteringDepth;
 	
-	@Inject(at=@At("HEAD"), method="dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)V")
+	@Inject(at=@At("HEAD"), method="dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)V",
+			cancellable=true)
 	private static void dropStacksHead(BlockState state, World world, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack stack, CallbackInfo ci) {
+		if (EnchantmentHelper.getLevel(YEnchantments.ANNIHILATION_CURSE, stack) > 0) {
+			ci.cancel();
+			return;
+		}
 		yttr$shatteringDepth = 0;
 		yttr$shattering = EnchantmentHelper.getLevel(YEnchantments.SHATTERING_CURSE, stack) > 0;
 	}
