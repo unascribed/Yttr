@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "red_sandstone" },
+	"result": {
+		"item": "red_sand",
+		"count": 4
+	}
+}

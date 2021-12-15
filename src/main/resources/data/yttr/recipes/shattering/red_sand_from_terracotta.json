@@ -1,0 +1,7 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "terracotta" },
+	"result": {
+		"item": "red_sand"
+	}
+}

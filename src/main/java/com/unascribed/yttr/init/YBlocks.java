@@ -77,6 +77,7 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.LeverBlock;
@@ -606,6 +607,13 @@ public class YBlocks {
 	public static final CuprosteelPressurePlateBlock CUPROSTEEL_PLATE = new CuprosteelPressurePlateBlock(METALLIC_SETTINGS);
 	
 	public static final CanFillerBlock CAN_FILLER = new CanFillerBlock(METALLIC_SETTINGS);
+	
+	public static final FallingBlock DUST = new FallingBlock(FabricBlockSettings.copyOf(Blocks.SAND)) {
+		@Override
+		public int getColor(BlockState state, BlockView world, BlockPos pos) {
+			return 0xFFD7D3C5;
+		}
+	};
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

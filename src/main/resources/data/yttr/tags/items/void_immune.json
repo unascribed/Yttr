@@ -2,6 +2,13 @@
 	"values": [
 		"yttr:glassy_void",
 		"yttr:cleaver",
-		"yttr:void_bucket"
+		"yttr:reinforced_cleaver",
+		"yttr:void_bucket",
+		"yttr:bedrock_shard",
+		"yttr:armor_plating",
+		"yttr:suit_helmet",
+		"yttr:suit_chestplate",
+		"yttr:suit_leggings",
+		"yttr:suit_boots"
 	]
 }

@@ -83,6 +83,11 @@ public class ShatteringRecipe implements Recipe<CraftingInventory> {
 	public ItemStack craft(CraftingInventory craftingInventory) {
 		return output.copy();
 	}
+	
+	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
 
 	@Override
 	@Environment(EnvType.CLIENT)

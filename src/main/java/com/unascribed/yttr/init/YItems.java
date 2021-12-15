@@ -125,6 +125,7 @@ public class YItems {
 	public static final BlockItem CUPROSTEEL_BLOCK = createNormalBlockItem(YBlocks.CUPROSTEEL_BLOCK);
 	public static final BlockItem CUPROSTEEL_PLATE = createNormalBlockItem(YBlocks.CUPROSTEEL_PLATE);
 	public static final BlockItem CAN_FILLER = createNormalBlockItem(YBlocks.CAN_FILLER);
+	public static final BlockItem DUST = createNormalBlockItem(YBlocks.DUST);
 
 	public static final BlockItem INRED_BLOCK = createNormalBlockItem(YBlocks.INRED_BLOCK);
 	public static final BlockItem INRED_CABLE = createNormalBlockItem(YBlocks.INRED_CABLE);

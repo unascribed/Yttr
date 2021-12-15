@@ -337,6 +337,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 	public void registerEntries(EntryRegistry entryRegistry) {
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOGO));
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
+		entryRegistry.removeEntry(EntryStack.create(YItems.DUST));
 	}
 	
 	@Override
