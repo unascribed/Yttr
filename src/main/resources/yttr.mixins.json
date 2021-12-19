@@ -99,6 +99,7 @@
 	"debug.MixinRegistry",
 	"debug.MixinServerNetworkIoChannelInitializer",
 	"curse.MixinBlock",
+	"convenience.MixinAbstractBlock",
 	"MixinUtil",
 	"MixinTitleScreen",
 	
