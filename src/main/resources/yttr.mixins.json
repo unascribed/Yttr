@@ -129,6 +129,7 @@
 	"effector.client.MixinClientWorld",
 	"effector.client.MixinInGameOverlayRenderer",
 	"effector.client.MixinItemRenderer",
+	"effector.client.MixinClientChunkManager",
 	"client.MixinMinecraftClient",
 	"client.MixinJsonUnbakedModel",
 	"client.MixinJsonUnbakedModelDeserializer",
