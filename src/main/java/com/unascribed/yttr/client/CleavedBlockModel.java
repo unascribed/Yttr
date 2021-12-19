@@ -40,7 +40,12 @@ public class CleavedBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		context.meshConsumer().accept((Mesh)((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos));
+		Object attachment = ((RenderAttachedBlockView)blockView).getBlockEntityRenderAttachment(pos);
+		if (attachment instanceof Mesh) {
+			context.meshConsumer().accept((Mesh)attachment);
+		} else {
+			context.fallbackConsumer().accept(MinecraftClient.getInstance().getBakedModelManager().getMissingModel());
+		}
 	}
 
 	@Override
