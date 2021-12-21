@@ -71,6 +71,9 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 		}
 		if (state.get(COLOR) != newColor) {
 			world.setBlockState(pos, state.with(COLOR, newColor));
+			if (!player.abilities.creativeMode) {
+				stack.decrement(1);
+			}
 			return ActionResult.SUCCESS;
 		}
 		return ActionResult.FAIL;
