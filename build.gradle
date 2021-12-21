@@ -124,6 +124,7 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+	from "build/tmp/yttr-classes.txt"
 }
 
 task amendJar {
