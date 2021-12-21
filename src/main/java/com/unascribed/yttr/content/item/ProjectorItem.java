@@ -47,6 +47,7 @@ public class ProjectorItem extends Item {
 				BlockPos pos = mut.toImmutable();
 				Yttr.delayedServerTasks.add(new DelayedTask(i*2, () -> {
 					createPlatform(w, pos);
+					w.playSound(null, pos, YSounds.PROJECT, SoundCategory.BLOCKS, 1.2f, 0.5f+(RANDOM.nextFloat()/2));
 				}));
 				mut.move(face);
 				i++;
@@ -159,7 +160,9 @@ public class ProjectorItem extends Item {
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1f+(RANDOM.nextFloat()/2));
 			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1.5f+(RANDOM.nextFloat()/2));
 		}
-		world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 0.5f+(RANDOM.nextFloat()/2));
+		if (ticks % 2 == 0) {
+			world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1.2f, 0.5f+(RANDOM.nextFloat()/2));
+		}
 	}
 	
 	@Override
