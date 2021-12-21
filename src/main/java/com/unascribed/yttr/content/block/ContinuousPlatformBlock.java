@@ -86,6 +86,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	
 	public ContinuousPlatformBlock(Settings settings) {
 		super(FabricBlockSettings.copyOf(settings)
+				.dropsNothing()
 				.luminance(bs -> Math.max(8, bs.get(LOGGED).fluid.getDefaultState().getBlockState().getLuminance())));
 		setDefaultState(getDefaultState().with(AGE, Age._0).with(LOGGED, LogFluid.AIR));
 	}
@@ -152,7 +153,7 @@ public class ContinuousPlatformBlock extends Block implements BlockColorProvider
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (state.get(AGE) != Age.IMMORTAL) {
-			world.getBlockTickScheduler().schedule(pos, this, 150+world.random.nextInt(20));
+			world.getBlockTickScheduler().schedule(pos, this, 200+world.random.nextInt(40));
 		}
 	}
 	

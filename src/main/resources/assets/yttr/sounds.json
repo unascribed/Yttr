@@ -493,8 +493,20 @@
 		"subtitle": "subtitles.block.pressure_plate.click"
 	},
 	"small_zap": {
-		"sounds": [ { "name": "yttr:small_zap" } ],
+		"sounds": [ "yttr:small_zap" ],
 		"subtitle": "subtitles.yttr.small_zap"
+	},
+	"project": {
+		"sounds": [ "yttr:ring" ],
+		"subtitle": "subtitles.yttr.project"
+	},
+	"shift": {
+		"sounds": [ "yttr:ring" ],
+		"subtitle": "subtitles.yttr.shift"
+	},
+	"magnet_step": {
+		"sounds": [ "yttr:magnet_step1", "yttr:magnet_step2", "yttr:magnet_step3", "yttr:magnet_step4" ],
+		"subtitle": "subtitles.yttr.magnet_step"
 	},
 	
 	"low_note.basedrum": {

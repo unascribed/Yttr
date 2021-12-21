@@ -7,6 +7,7 @@ import com.unascribed.yttr.content.block.ContinuousPlatformBlock.Age;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock.LogFluid;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
+import com.unascribed.yttr.init.YSounds;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -73,11 +75,13 @@ public class ProjectorItem extends Item {
 			if (!world.isClient) {
 				if (bs.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
 					world.breakBlock(pos, false);
+					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 0.5f+(RANDOM.nextFloat()/2));
 				} else {
 					world.setBlockState(pos, bs.with(ContinuousPlatformBlock.AGE, Age.IMMORTAL));
 					if (world instanceof ServerWorld) {
 						((ServerWorld)world).spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 14, 0.5, 0.5, 0.5, 0.05);
 					}
+					world.playSound(null, pos, YSounds.PROJECT, SoundCategory.PLAYERS, 1, 1.5f+(RANDOM.nextFloat()/2));
 				}
 			}
 			return ActionResult.SUCCESS;
@@ -152,7 +156,10 @@ public class ProjectorItem extends Item {
 			if (user.getPos().y < pos.getY()+1) {
 				user.requestTeleport(user.getPos().x, pos.getY()+1, user.getPos().z);
 			}
+			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1f+(RANDOM.nextFloat()/2));
+			world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 1.5f+(RANDOM.nextFloat()/2));
 		}
+		world.playSound(null, user.getX(), user.getY(), user.getZ(), YSounds.PROJECT, SoundCategory.PLAYERS, 0.75f, 0.5f+(RANDOM.nextFloat()/2));
 	}
 	
 	@Override

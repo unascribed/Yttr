@@ -16,6 +16,7 @@ import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YBlocks;
 import com.unascribed.yttr.init.YCriteria;
+import com.unascribed.yttr.init.YSounds;
 import com.unascribed.yttr.init.YStats;
 import com.unascribed.yttr.mixin.accessor.AccessorBlockSoundGroup;
 import com.unascribed.yttr.util.YLog;
@@ -223,6 +224,7 @@ public class ShifterItem extends Item {
 		} else {
 			world.setBlockState(pos, replState);
 		}
+		world.playSound(null, pos, YSounds.SHIFT, SoundCategory.PLAYERS, 0.75f, (RANDOM.nextFloat())+1f);
 		world.spawnParticles(ParticleTypes.CRIT, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 		world.spawnParticles(ParticleTypes.FIREWORK, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.5, 0.5, 0.5, 0.05);
 	}

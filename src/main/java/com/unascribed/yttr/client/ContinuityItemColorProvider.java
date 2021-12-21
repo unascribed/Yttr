@@ -19,7 +19,7 @@ public class ContinuityItemColorProvider implements ItemColorProvider {
 		}
 		float yaw;
 		if (holderYawValid) {
-			yaw = holderYaw;
+			yaw = holderYaw*MinecraftClient.getInstance().player.yaw;
 		} else if (MinecraftClient.getInstance().player != null) {
 			yaw = MinecraftClient.getInstance().player.yaw;
 		} else {
@@ -31,7 +31,7 @@ public class ContinuityItemColorProvider implements ItemColorProvider {
 		} else if (tintIndex == 2) {
 			yaw += 100;
 		}
-		yaw += (Math.abs(stack.hashCode())/2000)%360;
+//		yaw += (Math.abs(stack.hashCode())/2000)%360;
 		yaw += t/4;
 		float hue = (yaw%360)/360f;
 		if (hue < 0) hue += 1;

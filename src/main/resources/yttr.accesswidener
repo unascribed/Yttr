@@ -5,6 +5,7 @@ accessible method net/minecraft/client/particle/BlockLeakParticle <init> (Lnet/m
 accessible method net/minecraft/util/shape/SimpleVoxelShape <init> (Lnet/minecraft/util/shape/VoxelSet;)V
 accessible method net/minecraft/client/texture/Sprite <init> (Lnet/minecraft/client/texture/SpriteAtlasTexture;Lnet/minecraft/client/texture/Sprite$Info;IIIIILnet/minecraft/client/texture/NativeImage;)V
 accessible method net/minecraft/client/util/math/MatrixStack$Entry <init> (Lnet/minecraft/util/math/Matrix4f;Lnet/minecraft/util/math/Matrix3f;)V
+accessible method net/minecraft/util/shape/VoxelShape <init> (Lnet/minecraft/util/shape/VoxelSet;)V
 
 mutable field net/minecraft/world/World isClient Z
 mutable field net/minecraft/world/World random Ljava/util/Random;

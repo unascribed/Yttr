@@ -1,0 +1,14 @@
+{
+	"values": [
+		"minecraft:iron_boots",
+		"yttr:suit_boots",
+		"minecraft:chainmail_boots",
+		"minecraft:iron_helmet",
+		"yttr:suit_helmet",
+		"minecraft:chainmail_helmet",
+		{
+			"id": "yttr:cuprosteel_coil",
+			"required": false
+		}
+	]
+}

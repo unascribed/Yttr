@@ -330,6 +330,9 @@
 	"subtitles.yttr.drop_cast_cancel": "Drop casting stops",
 	"subtitles.yttr.vorpalhit": "Vorpal attack",
 	"subtitles.yttr.small_zap": "Cuprosteel Plate activates",
+	"subtitles.yttr.shift": "Shifter rings",
+	"subtitles.yttr.project": "Projector rings",
+	"subtitles.yttr.magnet_step": "Something magnetizes",
 	
 	"death.attack.yttr.rifle_overcharge": "%s tasted their own medicine",
 	"death.attack.yttr.rifle": "%s was vaporized by %s",

@@ -16,7 +16,7 @@ public final class YTags {
 		public static final Tag<net.minecraft.item.Item> ULTRAPURE_CUBES = TagRegistry.item(new Identifier("yttr", "ultrapure_cubes"));
 		public static final Tag<net.minecraft.item.Item> GIFTS = TagRegistry.item(new Identifier("yttr", "gifts"));
 		public static final Tag<net.minecraft.item.Item> NOT_GIFTS = TagRegistry.item(new Identifier("yttr", "not_gifts"));
-		public static final Tag<net.minecraft.item.Item> MAGNETIC_BOOTS = TagRegistry.item(new Identifier("yttr", "magnetic_boots"));
+		public static final Tag<net.minecraft.item.Item> MAGNETIC = TagRegistry.item(new Identifier("yttr", "magnetic"));
 		public static final Tag<net.minecraft.item.Item> CONDUCTIVE_BOOTS = TagRegistry.item(new Identifier("yttr", "conductive_boots"));
 		
 		private static void init() {}

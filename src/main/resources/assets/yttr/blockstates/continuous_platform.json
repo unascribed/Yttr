@@ -1,7 +1,7 @@
 {
   "variants": {
   	"age=immortal": {
-      "model": "yttr:block/continuous_platform_0"
+      "model": "yttr:block/continuous_platform_immortal"
     },
     "age=0": {
       "model": "yttr:block/continuous_platform_0"

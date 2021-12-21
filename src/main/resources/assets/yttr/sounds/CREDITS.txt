@@ -47,6 +47,7 @@ hollowstep1.ogg: https://freesound.org/people/ckjzam/sounds/421635/
 hollowstep2.ogg: https://freesound.org/people/ckjzam/sounds/421635/
 hollowstep3.ogg: https://freesound.org/people/ckjzam/sounds/421635/
 honk.ogg: https://freesound.org/people/AmishRob/sounds/423990/
+magnet_step*.ogg: https://freesound.org/people/gecop/sounds/522116/
 melt_glowstone.ogg:
 	https://freesound.org/people/sniperous/sounds/365071/
 	https://freesound.org/people/LloydEvans09/sounds/221488/
@@ -66,6 +67,7 @@ rifle_overcharge.ogg:
 	https://freesound.org/people/JavierZumer/sounds/257233/
 	https://freesound.org/people/AlfredHitch/sounds/519219/
 rifle_scope.ogg: https://freesound.org/people/satanicupsman/sounds/172958/
+ring.ogg: https://freesound.org/people/juskiddink/sounds/62055/
 rootbreak.ogg:
 	https://freesound.org/people/chewiesmissus/sounds/244238/
 	https://freesound.org/people/deleted_user_7146007/sounds/383654/
