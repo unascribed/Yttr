@@ -5,6 +5,7 @@ import java.util.Random;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.block.ClamberBlock;
 import com.unascribed.yttr.content.block.ContinuousPlatformBlock;
+import com.unascribed.yttr.content.block.NeodymiumBlock;
 import com.unascribed.yttr.content.block.abomination.AwareHopperBlock;
 import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
@@ -614,6 +615,8 @@ public class YBlocks {
 			return 0xFFD7D3C5;
 		}
 	};
+	
+	public static final NeodymiumBlock NEODYMIUM_SLAB = new NeodymiumBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

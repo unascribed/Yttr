@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:ultrapure_carbon_block",
+      "yttr:no_substitution": true
+    }
+  ],
+  "result": {
+    "item": "yttr:ultrapure_carbon",
+    "count": 9
+  }
+}

@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.unascribed.yttr.mechanics.SimpleLootBlock;
+
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.block.AbstractBlock;
@@ -36,7 +38,13 @@ public class MixinAbstractBlock {
 			ServerWorld serverWorld = lootContext.getWorld();
 			LootTable lootTable = serverWorld.getServer().getLootManager().getTable(id);
 			if (lootTable == LootTable.EMPTY && "yttr".equals(id.getNamespace()) && self.asItem() != Items.AIR) {
-				ci.setReturnValue(ImmutableList.of(new ItemStack(self.asItem())));
+				ItemStack loot;
+				if (self instanceof SimpleLootBlock) {
+					loot = ((SimpleLootBlock)self).getLoot(state);
+				} else {
+					loot = new ItemStack(self.asItem());
+				}
+				ci.setReturnValue(ImmutableList.of(loot));
 			}
 		}
 	}

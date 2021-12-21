@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "yttr:neodymium_slab"
+    },
+    {
+      "item": "yttr:neodymium_slab"
+    }
+  ],
+  "result": {
+    "item": "yttr:neodymium_block",
+    "count": 1
+  }
+}

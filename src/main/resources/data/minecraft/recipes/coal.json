@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:coal_block",
+      "yttr:no_substitution": true
+    }
+  ],
+  "result": {
+    "item": "minecraft:coal",
+    "count": 9
+  }
+}

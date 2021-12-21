@@ -1,6 +1,7 @@
 package com.unascribed.yttr.content.item;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.init.conditional.YTrinkets;
 
 import dev.emi.trinkets.api.SlotGroups;
@@ -16,6 +17,7 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix3f;
@@ -43,6 +45,7 @@ public class CuprosteelCoilItem extends TrinketItem {
 	@Override
 	public void render(String slot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
+		if (player.getEquippedStack(EquipmentSlot.FEET).getItem() == YItems.SUIT_BOOTS) return;
 		VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutout(TEXTURE));
 		boolean hasBoots = Yttr.isVisuallyWearingBoots.test(player);
 		renderCoil(vc, matrices, model.leftLeg, hasBoots, light, true);

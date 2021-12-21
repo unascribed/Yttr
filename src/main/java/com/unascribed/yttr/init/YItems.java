@@ -6,6 +6,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -81,85 +82,107 @@ import net.minecraft.world.World;
 
 public class YItems {
 
-	public static final BlockItem GADOLINITE = createNormalBlockItem(YBlocks.GADOLINITE);
-	public static final BlockItem YTTRIUM_BLOCK = createNormalBlockItem(YBlocks.YTTRIUM_BLOCK);
-	public static final BlockItem POWER_METER = createNormalBlockItem(YBlocks.POWER_METER);
-	public static final BlockItem CHUTE = createNormalBlockItem(YBlocks.CHUTE);
-	public static final BlockItem BEDROCK_SMASHER = createNormalBlockItem(YBlocks.BEDROCK_SMASHER);
-	public static final BlockItem GLASSY_VOID = createNormalBlockItem(YBlocks.GLASSY_VOID);
-	public static final BlockItem GLASSY_VOID_PANE = createNormalBlockItem(YBlocks.GLASSY_VOID_PANE);
-	public static final BlockItem SQUEEZE_LOG = createNormalBlockItem(YBlocks.SQUEEZE_LOG);
-	public static final BlockItem STRIPPED_SQUEEZE_LOG = createNormalBlockItem(YBlocks.STRIPPED_SQUEEZE_LOG);
+	public static final BlockItem GADOLINITE = createBlockItem(YBlocks.GADOLINITE);
+	public static final BlockItem YTTRIUM_BLOCK = createBlockItem(YBlocks.YTTRIUM_BLOCK);
+	public static final BlockItem POWER_METER = createBlockItem(YBlocks.POWER_METER);
+	public static final BlockItem CHUTE = createBlockItem(YBlocks.CHUTE);
+	public static final BlockItem BEDROCK_SMASHER = createBlockItem(YBlocks.BEDROCK_SMASHER);
+	public static final BlockItem GLASSY_VOID = createBlockItem(YBlocks.GLASSY_VOID);
+	public static final BlockItem GLASSY_VOID_PANE = createBlockItem(YBlocks.GLASSY_VOID_PANE);
+	public static final BlockItem SQUEEZE_LOG = createBlockItem(YBlocks.SQUEEZE_LOG);
+	public static final BlockItem STRIPPED_SQUEEZE_LOG = createBlockItem(YBlocks.STRIPPED_SQUEEZE_LOG);
 	@ConstantColor(0xFFEE58)
-	public static final BlockItem SQUEEZE_LEAVES = createNormalBlockItem(YBlocks.SQUEEZE_LEAVES);
-	public static final BlockItem SQUEEZE_SAPLING = createNormalBlockItem(YBlocks.SQUEEZE_SAPLING);
-	public static final BlockItem YTTRIUM_PLATING = createNormalBlockItem(YBlocks.YTTRIUM_PLATING);
-	public static final BlockItem LIGHT_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.LIGHT_YTTRIUM_PLATE);
-	public static final BlockItem HEAVY_YTTRIUM_PLATE = createNormalBlockItem(YBlocks.HEAVY_YTTRIUM_PLATE);
-	public static final BlockItem CENTRIFUGE = createNormalBlockItem(YBlocks.CENTRIFUGE);
-	public static final BlockItem DOPPER = createNormalBlockItem(YBlocks.DOPPER);
+	public static final BlockItem SQUEEZE_LEAVES = createBlockItem(YBlocks.SQUEEZE_LEAVES);
+	public static final BlockItem SQUEEZE_SAPLING = createBlockItem(YBlocks.SQUEEZE_SAPLING);
+	public static final BlockItem YTTRIUM_PLATING = createBlockItem(YBlocks.YTTRIUM_PLATING);
+	public static final BlockItem LIGHT_YTTRIUM_PLATE = createBlockItem(YBlocks.LIGHT_YTTRIUM_PLATE);
+	public static final BlockItem HEAVY_YTTRIUM_PLATE = createBlockItem(YBlocks.HEAVY_YTTRIUM_PLATE);
+	public static final BlockItem CENTRIFUGE = createBlockItem(YBlocks.CENTRIFUGE);
+	public static final BlockItem DOPPER = createBlockItem(YBlocks.DOPPER);
 	public static final BlockItem FLOPPER = new HornItem(YBlocks.FLOPPER, new Item.Settings());
-	public static final BlockItem DIVING_PLATE = createNormalBlockItem(YBlocks.DIVING_PLATE);
-	public static final BlockItem SUIT_STATION = createNormalBlockItem(YBlocks.SUIT_STATION);
-	public static final BlockItem TABLE = createNormalBlockItem(YBlocks.TABLE);
+	public static final BlockItem DIVING_PLATE = createBlockItem(YBlocks.DIVING_PLATE);
+	public static final BlockItem SUIT_STATION = createBlockItem(YBlocks.SUIT_STATION);
+	public static final BlockItem TABLE = createBlockItem(YBlocks.TABLE);
 	public static final BlockItem ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.ULTRAPURE_CARBON_BLOCK, new Item.Settings().rarity(Rarity.UNCOMMON));
 	public static final BlockItem COMPRESSED_ULTRAPURE_CARBON_BLOCK = new BlockItem(YBlocks.COMPRESSED_ULTRAPURE_CARBON_BLOCK, new Item.Settings().rarity(Rarity.UNCOMMON));
-	public static final BlockItem ENCASED_VOID_FILTER = createNormalBlockItem(YBlocks.ENCASED_VOID_FILTER);
-	public static final BlockItem VOID_FILTER = createNormalBlockItem(YBlocks.VOID_FILTER);
-	public static final BlockItem BROOKITE_ORE = createNormalBlockItem(YBlocks.BROOKITE_ORE);
-	public static final BlockItem ROOT_OF_CONTINUITY = createNormalBlockItem(YBlocks.ROOT_OF_CONTINUITY);
-	public static final BlockItem YTTRIUM_BUTTON = createNormalBlockItem(YBlocks.YTTRIUM_BUTTON);
-	public static final BlockItem BROOKITE_BLOCK = createNormalBlockItem(YBlocks.BROOKITE_BLOCK);
-	public static final BlockItem NETHERTUFF = createNormalBlockItem(YBlocks.NETHERTUFF);
-	public static final BlockItem MAGTUBE = createNormalBlockItem(YBlocks.MAGTUBE);
-	public static final BlockItem HIGH_NOTE_BLOCK = createNormalBlockItem(YBlocks.HIGH_NOTE_BLOCK);
-	public static final BlockItem LOW_NOTE_BLOCK = createNormalBlockItem(YBlocks.LOW_NOTE_BLOCK);
-	public static final BlockItem BOGGED_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_NOTE_BLOCK);
-	public static final BlockItem BOGGED_HIGH_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_HIGH_NOTE_BLOCK);
-	public static final BlockItem BOGGED_LOW_NOTE_BLOCK = createNormalBlockItem(YBlocks.BOGGED_LOW_NOTE_BLOCK);
+	public static final BlockItem ENCASED_VOID_FILTER = createBlockItem(YBlocks.ENCASED_VOID_FILTER);
+	public static final BlockItem VOID_FILTER = createBlockItem(YBlocks.VOID_FILTER);
+	public static final BlockItem BROOKITE_ORE = createBlockItem(YBlocks.BROOKITE_ORE);
+	public static final BlockItem ROOT_OF_CONTINUITY = createBlockItem(YBlocks.ROOT_OF_CONTINUITY);
+	public static final BlockItem YTTRIUM_BUTTON = createBlockItem(YBlocks.YTTRIUM_BUTTON);
+	public static final BlockItem BROOKITE_BLOCK = createBlockItem(YBlocks.BROOKITE_BLOCK);
+	public static final BlockItem NETHERTUFF = createBlockItem(YBlocks.NETHERTUFF);
+	public static final BlockItem MAGTUBE = createBlockItem(YBlocks.MAGTUBE);
+	public static final BlockItem HIGH_NOTE_BLOCK = createBlockItem(YBlocks.HIGH_NOTE_BLOCK);
+	public static final BlockItem LOW_NOTE_BLOCK = createBlockItem(YBlocks.LOW_NOTE_BLOCK);
+	public static final BlockItem BOGGED_NOTE_BLOCK = createBlockItem(YBlocks.BOGGED_NOTE_BLOCK);
+	public static final BlockItem BOGGED_HIGH_NOTE_BLOCK = createBlockItem(YBlocks.BOGGED_HIGH_NOTE_BLOCK);
+	public static final BlockItem BOGGED_LOW_NOTE_BLOCK = createBlockItem(YBlocks.BOGGED_LOW_NOTE_BLOCK);
 	@ConstantColor(0xCB8FC3)
-	public static final BlockItem CONTINUOUS_PLATFORM = createNormalBlockItem(YBlocks.CONTINUOUS_PLATFORM);
-	public static final BlockItem CLAMBER_BLOCK = createNormalBlockItem(YBlocks.CLAMBER_BLOCK);
-	public static final BlockItem SOUL_CLAMBER_BLOCK = createNormalBlockItem(YBlocks.SOUL_CLAMBER_BLOCK);
-	public static final BlockItem SOUL_PLANKS = createNormalBlockItem(YBlocks.SOUL_PLANKS);
-	public static final BlockItem CUPROSTEEL_BLOCK = createNormalBlockItem(YBlocks.CUPROSTEEL_BLOCK);
-	public static final BlockItem CUPROSTEEL_PLATE = createNormalBlockItem(YBlocks.CUPROSTEEL_PLATE);
-	public static final BlockItem CAN_FILLER = createNormalBlockItem(YBlocks.CAN_FILLER);
-	public static final BlockItem DUST = createNormalBlockItem(YBlocks.DUST);
+	public static final BlockItem CONTINUOUS_PLATFORM = createBlockItem(YBlocks.CONTINUOUS_PLATFORM);
+	public static final BlockItem CLAMBER_BLOCK = createBlockItem(YBlocks.CLAMBER_BLOCK);
+	public static final BlockItem SOUL_CLAMBER_BLOCK = createBlockItem(YBlocks.SOUL_CLAMBER_BLOCK);
+	public static final BlockItem SOUL_PLANKS = createBlockItem(YBlocks.SOUL_PLANKS);
+	public static final BlockItem CUPROSTEEL_BLOCK = createBlockItem(YBlocks.CUPROSTEEL_BLOCK);
+	public static final BlockItem CUPROSTEEL_PLATE = createBlockItem(YBlocks.CUPROSTEEL_PLATE);
+	public static final BlockItem CAN_FILLER = createBlockItem(YBlocks.CAN_FILLER);
+	public static final BlockItem DUST = createBlockItem(YBlocks.DUST);
+	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
+		@Override
+		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+			if (isIn(group)) {
+				stacks.add(new ItemStack(this));
+			}
+		}
+	};
+	public static final BlockItem NEODYMIUM_BLOCK = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
+		@Override
+		public String getTranslationKey() {
+			return "block.yttr.neodymium_block";
+		}
+		@Override
+		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+			if (isIn(group)) {
+				stacks.add(new ItemStack(this));
+			}
+		}
+		@Override
+		public void appendBlocks(Map<Block,Item> map, Item item) {};
+	};
 
-	public static final BlockItem INRED_BLOCK = createNormalBlockItem(YBlocks.INRED_BLOCK);
-	public static final BlockItem INRED_CABLE = createNormalBlockItem(YBlocks.INRED_CABLE);
-	public static final BlockItem INRED_SCAFFOLD = createNormalBlockItem(YBlocks.INRED_SCAFFOLD);
-	public static final BlockItem INRED_AND_GATE = createNormalBlockItem(YBlocks.INRED_AND_GATE);
-	public static final BlockItem INRED_NOT_GATE = createNormalBlockItem(YBlocks.INRED_NOT_GATE);
-	public static final BlockItem INRED_XOR_GATE = createNormalBlockItem(YBlocks.INRED_XOR_GATE);
-	public static final BlockItem INRED_DIODE = createNormalBlockItem(YBlocks.INRED_DIODE);
-	public static final BlockItem INRED_SHIFTER = createNormalBlockItem(YBlocks.INRED_SHIFTER);
-	public static final BlockItem INRED_TRANSISTOR = createNormalBlockItem(YBlocks.INRED_TRANSISTOR);
-	public static final BlockItem INRED_ENCODER = createNormalBlockItem(YBlocks.INRED_ENCODER);
-	public static final BlockItem INRED_OSCILLATOR = createNormalBlockItem(YBlocks.INRED_OSCILLATOR);
-	public static final BlockItem INRED_DEMO_CYCLER = createNormalBlockItem(YBlocks.INRED_DEMO_CYCLER);
+	public static final BlockItem INRED_BLOCK = createBlockItem(YBlocks.INRED_BLOCK);
+	public static final BlockItem INRED_CABLE = createBlockItem(YBlocks.INRED_CABLE);
+	public static final BlockItem INRED_SCAFFOLD = createBlockItem(YBlocks.INRED_SCAFFOLD);
+	public static final BlockItem INRED_AND_GATE = createBlockItem(YBlocks.INRED_AND_GATE);
+	public static final BlockItem INRED_NOT_GATE = createBlockItem(YBlocks.INRED_NOT_GATE);
+	public static final BlockItem INRED_XOR_GATE = createBlockItem(YBlocks.INRED_XOR_GATE);
+	public static final BlockItem INRED_DIODE = createBlockItem(YBlocks.INRED_DIODE);
+	public static final BlockItem INRED_SHIFTER = createBlockItem(YBlocks.INRED_SHIFTER);
+	public static final BlockItem INRED_TRANSISTOR = createBlockItem(YBlocks.INRED_TRANSISTOR);
+	public static final BlockItem INRED_ENCODER = createBlockItem(YBlocks.INRED_ENCODER);
+	public static final BlockItem INRED_OSCILLATOR = createBlockItem(YBlocks.INRED_OSCILLATOR);
+	public static final BlockItem INRED_DEMO_CYCLER = createBlockItem(YBlocks.INRED_DEMO_CYCLER);
 	
-	public static final BlockItem WASTELAND_DIRT = createRuinedBlockItem(YBlocks.WASTELAND_DIRT);
-	public static final BlockItem WASTELAND_GRASS = createRuinedBlockItem(YBlocks.WASTELAND_GRASS);
-	public static final BlockItem WASTELAND_LOG = createRuinedBlockItem(YBlocks.WASTELAND_LOG);
-	public static final BlockItem WASTELAND_STONE = createRuinedBlockItem(YBlocks.WASTELAND_STONE);
+	public static final BlockItem WASTELAND_DIRT = createBlockItem(YBlocks.WASTELAND_DIRT);
+	public static final BlockItem WASTELAND_GRASS = createBlockItem(YBlocks.WASTELAND_GRASS);
+	public static final BlockItem WASTELAND_LOG = createBlockItem(YBlocks.WASTELAND_LOG);
+	public static final BlockItem WASTELAND_STONE = createBlockItem(YBlocks.WASTELAND_STONE);
 	
-	public static final BlockItem RUINED_COBBLESTONE = createRuinedBlockItem(YBlocks.RUINED_COBBLESTONE);
-	public static final BlockItem RUINED_BRICKS = createRuinedBlockItem(YBlocks.RUINED_BRICKS);
-	public static final BlockItem RUINED_CONTAINER = createRuinedBlockItem(YBlocks.RUINED_CONTAINER);
-	public static final BlockItem RUINED_DEVICE_BC_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_1);
-	public static final BlockItem RUINED_DEVICE_BC_2 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_BC_2);
-	public static final BlockItem RUINED_DEVICE_GT_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_GT_1);
-	public static final BlockItem RUINED_DEVICE_RP_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_RP_1);
-	public static final BlockItem RUINED_DEVICE_FO_1 = createRuinedBlockItem(YBlocks.RUINED_DEVICE_FO_1);
-	public static final BlockItem RUINED_PIPE = createRuinedBlockItem(YBlocks.RUINED_PIPE);
-	public static final BlockItem RUINED_FRAME = createRuinedBlockItem(YBlocks.RUINED_FRAME);
-	public static final BlockItem RUINED_TUBE = createRuinedBlockItem(YBlocks.RUINED_TUBE);
-	public static final BlockItem RUINED_LEVER = createRuinedBlockItem(YBlocks.RUINED_LEVER);
-	public static final BlockItem RUINED_TANK = createRuinedBlockItem(YBlocks.RUINED_TANK);
-	public static final BlockItem RUINED_CONSTRUCT_RC_1 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_1);
-	public static final BlockItem RUINED_CONSTRUCT_RC_2 = createRuinedBlockItem(YBlocks.RUINED_CONSTRUCT_RC_2);
+	public static final BlockItem RUINED_COBBLESTONE = createBlockItem(YBlocks.RUINED_COBBLESTONE);
+	public static final BlockItem RUINED_BRICKS = createBlockItem(YBlocks.RUINED_BRICKS);
+	public static final BlockItem RUINED_CONTAINER = createBlockItem(YBlocks.RUINED_CONTAINER);
+	public static final BlockItem RUINED_DEVICE_BC_1 = createBlockItem(YBlocks.RUINED_DEVICE_BC_1);
+	public static final BlockItem RUINED_DEVICE_BC_2 = createBlockItem(YBlocks.RUINED_DEVICE_BC_2);
+	public static final BlockItem RUINED_DEVICE_GT_1 = createBlockItem(YBlocks.RUINED_DEVICE_GT_1);
+	public static final BlockItem RUINED_DEVICE_RP_1 = createBlockItem(YBlocks.RUINED_DEVICE_RP_1);
+	public static final BlockItem RUINED_DEVICE_FO_1 = createBlockItem(YBlocks.RUINED_DEVICE_FO_1);
+	public static final BlockItem RUINED_PIPE = createBlockItem(YBlocks.RUINED_PIPE);
+	public static final BlockItem RUINED_FRAME = createBlockItem(YBlocks.RUINED_FRAME);
+	public static final BlockItem RUINED_TUBE = createBlockItem(YBlocks.RUINED_TUBE);
+	public static final BlockItem RUINED_LEVER = createBlockItem(YBlocks.RUINED_LEVER);
+	public static final BlockItem RUINED_TANK = createBlockItem(YBlocks.RUINED_TANK);
+	public static final BlockItem RUINED_CONSTRUCT_RC_1 = createBlockItem(YBlocks.RUINED_CONSTRUCT_RC_1);
+	public static final BlockItem RUINED_CONSTRUCT_RC_2 = createBlockItem(YBlocks.RUINED_CONSTRUCT_RC_2);
 	
 	public static final BlockItem RUINED_TORCH = new WallStandingBlockItem(YBlocks.RUINED_TORCH, YBlocks.RUINED_WALL_TORCH, new Item.Settings());
 	
@@ -196,14 +219,10 @@ public class YItems {
 	public static final BigBlockItem DSU = new BigBlockItem(YBlocks.DSU, new Item.Settings()
 			.maxCount(8));
 
-	private static BlockItem createNormalBlockItem(Block block) {
+	private static BlockItem createBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings());
 	}
 	
-	private static BlockItem createRuinedBlockItem(Block block) {
-		return new BlockItem(block, new Item.Settings());
-	}
-
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings());
 	
 	public static final Item YTTRIUM_NUGGET = new Item(new Item.Settings());

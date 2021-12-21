@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "yttr:block/neodymium_slab_top"
+    },
+    "type=bottom": {
+      "model": "yttr:block/neodymium_slab_bottom"
+    },
+    "type=double": {
+      "model": "yttr:block/neodymium_block"
+    }
+  }
+}

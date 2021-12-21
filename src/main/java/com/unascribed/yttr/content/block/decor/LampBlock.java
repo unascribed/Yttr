@@ -1,12 +1,11 @@
 package com.unascribed.yttr.content.block.decor;
 
-import java.util.List;
 import java.util.Random;
 
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
-
-import com.google.common.collect.Lists;
+import com.unascribed.yttr.mechanics.SimpleLootBlock;
+import com.unascribed.yttr.util.Resolvable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,23 +16,29 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.color.block.BlockColorProvider;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 @EnvironmentInterface(itf=BlockColorProvider.class, value=EnvType.CLIENT)
-public class LampBlock extends Block implements BlockEntityProvider, BlockColorProvider {
+public class LampBlock extends Block implements BlockEntityProvider, BlockColorProvider, SimpleLootBlock {
 
 	public static final BooleanProperty LIT = Properties.LIT;
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
@@ -52,11 +57,32 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	}
 	
 	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		ItemStack stack = player.getStackInHand(hand);
+		Item item = stack.getItem();
+		LampColor newColor = null;
+		if (item instanceof DyeItem) {
+			newColor = LampColor.BY_DYE.get(((DyeItem)item).getColor());
+		} else {
+			newColor = LampColor.BY_ITEM.get(Resolvable.mapKey(item, Registry.ITEM));
+		}
+		if (newColor == null) {
+			return ActionResult.PASS;
+		}
+		if (state.get(COLOR) != newColor) {
+			world.setBlockState(pos, state.with(COLOR, newColor));
+			return ActionResult.SUCCESS;
+		}
+		return ActionResult.FAIL;
+	}
+	
+	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new LampBlockEntity();
 	}
 	
-	private ItemStack getDrop(BlockState state) {
+	@Override
+	public ItemStack getLoot(BlockState state) {
 		ItemStack is = new ItemStack(this);
 		LampBlockItem.setInverted(is, state.get(INVERTED));
 		LampBlockItem.setColor(is, state.get(COLOR));
@@ -64,13 +90,8 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-		return Lists.newArrayList(getDrop(state));
-	}
-	
-	@Override
 	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-		return getDrop(state);
+		return getLoot(state);
 	}
 	
 	@Override
@@ -110,13 +131,13 @@ public class LampBlock extends Block implements BlockEntityProvider, BlockColorP
 	public void addStacksForDisplay(ItemGroup group, DefaultedList<ItemStack> list) {
 		int rem = 9-(LampColor.values().length%9);
 		for (LampColor color : LampColor.VALUES) {
-			list.add(getDrop(getDefaultState().with(COLOR, color)));
+			list.add(getLoot(getDefaultState().with(COLOR, color)));
 		}
 		for (int i = 0; i < rem; i++) {
 			list.add(ItemStack.EMPTY);
 		}
 		for (LampColor color : LampColor.VALUES) {
-			list.add(getDrop(getDefaultState().with(COLOR, color).with(INVERTED, true)));
+			list.add(getLoot(getDefaultState().with(COLOR, color).with(INVERTED, true)));
 		}
 		for (int i = 0; i < rem; i++) {
 			list.add(ItemStack.EMPTY);

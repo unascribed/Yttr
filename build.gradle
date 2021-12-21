@@ -110,6 +110,17 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 jar {
+	doFirst {
+		StringBuilder bldr = new StringBuilder();
+		File dir = file('build/classes/java/main');
+		dir.eachFileRecurse(groovy.io.FileType.FILES, {
+			if (it.name.endsWith(".class")) {
+				bldr.append(it.getAbsolutePath().substring(dir.getAbsolutePath().length()+1))
+				bldr.append("\n")
+			}
+		})
+		file('build/tmp/yttr-classes.txt').text = bldr.toString();
+	}
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}

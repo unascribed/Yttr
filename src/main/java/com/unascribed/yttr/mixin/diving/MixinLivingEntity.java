@@ -5,8 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.init.YCriteria;
@@ -41,14 +39,6 @@ public class MixinLivingEntity implements SuitPiecesForJump {
 	@Inject(at=@At("TAIL"), method="jump")
 	public void jumpTail(CallbackInfo ci) {
 		yttr$suitPiecesForJump = 0;
-	}
-	
-	@Inject(at=@At("RETURN"), method="getJumpVelocity", cancellable=true)
-	protected void getJumpVelocity(CallbackInfoReturnable<Float> ci) {
-		if (yttr$suitPiecesForJump > 0) {
-			float m = 1-(0.2f*yttr$suitPiecesForJump);
-			ci.setReturnValue(ci.getReturnValueF()*m);
-		}
 	}
 	
 	@Override

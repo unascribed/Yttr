@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "yttr:neodymium_disc"
+    }
+  },
+  "result": {
+    "item": "yttr:neodymium_slab"
+  }
+}

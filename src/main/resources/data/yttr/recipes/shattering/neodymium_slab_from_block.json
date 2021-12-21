@@ -1,0 +1,8 @@
+{
+	"type": "yttr:shattering",
+	"ingredient": { "item": "yttr:neodymium_block" },
+	"result": {
+		"item": "yttr:neodymium_slab",
+		"count": 2
+	}
+}

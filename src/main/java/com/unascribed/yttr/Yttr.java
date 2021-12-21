@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -120,6 +121,7 @@ public class Yttr implements ModInitializer {
 	
 	public static Function<PlayerEntity, ItemStack> getSoleTrinket = pe -> ItemStack.EMPTY;
 	public static Function<PlayerEntity, ItemStack> getBackTrinket = pe -> ItemStack.EMPTY;
+	public static BiConsumer<PlayerEntity, ItemStack> setSoleTrinket = null;
 	public static Predicate<PlayerEntity> isVisuallyWearingBoots = pe -> !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
 	
 	@Override

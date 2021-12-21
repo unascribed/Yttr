@@ -13,14 +13,6 @@ import net.minecraft.util.math.BlockPos;
 @Mixin(LivingEntity.class)
 public class MixinLivingEntity {
 
-	@Inject(at=@At("RETURN"), method="getJumpVelocity", cancellable=true)
-	protected void getJumpVelocity(CallbackInfoReturnable<Float> ci) {
-		LivingEntity self = (LivingEntity)(Object)this;
-		if (self.isSneaking() && self.world.getBlockState(self.getBlockPos().down()).isIn(YTags.Block.CLAMBER_BLOCKS)) {
-			ci.setReturnValue(0.05f);
-		}
-	}
-	
 	@Inject(at=@At("HEAD"), method="isHoldingOntoLadder", cancellable=true)
 	public void isHoldingOntoLadder(CallbackInfoReturnable<Boolean> ci) {
 		LivingEntity self = (LivingEntity)(Object)this;

@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "yttr:block/neodymium_pole",
+		"side": "yttr:block/neodymium_side"
+	}
+}
