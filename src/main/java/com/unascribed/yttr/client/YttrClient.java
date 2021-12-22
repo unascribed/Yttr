@@ -132,6 +132,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	
 	private boolean hasCheckedRegistry = false;
 	
+	public static boolean onlyRenderOpaqueParticles = false;
+	public static boolean onlyRenderNonOpaqueParticles = false;
+	
 	@Override
 	public void onInitializeClient() {
 		Yttr.INST.onPostInitialize();
