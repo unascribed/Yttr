@@ -329,6 +329,7 @@ public class YBlocks {
 	public static final ReplicatorBlock REPLICATOR = new ReplicatorBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK)
 			.nonOpaque()
 			.noCollision()
+			.dropsNothing()
 		);
 	
 	public static final VoidCauldronBlock VOID_CAULDRON = new VoidCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON)
