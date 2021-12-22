@@ -12,7 +12,6 @@ import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.client.util.DelegatingVertexConsumer;
 import com.unascribed.yttr.mechanics.HaloBlockEntity;
-import com.unascribed.yttr.mixin.accessor.client.AccessorFrustum;
 import com.unascribed.yttr.util.MysticSet;
 
 import com.google.common.collect.Multimap;
@@ -26,13 +25,17 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Matrix3f;
@@ -45,10 +48,12 @@ public class LampRenderer extends IHasAClient {
 	private static final Map<BlockEntity, Object> lastState = new Object2ObjectOpenHashMap<>();
 	private static final Multimap<ChunkSectionPos, BlockEntity> lamps = Multimaps.newSetMultimap(new Object2ObjectOpenHashMap<>(), ReferenceOpenHashSet::new);
 	private static final Map<ChunkSectionPos, VertexBuffer> buffers = new Object2ObjectOpenHashMap<>();
+	private static final Map<ChunkSectionPos, Box> boundingBoxes = new Object2ObjectOpenHashMap<>();
 
 	public static void clearCache() {
 		buffers.values().forEach(VertexBuffer::close);
 		buffers.clear();
+		boundingBoxes.clear();
 	}
 
 	public static void render(World world, MatrixStack matrices, VertexConsumer vc, BlockState state, int color, @Nullable Direction facing, @Nullable BlockPos pos) {
@@ -146,9 +151,11 @@ public class LampRenderer extends IHasAClient {
 				if (l.isEmpty()) {
 					if (buffers.containsKey(csp)) {
 						buffers.remove(csp).close();
+						boundingBoxes.remove(csp);
 					}
 					continue;
 				}
+				Box bounds = null;
 				BufferBuilder vc = new BufferBuilder(24 * VertexFormats.POSITION_COLOR_TEXTURE.getVertexSize() * l.size());
 				vc.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 				for (BlockEntity be : l) {
@@ -159,12 +166,19 @@ public class LampRenderer extends IHasAClient {
 						BlockState state = be.getCachedState();
 						Direction facing = ((HaloBlockEntity)be).getFacing();
 						render(mc.world, scratch, vc, state, color, facing, be.getPos());
+						Box myBox = new Box(be.getPos()).expand(0.5);
+						if (bounds == null) {
+							bounds = myBox;
+						} else {
+							bounds = bounds.union(myBox);
+						}
 					scratch.pop();
 				}
 				vc.end();
 				VertexBuffer vb = buffers.computeIfAbsent(csp, blah -> new VertexBuffer(VertexFormats.POSITION_COLOR_TEXTURE));
 				vb.upload(vc);
 				buffers.put(csp, vb);
+				boundingBoxes.put(csp, bounds);
 			}
 			wrc.profiler().swap("render");
 			MatrixStack matrices = wrc.matrixStack();
@@ -174,7 +188,8 @@ public class LampRenderer extends IHasAClient {
 			Vec3d cam = wrc.camera().getPos();
 			matrices.translate(-cam.x, -cam.y, -cam.z);
 			for (ChunkSectionPos pos : buffers.keySet()) {
-				if (((AccessorFrustum)wrc.frustum()).yttr$isVisible(pos.getMinX()-1, pos.getMinY()-1, pos.getMinZ()-1, pos.getMaxX()+2, pos.getMaxY()+2, pos.getMaxZ()+2)) {
+				Box box = boundingBoxes.get(pos);
+				if (box != null && wrc.frustum().isVisible(box)) {
 					matrices.push();
 						matrices.translate(pos.getMinX(), pos.getMinY(), pos.getMinZ());
 						VertexBuffer buf = buffers.get(pos);
@@ -186,6 +201,11 @@ public class LampRenderer extends IHasAClient {
 						YRenderLayers.getLampHalo().endDrawing();
 						VertexBuffer.unbind();
 					matrices.pop();
+					if (mc.getEntityRenderDispatcher().shouldRenderHitboxes() && !mc.hasReducedDebugInfo()) {
+						VertexConsumerProvider.Immediate vcp = mc.getBufferBuilders().getEntityVertexConsumers();
+						WorldRenderer.drawBox(matrices, vcp.getBuffer(RenderLayer.getLines()), box, 1, 1, 0, 1);
+						vcp.draw(RenderLayer.getLines());
+					}
 				}
 			}
 			matrices.pop();
