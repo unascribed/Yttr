@@ -30,7 +30,6 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.ItemEntity;
@@ -158,10 +157,9 @@ public class ShifterItem extends Item {
 		BlockHitResult bhr = null;
 		if (i instanceof ProjectorItem && curState.isOf(YBlocks.CONTINUOUS_PLATFORM)) {
 			if (curState.get(ContinuousPlatformBlock.AGE) == Age.IMMORTAL) {
-				replState = Blocks.AIR.getDefaultState();
+				replState = curState.getFluidState().getBlockState();
 			} else {
-				replState = YBlocks.CONTINUOUS_PLATFORM.getDefaultState()
-						.with(ContinuousPlatformBlock.AGE, ContinuousPlatformBlock.Age.IMMORTAL);
+				replState = curState.with(ContinuousPlatformBlock.AGE, ContinuousPlatformBlock.Age.IMMORTAL);
 			}
 		} else {
 			if (!(i instanceof BlockItem)) return;
