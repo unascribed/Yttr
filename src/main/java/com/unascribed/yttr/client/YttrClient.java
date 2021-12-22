@@ -18,6 +18,7 @@ import com.unascribed.yttr.YConfig;
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
+import com.unascribed.yttr.client.render.LampRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
@@ -164,7 +165,10 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				}
 			});
 			ReloadableResourceManager rm = (ReloadableResourceManager)mc.getResourceManager();
-			rm.registerReloader(reloader("yttr:clear_thief_cache", (manager) -> TextureColorThief.clearCache()));
+			rm.registerReloader(reloader("yttr:clear_caches", (manager) -> {
+				TextureColorThief.clearCache();
+				LampRenderer.clearCache();
+			}));
 			rm.registerReloader(reloader("yttr:detect_lcah", (manager) -> Yttr.lessCreepyAwareHopper = manager.containsResource(new Identifier("yttr", "lcah-marker"))));
 			Yttr.lessCreepyAwareHopper = rm.containsResource(new Identifier("yttr", "lcah-marker"));
 		});
@@ -224,6 +228,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			EffectorRenderer.tick();
 			SuitHUDRenderer.tick();
 			ReplicatorRenderer.tick();
+			LampRenderer.tick();
 			RifleHUDRenderer.tick();
 			ShifterUI.tick();
 			if (mc.player != null && mc.player.isCreative() && mc.player.getStackInHand(Hand.MAIN_HAND).getItem() == YItems.SHIFTER) {
@@ -265,6 +270,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		WorldRenderEvents.LAST.register(EffectorRenderer::render);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(ReplicatorRenderer::render);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(LampRenderer::render);
 		CleavedBlockModelProvider.init();
 		
 		ResourcePackProvider prov = new ResourcePackProvider() {
