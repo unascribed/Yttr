@@ -18,6 +18,11 @@ public final class YTags {
 		public static final Tag<net.minecraft.item.Item> NOT_GIFTS = TagRegistry.item(new Identifier("yttr", "not_gifts"));
 		public static final Tag<net.minecraft.item.Item> MAGNETIC = TagRegistry.item(new Identifier("yttr", "magnetic"));
 		public static final Tag<net.minecraft.item.Item> CONDUCTIVE_BOOTS = TagRegistry.item(new Identifier("yttr", "conductive_boots"));
+		public static final Tag<net.minecraft.item.Item> DSU_512 = TagRegistry.item(new Identifier("yttr", "dsu_512"));
+		public static final Tag<net.minecraft.item.Item> DSU_1024 = TagRegistry.item(new Identifier("yttr", "dsu_1024"));
+		public static final Tag<net.minecraft.item.Item> DSU_2048 = TagRegistry.item(new Identifier("yttr", "dsu_2048"));
+		public static final Tag<net.minecraft.item.Item> DSU_4096 = TagRegistry.item(new Identifier("yttr", "dsu_4096"));
+		public static final Tag<net.minecraft.item.Item> DSU_HIGHSTACK = TagRegistry.item(new Identifier("yttr", "dsu_highstack"));
 		
 		private static void init() {}
 		

@@ -15,7 +15,7 @@ public class HighStackSimpleInventory extends SimpleInventory {
 	
 	@Override
 	public int getMaxCountPerStack() {
-		return 1024;
+		return 4096;
 	}
 
 }

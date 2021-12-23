@@ -30,7 +30,7 @@ public class MixinHandledScreen {
 	@Inject(at=@At("HEAD"), method="drawSlot(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V")
 	public void drawSlotHead(MatrixStack matrices, Slot slot, CallbackInfo ci) {
 		Object self = this;
-		if (self instanceof DSUScreen && slot.getMaxItemCount() == 1024 && slot.getStack().getItem().isIn(YTags.Item.ULTRAPURE_CUBES) && slot.getStack().getCount() > 1) {
+		if (self instanceof DSUScreen && slot.getMaxItemCount() == 4096 && slot.getStack().getItem().isIn(YTags.Item.DSU_HIGHSTACK) && slot.getStack().getCount() > 1) {
 			yttr$storedStack = slot.getStack();
 			ItemStack copy = yttr$storedStack.copy();
 			copy.setCount(1);

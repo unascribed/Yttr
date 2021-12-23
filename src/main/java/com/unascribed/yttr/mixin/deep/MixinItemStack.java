@@ -20,8 +20,16 @@ public abstract class MixinItemStack {
 	
 	@Inject(at=@At("RETURN"), method="getMaxCount", cancellable=true)
 	public void getMaxCount(CallbackInfoReturnable<Integer> ci) {
-		if (DSUScreenHandler.increaseStackSize.get().intValue() > 0 && getItem().isIn(YTags.Item.ULTRAPURE_CUBES)) {
-			ci.setReturnValue(1024);
+		if (DSUScreenHandler.increaseStackSize.get().intValue() > 0) {
+			if (getItem().isIn(YTags.Item.DSU_4096)) {
+				ci.setReturnValue(4096);
+			} else if (getItem().isIn(YTags.Item.DSU_2048)) {
+				ci.setReturnValue(2048);
+			} else if (getItem().isIn(YTags.Item.DSU_1024)) {
+				ci.setReturnValue(1024);
+			} else if (getItem().isIn(YTags.Item.DSU_512)) {
+				ci.setReturnValue(512);
+			}
 		}
 	}
 	
