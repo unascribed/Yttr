@@ -55,7 +55,7 @@ public class FilterNetwork {
 		
 		@Override
 		public String toString() {
-			return type+"@"+pos.toShortString().replace(" ", "");
+			return type+"@"+pos.getX()+","+pos.getY()+","+pos.getZ();
 		}
 	}
 	
@@ -155,7 +155,7 @@ public class FilterNetwork {
 			throw new IllegalArgumentException("Cannot add orphan node at "+node.pos+" to non-empty network");
 		}
 		addNodeDirectly(node);
-		YLog.debug("Adding {} to network {}", node.pos.toShortString(), id);
+		YLog.debug("Adding {}, {}, {} to network {}", node.pos.getX(),  node.pos.getY(),  node.pos.getZ(), id);
 		for (BlockPos neighbor : neighbors) {
 			Node n = membersByPos.get(neighbor);
 			if (n != null) {
