@@ -63,12 +63,12 @@ public class DSUScreenHandler extends GenericContainerScreenHandler {
 			if (slot != null && !(slot.inventory instanceof PlayerInventory) && actionType == SlotActionType.QUICK_MOVE) {
 				ItemStack all = slot.getStack().copy();
 				ItemStack some = slot.getStack().copy();
-				some.setCount(Math.min(all.getCount(), 64));
+				some.setCount(Math.min(all.getCount(), all.getMaxCount()));
 				slot.setStack(some);
 				if (!insertItem(some, slots.size()-9, slots.size(), false)) {
 					insertItem(some, 5*9, slots.size()-9, false);
 				}
-				all.setCount(all.getCount()-(64-some.getCount()));
+				all.setCount(all.getCount()-(all.getMaxCount()-some.getCount()));
 				slot.setStack(all);
 				return ItemStack.EMPTY;
 			}
