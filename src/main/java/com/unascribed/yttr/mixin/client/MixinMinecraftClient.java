@@ -9,9 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.network.MessageC2SAttack;
 import com.unascribed.yttr.util.Attackable;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 
+@Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
 

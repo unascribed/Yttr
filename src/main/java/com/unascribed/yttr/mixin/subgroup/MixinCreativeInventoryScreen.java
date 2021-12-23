@@ -1,5 +1,7 @@
 package com.unascribed.yttr.mixin.subgroup;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -21,6 +23,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.ItemSubGroup;
 import com.unascribed.yttr.mixinsupport.ItemGroupParent;
 
+@Environment(EnvType.CLIENT)
 @Mixin(CreativeInventoryScreen.class)
 public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScreen<CreativeInventoryScreen.CreativeScreenHandler> {
 	

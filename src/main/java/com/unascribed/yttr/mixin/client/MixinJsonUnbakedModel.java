@@ -13,9 +13,12 @@ import com.unascribed.yttr.mixinsupport.InheritElements;
 
 import com.google.common.collect.Lists;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelElement;
 
+@Environment(EnvType.CLIENT)
 @Mixin(JsonUnbakedModel.class)
 public class MixinJsonUnbakedModel implements InheritElements {
 

@@ -10,11 +10,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.init.YTags;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
+@Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public class MixinGameRenderer {
 

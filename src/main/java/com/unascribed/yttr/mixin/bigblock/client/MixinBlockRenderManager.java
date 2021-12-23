@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.bigblock;
+package com.unascribed.yttr.mixin.bigblock.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.content.block.big.BigBlock;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -15,6 +17,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
+@Environment(EnvType.CLIENT)
 @Mixin(BlockRenderManager.class)
 public abstract class MixinBlockRenderManager {
 

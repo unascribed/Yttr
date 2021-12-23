@@ -7,9 +7,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.Sound;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Sound.class)
 public class MixinSound {
 

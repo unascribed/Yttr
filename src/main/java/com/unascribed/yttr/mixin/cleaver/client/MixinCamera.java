@@ -8,12 +8,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.mixinsupport.SlopeStander;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Camera.class)
 public abstract class MixinCamera {
 

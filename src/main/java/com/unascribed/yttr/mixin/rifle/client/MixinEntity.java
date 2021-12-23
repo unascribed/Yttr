@@ -8,8 +8,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Entity.class)
 public class MixinEntity {
 

@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Set;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -19,6 +21,9 @@ import com.google.common.collect.Lists;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class YttrMixin implements IMixinConfigPlugin {
 
@@ -49,13 +54,43 @@ public class YttrMixin implements IMixinConfigPlugin {
 
 	public static List<String> discoverClassesInPackage(String pkg, boolean truncate) {
 		List<String> rtrn = Lists.newArrayList();
-		for (ClassInfo ci : getClassesInPackage(pkg)) {
+		int skipped = 0;
+		outer: for (ClassInfo ci : getClassesInPackage(pkg)) {
 			// we want nothing to do with inner classes and the like
 			if (ci.getName().contains("$")) continue;
-			String truncName = ci.getName().substring(pkg.length()+1);
-			rtrn.add(truncate ? truncName : ci.getName());
+			try {
+				ClassReader cr = new ClassReader(ci.asByteSource().read());
+				ClassNode cn = new ClassNode();
+				cr.accept(cn, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+				if (cn.invisibleAnnotations != null) {
+					for (AnnotationNode an : cn.invisibleAnnotations) {
+						if (an.desc.equals("Lnet/fabricmc/api/Environment;")) {
+							if (an.values == null) continue;
+							for (int i = 0; i < an.values.size(); i += 2) {
+								String k = (String)an.values.get(i);
+								Object v = an.values.get(i+1);
+								if ("value".equals(k) && v instanceof String[]) {
+									String[] arr = (String[])v;
+									if (arr[0].equals("Lnet/fabricmc/api/EnvType;")) {
+										EnvType e = EnvType.valueOf(arr[1]);
+										if (e != FabricLoader.getInstance().getEnvironmentType()) {
+											YLog.debug("Skipping {} mixin {}", e, ci.getName());
+											skipped++;
+											continue outer;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				String truncName = ci.getName().substring(pkg.length()+1);
+				rtrn.add(truncate ? truncName : ci.getName());
+			} catch (IOException e) {
+				YLog.warn("Exception while trying to read {}", ci.getName(), e);
+			}
 		}
-		YLog.info("Discovered {} classes in {}", rtrn.size(), pkg);
+		YLog.info("Discovered {} classes in {} (skipped {})", rtrn.size(), pkg, skipped);
 		return rtrn;
 	}
 

@@ -1,5 +1,7 @@
 package com.unascribed.yttr.mixin.diving.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.init.YItems;
 
+@Environment(EnvType.CLIENT)
 @Mixin(PlayerEntityRenderer.class)
 public abstract class MixinPlayerEntityRenderer {
 

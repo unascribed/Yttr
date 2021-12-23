@@ -9,12 +9,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.content.item.ShifterItem;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
+@Environment(EnvType.CLIENT)
 @Mixin(PlayerInventory.class)
 public abstract class MixinPlayerInventory {
 

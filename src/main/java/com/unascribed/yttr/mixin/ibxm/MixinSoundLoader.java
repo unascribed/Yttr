@@ -16,6 +16,8 @@ import com.unascribed.yttr.client.IBXMAudioStream;
 import com.unascribed.yttr.client.IBXMResourceMetadata;
 import com.unascribed.yttr.client.IBXMAudioStream.InterpolationMode;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.AudioStream;
 import net.minecraft.client.sound.RepeatingAudioStream;
 import net.minecraft.client.sound.SoundLoader;
@@ -25,6 +27,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
+@Environment(EnvType.CLIENT)
 @Mixin(SoundLoader.class)
 public class MixinSoundLoader {
 

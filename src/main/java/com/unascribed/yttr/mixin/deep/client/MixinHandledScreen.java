@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.deep;
+package com.unascribed.yttr.mixin.deep.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +9,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.client.screen.handled.DSUScreen;
 import com.unascribed.yttr.init.YTags;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 @Mixin(HandledScreen.class)
 public class MixinHandledScreen {
 

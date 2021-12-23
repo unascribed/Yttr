@@ -8,12 +8,15 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 import com.unascribed.yttr.init.YBlocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ParticleManager.class)
 public class MixinParticleManager {
 

@@ -10,7 +10,10 @@ import com.unascribed.yttr.util.DelayingChannelInboundHandler;
 import com.unascribed.yttr.util.YLog;
 
 import io.netty.channel.Channel;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
+@Environment(EnvType.CLIENT)
 @Mixin(targets="net/minecraft/server/ServerNetworkIo$2")
 public class MixinServerNetworkIoChannelInitializer {
 

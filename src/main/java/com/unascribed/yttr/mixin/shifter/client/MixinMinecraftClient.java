@@ -7,10 +7,13 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.unascribed.yttr.content.item.ShifterItem;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Hand;
 
+@Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
 

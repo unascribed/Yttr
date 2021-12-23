@@ -1,4 +1,4 @@
-package com.unascribed.yttr.mixin.replicator;
+package com.unascribed.yttr.mixin.replicator.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,11 +8,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
 import com.unascribed.yttr.init.YItems;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 
+@Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public class MixinInGameHud {
 

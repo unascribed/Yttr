@@ -11,12 +11,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.init.YItems;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DeathScreen;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
+@Environment(EnvType.CLIENT)
 @Mixin(DeathScreen.class)
 public class MixinDeathScreen {
 	

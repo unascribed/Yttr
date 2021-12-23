@@ -12,10 +12,13 @@ import com.unascribed.yttr.mixinsupport.ItemGroupParent;
 
 import com.google.common.collect.Lists;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ItemGroup.class)
 public class MixinItemGroup implements ItemGroupParent {
 

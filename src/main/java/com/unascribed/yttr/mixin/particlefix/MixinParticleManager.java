@@ -9,9 +9,12 @@ import com.unascribed.yttr.client.YttrClient;
 
 import com.google.common.collect.Iterators;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ParticleManager.class)
 public class MixinParticleManager {
 	

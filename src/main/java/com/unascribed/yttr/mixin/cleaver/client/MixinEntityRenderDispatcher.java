@@ -7,12 +7,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.mixinsupport.SlopeStander;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
+@Environment(EnvType.CLIENT)
 @Mixin(EntityRenderDispatcher.class)
 public class MixinEntityRenderDispatcher {
 

@@ -8,10 +8,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.unascribed.yttr.client.screen.SuitScreen;
 import com.unascribed.yttr.client.suit.SuitSound;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 
+@Environment(EnvType.CLIENT)
 @Mixin(SoundSystem.class)
 public class MixinSoundSystem {
 

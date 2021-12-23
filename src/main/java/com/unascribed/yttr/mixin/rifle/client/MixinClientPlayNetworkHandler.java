@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YSounds;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
@@ -16,6 +18,7 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.play.PlaySoundFromEntityS2CPacket;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ClientPlayNetworkHandler.class)
 public class MixinClientPlayNetworkHandler {
 

@@ -11,12 +11,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.unascribed.yttr.content.item.EffectorItem;
 import com.unascribed.yttr.init.YItems;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.ItemStack;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public class MixinItemRenderer {
 	

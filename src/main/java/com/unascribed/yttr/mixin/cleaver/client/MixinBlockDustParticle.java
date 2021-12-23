@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.content.block.decor.CleavedBlockEntity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.BlockDustParticle;
@@ -15,6 +17,7 @@ import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 
+@Environment(EnvType.CLIENT)
 @Mixin(BlockDustParticle.class)
 public abstract class MixinBlockDustParticle extends SpriteBillboardParticle {
 

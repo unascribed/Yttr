@@ -7,9 +7,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.gson.JsonObject;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.model.json.ModelElement;
 import net.minecraft.util.JsonHelper;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ModelElement.Deserializer.class)
 public class MixinModelElementDeserializer {
 

@@ -7,10 +7,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.mixinsupport.YttrWorld;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ClientChunkManager.class)
 public class MixinClientChunkManager {
 	

@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.client.YttrClient;
 import com.unascribed.yttr.init.YSounds;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
@@ -25,6 +27,7 @@ import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 

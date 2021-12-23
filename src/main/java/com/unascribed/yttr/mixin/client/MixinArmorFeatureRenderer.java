@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.unascribed.yttr.client.YRenderLayers;
 import com.unascribed.yttr.init.YItems;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
@@ -24,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ArmorFeatureRenderer.class)
 public class MixinArmorFeatureRenderer {
 

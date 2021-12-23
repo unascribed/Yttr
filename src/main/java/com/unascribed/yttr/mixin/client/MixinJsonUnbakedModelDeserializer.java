@@ -13,8 +13,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.unascribed.yttr.mixinsupport.InheritElements;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 
+@Environment(EnvType.CLIENT)
 @Mixin(JsonUnbakedModel.Deserializer.class)
 public class MixinJsonUnbakedModelDeserializer {
 

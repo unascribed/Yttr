@@ -7,11 +7,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.unascribed.yttr.content.item.RifleItem;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel.ArmPose;
 import net.minecraft.util.Hand;
 
+@Environment(EnvType.CLIENT)
 @Mixin(PlayerEntityRenderer.class)
 public class MixinPlayerEntityRenderer {
 

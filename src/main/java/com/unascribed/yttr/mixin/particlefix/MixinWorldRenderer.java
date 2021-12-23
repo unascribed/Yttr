@@ -1,5 +1,7 @@
 package com.unascribed.yttr.mixin.particlefix;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.BufferBuilderStorage;
@@ -23,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.unascribed.yttr.client.YttrClient;
 
+@Environment(EnvType.CLIENT)
 @Mixin(WorldRenderer.class)
 public class MixinWorldRenderer {
 
