@@ -182,14 +182,11 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 	}
 	
 	@Environment(EnvType.CLIENT)
-	private static final ModelIdentifier MODEL = new ModelIdentifier("yttr:ammo_pack_model#inventory");
-	
-	@Environment(EnvType.CLIENT)
 	@Override
 	public void render(String trinketsSlot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
 		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(trinketsSlot);
-		BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(MODEL);
+		BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
 		matrices.push();
 			model.body.rotate(matrices);
 			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
