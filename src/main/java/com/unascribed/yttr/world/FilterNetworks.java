@@ -107,7 +107,7 @@ public class FilterNetworks extends PersistentState {
 			}
 		}
 		FilterNetwork net = new FilterNetwork(this, UUID.randomUUID());
-		YLog.debug("Creating new network {} for orphan at {}", net.getId(), pos.toShortString());
+		YLog.debug("Creating new network {} for orphan at {}, {}, {}", net.getId(), pos.getX(), pos.getY(), pos.getZ());
 		net.addNode(n);
 		addNetwork(net);
 	}
