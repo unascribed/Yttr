@@ -280,7 +280,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 						cons = ExplicitSizeCustomCraftingDisplay::new;
 					}
 					DefaultCraftingDisplay disp = cons.construct(lr,
-							Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, Settings.TRUE)))),
+							Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, is.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)))),
 							Collections.singletonList(EntryStack.create(result)
 									.setting(Settings.CHECK_TAGS, !lr.isImportant() && result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
 									.setting(Settings.TOOLTIP_APPEND_EXTRA, (es) -> tip)),
