@@ -60,6 +60,7 @@ public final class YTags {
 		public static final Tag<EntityType<?>> UNSNAREABLE = TagRegistry.entityType(new Identifier("yttr", "unsnareable"));
 		public static final Tag<EntityType<?>> SNAREABLE_NONLIVING = TagRegistry.entityType(new Identifier("yttr", "snareable_nonliving"));
 		public static final Tag<EntityType<?>> BOSSES = TagRegistry.entityType(new Identifier("yttr", "bosses"));
+		public static final Tag<EntityType<?>> MAGNETIC = TagRegistry.entityType(new Identifier("yttr", "magnetic"));
 		
 		private static void init() {}
 		

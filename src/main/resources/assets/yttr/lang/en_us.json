@@ -349,6 +349,7 @@
 	"death.attack.yttr.void_rifle": "%s was erased by %s",
 	"death.attack.yttr.void_rifle.item": "%s was erased by %s using %s",
 	"death.attack.yttr.lazor": "%s got burned playing with lazors",
+	"death.attack.yttr.magnet": "%s was turned to taffy",
 	
 	"yttr.rifle_mode.damage": "Beam",
 	"yttr.rifle_mode.teleport": "Teleport",

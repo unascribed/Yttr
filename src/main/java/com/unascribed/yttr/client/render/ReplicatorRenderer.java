@@ -297,10 +297,12 @@ public class ReplicatorRenderer extends IHasAClient {
 	}
 	
 	public static void tick() {
+		Set<ReplicatorBlockEntity> valid = Sets.newHashSet();
 		if (mc.world != null) {
 			for (BlockEntity be : mc.world.blockEntities) {
 				if (be instanceof ReplicatorBlockEntity) {
 					ReplicatorBlockEntity rbe = (ReplicatorBlockEntity)be;
+					valid.add(rbe);
 					rbe.clientTick();
 				}
 			}
@@ -308,6 +310,7 @@ public class ReplicatorRenderer extends IHasAClient {
 			replicators.clear();
 			removing.clear();
 		}
+		replicators.retainAll(valid);
 		Iterator<ReplicatorBlockEntity> iter = removing.iterator();
 		while (iter.hasNext()) {
 			ReplicatorBlockEntity rbe = iter.next();
