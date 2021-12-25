@@ -87,16 +87,14 @@ public class MixinEntity implements Magnetized {
 			}
 		}
 		if (yttr$magnetizedAbove) {
-			if (!(self instanceof ItemEntity)) {
-				self.setVelocity(self.getVelocity().x, yttr$magnetizedAboveStuck ? 0 : Math.max(self.getVelocity().y, 0.05), self.getVelocity().z);
-				if (yttr$magnetizedBelow && !(self instanceof IronGolemEntity)) {
-					self.damage(YTTR$MAGNET, 2);
-				}
-				if (Math.abs(self.pitch) > 0.01 && self.world.random.nextInt(20) == 0) {
-					self.playSound(YSounds.MAGNET_STEP, 1, 1);
-				}
-				self.pitch /= 2;
+			self.setVelocity(self.getVelocity().x, Math.max(self.getVelocity().y, 0.1), self.getVelocity().z);
+			if (yttr$magnetizedBelow && !(self instanceof IronGolemEntity) && !(self instanceof ItemEntity)) {
+				self.damage(YTTR$MAGNET, 2);
 			}
+			if (Math.abs(self.pitch) > 0.01 && self.world.random.nextInt(20) == 0) {
+				self.playSound(YSounds.MAGNET_STEP, 1, 1);
+			}
+			self.pitch /= 2;
 		} else if (yttr$magnetizedBelow) {
 			self.setVelocity(self.getVelocity().x, Math.min(self.getVelocity().y, -0.9), self.getVelocity().z);
 		}

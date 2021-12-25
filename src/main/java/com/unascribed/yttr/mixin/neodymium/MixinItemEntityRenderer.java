@@ -35,9 +35,11 @@ public class MixinItemEntityRenderer {
 			Magnetized m = (Magnetized)yttr$entity;
 			if (m.yttr$isMagnetizedBelow()) {
 				if (m.yttr$isMagnetizedAbove()) {
-					return 0.15f;
+					return 0f;
 				}
 				return -0.1f;
+			} else if (m.yttr$isMagnetizedAbove()) {
+				return -0.15f;
 			}
 		}
 		return f;
