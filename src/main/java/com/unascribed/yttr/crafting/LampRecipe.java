@@ -2,6 +2,8 @@ package com.unascribed.yttr.crafting;
 
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.unascribed.yttr.content.block.decor.LampBlock;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.mechanics.LampColor;
@@ -16,6 +18,7 @@ import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
@@ -26,6 +29,7 @@ import net.minecraft.world.World;
 public class LampRecipe extends ShapedRecipe {
 
 	private final List<String> stripTags = Lists.newArrayList();
+	private boolean misc, important;
 	
 	public LampRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output) {
 		super(id, group, width, height, ingredients, output);
@@ -89,6 +93,71 @@ public class LampRecipe extends ShapedRecipe {
 	
 	public List<String> getStripTags() {
 		return stripTags;
+	}
+	
+	public boolean isMisc() {
+		return misc;
+	}
+	
+	public void setMisc(boolean misc) {
+		this.misc = misc;
+	}
+	
+	public boolean isImportant() {
+		return important;
+	}
+	
+	public void setImportant(boolean important) {
+		this.important = important;
+	}
+	
+	public static class Serializer extends ShapedRecipe.Serializer {
+		
+		@Override
+		public ShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
+			LampRecipe lr = new LampRecipe(super.read(identifier, jsonObject));
+			if (jsonObject.has("yttr:strip_tags")) {
+				for (JsonElement je : jsonObject.get("yttr:strip_tags").getAsJsonArray()) {
+					lr.addStripTag(je.getAsString());
+				}
+			}
+			if (jsonObject.has("yttr:misc")) {
+				lr.setMisc(jsonObject.get("yttr:misc").getAsBoolean());
+			}
+			if (jsonObject.has("yttr:important")) {
+				lr.setImportant(jsonObject.get("yttr:important").getAsBoolean());
+			}
+			return lr;
+		}
+		
+		@Override
+		public ShapedRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
+			LampRecipe lr = new LampRecipe(super.read(identifier, packetByteBuf));
+			if (packetByteBuf.isReadable()) {
+				int count = packetByteBuf.readVarInt();
+				for (int i = 0; i < count; i++) {
+					lr.addStripTag(packetByteBuf.readString(32767));
+				}
+				lr.setMisc(packetByteBuf.readBoolean());
+				lr.setImportant(packetByteBuf.readBoolean());
+			}
+			return lr;
+		}
+		
+		@Override
+		public void write(PacketByteBuf packetByteBuf, ShapedRecipe shapedRecipe) {
+			super.write(packetByteBuf, shapedRecipe);
+			if (shapedRecipe instanceof LampRecipe) {
+				LampRecipe lr = (LampRecipe)shapedRecipe;
+				packetByteBuf.writeVarInt(lr.getStripTags().size());
+				for (String tag : lr.getStripTags()) {
+					packetByteBuf.writeString(tag);
+				}
+				packetByteBuf.writeBoolean(lr.isMisc());
+				packetByteBuf.writeBoolean(lr.isImportant());
+			}
+		}
+		
 	}
 
 }

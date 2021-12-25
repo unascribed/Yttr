@@ -17,5 +17,6 @@
 	"result": {
 		"item": "yttr:lamp",
 		"count": 4
-	}
+	},
+	"yttr:important": true
 }

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "yttr:block/panel"
+    },
+    "facing=west": {
+      "model": "yttr:block/panel",
+      "x": 90,
+      "y": 90
+    },
+    "facing=south": {
+      "model": "yttr:block/panel",
+      "x": 90
+    },
+    "facing=north": {
+      "model": "yttr:block/panel",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "yttr:block/panel",
+      "x": 90,
+      "y": 270
+    },
+    "facing=up": {
+      "model": "yttr:block/panel",
+      "x": 180
+    }
+  }
+}

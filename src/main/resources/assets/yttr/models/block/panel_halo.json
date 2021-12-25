@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"1": "yttr:block/panel_halo"
+	},
+	"elements": [
+		{
+			"name": "top",
+			"from": [1.75, 0.75, 1.75],
+			"to": [14.25, 2.25, 14.25],
+			"faces": {
+				"north": {"uv": [3, 12, 15, 13], "texture": "#1", "tintindex": 0},
+				"east": {"uv": [3, 12, 15, 13], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [3, 12, 15, 13], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [3, 12, 15, 13], "texture": "#1", "tintindex": 0},
+				"up": {"uv": [3, 0, 15, 12], "texture": "#1", "tintindex": 0}
+			}
+		}
+	]
+}

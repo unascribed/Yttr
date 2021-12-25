@@ -46,7 +46,6 @@ import me.shedaniel.rei.api.EntryStack.Settings;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import me.shedaniel.rei.plugin.DefaultPlugin;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
-import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import me.shedaniel.rei.plugin.stripping.DefaultStrippingDisplay;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Blocks;
@@ -168,7 +167,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		
 		recipeHelper.registerRecipeVisibilityHandler((cat, recipe) -> {
 			// hide REI's built-in lamp recipe displays since they're busted
-			if (recipe instanceof DefaultCraftingDisplay && !(recipe instanceof DefaultCustomDisplay) && ((DefaultCraftingDisplay)recipe).getOptionalRecipe().map(r -> r instanceof LampRecipe).orElse(false)) {
+			if (recipe instanceof DefaultCraftingDisplay && !(recipe instanceof ExplicitSizeCustomCraftingDisplay) && ((DefaultCraftingDisplay)recipe).getOptionalRecipe().map(r -> r instanceof LampRecipe).orElse(false)) {
 				return ActionResult.FAIL;
 			}
 			return ActionResult.PASS;
@@ -254,50 +253,39 @@ public class YttrREIPlugin implements REIPluginV0 {
 					}
 				}
 				// now construct recipe displays for every unique output
-				for (int pass = 0; pass < 3; pass++) {
-					for (Map.Entry<ItemStack, Collection<List<ItemStack>>> en : resultsToInputs.asMap().entrySet()) {
-						int itemCount = en.getValue().iterator().next().size();
-						int desiredPass;
-						if (en.getKey().getCount() > 1 || itemCount == 1) {
-							// register multioutput and single-input recipes first so they show first, as they're "entrance" recipes
-							desiredPass = 0;
-						} else if (itemCount > 2) {
-							// register "big" recipes after that, as they're probably "recombine" recipes
-							desiredPass = 1;
-						} else {
-							// the rest are dye and invert recipes, which can trail at the end
-							desiredPass = 2;
-						}
-						if (pass != desiredPass) continue;
-						List<Set<ItemStack>> fin = Lists.newArrayList();
-						for (List<ItemStack> inputs : en.getValue()) {
-							for (int i = 0; i < inputs.size(); i++) {
-								if (fin.size() <= i) {
-									fin.add(new ObjectLinkedOpenCustomHashSet<>(itemStackStrategy));
-								}
-								fin.get(i).add(inputs.get(i));
+				for (Map.Entry<ItemStack, Collection<List<ItemStack>>> en : resultsToInputs.asMap().entrySet()) {
+					List<Set<ItemStack>> fin = Lists.newArrayList();
+					for (List<ItemStack> inputs : en.getValue()) {
+						for (int i = 0; i < inputs.size(); i++) {
+							int x = i%w;
+							int y = i/w;
+							int j = (y*3)+x;
+							while (fin.size() <= j) {
+								fin.add(new ObjectLinkedOpenCustomHashSet<>(itemStackStrategy));
 							}
+							fin.get(j).add(inputs.get(i));
 						}
-						ItemStack result = en.getKey();
-						List<Text> tip = Lists.newArrayList();
-						if (result.getItem() == YItems.SUIT_HELMET) {
-							LampColor color = LampBlockItem.getColor(result);
-							tip.add(new TranslatableText("rei.yttr.suit_helmet_hud", new TranslatableText("color.yttr."+color.asString())
-									.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
-						}
-						DCDCons cons;
-						if (desiredPass != 0) {
-							cons = LampDisplay::new;
-						} else {
-							cons = DefaultCustomDisplay::new;
-						}
-						DefaultCustomDisplay disp = cons.construct(lr,
-								Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, Settings.TRUE)))),
-								Collections.singletonList(EntryStack.create(result)
-										.setting(Settings.CHECK_TAGS, (desiredPass != 0 || itemCount == 1) && result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
-										.setting(Settings.TOOLTIP_APPEND_EXTRA, (es) -> tip)));
-						recipeHelper.registerDisplay(disp);
 					}
+					ItemStack result = en.getKey();
+					List<Text> tip = Lists.newArrayList();
+					if (result.getItem() == YItems.SUIT_HELMET) {
+						LampColor color = LampBlockItem.getColor(result);
+						tip.add(new TranslatableText("rei.yttr.suit_helmet_hud", new TranslatableText("color.yttr."+color.asString())
+								.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.baseLitColor)))));
+					}
+					DCDCons cons;
+					if (lr.isMisc()) {
+						cons = LampDisplay::new;
+					} else {
+						cons = ExplicitSizeCustomCraftingDisplay::new;
+					}
+					DefaultCraftingDisplay disp = cons.construct(lr,
+							Lists.transform(fin, c -> Lists.newArrayList(Iterables.transform(c, is -> EntryStack.create(is).setting(Settings.CHECK_TAGS, Settings.TRUE)))),
+							Collections.singletonList(EntryStack.create(result)
+									.setting(Settings.CHECK_TAGS, !lr.isImportant() && result.getItem() instanceof LampBlockItem ? Settings.TRUE : Settings.FALSE)
+									.setting(Settings.TOOLTIP_APPEND_EXTRA, (es) -> tip)),
+							w, h);
+					recipeHelper.registerDisplay(disp);
 				}
 			}
 		}
@@ -316,7 +304,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		}
 	}
 	
-	private interface DCDCons { DefaultCustomDisplay construct(Recipe<?> possibleRecipe, List<List<EntryStack>> input, List<EntryStack> output); }
+	private interface DCDCons { DefaultCraftingDisplay construct(Recipe<?> possibleRecipe, List<List<EntryStack>> input, List<EntryStack> output, int width, int height); }
 	
 	private void permute(ItemStack is, Consumer<ItemStack> cb) {
 		cb.accept(is);

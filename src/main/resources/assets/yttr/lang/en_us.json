@@ -234,20 +234,24 @@
 	"block.yttr.lamp": "Lamp",
 	"block.yttr.fixture": "Lamp Fixture",
 	"block.yttr.cage_lamp": "Cage Lamp",
+	"block.yttr.panel": "Lamp Panel",
 	"block.yttr.lazor_emitter": "Lazor Emitter",
 	
 	"block.yttr.lamp.inverted": "Inverted Lamp",
 	"block.yttr.fixture.inverted": "Inverted Lamp Fixture",
 	"block.yttr.cage_lamp.inverted": "Inverted Cage Lamp",
+	"block.yttr.panel.inverted": "Inverted Lamp Panel",
 	
 	"block.yttr.lamp.colored": "%s Lamp",
 	"block.yttr.cage_lamp.colored": "%s Cage Lamp",
 	"block.yttr.fixture.colored": "%s Lamp Fixture",
+	"block.yttr.panel.colored": "%s Lamp Panel",
 	"block.yttr.lazor_emitter.colored": "%s Lazor Emitter",
 	
 	"block.yttr.lamp.colored.inverted": "Inverted %s Lamp",
 	"block.yttr.cage_lamp.colored.inverted": "Inverted %s Cage Lamp",
 	"block.yttr.fixture.colored.inverted": "Inverted %s Lamp Fixture",
+	"block.yttr.panel.colored.inverted": "Inverted %s Lamp Panel",
 	
 	"block.yttr.ruined_bricks.alt": "Bricks",
 	"block.yttr.ruined_container.alt": "Container",

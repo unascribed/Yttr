@@ -287,12 +287,19 @@ public class YBlocks {
 	public static final Block FIXTURE = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES), 12, 10, 6);
+			.breakByTool(FabricToolTags.PICKAXES), 12, 2, 10, 6);
 	@RenderLayer("cutout")
 	public static final Block CAGE_LAMP = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
 			.strength(2)
 			.sounds(BlockSoundGroup.METAL)
-			.breakByTool(FabricToolTags.PICKAXES), 10, 6, 10);
+			.breakByTool(FabricToolTags.PICKAXES), 10, 2, 6, 10);
+	@RenderLayer("cutout")
+	public static final Block PANEL = new WallLampBlock(FabricBlockSettings.of(Material.METAL)
+			.strength(2)
+			.sounds(BlockSoundGroup.METAL)
+			.breakByTool(FabricToolTags.PICKAXES), 14, 1, 12, 1);
+	
+	
 	public static final Block YTTRIUM_PLATING = new Block(METALLIC_SETTINGS);
 	@RenderLayer("translucent")
 	public static final Block GLASSY_VOID_PANE = new PaneBlock(FabricBlockSettings.of(Material.STONE)

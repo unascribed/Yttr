@@ -337,6 +337,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		renderLayers.put("cutout", RenderLayer.getCutout());
 		renderLayers.put("cutout_mipped", RenderLayer.getCutoutMipped());
 		renderLayers.put("translucent", RenderLayer.getTranslucent());
+		renderLayers.put("tripwire", RenderLayer.getTripwire());
 		Yttr.eachRegisterableField(YBlocks.class, Block.class, com.unascribed.yttr.util.annotate.RenderLayer.class, (f, b, ann) -> {
 			if (b instanceof BlockColorProvider) ColorProviderRegistry.BLOCK.register((BlockColorProvider)b, b);
 			if (ann != null) {

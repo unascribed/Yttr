@@ -7,7 +7,8 @@
 	"key": {
 		"L": [
 			{ "item": "yttr:fixture" },
-			{ "item": "yttr:cage_lamp" }
+			{ "item": "yttr:cage_lamp" },
+			{ "item": "yttr:panel" }
 		]
 	},
 	"result": {

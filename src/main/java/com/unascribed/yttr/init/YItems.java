@@ -194,6 +194,9 @@ public class YItems {
 
 	@BuiltinRenderer("LampItemRenderer")
 	public static final BlockItem CAGE_LAMP = new LampBlockItem(YBlocks.CAGE_LAMP, new Item.Settings());
+
+	@BuiltinRenderer("LampItemRenderer")
+	public static final BlockItem PANEL = new LampBlockItem(YBlocks.PANEL, new Item.Settings());
 	
 	public static final BlockItem LAZOR_EMITTER = new LampBlockItem(YBlocks.LAZOR_EMITTER, new Item.Settings());
 	

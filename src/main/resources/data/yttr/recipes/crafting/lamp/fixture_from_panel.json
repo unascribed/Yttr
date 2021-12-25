@@ -1,14 +1,14 @@
 {
 	"type": "yttr:lamp_crafting",
 	"pattern": [
-		"LD"
+		"L"
 	],
 	"key": {
-		"L": { "item": "yttr:lamp" },
-		"D": { "tag": "yttr:lamp_dyes" }
+		"L": { "item": "yttr:panel" }
 	},
 	"result": {
-		"item": "yttr:lamp"
+		"item": "yttr:fixture",
+		"count": 1
 	},
 	"yttr:misc": true
 }

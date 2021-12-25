@@ -1,0 +1,86 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "yttr:block/panel",
+		"1": "yttr:block/panel_glint",
+		"2": "yttr:block/panel_bottom",
+		"particle": "yttr:block/panel"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [1, 0, 1],
+			"to": [15, 1, 15],
+			"faces": {
+				"north": {"uv": [1, 0, 2, 14], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [1, 0, 2, 14], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [1, 2, 2, 16], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [1, 0, 2, 14], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#2"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [2, 1, 2],
+			"to": [14, 2, 14],
+			"faces": {
+				"north": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
+				"east": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [3, 12, 15, 13], "texture": "#0", "tintindex": 0},
+				"up": {"uv": [3, 0, 15, 12], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "top glint",
+			"from": [2, 1, 2],
+			"to": [14, 2, 14],
+			"faces": {
+				"north": {"uv": [3, 12, 15, 13], "texture": "#1"},
+				"east": {"uv": [3, 12, 15, 13], "texture": "#1"},
+				"south": {"uv": [3, 12, 15, 13], "texture": "#1"},
+				"west": {"uv": [3, 12, 15, 13], "texture": "#1"},
+				"up": {"uv": [3, 0, 15, 12], "texture": "#1"}
+			}
+		},
+		{
+			"name": "rim north",
+			"from": [1, 0, 1],
+			"to": [15, 1, 2],
+			"faces": {
+				"up": {"uv": [0, 0, 1, 14], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "rim south",
+			"from": [1, 0, 14],
+			"to": [15, 1, 15],
+			"faces": {
+				"up": {"uv": [0, 0, 1, 14], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "rim west",
+			"from": [1, 0, 2],
+			"to": [2, 1, 14],
+			"faces": {
+				"up": {"uv": [0, 0, 1, 12], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rim east",
+			"from": [14, 0, 2],
+			"to": [15, 1, 14],
+			"faces": {
+				"up": {"uv": [0, 0, 1, 12], "texture": "#0"}
+			}
+		}
+	],
+	"overrides": [
+		{
+			"predicate": { "yttr:halo": 1 },
+			"model": "yttr:block/panel_halo"
+		}
+	]
+}

@@ -8,5 +8,6 @@
 	},
 	"result": {
 		"item": "yttr:fixture"
-	}
+	},
+	"yttr:misc": true
 }
