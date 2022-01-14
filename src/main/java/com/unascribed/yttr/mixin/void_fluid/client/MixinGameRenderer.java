@@ -24,7 +24,7 @@ public class MixinGameRenderer {
 	@Inject(at=@At("HEAD"), method="renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V", cancellable=true)
 	public void renderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		if (mc.player != null && ((mc.player.isSubmergedIn(YTags.Fluid.VOID) && !mc.player.noClip && mc.options.getPerspective() == Perspective.FIRST_PERSON) || mc.currentScreen instanceof SuitScreen)) {
+		if (mc != null && mc.options != null && mc.player != null && ((mc.player.isSubmergedIn(YTags.Fluid.VOID) && !mc.player.noClip && mc.options.getPerspective() == Perspective.FIRST_PERSON) || mc.currentScreen instanceof SuitScreen)) {
 			RenderSystem.clearColor(0, 0, 0, 1);
 			RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 			ci.cancel();

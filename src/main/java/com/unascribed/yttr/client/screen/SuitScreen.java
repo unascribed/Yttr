@@ -1,11 +1,15 @@
 package com.unascribed.yttr.client.screen;
 
+import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -27,6 +31,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.Untracker;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -202,11 +207,42 @@ public class SuitScreen extends Screen {
 		}
 	}
 	
+	private static final FloatBuffer MATRIX_BUFFER = GLX.make(MemoryUtil.memAllocFloat(16), (floatBuffer) -> {
+		Untracker.untrack(MemoryUtil.memAddress(floatBuffer));
+	});
+	
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		RenderSystem.clearColor(0, 0, 0, 1);
 		RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, false);
 		if (ticks < 40) return;
+		float factor = 0;
+//		if (ticks % 100 < 40) {
+//			float t = (ticks+delta)%100;
+//			factor = MathHelper.sin((float) (t/20f*Math.PI));
+//		}
+		factor *= (client.options.distortionEffectScale+0.2f);
+		factor /= 2;
+		if (factor > 0 || factor < 0) {
+			float t = ticks+delta;
+			RenderSystem.matrixMode(GL11.GL_PROJECTION);
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(width/2+((MathHelper.sin(t/2)*20)*factor), height/2, 0);
+			RenderSystem.rotatef((MathHelper.sin(t)*30)*(factor/4), 0, 0, 1);
+			if (factor > 0.3f || factor < -0.3f) {
+				float sig = Math.signum(factor);
+				float f = (Math.abs(factor)-0.3f)*sig;
+				MATRIX_BUFFER.clear();
+				MATRIX_BUFFER.put(1).put(MathHelper.cos(t*4)/8*f).put(0).put(0);
+				MATRIX_BUFFER.put(MathHelper.sin(t)/2*f).put(1).put(0).put(0);
+				MATRIX_BUFFER.put(0).put(0).put(1).put(0);
+				MATRIX_BUFFER.put(0).put(0).put(0).put(1);
+				MATRIX_BUFFER.flip();
+				GlStateManager.multMatrix(MATRIX_BUFFER);
+			}
+			RenderSystem.translatef(-width/2, -height/2, 0);
+			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+		}
 		sr.setUp();
 		sr.drawText(matrices, "distance", 10, height-78, delta);
 		int dist = 0;
@@ -339,6 +375,11 @@ public class SuitScreen extends Screen {
 		}
 		
 		sr.tearDown();
+		if (factor > 0 || factor < 0) {
+			RenderSystem.matrixMode(GL11.GL_PROJECTION);
+			RenderSystem.popMatrix();
+			RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+		}
 	}
 	
 	@Override
