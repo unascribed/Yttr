@@ -1,5 +1,8 @@
 {
 	"values": [
-		"yttr:core_lava"
+		{
+			"id": "yttr:core_lava",
+			"required": false
+		}
 	]
 }
