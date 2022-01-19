@@ -49,6 +49,7 @@ public class MixinEntity implements Magnetized {
 		boolean receptiveAbove = false;
 		boolean receptiveBelow = false;
 		Entity self = (Entity)(Object)this;
+		if (self.getType() == null || self.world == null || self.getBoundingBox() == null) return;
 		if (self instanceof AbstractMinecartEntity || self.getType().isIn(YTags.Entity.MAGNETIC)) {
 			receptiveBelow = true;
 			receptiveAbove = true;

@@ -135,6 +135,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 	public static boolean onlyRenderOpaqueParticles = false;
 	public static boolean onlyRenderNonOpaqueParticles = false;
 	
+	public static boolean retrievingHalo = false;
+	public static boolean renderingGui = false;
+	
 	@Override
 	public void onInitializeClient() {
 		Yttr.INST.onPostInitialize();
@@ -191,6 +194,9 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		});
 		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "durability_bonus"), (stack, world, entity) -> {
 			return stack.hasTag() ? stack.getTag().getInt("yttr:DurabilityBonus") : 0;
+		});
+		FabricModelPredicateProviderRegistry.register(new Identifier("yttr", "gui"), (stack, world, entity) -> {
+			return renderingGui ? 1 : 0;
 		});
 		
 		ClientTickEvents.START_CLIENT_TICK.register((mc) -> {
@@ -317,8 +323,6 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 			YLog.error("Translation "+key+" is missing for "+id);
 		}
 	}
-	
-	public static boolean retrievingHalo = false;
 
 	public static void drawBufferWithoutClobberingGLMatrix(VertexBuffer buf, Matrix4f mat, int mode) {
 		if (mat != null) {

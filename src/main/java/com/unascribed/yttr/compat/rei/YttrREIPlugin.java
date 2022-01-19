@@ -18,6 +18,7 @@ import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
 import com.unascribed.yttr.crafting.LampRecipe;
 import com.unascribed.yttr.crafting.PistonSmashingRecipe;
+import com.unascribed.yttr.crafting.SecretShapedRecipe;
 import com.unascribed.yttr.crafting.ShatteringRecipe;
 import com.unascribed.yttr.crafting.SoakingRecipe;
 import com.unascribed.yttr.crafting.VoidFilteringRecipe;
@@ -59,6 +60,7 @@ import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.ScreenHandler;
@@ -168,6 +170,15 @@ public class YttrREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipeVisibilityHandler((cat, recipe) -> {
 			// hide REI's built-in lamp recipe displays since they're busted
 			if (recipe instanceof DefaultCraftingDisplay && !(recipe instanceof ExplicitSizeCustomCraftingDisplay) && ((DefaultCraftingDisplay)recipe).getOptionalRecipe().map(r -> r instanceof LampRecipe).orElse(false)) {
+				return ActionResult.FAIL;
+			}
+			if (recipe instanceof DefaultCraftingDisplay && ((DefaultCraftingDisplay)recipe).getOptionalRecipe().map(r -> r instanceof SecretShapedRecipe).orElse(false)) {
+				return ActionResult.FAIL;
+			}
+			if (recipe instanceof DefaultCraftingDisplay
+					&& ((DefaultCraftingDisplay)recipe).getOptionalRecipe()
+						.map(r -> r instanceof ShapedRecipe && !((ShapedRecipe)r).fits(3, 3)).orElse(false)) {
+				// REI will *crash* if it attempts to render a recipe that won't fit in a 3x3
 				return ActionResult.FAIL;
 			}
 			return ActionResult.PASS;
@@ -326,6 +337,7 @@ public class YttrREIPlugin implements REIPluginV0 {
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOGO));
 		entryRegistry.removeEntry(EntryStack.create(YItems.LOOTBOX_OF_CONTINUITY));
 		entryRegistry.removeEntry(EntryStack.create(YItems.DUST));
+		entryRegistry.removeEntry(EntryStack.create(YItems.RAFTER));
 	}
 	
 	@Override

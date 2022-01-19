@@ -24,6 +24,7 @@ import com.unascribed.yttr.content.item.RifleItem;
 import com.unascribed.yttr.content.item.ShearsItem;
 import com.unascribed.yttr.content.item.ShifterItem;
 import com.unascribed.yttr.content.item.SnareItem;
+import com.unascribed.yttr.content.item.SpatulaItem;
 import com.unascribed.yttr.content.item.SpectralAxeItem;
 import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.SwallowableItem;
@@ -127,6 +128,8 @@ public class YItems {
 	public static final BlockItem CUPROSTEEL_PLATE = createBlockItem(YBlocks.CUPROSTEEL_PLATE);
 	public static final BlockItem CAN_FILLER = createBlockItem(YBlocks.CAN_FILLER);
 	public static final BlockItem DUST = createBlockItem(YBlocks.DUST);
+	public static final BlockItem RAFTER = createBlockItem(YBlocks.RAFTER);
+	
 	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override
 		public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
@@ -216,8 +219,8 @@ public class YItems {
 	public static final BigBlockItem MAGTANK = new BigBlockItem(YBlocks.MAGTANK, new Item.Settings()
 			.maxCount(4));
 	
-//	public static final BigBlockItem GIANT_COBBLESTONE = new BigBlockItem(YBlocks.GIANT_COBBLESTONE, new Item.Settings()
-//			.maxCount(1));
+	public static final BigBlockItem GIANT_COBBLESTONE = new BigBlockItem(YBlocks.GIANT_COBBLESTONE, new Item.Settings()
+			.maxCount(1));
 	
 	public static final BigBlockItem DSU = new BigBlockItem(YBlocks.DSU, new Item.Settings()
 			.maxCount(8));
@@ -536,6 +539,8 @@ public class YItems {
 	public static final InRedMultimeterItem INRED_MULTIMETER = new InRedMultimeterItem(new Item.Settings()
 			.maxCount(1));
 	public static final Item INRED_PCB = new Item(new Item.Settings());
+	
+	public static final SpatulaItem SPATULA = new SpatulaItem(ToolMaterials.IRON, 6, -3.2f, new Item.Settings());
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.ITEM, YItems.class, Item.class);

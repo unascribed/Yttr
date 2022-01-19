@@ -1,0 +1,115 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "yttr:block/rafter_front",
+		"1": "yttr:block/rafter_side",
+		"2": "yttr:block/rafter_top",
+		"3": "yttr:block/yttrium_plating",
+		"particle": "yttr:block/rafter_front"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3"}
+			}
+		},
+		{
+			"from": [3, 16, 13],
+			"to": [13, 16, 16],
+			"faces": {
+				"up": {"uv": [3, 13, 13, 16], "texture": "#2"}
+			}
+		},
+		{
+			"from": [13, 16, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"up": {"uv": [13, 0, 16, 16], "texture": "#2"}
+			}
+		},
+		{
+			"from": [3, 16, 0],
+			"to": [13, 16, 3],
+			"faces": {
+				"up": {"uv": [3, 0, 13, 3], "texture": "#2"}
+			}
+		},
+		{
+			"from": [3, 16, 3],
+			"to": [7.75, 16, 7.75],
+			"faces": {
+				"up": {"uv": [3, 3, 12, 12], "texture": "#2"}
+			}
+		},
+		{
+			"from": [3, 16, 7.75],
+			"to": [7.75, 16, 12.5],
+			"faces": {
+				"up": {"uv": [3, 4, 12, 13], "rotation": 90, "texture": "#2"}
+			}
+		},
+		{
+			"from": [7.75, 16, 7.75],
+			"to": [12.5, 16, 12.5],
+			"faces": {
+				"up": {"uv": [4, 3, 13, 12], "rotation": 270, "texture": "#2"}
+			}
+		},
+		{
+			"from": [12.5, 16, 3],
+			"to": [13, 16, 7.75],
+			"faces": {
+				"up": {"uv": [12, 3, 13, 12], "texture": "#2"}
+			}
+		},
+		{
+			"from": [12.5, 16, 7.75],
+			"to": [13, 16, 12.5],
+			"faces": {
+				"up": {"uv": [12, 3, 13, 12], "texture": "#2"}
+			}
+		},
+		{
+			"from": [12.5, 16, 12.5],
+			"to": [13, 16, 13],
+			"faces": {
+				"up": {"uv": [12, 12, 13, 13], "texture": "#2"}
+			}
+		},
+		{
+			"from": [3, 16, 12.5],
+			"to": [7.75, 16, 13],
+			"faces": {
+				"up": {"uv": [3, 12, 12, 13], "texture": "#2"}
+			}
+		},
+		{
+			"from": [7.75, 16, 12.5],
+			"to": [12.5, 16, 13],
+			"faces": {
+				"up": {"uv": [3, 12, 12, 13], "texture": "#2"}
+			}
+		},
+		{
+			"from": [7.75, 16, 3],
+			"to": [12.5, 16, 7.75],
+			"faces": {
+				"up": {"uv": [4, 4, 13, 13], "rotation": 180, "texture": "#2"}
+			}
+		},
+		{
+			"from": [0, 16, 0],
+			"to": [3, 16, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 3, 16], "texture": "#2"}
+			}
+		}
+	]
+}

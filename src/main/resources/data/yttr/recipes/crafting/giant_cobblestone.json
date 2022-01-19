@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCCCCC",
+    "CCCCCC",
+    "CCCCCC",
+    "CCCCCC",
+    "CCCCCC",
+    "CCCCCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "result": {
+    "item": "yttr:giant_cobblestone"
+  }
+}

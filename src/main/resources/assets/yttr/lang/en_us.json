@@ -80,6 +80,8 @@
 	"item.yttr.ammo_can": "Rifle Canister",
 	"item.yttr.empty_ammo_can": "Empty Rifle Canister",
 	"item.yttr.ammo_pack": "Rifle Canister Multiplexer",
+	"item.yttr.spatula": "Gigantic Spatula",
+	
 	"item.yttr.inred_multimeter": "Multimeter",
 	"item.yttr.inred_pcb": "PCB",
 	
@@ -204,6 +206,9 @@
 	"block.yttr.dust": "Dust",
 	"block.yttr.neodymium_slab": "Slab of Neodymium",
 	"block.yttr.neodymium_block": "Block of Neodymium",
+	"block.yttr.giant_cobblestone": "Giant Cobblestone",
+	"block.yttr.rafter": "Crafter Rafter",
+	
 	"block.yttr.inred_block": "InfraRedstone Block",
 	"block.yttr.inred_cable": "InfraRedstone Cable",
 	"block.yttr.inred_scaffold": "InfraRedstone Scaffold",

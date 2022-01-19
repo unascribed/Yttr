@@ -1,0 +1,16 @@
+{
+	"type": "yttr:secret_crafting_shaped",
+	"pattern": [
+		"CYC",
+		"YDY",
+		"CYC"
+	],
+	"key": {
+		"C": { "item": "minecraft:crafting_table" },
+		"Y": { "item": "yttr:yttrium_block" },
+		"D": { "item": "minecraft:diamond" }
+	},
+	"result": {
+		"item": "yttr:rafter"
+	}
+}

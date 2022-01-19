@@ -124,7 +124,7 @@
 	registries: off;
 	
 	/*
-	 * Simulate this many milliseconds of network latency, even in singleplayer.
+	 * Simulate this many milliseconds of network latency in singleplayer.
 	 */
 	simulate-latency: 0;
 	simulate-latency-jitter: 15;

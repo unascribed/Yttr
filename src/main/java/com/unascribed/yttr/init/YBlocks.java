@@ -11,6 +11,7 @@ import com.unascribed.yttr.content.block.abomination.SkeletalSorterBlock;
 import com.unascribed.yttr.content.block.basic.BasicFacingBlock;
 import com.unascribed.yttr.content.block.basic.BasicHorizontalFacingBlock;
 import com.unascribed.yttr.content.block.big.DSUBlock;
+import com.unascribed.yttr.content.block.big.GiantsBlock;
 import com.unascribed.yttr.content.block.big.MagtankBlock;
 import com.unascribed.yttr.content.block.decor.CleavedBlock;
 import com.unascribed.yttr.content.block.decor.LampBlock;
@@ -18,6 +19,7 @@ import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.block.decor.WallLampBlock;
 import com.unascribed.yttr.content.block.device.CanFillerBlock;
 import com.unascribed.yttr.content.block.device.CentrifugeBlock;
+import com.unascribed.yttr.content.block.device.RafterBlock;
 import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
@@ -379,7 +381,7 @@ public class YBlocks {
 	public static final LazorEmitterBlock LAZOR_EMITTER = new LazorEmitterBlock(METALLIC_SETTINGS);
 	
 	public static final MagtankBlock MAGTANK = new MagtankBlock(HOLLOWHUGE_SETTINGS);
-//	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
+	public static final GiantsBlock GIANT_COBBLESTONE = new GiantsBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE));
 	public static final DSUBlock DSU = new DSUBlock(HOLLOWHUGE_SETTINGS);
 	
 	public static final Block BROOKITE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE)
@@ -625,6 +627,8 @@ public class YBlocks {
 	};
 	
 	public static final NeodymiumBlock NEODYMIUM_SLAB = new NeodymiumBlock(METALLIC_SETTINGS);
+	
+	public static final RafterBlock RAFTER = new RafterBlock(METALLIC_SETTINGS);
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
