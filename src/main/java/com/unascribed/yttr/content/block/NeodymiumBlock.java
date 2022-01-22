@@ -63,7 +63,7 @@ public class NeodymiumBlock extends SlabBlock implements SimpleLootBlock {
 	public void onSteppedOn(World world, BlockPos pos, Entity entity) {
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity pe = (PlayerEntity)entity;
-			Yttr.dropMagneticTrinkets.accept(pe);
+			Yttr.trinketsAccess.dropMagneticTrinkets(pe);
 		}
 	}
 	

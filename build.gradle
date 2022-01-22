@@ -65,7 +65,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "me.shedaniel:RoughlyEnoughItems:5.12.248"
-	modImplementation "com.unascribed:ears-api:1.4.1"
+	modImplementation "com.unascribed:ears-api:1.4.5"
 	
 	modImplementation "dev.emi:trinkets:2.6.7"
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"

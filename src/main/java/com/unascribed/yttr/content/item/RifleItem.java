@@ -218,7 +218,7 @@ public class RifleItem extends Item implements ItemColorProvider, Attackable {
 	}
 	
 	public @Nullable SlotReference getAmmoCanSlot(PlayerEntity user, RifleMode mode) {
-		ItemStack backpack = Yttr.getBackTrinket.apply(user);
+		ItemStack backpack = Yttr.trinketsAccess.getBackTrinket(user);
 		if (YItems.AMMO_PACK.is(backpack.getItem())) {
 			Inventory inv = ((InventoryProviderItem)backpack.getItem()).asInventory(backpack);
 			SlotReference ref = Yttr.scanInventory(inv, isMatchingCan(mode));

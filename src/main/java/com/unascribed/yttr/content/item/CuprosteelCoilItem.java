@@ -47,7 +47,7 @@ public class CuprosteelCoilItem extends TrinketItem {
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
 		if (player.getEquippedStack(EquipmentSlot.FEET).getItem() == YItems.SUIT_BOOTS) return;
 		VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutout(TEXTURE));
-		boolean hasBoots = Yttr.isVisuallyWearingBoots.test(player);
+		boolean hasBoots = Yttr.earsAccess.isVisuallyWearingBoots(player);
 		renderCoil(vc, matrices, model.leftLeg, hasBoots, light, true);
 		renderCoil(vc, matrices, model.rightLeg, hasBoots, light, false);
 		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(slot);

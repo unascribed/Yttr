@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -118,10 +117,48 @@ public class Yttr implements ModInitializer {
 	
 	public static final List<DelayedTask> delayedServerTasks = Lists.newArrayList();
 	
-	public static Function<PlayerEntity, ItemStack> getSoleTrinket = pe -> ItemStack.EMPTY;
-	public static Function<PlayerEntity, ItemStack> getBackTrinket = pe -> ItemStack.EMPTY;
-	public static Consumer<PlayerEntity> dropMagneticTrinkets = pe -> {};
-	public static Predicate<PlayerEntity> isVisuallyWearingBoots = pe -> !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
+	public interface TrinketsAccess {
+		ItemStack getSoleTrinket(PlayerEntity pe);
+		ItemStack getBackTrinket(PlayerEntity pe);
+		void dropMagneticTrinkets(PlayerEntity pe);
+	}
+	
+	public interface EarsAccess {
+		boolean isVisuallyWearingBoots(PlayerEntity pe);
+		float getChestSize(PlayerEntity pe);
+	}
+	
+	public static TrinketsAccess trinketsAccess = new TrinketsAccess() {
+
+		@Override
+		public ItemStack getSoleTrinket(PlayerEntity pe) {
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public ItemStack getBackTrinket(PlayerEntity pe) {
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public void dropMagneticTrinkets(PlayerEntity pe) {
+			
+		}
+		
+	};
+	
+	public static EarsAccess earsAccess = new EarsAccess() {
+		
+		@Override
+		public boolean isVisuallyWearingBoots(PlayerEntity pe) {
+			return !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty();
+		}
+		
+		@Override
+		public float getChestSize(PlayerEntity pe) {
+			return 0;
+		}
+	};
 	
 	@Override
 	public void onInitialize() {
@@ -477,7 +514,7 @@ public class Yttr implements ModInitializer {
 	}
 
 	public static int getSpringingLevel(PlayerEntity p) {
-		ItemStack is = getSoleTrinket.apply(p);
+		ItemStack is = trinketsAccess.getSoleTrinket(p);
 		if (YEnchantments.SPRINGING.isPresent()) {
 			return EnchantmentHelper.getLevel(YEnchantments.SPRINGING.get(), is);
 		}
@@ -485,7 +522,7 @@ public class Yttr implements ModInitializer {
 	}
 
 	public static boolean isWearingCoil(PlayerEntity e) {
-		return YItems.CUPROSTEEL_COIL.is(getSoleTrinket.apply(e).getItem());
+		return YItems.CUPROSTEEL_COIL.is(trinketsAccess.getSoleTrinket(e).getItem());
 	}
 
 	public static @Nullable SlotReference scanInventory(Inventory inv, Predicate<ItemStack> predicate) {

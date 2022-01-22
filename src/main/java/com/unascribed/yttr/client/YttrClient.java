@@ -182,6 +182,7 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 				out.accept(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
+				out.accept(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
 			});
 		}
 		

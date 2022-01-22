@@ -2,6 +2,7 @@ package com.unascribed.yttr.content.item;
 
 import java.util.List;
 
+import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
 import com.unascribed.yttr.util.InventoryProviderItem;
 
@@ -206,6 +207,57 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 					for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), d, RANDOM)) {
 						vc.quad(matrices.peek(), bq, bq.hasColor() ? r : 1, bq.hasColor() ? g : 1, bq.hasColor() ? b : 1, light, OverlayTexture.DEFAULT_UV);
 					}
+				}
+			}
+			float chest = 0;
+			try {
+				chest = Yttr.earsAccess.getChestSize(player);
+			} catch (Throwable t) {}
+			float sqrt2 = 1.4142135f;
+			BakedModel seg = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
+			if (chest > 0) {
+				matrices.translate(3.5f/16f, 11f/16f, -4.5f/16f);
+				
+				matrices.push();
+					matrices.push();
+						for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
+							vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+						}
+					matrices.pop();
+					
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(chest*45));
+					matrices.translate(0, -5.5f/16f, 0);
+					matrices.push();
+						matrices.scale(1, 5.5f, 1);
+						for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
+							vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+						}
+					matrices.pop();
+					
+					float len = (4*chest*sqrt2)-0.25f;
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+					matrices.translate(0, -len/16f, 0);
+					matrices.push();
+						matrices.scale(1, len, 1);
+						for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
+							vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+						}
+					matrices.pop();
+				matrices.pop();
+				
+				matrices.translate(0, -8.5f/16f, 0);
+				matrices.push();
+					matrices.scale(1, 2.5f, 1);
+					for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
+						vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+					}
+				matrices.pop();
+			} else {
+				for (int y = 0; y < 10; y++) {
+					for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
+						vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
+					}
+					matrices.translate(0, -1/16f, 0);
 				}
 			}
 		matrices.pop();

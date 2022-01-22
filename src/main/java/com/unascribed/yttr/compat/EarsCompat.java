@@ -2,9 +2,11 @@ package com.unascribed.yttr.compat;
 
 import com.unascribed.ears.api.EarsAnchorPart;
 import com.unascribed.ears.api.EarsStateType;
+import com.unascribed.ears.api.features.EarsFeatures;
 import com.unascribed.ears.api.registry.EarsInhibitorRegistry;
 import com.unascribed.ears.api.registry.EarsStateOverriderRegistry;
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.Yttr.EarsAccess;
 import com.unascribed.yttr.init.YItems;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -33,7 +35,18 @@ public class EarsCompat {
 			return false;
 		});
 		
-		Yttr.isVisuallyWearingBoots = pe -> EarsStateOverriderRegistry.isActive(EarsStateType.WEARING_BOOTS, pe, !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty()).getValue();
+		Yttr.earsAccess = new EarsAccess() {
+			
+			@Override
+			public boolean isVisuallyWearingBoots(PlayerEntity pe) {
+				return EarsStateOverriderRegistry.isActive(EarsStateType.WEARING_BOOTS, pe, !pe.getEquippedStack(EquipmentSlot.FEET).isEmpty()).getValue();
+			}
+			
+			@Override
+			public float getChestSize(PlayerEntity pe) {
+				return EarsFeatures.getById(pe.getGameProfile().getId()).chestSize;
+			}
+		};
 	}
 	
 }
