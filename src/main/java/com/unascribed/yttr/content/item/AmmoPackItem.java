@@ -193,7 +193,7 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 			model.body.rotate(matrices);
 			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 			matrices.translate(-8/16f, -12/16f, 2/16f);
-			VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutout(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE));
+			VertexConsumer vc = vertexConsumer.getBuffer(RenderLayer.getEntityCutoutNoCull(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE));
 			for (BakedQuad bq : bm.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
 				vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 			}
