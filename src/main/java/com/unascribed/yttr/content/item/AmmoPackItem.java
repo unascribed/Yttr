@@ -3,6 +3,7 @@ package com.unascribed.yttr.content.item;
 import java.util.List;
 
 import com.unascribed.yttr.Yttr;
+import com.unascribed.yttr.init.YItems;
 import com.unascribed.yttr.inventory.AmmoPackScreenHandler;
 import com.unascribed.yttr.util.InventoryProviderItem;
 
@@ -26,6 +27,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -187,6 +189,7 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 	@Override
 	public void render(String trinketsSlot, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light,
 			PlayerEntityModel<AbstractClientPlayerEntity> model, AbstractClientPlayerEntity player, float headYaw, float headPitch) {
+		if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() == YItems.SUIT_CHESTPLATE) return;
 		ItemStack is = TrinketsApi.getTrinketComponent(player).getStack(trinketsSlot);
 		BakedModel bm = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_model#inventory"));
 		matrices.push();
@@ -215,9 +218,9 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 				chest = Yttr.earsAccess.getChestSize(player);
 			} catch (Throwable t) {}
 			BakedModel seg = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
+			matrices.translate(3.5f/16f, 11f/16f, -4.5f/16f);
 			if (chest > 0) {
 				float ang = chest*45;
-				matrices.translate(3.5f/16f, 11f/16f, -4.5f/16f);
 				
 				matrices.push();
 					matrices.push();
