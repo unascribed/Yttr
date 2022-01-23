@@ -19,6 +19,7 @@ import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.render.CleaverUI;
 import com.unascribed.yttr.client.render.EffectorRenderer;
 import com.unascribed.yttr.client.render.LampRenderer;
+import com.unascribed.yttr.client.render.ProfilerRenderer;
 import com.unascribed.yttr.client.render.ReplicatorRenderer;
 import com.unascribed.yttr.client.render.RifleHUDRenderer;
 import com.unascribed.yttr.client.render.ShifterUI;
@@ -48,6 +49,7 @@ import com.google.common.collect.Sets;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -255,6 +257,13 @@ public class YttrClient extends IHasAClient implements ClientModInitializer {
 				MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, "\u26A0 §lSIMULATING NETWORK LATENCY§r: ~"+latency+"ms", 2, 2, 0xFFFFFF55);
 			}
 		});
+		
+		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("yttr:profiler")
+				.executes(ctx -> {
+					ProfilerRenderer.enabled = !ProfilerRenderer.enabled;
+					return 0;
+				}));
+		
 		
 		WorldRenderEvents.BLOCK_OUTLINE.register(CleaverUI::render);
 		WorldRenderEvents.BLOCK_OUTLINE.register(ReplicatorRenderer::renderOutline);

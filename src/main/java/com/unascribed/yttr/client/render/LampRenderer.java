@@ -45,8 +45,9 @@ import net.minecraft.world.World;
 
 public class LampRenderer extends IHasAClient {
 
+	private static final Map<BlockPos, BlockEntity> lampsByBlock = new Object2ObjectOpenHashMap<>();
 	private static final Map<BlockEntity, Object> lastState = new Object2ObjectOpenHashMap<>();
-	private static final Multimap<ChunkSectionPos, BlockEntity> lamps = Multimaps.newSetMultimap(new Object2ObjectOpenHashMap<>(), ReferenceOpenHashSet::new);
+	private static final Multimap<ChunkSectionPos, BlockEntity> lampsBySection = Multimaps.newSetMultimap(new Object2ObjectOpenHashMap<>(), ReferenceOpenHashSet::new);
 	private static final Map<ChunkSectionPos, VertexBuffer> buffers = new Object2ObjectOpenHashMap<>();
 	private static final Map<ChunkSectionPos, Box> boundingBoxes = new Object2ObjectOpenHashMap<>();
 
@@ -132,10 +133,10 @@ public class LampRenderer extends IHasAClient {
 
 	public static void render(WorldRenderContext wrc) {
 		wrc.profiler().swap("yttr:lamps");
-		if (!lamps.isEmpty()) {
+		if (!lampsBySection.isEmpty()) {
 			wrc.profiler().push("prepare");
 			MysticSet<ChunkSectionPos> needsRebuild = MysticSet.of();
-			for (BlockEntity be : lamps.values()) {
+			for (BlockEntity be : lampsBySection.values()) {
 				if (!(be instanceof HaloBlockEntity)) continue;
 				Object s = ((HaloBlockEntity)be).getStateObject();
 				ChunkSectionPos csp = ChunkSectionPos.from(be.getPos());
@@ -147,7 +148,7 @@ public class LampRenderer extends IHasAClient {
 			wrc.profiler().swap("rebuild");
 			MatrixStack scratch = new MatrixStack();
 			for (ChunkSectionPos csp : needsRebuild.mundane()) {
-				Collection<BlockEntity> l = lamps.get(csp);
+				Collection<BlockEntity> l = lampsBySection.get(csp);
 				if (l.isEmpty()) {
 					if (buffers.containsKey(csp)) {
 						buffers.remove(csp).close();
@@ -217,7 +218,7 @@ public class LampRenderer extends IHasAClient {
 
 	public static void tick() {
 		if (mc.world != null) {
-			Iterator<BlockEntity> iter = lamps.values().iterator();
+			Iterator<BlockEntity> iter = lampsBySection.values().iterator();
 			while (iter.hasNext()) {
 				BlockEntity be = iter.next();
 				if (be.isRemoved() || be.getWorld() != mc.world) {
@@ -225,19 +226,26 @@ public class LampRenderer extends IHasAClient {
 					if (buffers.containsKey(cs)) {
 						buffers.remove(cs).close();
 					}
+					lampsByBlock.remove(be.getPos(), be);
 					iter.remove();
 				}
 			}
 			for (BlockEntity be : mc.world.blockEntities) {
 				if (be instanceof HaloBlockEntity) {
 					ChunkSectionPos cs = ChunkSectionPos.from(be.getPos());
-					if (!lamps.containsEntry(cs, be)) {
-						lamps.put(cs, be);
+					if (!lampsBySection.containsEntry(cs, be)) {
+						if (lampsByBlock.containsKey(be.getPos())) {
+							BlockEntity other = lampsByBlock.remove(be.getPos());
+							lampsBySection.remove(ChunkSectionPos.from(be.getPos()), other);
+						}
+						lampsByBlock.put(be.getPos(), be);
+						lampsBySection.put(cs, be);
 					}
 				}
 			}
 		} else {
-			lamps.clear();
+			lampsByBlock.clear();
+			lampsBySection.clear();
 			lastState.clear();
 			clearCache();
 		}
