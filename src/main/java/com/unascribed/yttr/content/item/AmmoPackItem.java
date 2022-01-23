@@ -39,6 +39,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -213,9 +214,9 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 			try {
 				chest = Yttr.earsAccess.getChestSize(player);
 			} catch (Throwable t) {}
-			float sqrt2 = 1.4142135f;
 			BakedModel seg = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier("yttr:ammo_pack_seg_model#inventory"));
 			if (chest > 0) {
+				float ang = chest*45;
 				matrices.translate(3.5f/16f, 11f/16f, -4.5f/16f);
 				
 				matrices.push();
@@ -225,7 +226,7 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 						}
 					matrices.pop();
 					
-					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(chest*45));
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(ang));
 					matrices.translate(0, -5.5f/16f, 0);
 					matrices.push();
 						matrices.scale(1, 5.5f, 1);
@@ -234,7 +235,10 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 						}
 					matrices.pop();
 					
-					float len = (4*chest*sqrt2)-0.25f;
+					float scale = 5.5f;
+					float angr = (float)Math.toRadians(ang);
+					float len = (float)(scale * Math.tan(angr));
+					float h = scale/MathHelper.cos(angr);
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 					matrices.translate(0, -len/16f, 0);
 					matrices.push();
@@ -245,9 +249,9 @@ public class AmmoPackItem extends TrinketItem implements InventoryProviderItem {
 					matrices.pop();
 				matrices.pop();
 				
-				matrices.translate(0, -8.5f/16f, 0);
+				matrices.translate(0, -7.5f/16f, 0);
 				matrices.push();
-					matrices.scale(1, 2.5f, 1);
+					matrices.scale(1, (12-h)-4.5f, 1);
 					for (BakedQuad bq : seg.getQuads(Blocks.DIRT.getDefaultState(), null, RANDOM)) {
 						vc.quad(matrices.peek(), bq, 1, 1, 1, light, OverlayTexture.DEFAULT_UV);
 					}
