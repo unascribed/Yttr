@@ -1,5 +1,7 @@
 package com.unascribed.yttr.client.render;
 
+import java.util.List;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -69,17 +71,25 @@ public class ProfilerRenderer {
 					}
 					int bw = (int)(pt.parentSectionUsagePercentage*1.5);
 					int bw2 = (int)(pt.totalUsagePercentage*1.5);
+					String hash = sel+"\u001E"+pt.name;
 					String path = "";
 					String name = pt.name;
 					if (name.contains("\u001E")) {
 						int idx = name.lastIndexOf('\u001E');
 						path = name.substring(0, idx+1).replace('\u001E', '/');
 						name = name.substring(idx+1);
+						hash = sel;
 					}
-					drawHashBox(ms, w-rw, y, rw, 18, sel+"\u001E"+name);
+					int fontColor = 0;
+					if ("unspecified".equals(name)) {
+						drawBox(ms, w-rw, y, rw, 18, 0xFF005500);
+						fontColor = -1;
+					} else {
+						drawHashBox(ms, w-rw, y, rw, 18, hash);
+					}
 					drawBox(ms, w-bw, y+16, bw, 2, -1);
 					drawBox(ms, w-bw2, y+16, bw2, 2, 0xFF000000);
-					drawRightAligned(tr, ms, name, w-2, y+2, 0, true);
+					drawRightAligned(tr, ms, name, w-2, y+2, fontColor, true);
 					if (i-1 == cursorIndex) {
 						for (int j = 0; j < 4; j++) {
 							tr.draw(ms, ">", w-158+j, y+6, 0);
@@ -89,14 +99,47 @@ public class ProfilerRenderer {
 						ms.translate(w, y, 0);
 						ms.scale(1/2f, 1/2f, 1);
 						ms.translate(-w, 0, 0);
-						drawRightAligned(tr, ms, path, w-6-(tr.getWidth(name)*2), y+10, 0, false);
+						drawRightAligned(tr, ms, path, w-6-(tr.getWidth(name)*2), y+10, fontColor, false);
 						if (i == 0) {
-							drawRightAligned(tr, ms, String.format("§ltotal %.1f%%", pt.totalUsagePercentage), w-2, 20, 0, false);
+							drawRightAligned(tr, ms, String.format("§ltotal %.1f%%", pt.totalUsagePercentage), w-2, 20, fontColor, false);
 						} else {
-							drawRightAligned(tr, ms, String.format("%.1f%% §ltotal %.1f%%", pt.parentSectionUsagePercentage, pt.totalUsagePercentage), w-2, 20, 0, false);
+							drawRightAligned(tr, ms, String.format("%.1f%% §ltotal %.1f%%", pt.parentSectionUsagePercentage, pt.totalUsagePercentage), w-2, 20, fontColor, false);
 						}
 					ms.pop();
 					y += 18;
+					if (i-1 == cursorIndex) {
+						String full = sel+"\u001E"+name;
+						boolean first = true;
+						List<ProfilerTiming> children = res.getTimings(full);
+						if (children.size() > 2) {
+							for (ProfilerTiming child : children) {
+								if (first) {
+									first = false;
+									continue;
+								}
+								fontColor = 0;
+								if ("unspecified".equals(child.name)) {
+									drawBox(ms, w-140, y, 140, 12, 0xFF225522);
+									fontColor = -1;
+								} else {
+									drawHashBox(ms, w-140, y, 140, 12, full+"\u001E"+child.name);
+									drawBox(ms, w-140, y, 140, 12, 0x44FFFFFF);
+								}
+								drawRightAligned(tr, ms, child.name, w-2, y+1, fontColor, true);
+								int cbw = (int)(child.parentSectionUsagePercentage*1.4);
+								int cbw2 = (int)(child.totalUsagePercentage*1.4);
+								drawBox(ms, w-cbw, y+11, cbw, 1, -1);
+								drawBox(ms, w-cbw2, y+11, cbw2, 1, 0xFF000000);
+								ms.push();
+									ms.translate(w, y, 0);
+									ms.scale(1/2f, 1/2f, 1);
+									ms.translate(-w, 0, 0);
+									drawRightAligned(tr, ms, String.format("%.1f%% §l %.1f%%", child.parentSectionUsagePercentage, child.totalUsagePercentage), w-16-(tr.getWidth(child.name)*2), 7, fontColor, false);
+								ms.pop();
+								y += 12;
+							}
+						}
+					}
 					i++;
 				}
 				stepOut = false;
