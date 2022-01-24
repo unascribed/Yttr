@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "yttr:block/crafter_rafter"
+      "model": "yttr:block/bedrock_smasher"
     }
   }
 }
