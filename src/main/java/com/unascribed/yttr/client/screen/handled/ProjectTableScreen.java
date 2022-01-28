@@ -52,7 +52,9 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
 		super.tick();
 		if (lastChangeId != ((AccessorScreenHandlerClient)handler).yttr$getActionId()) {
 			lastChangeId = ((AccessorScreenHandlerClient)handler).yttr$getActionId();
-			((AccessorRecipeBookWidget)recipeBook).yttr$refreshInputs();
+			if (recipeBook.isOpen()) {
+				((AccessorRecipeBookWidget)recipeBook).yttr$refreshInputs();
+			}
 		}
 		this.recipeBook.update();
 	}

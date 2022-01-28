@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import com.unascribed.yttr.Yttr;
 import com.unascribed.yttr.client.RuinedRecipeResourceMetadata;
+import com.unascribed.yttr.client.screen.handled.ProjectTableScreen;
 import com.unascribed.yttr.content.item.DropOfContinuityItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.crafting.CentrifugingRecipe;
@@ -40,6 +41,7 @@ import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.Hash.Strategy;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
+import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryRegistry;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
@@ -110,6 +112,9 @@ public class YttrREIPlugin implements REIPluginV0 {
 	    	EnchantmentHelper.set(ImmutableMap.of(YEnchantments.SHATTERING_CURSE, 1), is);
 			recipeHelper.registerWorkingStations(ShatteringCategory.ID, EntryStack.create(is).setting(Settings.CHECK_TAGS, () -> true));
 		}
+		
+		recipeHelper.registerWorkingStations(DefaultPlugin.CRAFTING, EntryStack.create(YBlocks.PROJECT_TABLE));
+		recipeHelper.registerContainerClickArea(new Rectangle(88, 33, 26, 19), ProjectTableScreen.class, DefaultPlugin.CRAFTING);
 	}
 	
 	@Override

@@ -19,7 +19,8 @@
 		"main": [ "com.unascribed.yttr.Yttr" ],
 		"client": [ "com.unascribed.yttr.client.YttrClient" ],
 		"server": [ "com.unascribed.yttr.YttrServer" ],
-		"rei_plugins": [ "com.unascribed.yttr.compat.rei.YttrREIPlugin" ]
+		"rei_plugins": [ "com.unascribed.yttr.compat.rei.YttrREIPlugin" ],
+		"rei_containers": [ "com.unascribed.yttr.compat.rei.YttrREIServerPlugin" ]
 	},
 	"mixins": [
 		"yttr.mixins.json"

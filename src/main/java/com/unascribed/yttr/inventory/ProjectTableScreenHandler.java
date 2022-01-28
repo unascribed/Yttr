@@ -73,7 +73,11 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 			@Override
 			public ItemStack removeStack(int slot, int amount) {
 				if (slot >= 9) throw new IndexOutOfBoundsException();
-				return inv.removeStack(slot, amount);
+				ItemStack is = inv.removeStack(slot, amount);
+				if (!is.isEmpty()) {
+					onContentChanged(this);
+				}
+				return is;
 			}
 
 			@Override
