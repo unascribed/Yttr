@@ -129,6 +129,7 @@ public class YItems {
 	public static final BlockItem CAN_FILLER = createBlockItem(YBlocks.CAN_FILLER);
 	public static final BlockItem DUST = createBlockItem(YBlocks.DUST);
 	public static final BlockItem RAFTER = createBlockItem(YBlocks.RAFTER);
+	public static final BlockItem PROJECT_TABLE = createBlockItem(YBlocks.PROJECT_TABLE);
 	
 	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override

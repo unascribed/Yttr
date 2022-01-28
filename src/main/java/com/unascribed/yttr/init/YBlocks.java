@@ -22,6 +22,7 @@ import com.unascribed.yttr.content.block.device.CentrifugeBlock;
 import com.unascribed.yttr.content.block.device.RafterBlock;
 import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
+import com.unascribed.yttr.content.block.device.ProjectTableBlock;
 import com.unascribed.yttr.content.block.device.SuitStationBlock;
 import com.unascribed.yttr.content.block.device.VoidFilterBlock;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlock;
@@ -629,6 +630,12 @@ public class YBlocks {
 	public static final NeodymiumBlock NEODYMIUM_SLAB = new NeodymiumBlock(METALLIC_SETTINGS);
 	
 	public static final RafterBlock RAFTER = new RafterBlock(METALLIC_SETTINGS);
+	public static final ProjectTableBlock PROJECT_TABLE = new ProjectTableBlock(FabricBlockSettings.of(Material.STONE, MapColor.PINK)
+			.breakByHand(true)
+			.breakByTool(FabricToolTags.PICKAXES)
+			.breakByTool(FabricToolTags.AXES)
+			.hardness(1.5f)
+			.sounds(BlockSoundGroup.WOOD));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);

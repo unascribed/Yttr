@@ -12,6 +12,7 @@ import com.unascribed.yttr.client.screen.handled.CentrifugeScreen;
 import com.unascribed.yttr.client.screen.handled.DSUScreen;
 import com.unascribed.yttr.client.screen.handled.InRedOscillatorScreen;
 import com.unascribed.yttr.client.screen.handled.MagtankScreen;
+import com.unascribed.yttr.client.screen.handled.ProjectTableScreen;
 import com.unascribed.yttr.client.screen.handled.RafterScreen;
 import com.unascribed.yttr.client.screen.handled.SuitStationScreen;
 import com.unascribed.yttr.client.screen.handled.VoidFilterScreen;
@@ -21,6 +22,7 @@ import com.unascribed.yttr.inventory.CentrifugeScreenHandler;
 import com.unascribed.yttr.inventory.DSUScreenHandler;
 import com.unascribed.yttr.inventory.InRedOscillatorScreenHandler;
 import com.unascribed.yttr.inventory.MagtankScreenHandler;
+import com.unascribed.yttr.inventory.ProjectTableScreenHandler;
 import com.unascribed.yttr.inventory.RafterScreenHandler;
 import com.unascribed.yttr.inventory.SuitStationScreenHandler;
 import com.unascribed.yttr.inventory.VoidFilterScreenHandler;
@@ -50,6 +52,8 @@ public class YHandledScreens {
 	public static final ScreenHandlerType<InRedOscillatorScreenHandler> INRED_OSCILLATOR = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "inred_oscillator"), InRedOscillatorScreenHandler::new);
 	@Screen(RafterScreen.class)
 	public static final ScreenHandlerType<RafterScreenHandler> RAFTING = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "rafter"), RafterScreenHandler::new);
+	@Screen(ProjectTableScreen.class)
+	public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE = ScreenHandlerRegistry.registerSimple(new Identifier("yttr", "project_table"), ProjectTableScreenHandler::new);
 	
 	public static void init() {}
 	

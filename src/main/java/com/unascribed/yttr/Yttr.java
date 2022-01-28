@@ -366,7 +366,7 @@ public class Yttr implements ModInitializer {
 	}
 
 	/**
-	 * Serialize an Inventory to a ListTag. Unlike {@link Inventories#writeNbt}, this supports arbitrarily
+	 * Serialize an Inventory to an NbtList. Unlike {@link Inventories#writeNbt}, this supports arbitrarily
 	 * large stack sizes. Unlike {@link SimpleInventory#toNbtList}, this keeps slot indexes and therefore
 	 * empty slots.
 	 * @see #deserializeInv
@@ -388,7 +388,7 @@ public class Yttr implements ModInitializer {
 	}
 	
 	/**
-	 * Deserialize a ListTag created by {@link #serializeInv} into the given Inventory. The
+	 * Deserialize an NbtList created by {@link #serializeInv} into the given Inventory. The
 	 * Inventory will be cleared first. Can load large stacks written by serializeInv.
 	 */
 	public static void deserializeInv(NbtList tag, Inventory inv) {

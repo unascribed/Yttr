@@ -1,0 +1,13 @@
+{
+	"values": [
+		"minecraft:stone",
+		"minecraft:granite",
+		"minecraft:diorite",
+		"minecraft:andesite",
+		"minecraft:blackstone",
+		{
+			"id": "cavesandcliffs:deepslate",
+			"required": false
+		}
+	]
+}

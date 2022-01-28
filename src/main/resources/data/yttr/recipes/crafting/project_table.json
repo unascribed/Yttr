@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"SSS",
+		"WCW",
+		"WcW"
+	],
+	"key": {
+		"S": {
+			"tag": "yttr:stone"
+		},
+		"W": {
+			"tag": "minecraft:planks"
+		},
+		"C": {
+			"item": "minecraft:crafting_table"
+		},
+		"c": {
+			"item": "minecraft:chest"
+		}
+	},
+	"result": {
+		"item": "yttr:project_table"
+	}
+}

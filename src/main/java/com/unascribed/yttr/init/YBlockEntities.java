@@ -16,6 +16,7 @@ import com.unascribed.yttr.content.block.decor.LampBlockEntity;
 import com.unascribed.yttr.content.block.device.CanFillerBlockEntity;
 import com.unascribed.yttr.content.block.device.CentrifugeBlockEntity;
 import com.unascribed.yttr.content.block.device.PowerMeterBlockEntity;
+import com.unascribed.yttr.content.block.device.ProjectTableBlockEntity;
 import com.unascribed.yttr.content.block.device.SuitStationBlockEntity;
 import com.unascribed.yttr.content.block.device.VoidFilterBlockEntity;
 import com.unascribed.yttr.content.block.inred.InRedAndGateBlockEntity;
@@ -69,6 +70,9 @@ public class YBlockEntities {
 	@Renderer("DSUBlockEntityRenderer")
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
+	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE);
+	
+	
 	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)
 	public static final BlockEntityType<InRedAndGateBlockEntity> INRED_AND_GATE = create(InRedAndGateBlockEntity::new, YBlocks.INRED_AND_GATE);
 	public static final BlockEntityType<InRedNotGateBlockEntity> INRED_NOT_GATE = create(InRedNotGateBlockEntity::new, YBlocks.INRED_NOT_GATE);

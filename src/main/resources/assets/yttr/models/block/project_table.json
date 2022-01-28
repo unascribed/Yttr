@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"particle": "yttr:block/project_table_front",
+		"north": "yttr:block/project_table_front",
+		"south": "yttr:block/project_table_back",
+		"down": "yttr:block/project_table_bottom",
+		"east": "yttr:block/project_table_side",
+		"west": "yttr:block/project_table_side",
+		"up": "yttr:block/project_table_top"
+	}
+}
