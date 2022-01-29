@@ -32,7 +32,6 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack, CallbackInfo ci) {
 		if (!(handler.getSlot(slotId) instanceof CraftingResultSlot) && handler == playerScreenHandler) {
 			Identifier id = Registry.ITEM.getId(stack.getItem());
-			System.out.println(id+"!");
 			unlockRecipes(Yttr.discoveries.get(id).stream()
 				.map(world.getRecipeManager()::get)
 				.filter(Optional::isPresent)
