@@ -30,6 +30,7 @@ import com.unascribed.yttr.content.item.SuitArmorItem;
 import com.unascribed.yttr.content.item.SwallowableItem;
 import com.unascribed.yttr.content.item.VoidBucketItem;
 import com.unascribed.yttr.content.item.block.BigBlockItem;
+import com.unascribed.yttr.content.item.block.DyedBlockItem;
 import com.unascribed.yttr.content.item.block.LampBlockItem;
 import com.unascribed.yttr.content.item.block.LevitationChamberBlockItem;
 import com.unascribed.yttr.content.item.block.ReplicatorBlockItem;
@@ -75,6 +76,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.collection.DefaultedList;
@@ -130,6 +132,23 @@ public class YItems {
 	public static final BlockItem DUST = createBlockItem(YBlocks.DUST);
 	public static final BlockItem RAFTER = createBlockItem(YBlocks.RAFTER);
 	public static final BlockItem PROJECT_TABLE = createBlockItem(YBlocks.PROJECT_TABLE);
+	
+	public static final BlockItem WHITE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.WHITE);
+	public static final BlockItem ORANGE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.ORANGE);
+	public static final BlockItem MAGENTA_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.MAGENTA);
+	public static final BlockItem LIGHT_BLUE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.LIGHT_BLUE);
+	public static final BlockItem YELLOW_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.YELLOW);
+	public static final BlockItem LIME_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.LIME);
+	public static final BlockItem PINK_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.PINK);
+	public static final BlockItem GRAY_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.GRAY);
+	public static final BlockItem LIGHT_GRAY_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.LIGHT_GRAY);
+	public static final BlockItem CYAN_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.CYAN);
+	public static final BlockItem PURPLE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.PURPLE);
+	public static final BlockItem BLUE_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.BLUE);
+	public static final BlockItem BROWN_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.BROWN);
+	public static final BlockItem GREEN_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.GREEN);
+	public static final BlockItem RED_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.RED);
+	public static final BlockItem BLACK_PROJECT_TABLE = createDyedBlockItem(YBlocks.DYED_PROJECT_TABLE, DyeColor.BLACK);
 	
 	public static final BlockItem NEODYMIUM_SLAB = new BlockItem(YBlocks.NEODYMIUM_SLAB, new Item.Settings()) {
 		@Override
@@ -228,6 +247,10 @@ public class YItems {
 
 	private static BlockItem createBlockItem(Block block) {
 		return new BlockItem(block, new Item.Settings());
+	}
+
+	private static BlockItem createDyedBlockItem(Block block, DyeColor color) {
+		return new DyedBlockItem(block, color, new Item.Settings());
 	}
 	
 	public static final Item YTTRIUM_INGOT = new Item(new Item.Settings());

@@ -70,7 +70,7 @@ public class YBlockEntities {
 	@Renderer("DSUBlockEntityRenderer")
 	public static final BlockEntityType<DSUBlockEntity> DSU = create(DSUBlockEntity::new, YBlocks.DSU);
 	public static final BlockEntityType<CanFillerBlockEntity> CAN_FILLER = create(CanFillerBlockEntity::new, YBlocks.CAN_FILLER);
-	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE);
+	public static final BlockEntityType<ProjectTableBlockEntity> PROJECT_TABLE = create(ProjectTableBlockEntity::new, YBlocks.PROJECT_TABLE, YBlocks.DYED_PROJECT_TABLE);
 	
 	
 	//TODO: rendering for all of these, probably (and there might be a way to make them not have to all be ticking BEs)

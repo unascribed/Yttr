@@ -247,7 +247,7 @@ public class ProjectTableScreenHandler extends AbstractRecipeScreenHandler<Craft
 
 	@Override
 	public boolean canUse(PlayerEntity player) {
-		return canUse(context, player, YBlocks.PROJECT_TABLE);
+		return canUse(context, player, YBlocks.PROJECT_TABLE) || canUse(context, player, YBlocks.DYED_PROJECT_TABLE);
 	}
 
 	@Override

@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "yttr:block/project_table",
+	"yttr:inherit_elements": true,
+	"textures": {
+		"side_overlay": "yttr:block/project_table_side_dyed",
+		"top_overlay": "yttr:block/project_table_top_dyed"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#side_overlay", "tintindex": 0},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top_overlay", "tintindex": 0}
+			}
+		}
+	]
+}

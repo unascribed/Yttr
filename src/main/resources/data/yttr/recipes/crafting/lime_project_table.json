@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:project_table",
+  "group": "yttr:project_table_dyeing",
+  "ingredients": [
+    {
+      "item": "minecraft:lime_dye"
+    },
+    {
+      "tag": "yttr:project_tables"
+    }
+  ],
+  "result": {
+    "item": "yttr:lime_project_table",
+    "count": 1
+  }
+}

@@ -19,6 +19,7 @@ import com.unascribed.yttr.content.block.decor.TableBlock;
 import com.unascribed.yttr.content.block.decor.WallLampBlock;
 import com.unascribed.yttr.content.block.device.CanFillerBlock;
 import com.unascribed.yttr.content.block.device.CentrifugeBlock;
+import com.unascribed.yttr.content.block.device.DyedProjectTableBlock;
 import com.unascribed.yttr.content.block.device.RafterBlock;
 import com.unascribed.yttr.content.block.device.EncasedVoidFilterBlock;
 import com.unascribed.yttr.content.block.device.PowerMeterBlock;
@@ -636,6 +637,8 @@ public class YBlocks {
 			.breakByTool(FabricToolTags.AXES)
 			.hardness(1.5f)
 			.sounds(BlockSoundGroup.WOOD));
+	@RenderLayer("cutout_mipped")
+	public static final DyedProjectTableBlock DYED_PROJECT_TABLE = new DyedProjectTableBlock(FabricBlockSettings.copyOf(PROJECT_TABLE));
 	
 	public static void init() {
 		Yttr.autoRegister(Registry.BLOCK, YBlocks.class, Block.class);
