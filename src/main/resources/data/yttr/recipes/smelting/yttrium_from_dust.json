@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:smelting",
+	"yttr:discovered_via": "yttr:yttrium_dust",
 	"ingredient": {
 		"item": "yttr:yttrium_dust"
 	},

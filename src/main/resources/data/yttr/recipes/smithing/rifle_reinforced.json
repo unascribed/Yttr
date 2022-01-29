@@ -1,5 +1,6 @@
 {
   "type": "minecraft:smithing",
+  "yttr:discovered_via": "yttr:bedrock_shard",
   "base": {
     "item": "yttr:rifle"
   },

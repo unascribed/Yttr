@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:ultrapure_wolfram",
   "group": "netherite_ingot",
   "ingredients": [
     {

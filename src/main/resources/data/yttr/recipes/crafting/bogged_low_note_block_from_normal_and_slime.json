@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "minecraft:note_block",
   "group": "yttr:bogged_low_note_block",
   "ingredients": [
     {

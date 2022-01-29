@@ -1,5 +1,6 @@
 {
   "type": "minecraft:smithing",
+  "yttr:discovered_via": "minecraft:netherite_ingot",
   "base": {
     "item": "yttr:cleaver"
   },

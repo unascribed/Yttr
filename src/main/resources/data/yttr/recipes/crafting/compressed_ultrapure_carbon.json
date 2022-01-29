@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:compressed_ultrapure_carbon_block",
   "ingredients": [
     {
       "item": "yttr:compressed_ultrapure_carbon_block",

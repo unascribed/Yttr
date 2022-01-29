@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "yttr:discovered_via": "yttr:compressed_ultrapure_carbon",
   "pattern": [
     "CCC",
     "CCC",

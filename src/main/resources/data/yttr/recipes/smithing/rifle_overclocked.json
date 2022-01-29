@@ -1,5 +1,6 @@
 {
   "type": "minecraft:smithing",
+  "yttr:discovered_via": "yttr:glassy_void",
   "base": {
     "item": "yttr:rifle"
   },

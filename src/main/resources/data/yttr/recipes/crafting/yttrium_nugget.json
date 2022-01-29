@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:yttrium_ingot",
   "ingredients": [
     {
       "item": "yttr:yttrium_ingot"

@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:blasting",
+	"yttr:discovered_via": "yttr:iron_dust",
 	"ingredient": {
 		"item": "yttr:iron_dust"
 	},

@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:smelting",
+	"yttr:discovered_via": "yttr:gadolinite",
 	"ingredient": {
 		"item": "yttr:gadolinite"
 	},

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "yttr:glassy_void",
   "ingredients": [
     {
       "item": "yttr:glassy_void"

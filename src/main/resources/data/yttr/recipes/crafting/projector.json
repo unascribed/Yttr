@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "yttr:discovered_via": "yttr:drop_of_continuity",
   "pattern": [
     " D ",
     " YD",

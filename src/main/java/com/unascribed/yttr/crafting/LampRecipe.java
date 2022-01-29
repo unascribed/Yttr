@@ -46,7 +46,7 @@ public class LampRecipe extends ShapedRecipe {
 	
 	@Override
 	public boolean isIgnoredInRecipeBook() {
-		return true;
+		return !important;
 	}
 	
 	@Override

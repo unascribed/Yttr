@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:blasting",
+	"yttr:discovered_via": "yttr:copper_ore",
 	"ingredient": {
 		"item": "yttr:copper_ore"
 	},

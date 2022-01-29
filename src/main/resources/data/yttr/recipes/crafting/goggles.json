@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:crafting_shaped",
+	"yttr:discovered_via": "yttr:skeletal_sorter_right_handed",
 	"pattern": [
 		"YGY",
 		"Y Y",

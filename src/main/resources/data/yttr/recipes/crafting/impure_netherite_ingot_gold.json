@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "yttr:discovered_via": "minecraft:netherite_scrap",
   "group": "netherite_ingot",
   "ingredients": [
     {

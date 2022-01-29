@@ -63,9 +63,11 @@ import com.unascribed.yttr.world.GeysersState;
 import com.unascribed.yttr.world.WastelandPopulator;
 
 import com.google.common.collect.EnumMultiset;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import net.fabricmc.api.ModInitializer;
@@ -112,6 +114,7 @@ public class Yttr implements ModInitializer {
 	public static final int DIVING_BLOCKS_PER_TICK = 2;
 	
 	public static final Map<Identifier, SoundEvent> craftingSounds = Maps.newHashMap();
+	public static final Multimap<Identifier, Identifier> discoveries = HashMultimap.create();
 	
 	public static boolean lessCreepyAwareHopper;
 	
@@ -218,6 +221,7 @@ public class Yttr implements ModInitializer {
 		});
 		
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, mgr) -> {
+			discoveries.clear();
 			Substitutes.reload(mgr.getResourceManager());
 		});
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
